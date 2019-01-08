@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>NodeRedis</title>
+  </head>
+  <body>
+
+   <select id="operation">
+       <option value="get">get</option>
+       <option value="set">set</option>
+       <option value="del">del</option>
+   </select><br>
+
+   <input id="key" placeholder='key' value="name">
+   <input id="value" placeholder='value' value="value">
+
+   <textarea id="result"></textarea>
+
+   <button id="sub-btn">submit</button>
+  </body>
+  <!-- <script type="text/javascript" src="index.js"></script> -->
+  <script type="text/javascript" src="https://cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script>
+  <script type="text/javascript">
+    // alert(999)
+    // $(function () {
+    //     alert('innnn');
+
+    //     $('#sub-btn').click(function () {
+    //         alert(111)
+    //     })
+    // })
+
+
+
+
+    var qii404 = {
+
+        redis: null,
+
+        init: function() {
+            this.redis = this.getRedis('10.20.1.133', 6379);
+            this.bindAction();
+        },
+
+        exec: function(operation, key, params, callback) {
+            // getAsync('name').then(function(res) {
+            //     alert(res); // => 'bar'
+            // });
+            // return;
+
+            this.redis[operation](key, callback);
+        },
+
+        getRedis: function(host, port, auth) {
+            var redis = require("redis");
+            var client = redis.createClient(port, host);
+
+            client.on("error", function (err) {
+                alert(err);
+                return false;
+            });
+
+            return client;
+        },
+
+        bindAction: function() {
+            var that = this;
+
+            $('#sub-btn').click(function () {
+                var key = $('#key').val();
+                var operation = $('#operation').val();
+
+                that.exec(operation, key, '', (err, reply) => {
+                    $('#result').val(reply);
+                });
+            })
+        }
+    };
+
+    qii404.init();
+
+
+    // function getData(key)
+    // {
+    //   var redis = require("redis"),
+    //       client = redis.createClient(6379, '10.20.1.133');
+
+    //   client.on("error", function (err) {
+    //     return err;
+    //   });
+
+
+    //   client.get(key, function(err, reply) {
+    //       // reply is null when the key is missing
+    //       document.getElementById('value').value = reply;
+    //   });
+
+    //   // client.quit();
+    // }
+
+    // getData('name');
+
+  </script>
+</html>
