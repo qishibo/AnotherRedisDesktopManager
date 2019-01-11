@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>ttt</title>
+    <script type="text/javascript" src="https://cn.vuejs.org/js/vue.js"></script>
+</head>
+<body>
+    <div id="app">
+        <template v-if="loginType === 'username'">
+          <label>Username</label>
+          <input placeholder="Enter your username">
+        </template>
+        <template v-else>
+          <label>Email</label>
+          <input placeholder="Enter your email address" v-model:value="loginType">
+        </template>
+
+        <li v-for="n in evenNumbers()">{{ n }}</li>
+
+        <form @submit.prevent="addItem">
+            <label>add todo</label>
+            <input v-model="newItem">
+            <button>add</button>
+        </form>
+        <ul>
+            <xxx-items
+            v-for="(item, index) in items"
+            :key="item.index"
+            :title="item.msg"
+            :itemindex="index"
+            :style="{fontSize: fontSize + 'px'}"
+            @remove="items.splice(index, 1)"
+            @larger="fontSize++"
+            >
+            </xxx-items>
+        </ul>
+
+        <input v-bind:value="input_value">
+
+        <select v-model="selected">
+            <option v-for="option in options" :value="option.value">{{option.text}}</option>
+        </select>
+        <span>selected: {{selected}}</span>
+
+        <custom-input v-model="customInputValue"></custom-input>
+    </div>
+</body>
+
+<script type="text/javascript">
+
+    Vue.component('xxx-items', {
+        template: '<li>{{itemindex}}- {{title}} <button @click="$emit(\'remove\')">del</button><button @click="$emit(\'larger\')">larger</button></li>',
+        props: ['title', 'itemindex']
+    });
+
+    Vue.component('custom-input', {
+        template: '<input  :value="value" @input="$emit(\'input\', $event.target.value)">',
+        props: ['value']
+    });
+
+    var wv = new Vue({
+        el: '#app',
+        data: {
+            loginType: 'email',
+            name: 'qii404',
+            numbers: [ 1, 2, 3, 4, 5 ],
+            items: [
+                {msg: 'm1111111'},
+                {msg: 'm2222222'},
+                {msg: 'm3333333'},
+            ],
+            newItem: 'new item',
+            input_value: 'hahaha',
+            options: [
+                {text: 111, value: 'a111'},
+                {text: 222, value: 'a222'},
+                {text: 333, value: 'a333'}
+            ],
+            selected: '',
+            fontSize: 12,
+            customInputValue: 'customInputValue a a a'
+        },
+        computed: {
+          evenNumbers11: function () {
+            return this.numbers.filter(function (number) {
+              return number % 2 === 0;
+            });
+          }
+        },
+        methods: {
+            evenNumbers: function () {
+               return this.numbers.filter(function (number) {
+                 return number % 2 === 0;
+               });
+            },
+            addItem: function () {
+                this.items.push({
+                    msg: this.newItem
+                })
+            }
+        }
+    });
+</script>
+</html>
