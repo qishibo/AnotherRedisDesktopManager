@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>ttt</title>
+    <style type="text/css">
+        .active{
+            font-weight: bold;
+            color: red;
+        }
+    </style>
+    <script type="text/javascript" src="https://cn.vuejs.org/js/vue.js"></script>
+</head>
+<body>
+    <div id="app">
+        <template v-if="loginType === 'username'">
+          <label>Username</label>
+          <input placeholder="Enter your username">
+        </template>
+        <template v-else>
+          <label>Email</label>
+          <input placeholder="Enter your email address" v-model:value="loginType">
+        </template>
+
+        <li v-for="n in evenNumbers()">{{ n }}</li>
+
+        <form @submit.prevent="addItem">
+            <label>add todo</label>
+            <input v-model="newItem">
+            <button>add</button>
+        </form>
+        <ul>
+            <xxx-items
+            v-for="(item, index) in items"
+            :key="item.index"
+            :title="item.msg"
+            :itemindex="index"
+            :style="{fontSize: fontSize + 'px'}"
+            qii="qii404"
+            @remove="items.splice(index, 1)"
+            @larger="fontSize++"
+            >
+            </xxx-items>
+        </ul>
+
+        <input v-bind:value="input_value">
+
+        <select v-model="selected">
+            <option v-for="option in options" :value="option.value">{{option.text}}</option>
+        </select>
+        <span>selected: {{selected}}</span>
+
+        <custom-input v-model="customInputValue"></custom-input>
+
+        <div :style="{border: '1px solid grey', color: 'grey'}">
+            <ul>
+                <li v-for="(item, index) of tabList" :class="{active:tabSelected==index}" @mouseenter="changeTab(index)">{{item}}</li>
+            </ul>
+            <keep-alive>
+                <component :is="currentTabName">
+                    <p slot="qii-slot">this is slot content</p>
+                </component>
+            </keep-alive>
+        </div>
+
+    </div>
+</body>
+
+<script type="text/javascript">
+
+    Vue.component('xxx-items', {
+        template: '<li>{{qii}}-{{itemindex}}- {{title}} <button @click="$emit(\'remove\')">del</button><button @click="$emit(\'larger\')">larger</button></li>',
+        props: ['title', 'itemindex', 'qii']
+    });
+
+    Vue.component('custom-input', {
+        template: '<input  :value="value" @input="$emit(\'input\', $event.target.value)">',
+        props: ['value']
+    });
+
+    Vue.component('tab0', {
+        template: '<div>content000000000000000000000<slot name="qii-slot"></slot></div>'
+    });
+    Vue.component('tab1', {
+        template: '<div>content1111111111111111111111111</div>'
+    });
+
+    Vue.component('tab2', {
+        data: function () {
+            return {msg: 'hello world'};
+        },
+        template: `<div>
+            <p><input v-model="msg"></p>
+            <p>{{msg}}</p>
+        </div>`
+    });
+
+    var vw = new Vue({
+        el: '#app',
+        data: {
+            loginType: 'email',
+            name: 'qii404',
+            numbers: [ 1, 2, 3, 4, 5 ],
+            items: [
+                {msg: 'm1111111'},
+                {msg: 'm2222222'},
+                {msg: 'm3333333'},
+            ],
+            newItem: 'new item',
+            input_value: 'hahaha',
+            options: [
+                {text: 111, value: 'a111'},
+                {text: 222, value: 'a222'},
+                {text: 333, value: 'a333'}
+            ],
+            selected: '',
+            fontSize: 12,
+            customInputValue: 'customInputValue a a a',
+            tabList: ['tab000', 'tab111', 'tab222'],
+            tabSelected: 0
+        },
+        computed: {
+          evenNumbers11: function () {
+            return this.numbers.filter(function (number) {
+              return number % 2 === 0;
+            });
+          },
+          currentTabName: function () {
+            return 'tab' + this.tabSelected;
+          }
+        },
+        methods: {
+            evenNumbers: function () {
+               return this.numbers.filter(function (number) {
+                 return number % 2 === 0;
+               });
+            },
+            addItem: function () {
+                this.items.push({
+                    msg: this.newItem
+                })
+            },
+            changeTab: function (index) {
+                this.tabSelected = index;
+            }
+        }
+    });
+</script>
+</html>
