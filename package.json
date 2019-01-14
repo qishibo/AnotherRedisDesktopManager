@@ -1,22 +1,28 @@
 {
-  "name":"node_redis",
-  "main":"index.html",
-  "window":{
-        "id": "noderedsi",
-        "title":"noderedis",
-        "toolbar":true,
-        "frame":true,
-        "position":"center",
-        "always-on-top":true,
-        "width":1100,
-        "height":728,
-        "icon": "/home/qii/MinimalistNote/64.ico",
-        "as_desktop": true,
-        "show_in_taskbar": true
-    },
-    "domain": "nodejsapp",
-    "version": "1.0",
-    "dependencies": {},
-    "nodejs": true,
-    "bg-script": "bg.js"
+      "name": "node_redis",
+      "main": "index.html",
+      "window": {
+            "id": "noderedsi",
+            "title": "noderedis",
+            "toolbar": false,
+            "frame": true,
+            "position": "center",
+            "always-on-top": true,
+            "width": 1100,
+            "height": 728,
+            "icon": "/home/qii/MinimalistNote/64.ico",
+            "as_desktop": true,
+            "show_in_taskbar": true
+      },
+      "domain": "nodejsapp",
+      "version": "1.0",
+      "nodejs": true,
+      "bg-script": "bg.js",
+      "contributors": [
+            {
+                  "name": "qii404",
+                  "email": "qii404@126.com",
+                  "web": "https://qii404.me"
+            }
+      ]
 }
