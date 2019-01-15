@@ -1,7 +1,7 @@
 <template>
   <div>
     <div>
-      <el-button type="info" @click="dialogFormVisible = true" icon="el-icon-delete">New Connection</el-button>
+      <el-button type="info" @click="dialogFormVisible = true" icon="el-icon-plus">New Connection</el-button>
 
       <el-dialog title="Add New Connection" :visible.sync="dialogFormVisible">
         <el-form :label-position="labelPosition" label-width="80px">

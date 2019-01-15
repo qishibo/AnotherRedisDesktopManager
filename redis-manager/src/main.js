@@ -6,7 +6,7 @@ import 'element-ui/lib/theme-chalk/index.css';
 import App from './App';
 import router from './router';
 
-Vue.use(ElementUI);
+Vue.use(ElementUI, {size: "small"});
 
 Vue.config.productionTip = false
 
@@ -17,3 +17,6 @@ new Vue({
   components: { App },
   template: '<App/>'
 })
+
+
+// locale lang https://segmentfault.com/a/1190000015360639
