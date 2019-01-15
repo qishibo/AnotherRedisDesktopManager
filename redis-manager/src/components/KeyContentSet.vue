@@ -10,10 +10,6 @@
 
       <el-dialog title="Add New Line" :visible.sync="dialogFormVisible">
         <el-form>
-          <el-form-item label="Field">
-            <el-input autocomplete="off"></el-input>
-          </el-form-item>
-
           <el-form-item label="Value">
             <el-input autocomplete="off"></el-input>
           </el-form-item>
@@ -29,7 +25,7 @@
 
     <el-table
         stripe
-        :data="hashData"
+        :data="setData"
         style="width: 100%"
         size="small"
         border
@@ -40,14 +36,6 @@
           label="ID"
           sortable
           width="150">
-        </el-table-column>
-        <el-table-column
-          prop="key"
-          sortable
-          resizable
-          label="Key"
-          width=150
-          >
         </el-table-column>
         <el-table-column
           prop="value"
@@ -76,20 +64,21 @@
     data() {
       return {
         dialogFormVisible: false,
-        hashData: [
-          {key: 'key1', value: 'value11111111111111111111111111111111'},
-          {key: 'key2', value: 'value222222222222222222222222222222'},
-          {key: 'key3', value: 'value3333333333333333333333333'},
-          {key: 'key3', value: 'value3333333333333333333333333'},
-          {key: 'key3', value: 'value3333333333333333333333333'},
-          {key: 'key3', value: 'value3333333333333333333333333'},
-          {key: 'key3', value: 'value3333333333333333333333333'},
-          {key: 'key3', value: 'value3333333333333333333333333'},
-          {key: 'key3', value: 'value3333333333333333333333333'},
-          {key: 'key3', value: 'value3333333333333333333333333'},
+        setData: [
+          {value: 'valuesettttttttttttttttttttttt'},
+          {value: 'valuefasdfsdfdasfdsfds'},
+          {value: 'valuenfghjnhdfhfgfhffggfh'},
+          {value: 'value3333333333333333333333333'},
+          {value: 'value3333333333333333333333333'},
+          {value: 'value3333333333333333333333333'},
+          {value: 'value3333333333333333333333333'},
+          {value: 'value3333333333333333333333333'},
+          {value: 'value3333333333333333333333333'},
+          {value: 'value3333333333333333333333333'},
         ]
       };
     },
+
     methods: {
       deleteLine: function (row) {
         this.$confirm('确认删除该行数据？', '警告', {
@@ -102,7 +91,7 @@
 
           this.$message({
             type: 'success',
-            message: row.key + '删除成功!',
+            message: row.value + '删除成功!',
             duration: 1000,
           });
         }).catch(() => {

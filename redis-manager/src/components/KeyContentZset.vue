@@ -1,7 +1,6 @@
 <template>
   <div>
     <div>
-
       <el-form :inline="true" size="small">
         <el-form-item>
           <el-button size="small" type="primary" round @click="dialogFormVisible = true">Add New Line</el-button>
@@ -10,11 +9,11 @@
 
       <el-dialog title="Add New Line" :visible.sync="dialogFormVisible">
         <el-form>
-          <el-form-item label="Field">
+          <el-form-item label="Member">
             <el-input autocomplete="off"></el-input>
           </el-form-item>
 
-          <el-form-item label="Value">
+          <el-form-item label="Score">
             <el-input autocomplete="off"></el-input>
           </el-form-item>
 
@@ -24,12 +23,11 @@
           <el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>
         </div>
       </el-dialog>
-
     </div>
 
     <el-table
         stripe
-        :data="hashData"
+        :data="zsetData"
         style="width: 100%"
         size="small"
         border
@@ -42,19 +40,19 @@
           width="150">
         </el-table-column>
         <el-table-column
-          prop="key"
+          prop="score"
           sortable
           resizable
-          label="Key"
+          label="Score"
           width=150
           >
         </el-table-column>
         <el-table-column
-          prop="value"
+          prop="member"
           resizable
           sortable
           show-overflow-tooltip
-          label="Value"
+          label="Member"
           >
         </el-table-column>
 
@@ -76,20 +74,21 @@
     data() {
       return {
         dialogFormVisible: false,
-        hashData: [
-          {key: 'key1', value: 'value11111111111111111111111111111111'},
-          {key: 'key2', value: 'value222222222222222222222222222222'},
-          {key: 'key3', value: 'value3333333333333333333333333'},
-          {key: 'key3', value: 'value3333333333333333333333333'},
-          {key: 'key3', value: 'value3333333333333333333333333'},
-          {key: 'key3', value: 'value3333333333333333333333333'},
-          {key: 'key3', value: 'value3333333333333333333333333'},
-          {key: 'key3', value: 'value3333333333333333333333333'},
-          {key: 'key3', value: 'value3333333333333333333333333'},
-          {key: 'key3', value: 'value3333333333333333333333333'},
+        zsetData: [
+          {score: 1, member: 'member11111111'},
+          {score: 23333, member: 'memberfsadfsd'},
+          {score: 44, member: 'memberfdsaf'},
+          {score: 765, member: 'memberfasdf'},
+          {score: 43, member: 'member1fsdafd1'},
+          {score: 66, member: 'memberfsdfsd'},
+          {score: 233, member: 'memberggdfdg'},
+          {score: 233, member: 'membergds'},
+          {score: 233, member: 'member11111111'},
+          {score: 233, member: 'member11111111'},
         ]
       };
     },
+
     methods: {
       deleteLine: function (row) {
         this.$confirm('确认删除该行数据？', '警告', {
@@ -102,7 +101,7 @@
 
           this.$message({
             type: 'success',
-            message: row.key + '删除成功!',
+            message: row.member + '删除成功!',
             duration: 1000,
           });
         }).catch(() => {

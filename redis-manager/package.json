@@ -13,6 +13,7 @@
     "element-ui": "^2.4.11",
     "locutus": "^2.0.10",
     "vue": "^2.5.2",
+    "vue-json-pretty": "^1.4.1",
     "vue-router": "^3.0.1"
   },
   "devDependencies": {

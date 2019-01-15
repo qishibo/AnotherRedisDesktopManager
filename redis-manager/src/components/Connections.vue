@@ -1,18 +1,24 @@
 <template>
-  <ul>
-    <li v-for="item of connections">{{item.connection}} 
-      <span>
-        <a :href="'search/' + item.id"><i class="el-icon-search"></i></a>
-        <a :href="'edit/' + item.id"><i class="el-icon-edit-outline"></i></a>
-        <a :href="'delete/' + item.id"><i class="el-icon-delete"></i></a>
-      </span>
-      <div>
-        <ul>
-          <li v-for="key of item.keys">{{key}}</li>
-        </ul>
-      </div>
-    </li>
-  </ul>
+  <div>
+    <el-collapse>
+      <el-collapse-item v-for="item of connections" :key="item.connection">
+        <template slot="title">
+          <span>{{item.connection}}</span>&nbsp;
+          <span :style="{float: 'right'}">
+            <i class="el-icon-search"></i>
+            <i class="el-icon-edit-outline"></i>
+            <i class="el-icon-delete"></i>
+          </span>
+        </template>
+        <div>
+          <ul>
+            <li v-for="key of item.keys">{{key}}</li>
+          </ul>
+        </div>
+      </el-collapse-item>
+    </el-collapse>
+  </div>
+
 </template>
 
 <script>

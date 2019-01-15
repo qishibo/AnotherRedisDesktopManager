@@ -1,25 +1,47 @@
 <template>
   <div>
-    <el-form>
-      <el-form-item>
-         <el-input type="textarea" :autosize="{ minRows: 4}" v-model="JSON.stringify(value)"></el-input>
-       </el-form-item>
-       <el-form-item>
-         <el-button type="primary">Save</el-button>
-         <!-- <el-button>Cancel</el-button> -->
-       </el-form-item>
-    </el-form>
+
+    <div>
+      <el-form :inline="true" size="small">
+        <el-form-item>
+          <el-select v-model="selectedView" placeholder="View As">
+            <el-option
+              v-for="item in views"
+              :key="item.value"
+              :label="item.text"
+              :value="item.value">
+            </el-option>
+          </el-select>
+        </el-form-item>
+      </el-form>
+    </div>
+
+    <div>
+      <component :is="selectedView" :content="$data"></component>
+    </div>
   </div>
 </template>
 
 <script>
 import unserialize from 'locutus/php/var/unserialize';
 
+import StringViewText from '@/components/StringViewText';
+import StringViewJson from '@/components/StringViewJson';
+import StringViewPhpUnserialize from '@/components/StringViewPhpUnserialize';
+
   export default {
     data() {
       return {
-        value: unserialize('a:3:{s:4:"name";s:6:"qii404";s:3:"age";i:233;s:2:"ll";a:4:{i:0;i:1;i:1;i:2;i:2;i:3;i:3;i:4;}}')
+        selectedView: 'StringViewText',
+        views: [
+          {value: 'StringViewText', text: 'View As Text'},
+          {value: 'StringViewJson', text: 'View As Json'},
+          {value: 'StringViewPhpUnserialize', text: 'View As PHPUnserialize'},
+        ],
+        content: 'a:3:{s:4:"name";s:6:"qii404";s:3:"age";i:233;s:2:"ll";a:4:{i:0;i:1;i:1;i:2;i:2;i:3;i:3;i:4;}}'
+        // content: '{"name": "qii404", "sss": [1,2,3,4]}'
       };
-    }
+    },
+    components: {StringViewText, StringViewJson, StringViewPhpUnserialize}
   }
 </script>

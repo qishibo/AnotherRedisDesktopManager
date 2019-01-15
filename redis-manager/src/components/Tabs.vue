@@ -38,9 +38,11 @@
         selectedTabName: 'tab_name_1',
         maxTabNum: 3,
         tabs: [
-          {name: 'tab_name_1', title: 'tab1', content: 'tab content1111', component: 'KeyDetail', component_name: 'KeyContentString'},
-          {name: 'tab_name_2', title: 'tab2', content: 'tab content2222', component: 'KeyDetail', component_name: 'KeyContentHash'},
-          {name: 'tab_name_3', title: 'tab3', content: 'tab content3333', component: 'KeyDetail', component_name: 'KeyContentHash'},
+          {name: 'tab_name_1', title: 'String', content: 'tab content1111', component: 'KeyDetail', component_name: 'KeyContentString'},
+          {name: 'tab_name_2', title: 'Hash', content: 'tab content2222', component: 'KeyDetail', component_name: 'KeyContentHash'},
+          {name: 'tab_name_3', title: 'Set', content: 'tab content3333', component: 'KeyDetail', component_name: 'KeyContentSet'},
+          {name: 'tab_name_4', title: 'Zset', content: 'tab content4444', component: 'KeyDetail', component_name: 'KeyContentZset'},
+          {name: 'tab_name_5', title: 'List', content: 'tab content5555', component: 'KeyDetail', component_name: 'KeyContentList'},
         ]
       };
     },
