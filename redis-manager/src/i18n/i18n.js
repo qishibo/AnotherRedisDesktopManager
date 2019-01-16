@@ -12,16 +12,17 @@ Vue.use(VueI18n);
 
 const messages = {
   en: {
-    en.push(...enLocale)
+    ...en,
+    ...enLocale
   },
   cn: {
-    cn.push(...zhLocale)
+    ...cn,
+    ...zhLocale
   },
 };
 
 const i18n = new VueI18n({
-  // locale: localStorage.lang || 'en',
-  locale: 'cn',
+  locale: localStorage.lang || 'en',
   messages
 });
 

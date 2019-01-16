@@ -20,6 +20,15 @@
       </div>
     </el-dialog>
 
+    <el-select v-model="selectedLang" @change="changeLang" placeholder="Language">
+        <el-option
+          v-for="item in langItems"
+          :key="item.value"
+          :label="item.label"
+          :value="item.value">
+        </el-option>
+      </el-select>
+
   </div>
 </template>
 
@@ -34,7 +43,12 @@ export default {
         name: '',
         region: ''
       },
-      dialogFormVisible: false
+      dialogFormVisible: false,
+      selectedLang: 'en',
+      langItems: [
+        {value: 'en', label: 'English'},
+        {value: 'cn', label: '简体中文'},
+      ],
     }
   },
   methods: {
@@ -59,9 +73,14 @@ export default {
       localStorage.setItem('settings', settings);
 
       this.dialogFormVisible = false;
+    },
+    changeLang(lang) {
+      localStorage.lang = this.selectedLang;
+      this.$i18n.locale = this.selectedLang;
     }
   },
   mounted() {
+    this.selectedLang = localStorage.lang || this.selectedLang;
     this.showSettings();
   }
 }
