@@ -12,7 +12,7 @@
       </el-main>
 
       <el-main>
-        <Command></Command>
+        <!-- <Command></Command> -->
       </el-main>
 
     </el-container>

@@ -43,6 +43,7 @@
           {name: 'tab_name_3', title: 'Set', content: 'tab content3333', component: 'KeyDetail', component_name: 'KeyContentSet'},
           {name: 'tab_name_4', title: 'Zset', content: 'tab content4444', component: 'KeyDetail', component_name: 'KeyContentZset'},
           {name: 'tab_name_5', title: 'List', content: 'tab content5555', component: 'KeyDetail', component_name: 'KeyContentList'},
+          {name: 'tab_name_6', title: 'Status', content: 'tab content6666', component: 'KeyDetail', component_name: 'Status'},
         ]
       };
     },

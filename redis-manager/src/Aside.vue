@@ -17,6 +17,10 @@
             <el-input autocomplete="off"></el-input>
           </el-form-item>
 
+          <el-form-item label="Alias Name">
+            <el-input autocomplete="off"></el-input>
+          </el-form-item>
+
         </el-form>
         <div slot="footer" class="dialog-footer">
           <el-button @click="dialogFormVisible = false">取 消</el-button>

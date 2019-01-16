@@ -18,13 +18,14 @@ import KeyContentHash from '@/components/KeyContentHash';
 import KeyContentSet from '@/components/KeyContentSet';
 import KeyContentZset from '@/components/KeyContentZset';
 import KeyContentList from '@/components/KeyContentList';
+import Status from '@/components/Status';
 
   export default {
     data() {
       return {
       };
     },
-    components: {KeyHeader, KeyContentString, KeyContentHash, KeyContentSet, KeyContentZset, KeyContentList},
+    components: {KeyHeader, KeyContentString, KeyContentHash, KeyContentSet, KeyContentZset, KeyContentList, Status},
     props: ['component']
   }
 </script>
