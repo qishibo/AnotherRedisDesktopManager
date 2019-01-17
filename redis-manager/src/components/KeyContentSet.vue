@@ -4,11 +4,11 @@
 
       <el-form :inline="true" size="small">
         <el-form-item>
-          <el-button size="small" type="primary" round @click="dialogFormVisible = true">Add New Line</el-button>
+          <el-button size="small" type="primary" round @click="dialogFormVisible = true">{{ $t('message.add_new_line') }}</el-button>
         </el-form-item>
       </el-form>
 
-      <el-dialog title="Add New Line" :visible.sync="dialogFormVisible">
+      <el-dialog :title="$t('message.add_new_line')" :visible.sync="dialogFormVisible">
         <el-form>
           <el-form-item label="Value">
             <el-input autocomplete="off"></el-input>
@@ -81,9 +81,9 @@
 
     methods: {
       deleteLine: function (row) {
-        this.$confirm('确认删除该行数据？', '警告', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
+        this.$confirm(this.$t('message.confirm_to_delete_row_data'), {
+          // confirmButtonText: '确定',
+          // cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
 

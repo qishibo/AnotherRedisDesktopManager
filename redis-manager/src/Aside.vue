@@ -1,9 +1,9 @@
 <template>
   <div>
     <div>
-      <el-button type="info" @click="dialogFormVisible = true" icon="el-icon-plus">{{$t('message.new_connection')}}</el-button>
+      <el-button type="info" @click="dialogFormVisible = true" icon="el-icon-plus">{{ $t('message.new_connection') }}</el-button>
 
-      <el-dialog title="Add New Connection" :visible.sync="dialogFormVisible">
+      <el-dialog :title="$t('message.new_connection')" :visible.sync="dialogFormVisible">
         <el-form :label-position="labelPosition" label-width="80px">
           <el-form-item label="Host">
             <el-input autocomplete="off" placeholder="127.0.0.1"></el-input>

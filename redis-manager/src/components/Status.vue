@@ -1,44 +1,44 @@
 <template>
   <div>
 
-      <el-row :gutter="80" class="status-container">
-        <el-col :span="6">
+      <el-row :gutter="10" class="status-container">
+        <el-col :span="8">
           <el-card class="box-card">
             <div slot="header" class="clearfix">
-              <span>Server</span>
+              <span>{{ $t('message.server') }}</span>
             </div>
-            <p><el-tag type="info" size="big">Redis版本: <el-tag type="success">2.8.4</el-tag></el-tag></p>
+            <p><el-tag type="info" size="big">{{ $t('message.redis_version') }}: <el-tag type="success">2.8.4</el-tag></el-tag></p>
             <p><el-tag type="info" size="big">OS: <el-tag type="success">Linux 3.13.0-125-generic x86_64</el-tag></el-tag></p>
-            <p><el-tag type="info" size="big">进程ID: <el-tag type="success">25272</el-tag></el-tag></p>
+            <p><el-tag type="info" size="big">{{ $t('message.process_id') }}: <el-tag type="success">25272</el-tag></el-tag></p>
           </el-card>
         </el-col>
-        <el-col :span="6">
+        <el-col :span="8">
           <el-card class="box-card">
             <div slot="header" class="clearfix">
-              <span>Memory</span>
+              <span>{{ $t('message.memory') }}</span>
             </div>
-            <p><el-tag type="info" size="big">已用内存: <el-tag type="success">2.07G</el-tag></el-tag></p>
-            <p><el-tag type="info" size="big">内存占用峰值: <el-tag type="success"> 2.79G</el-tag></el-tag></p>
-            <p><el-tag type="info" size="big">Lua占用内存: <el-tag type="success">233M</el-tag></el-tag></p>
+            <p><el-tag type="info" size="big">{{ $t('message.used_memory') }}: <el-tag type="success">2.07G</el-tag></el-tag></p>
+            <p><el-tag type="info" size="big">{{ $t('message.used_memory_peak') }}: <el-tag type="success"> 2.79G</el-tag></el-tag></p>
+            <p><el-tag type="info" size="big">{{ $t('message.used_memory_lua') }}: <el-tag type="success">233M</el-tag></el-tag></p>
           </el-card>
         </el-col>
-        <el-col :span="6">
+        <el-col :span="8">
           <el-card class="box-card">
             <div slot="header" class="clearfix">
-              <span>Stats</span>
+              <span>{{ $t('message.stats') }}</span>
             </div>
-            <p><el-tag type="info" size="big">客户端连接数: <el-tag type="success">2509</el-tag></el-tag></p>
-            <p><el-tag type="info" size="big">历史连接数: <el-tag type="success">4375526</el-tag></el-tag></p>
-            <p><el-tag type="info" size="big">历史命令数: <el-tag type="success">28922668</el-tag></el-tag></p>
+            <p><el-tag type="info" size="big">{{ $t('message.connected_clients') }}: <el-tag type="success">2509</el-tag></el-tag></p>
+            <p><el-tag type="info" size="big">{{ $t('message.total_connections_received') }}: <el-tag type="success">4375526</el-tag></el-tag></p>
+            <p><el-tag type="info" size="big">{{ $t('message.total_commands_processed') }}: <el-tag type="success">28922668</el-tag></el-tag></p>
           </el-card>
         </el-col>
       </el-row>
 
       <el-row>
         <el-col>
-          <el-card class="box-card" style="width: 860px;">
+          <el-card class="box-card">
             <div slot="header" class="clearfix">
-              <span>数据库键值情况</span>
+              <span>{{ $t('message.key_statistics') }}</span>
             </div>
 
             <el-table
@@ -79,22 +79,21 @@
 
       <el-row>
         <el-col>
-          <el-card class="box-card" style="width: 860px;">
+          <el-card class="box-card">
             <div slot="header" class="clearfix">
-              <span>All Redis Info</span>
+              <span>{{ $t('message.all_redis_info') }}</span>
             </div>
 
             <el-table
                 :data="AllRedisInfo"
                 stripe
                 height="300"
-                style="width: 100%;"
                 >
                 <el-table-column
                   fixed
                   prop="key"
                   label="Key"
-                  width="150">
+                  >
                 </el-table-column>
                 <el-table-column
                   prop="value"
@@ -207,5 +206,12 @@
 <style type="text/css">
   .status-container {
     width: 100%;
+  }
+  .status-container .el-tag {
+    /*display: inline-block;*/
+    max-width: 100%;
+    /*text-overflow: ellipsis;*/
+    /*overflow: hidden;*/
+    /*vertical-align: center;*/
   }
 </style>

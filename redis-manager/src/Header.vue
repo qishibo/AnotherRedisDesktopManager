@@ -2,7 +2,7 @@
   <div>
     <el-button type="primary" icon="el-icon-setting" @click="dialogFormVisible = true"></el-button>
 
-    <el-dialog title="基础设置" :visible.sync="dialogFormVisible">
+    <el-dialog :title="$t('message.settings')" :visible.sync="dialogFormVisible">
       <el-form>
         <el-form-item label="连接名称" >
           <el-input v-model="form.name" autocomplete="off"></el-input>

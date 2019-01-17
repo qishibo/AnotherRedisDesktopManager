@@ -26,7 +26,23 @@
 <!--           <el-tooltip slot="title" effect="dark" content="Bottom Center 提示文字" placement="right" :enterable="false" :open-delay="500">
             <span class="connection-name">{{item.connection}}</span>
           </el-tooltip> -->
-          <i class="el-icon-search"></i>
+
+<!--           <el-popover
+            placement="top"
+            width="160"
+            v-model="filterShow"
+            :key='Math.random()'>
+            <p>这是一段内容这是一段内容确定删除吗？</p>
+            <div style="text-align: right; margin: 0">
+              <el-input></el-input>
+              <el-button size="mini" type="text" @click="filterShow = false">取消</el-button>
+              <el-button type="primary" size="mini" @click="filterShow = false">确定</el-button>
+            </div>
+            <el-button slot="reference" @click.stop.prevent="aaa"><i class="el-icon-search"></i></el-button>
+            <i slot="reference" @click.stop.prevent="aaa" class="el-icon-search"></i>
+          </el-popover> -->
+
+          <i class="el-icon-search" @click.stop.prevent="aaa"></i>
           <i class="el-icon-edit-outline"></i>
           <i class="el-icon-delete"></i>
         </template>
@@ -35,7 +51,7 @@
           <el-collapse-item v-for="dbIndex of dbs" :key="'db_'+dbIndex">
             <template slot="title">
               <span class="connection-db">db{{dbIndex}}</span>
-              <i class="el-icon-search"></i>
+              <i class="el-icon-search" @click="aaa"></i>
               <i class="el-icon-edit-outline"></i>
               <i class="el-icon-delete"></i>
             </template>
@@ -49,7 +65,6 @@
 
       </el-submenu>
     </el-menu>
-
 
   </div>
 
@@ -67,8 +82,14 @@
           {connection: "127.0.0.1@6379", id: "connection1", keys: ['key1', 'key2', 'key1', 'key2', 'key1', 'key2', 'key1', 'key2', 'key1', 'key2', ]},
           {connection: "11.22.33.44@6379", id: "connection2", keys: ['key1', 'key2']},
           {connection: "192.168.111.1000000000000000@63799", id: "connection3", keys: ['key1', 'key2']}
-        ]
+        ],
+        filterShow: false,
       };
+    },
+    methods: {
+      aaa() {
+        alert(333)
+      }
     }
   }
 </script>
@@ -107,7 +128,7 @@
     font-size: 13px;
     margin: 0px;
     width: auto;
-    /*color: black;*/
+    color: grey;
   }
 
   .connection-menu .el-submenu.is-opened {
