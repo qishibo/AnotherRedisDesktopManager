@@ -56,8 +56,8 @@
               <i class="el-icon-delete"></i>
             </template>
             <div>
-              <ul>
-                <li v-for="key of item.keys">{{key}}</li>
+              <ul class="key-list">
+                <li class="key-item" v-for="key of item.keys"><i class="fa fa-fighter-jet"></i> {{key}}</li>
               </ul>
             </div>
           </el-collapse-item>
@@ -133,5 +133,9 @@
 
   .connection-menu .el-submenu.is-opened {
     /*background: #ECF5FF;*/
+  }
+
+  .key-list {
+
   }
 </style>
