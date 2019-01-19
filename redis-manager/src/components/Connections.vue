@@ -72,6 +72,7 @@
 
 <script>
   import storage from '../storage.js';
+  import redisClient from '../redisClient.js';
 
   export default {
     name: "Connections",
@@ -94,7 +95,9 @@
           return;
         }
 
-        console.log(connection);
+        // console.log(connection);
+        let client = redisClient.createConnection(connection.host, connection.port, connection.auth);
+        console.log(client);
       },
       deleteConnection(connection) {
         console.log(connection);
