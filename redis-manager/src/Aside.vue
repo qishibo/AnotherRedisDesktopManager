@@ -4,33 +4,33 @@
       <el-button type="info" @click="dialogFormVisible = true" icon="el-icon-plus">{{ $t('message.new_connection') }}</el-button>
 
       <el-dialog :title="$t('message.new_connection')" :visible.sync="dialogFormVisible">
-        <el-form :label-position="labelPosition" label-width="80px">
+        <el-form v-model="newConnection" :label-position="labelPosition" label-width="80px">
           <el-form-item label="Host">
-            <el-input autocomplete="off" placeholder="127.0.0.1"></el-input>
+            <el-input v-model="newConnection.host" autocomplete="off" placeholder="127.0.0.1"></el-input>
           </el-form-item>
 
           <el-form-item label="Port">
-            <el-input autocomplete="off" placeholder="6379"></el-input>
+            <el-input v-model="newConnection.port" autocomplete="off" placeholder="6379"></el-input>
           </el-form-item>
 
           <el-form-item label="Auth">
-            <el-input autocomplete="off"></el-input>
+            <el-input v-model="newConnection.auth" autocomplete="off"></el-input>
           </el-form-item>
 
           <el-form-item label="Alias Name">
-            <el-input autocomplete="off"></el-input>
+            <el-input v-model="newConnection.name" autocomplete="off"></el-input>
           </el-form-item>
 
         </el-form>
         <div slot="footer" class="dialog-footer">
           <el-button @click="dialogFormVisible = false">取 消</el-button>
-          <el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>
+          <el-button type="primary" @click="addNewConnection">确 定</el-button>
         </div>
       </el-dialog>
 
     </div>
     <div>
-      <Connections></Connections>
+      <Connections ref="connections"></Connections>
     </div>
   </div>
 </template>
@@ -38,6 +38,7 @@
 
 <script>
 import Connections from '@/components/Connections';
+import storage from './storage';
 
 export default {
   name: 'Aside',
@@ -45,8 +46,22 @@ export default {
     return {
       dialogFormVisible: false,
       labelPosition: 'top',
+      newConnection: {
+        host: '',
+        port: '',
+        auth: '',
+        name: '',
+      }
     }
   },
-  components: {Connections}
+  components: {Connections},
+  methods: {
+    addNewConnection() {
+      this.dialogFormVisible = false;
+      storage.addConnection(this.newConnection);
+
+      this.$refs.connections.initConnections();
+    },
+  }
 }
 </script>

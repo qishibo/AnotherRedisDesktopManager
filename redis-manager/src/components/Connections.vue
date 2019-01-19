@@ -18,11 +18,11 @@
       </el-collapse-item>
     </el-collapse> -->
 
-    <el-menu class="connection-menu" active-text-color="#ffd04b" :default-active="activeIndex">
-      <el-submenu v-for="(item, index) of connections" :key="item.connection" :index="''+index">
+    <el-menu @open="openConnection" class="connection-menu" active-text-color="#ffd04b" :default-active="activeIndex">
+      <el-submenu v-for="(item, index) of connections" :key="item.name || item.host + '@' + item.port" :index="''+index">
 
         <template slot="title">
-          <span slot="title" :title="item.connection" class="connection-name">{{item.connection}}</span>
+          <span slot="title" :title="item.name || item.host + '@' + item.port" class="connection-name">{{item.name || item.host + '@' + item.port}}</span>
 <!--           <el-tooltip slot="title" effect="dark" content="Bottom Center 提示文字" placement="right" :enterable="false" :open-delay="500">
             <span class="connection-name">{{item.connection}}</span>
           </el-tooltip> -->
@@ -42,16 +42,16 @@
             <i slot="reference" @click.stop.prevent="aaa" class="el-icon-search"></i>
           </el-popover> -->
 
-          <i class="el-icon-search" @click.stop.prevent="aaa"></i>
+          <i class="el-icon-search" @click.stop.prevent=""></i>
           <i class="el-icon-edit-outline"></i>
-          <i class="el-icon-delete"></i>
+          <i class="el-icon-delete" @click.stop.prevent="deleteConnection(item)"></i>
         </template>
 
         <el-collapse>
           <el-collapse-item v-for="dbIndex of dbs" :key="'db_'+dbIndex">
             <template slot="title">
               <span class="connection-db">db{{dbIndex}}</span>
-              <i class="el-icon-search" @click="aaa"></i>
+              <i class="el-icon-search" @click=""></i>
               <i class="el-icon-edit-outline"></i>
               <i class="el-icon-delete"></i>
             </template>
@@ -71,6 +71,8 @@
 </template>
 
 <script>
+  import storage from '../storage.js';
+
   export default {
     name: "Connections",
 
@@ -78,18 +80,36 @@
       return {
         activeIndex: '1',
         dbs: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
-        connections: [
-          {connection: "127.0.0.1@6379", id: "connection1", keys: ['key1', 'key2', 'key1', 'key2', 'key1', 'key2', 'key1', 'key2', 'key1', 'key2', ]},
-          {connection: "11.22.33.44@6379", id: "connection2", keys: ['key1', 'key2']},
-          {connection: "192.168.111.1000000000000000@63799", id: "connection3", keys: ['key1', 'key2']}
-        ],
+        connections: [],
         filterShow: false,
       };
     },
     methods: {
-      aaa() {
-        alert(333)
-      }
+      openConnection(index) {
+        let connections = storage.getConnections();
+        let connection = connections[index];
+
+        if (!connection) {
+          alert('open error');
+          return;
+        }
+
+        console.log(connection);
+      },
+      deleteConnection(connection) {
+        console.log(connection);
+        storage.deleteConnection(connection);
+
+        this.initConnections();
+      },
+      initConnections() {
+        let connections = storage.getConnections();
+        this.connections = connections;
+      },
+    },
+
+    mounted() {
+      this.initConnections();
     }
   }
 </script>
