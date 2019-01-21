@@ -1,6 +1,6 @@
 {
       "name": "node_redis",
-      "main": "index.html",
+      "main": "localhost:8080",
       "window": {
             "id": "noderedsi",
             "title": "noderedis",
@@ -17,7 +17,7 @@
       "domain": "nodejsapp",
       "version": "1.0",
       "nodejs": true,
-      "bg-script": "bg.js",
+      "node-remote": "http://localhost",
       "contributors": [
             {
                   "name": "qii404",

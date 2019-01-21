@@ -47,8 +47,8 @@
           <i class="el-icon-delete" @click.stop.prevent="deleteConnection(item)"></i>
         </template>
 
-        <el-collapse>
-          <el-collapse-item v-for="dbIndex of dbs" :key="'db_'+dbIndex">
+        <el-collapse @change="changeDB">
+          <el-collapse-item v-for="dbIndex of dbs" :key="'db_'+dbIndex" :name="'db_'+dbIndex">
             <template slot="title">
               <span class="connection-db">db{{dbIndex}}</span>
               <i class="el-icon-search" @click=""></i>
@@ -57,7 +57,7 @@
             </template>
             <div>
               <ul class="key-list">
-                <li class="key-item" v-for="key of item.keys"><i class="fa fa-fighter-jet"></i> {{key}}</li>
+                <li class="key-item" v-for="key of keys.db0"><i class="fa fa-fighter-jet"></i> {{key}}</li>
               </ul>
             </div>
           </el-collapse-item>
@@ -73,6 +73,7 @@
 <script>
   import storage from '../storage.js';
   import redisClient from '../redisClient.js';
+  import Vue from 'vue';
 
   export default {
     name: "Connections",
@@ -83,6 +84,8 @@
         dbs: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
         connections: [],
         filterShow: false,
+        // keys: {db0: ['k1', 'k2']},
+        keys: {},
       };
     },
     methods: {
@@ -111,6 +114,12 @@
         let connections = storage.getConnections();
         this.connections = connections;
       },
+      changeDB(activeNames) {
+        console.log(activeNames);
+        // this.keys = {db0: ['kkkk1','kkkk2']};
+        // this.keys.db0 = ['kkkk1','kkkk2'];
+        Vue.set(this.keys, 'db0', ['kkkk1','kkkk2']);
+      }
     },
 
     mounted() {
