@@ -98,6 +98,8 @@
         // console.log(connection);
         let client = redisClient.createConnection(connection.host, connection.port, connection.auth);
         console.log(client);
+
+        client.getAsync('name').then(reply => console.log(reply));
       },
       deleteConnection(connection) {
         console.log(connection);
