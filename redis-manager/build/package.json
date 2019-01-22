@@ -1,0 +1,27 @@
+{
+  "name": "node_redis",
+  "main": "http://localhost:9988",
+  "window": {
+    "id": "node_redis",
+    "title": "node_redis",
+    "toolbar": false,
+    "frame": true,
+    "position": "center",
+    "always-on-top": true,
+    "width": 1100,
+    "height": 728,
+    "as_desktop": true,
+    "show_in_taskbar": true
+},
+"domain": "nodejsapp",
+"version": "1.0",
+"nodejs": true,
+"node-remote": "http://localhost",
+"contributors": [
+  {
+    "name": "qii404",
+    "email": "qii404@126.com",
+    "web": "https://qii404.me"
+  }
+]
+}
