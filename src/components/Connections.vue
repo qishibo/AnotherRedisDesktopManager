@@ -58,7 +58,7 @@
             <div>
               <ul class="key-list">
                 <!-- <li class="key-item" v-for="key of keys.db0"><i class="fa fa-fighter-jet"></i> {{key}}</li> -->
-                <li class="key-item" v-for="key of getKeys(dbIndex)">{{key}}</li>
+                <li class="key-item" v-for="key of getKeys(dbIndex)" @click="clickKey(key)">{{key}}</li>
               </ul>
             </div>
           </el-collapse-item>
@@ -142,10 +142,17 @@
         let client = this.preConnection.client;
         client.select(preDbIndex);
 
+        // set global client
+        this.util.set('client', client);
+
         client.scanAsync(0, 'MATCH', '*', 'COUNT', 10).then(reply => {
           console.log(reply);
           Vue.set(this.keys, preDbIndex, reply[1]);
         });
+      },
+      clickKey(key) {
+        console.log('clicked key ' + key);
+        this.$bus.$emit('openTab', key);
       },
     },
 

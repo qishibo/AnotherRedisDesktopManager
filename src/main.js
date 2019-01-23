@@ -8,6 +8,12 @@ import App from './App';
 import router from './router';
 
 import i18n from './i18n/i18n';
+import BUS from './bus';
+
+import util from './util';
+
+BUS(Vue);
+Vue.prototype.util = util;
 
 
 Vue.use(ElementUI, {size: "small"});

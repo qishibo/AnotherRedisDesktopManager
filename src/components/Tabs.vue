@@ -33,6 +33,17 @@
   import KeyDetail from '@/components/KeyDetail';
 
   export default {
+    created() {
+      this.$bus.$on('openTab', key => {
+        console.log('click key pass to tabs: ' + key);
+        let client = this.util.get('client');
+
+        client.typeAsync(key).then(type => {
+          this.switchType(key, type);
+        });
+
+      });
+    },
     data() {
       return {
         selectedTabName: 'tab_name_1',
@@ -77,7 +88,16 @@
 
         nextSelectTab && (this.selectedTabName = nextSelectTab.name);
         this.tabs = this.tabs.filter(tab => tab.name !== removeName);
-      }
+      },
+
+      switchType(key, type) {
+        console.log(key, type);
+
+        switch (type) {
+          case 'string':
+            
+        }
+      },
     }
   }
 </script>
