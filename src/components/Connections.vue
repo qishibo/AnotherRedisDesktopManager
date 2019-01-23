@@ -48,7 +48,7 @@
         </template>
 
         <el-collapse @change="changeDB">
-          <el-collapse-item v-for="dbIndex of dbs" :key="'db_'+dbIndex" :name="'db_'+dbIndex">
+          <el-collapse-item v-for="dbIndex of dbs" :key="'db_'+dbIndex" :name="dbIndex">
             <template slot="title">
               <span class="connection-db">db{{dbIndex}}</span>
               <i class="el-icon-search" @click=""></i>
@@ -57,7 +57,8 @@
             </template>
             <div>
               <ul class="key-list">
-                <li class="key-item" v-for="key of keys.db0"><i class="fa fa-fighter-jet"></i> {{key}}</li>
+                <!-- <li class="key-item" v-for="key of keys.db0"><i class="fa fa-fighter-jet"></i> {{key}}</li> -->
+                <li class="key-item" v-for="key of getKeys(dbIndex)">{{key}}</li>
               </ul>
             </div>
           </el-collapse-item>
@@ -86,6 +87,8 @@
         filterShow: false,
         // keys: {db0: ['k1', 'k2']},
         keys: {},
+        preConnection: {},
+        establishedConnection: {},
       };
     },
     methods: {
@@ -98,11 +101,15 @@
           return;
         }
 
-        // console.log(connection);
-        let client = redisClient.createConnection(connection.host, connection.port, connection.auth);
-        console.log(client);
+        this.preConnection.config = connection;
+        let key = connection.host + connection.port;
 
-        client.getAsync('name').then(reply => console.log(reply));
+        if (!this.establishedConnection[key]) {
+          let client = redisClient.createConnection(connection.host, connection.port, connection.auth);
+          this.establishedConnection[key] = client;
+        }
+
+        return this.preConnection.client = this.establishedConnection[key];
       },
       deleteConnection(connection) {
         console.log(connection);
@@ -114,12 +121,32 @@
         let connections = storage.getConnections();
         this.connections = connections;
       },
+      getKeys(dbIndex) {
+        let keys = this.keys[dbIndex] ? this.keys[dbIndex] : [];
+        return keys;
+      },
       changeDB(activeNames) {
-        console.log(activeNames);
-        // this.keys = {db0: ['kkkk1','kkkk2']};
-        // this.keys.db0 = ['kkkk1','kkkk2'];
-        Vue.set(this.keys, 'db0', ['kkkk1','kkkk2']);
-      }
+        console.log('opened', activeNames);
+
+        let oldDbs = this.preConnection.openedDbs ? this.preConnection.openedDbs : [];
+        let isClose = oldDbs.length > activeNames.length;
+        let preDbIndex = oldDbs.filter(function(v){ return activeNames.indexOf(v) === -1 }).concat(activeNames.filter(function(v){ return oldDbs.indexOf(v) === -1 }))[0];
+
+        console.log(preDbIndex, isClose ? 'close' : 'open');
+        this.preConnection.openedDbs = activeNames;
+
+        if (isClose) {
+          return;
+        }
+
+        let client = this.preConnection.client;
+        client.select(preDbIndex);
+
+        client.scanAsync(0, 'MATCH', '*', 'COUNT', 10).then(reply => {
+          console.log(reply);
+          Vue.set(this.keys, preDbIndex, reply[1]);
+        });
+      },
     },
 
     mounted() {
@@ -169,7 +196,10 @@
     /*background: #ECF5FF;*/
   }
 
-  .key-list {
+  .connection-menu .key-list {
 
+  }
+  .connection-menu .key-list .key-item {
+    white-space:nowrap;
   }
 </style>
