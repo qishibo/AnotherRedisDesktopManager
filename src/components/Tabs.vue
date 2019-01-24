@@ -17,9 +17,7 @@
       :label="item.title"
       :name="item.name"
     >
-    <keep-alive>
-      <component :from="item.name" :component="item.component_name" v-bind:is="item.component"></component>
-    </keep-alive>
+      <KeyDetail :redisKey="item.redisKey" :component="item.component_name"></KeyDetail>
     </el-tab-pane>
   </el-tabs>
 
@@ -49,7 +47,7 @@
         selectedTabName: 'tab_name_1',
         maxTabNum: 3,
         tabs: [
-          {name: 'tab_name_1', title: 'String', content: 'tab content1111', component: 'KeyDetail', component_name: 'KeyContentString'},
+          // {name: 'tab_name_1', title: 'String', content: 'tab content1111', component: 'KeyDetail', component_name: 'KeyContentString'},
           {name: 'tab_name_2', title: 'Hash', content: 'tab content2222', component: 'KeyDetail', component_name: 'KeyContentHash'},
           {name: 'tab_name_3', title: 'Set', content: 'tab content3333', component: 'KeyDetail', component_name: 'KeyContentSet'},
           {name: 'tab_name_4', title: 'Zset', content: 'tab content4444', component: 'KeyDetail', component_name: 'KeyContentZset'},
@@ -92,10 +90,27 @@
 
       switchType(key, type) {
         console.log(key, type);
+        let newTabName = 'New Tab ' + type + ++this.maxTabNum;
 
         switch (type) {
           case 'string':
-            
+            this.tabs.push({
+              name: newTabName,
+              title: newTabName,
+              component_name: 'KeyContentString',
+              redisKey: key,
+            });
+            this.selectedTabName = newTabName;
+            break;
+          case 'hash':
+            this.tabs.push({
+              name: newTabName,
+              title: newTabName,
+              component_name: 'KeyContentHash',
+              redisKey: key,
+            });
+            this.selectedTabName = newTabName;
+            break;
         }
       },
     }

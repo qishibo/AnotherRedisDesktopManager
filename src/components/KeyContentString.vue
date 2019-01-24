@@ -1,6 +1,5 @@
 <template>
   <div>
-
     <div>
       <el-form :inline="true" size="small">
         <el-form-item>
@@ -15,7 +14,6 @@
         </el-form-item>
       </el-form>
     </div>
-
     <div>
       <component :is="selectedView" :content="$data"></component>
     </div>
@@ -42,6 +40,15 @@ import StringViewPhpUnserialize from '@/components/StringViewPhpUnserialize';
         // content: '{"name": "qii404", "sss": [1,2,3,4]}'
       };
     },
-    components: {StringViewText, StringViewJson, StringViewPhpUnserialize}
+    props: ['redisKey'],
+    components: {StringViewText, StringViewJson, StringViewPhpUnserialize},
+    mounted() {
+      let key = this.redisKey;
+      let client = this.util.get('client');
+
+      client.getAsync(key).then(reply => {
+        this.content = reply;
+      })
+    }
   }
 </script>

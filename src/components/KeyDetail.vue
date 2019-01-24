@@ -5,7 +5,7 @@
         <KeyHeader></KeyHeader>
       </el-main>
       <el-main :style="{height: '400px'}">
-        <component :is="component"></component>
+        <component :is="component" :redisKey="redisKey"></component>
       </el-main>
     </el-container>
   </div>
@@ -26,6 +26,6 @@ import Status from '@/components/Status';
       };
     },
     components: {KeyHeader, KeyContentString, KeyContentHash, KeyContentSet, KeyContentZset, KeyContentList, Status},
-    props: ['component']
+    props: ['component', 'redisKey']
   }
 </script>

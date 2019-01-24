@@ -76,20 +76,10 @@
     data() {
       return {
         dialogFormVisible: false,
-        hashData: [
-          {key: 'key1', value: 'value11111111111111111111111111111111'},
-          {key: 'key2', value: 'value222222222222222222222222222222'},
-          {key: 'key3', value: 'value3333333333333333333333333'},
-          {key: 'key3', value: 'value3333333333333333333333333'},
-          {key: 'key3', value: 'value3333333333333333333333333'},
-          {key: 'key3', value: 'value3333333333333333333333333'},
-          {key: 'key3', value: 'value3333333333333333333333333'},
-          {key: 'key3', value: 'value3333333333333333333333333'},
-          {key: 'key3', value: 'value3333333333333333333333333'},
-          {key: 'key3', value: 'value3333333333333333333333333'},
-        ]
+        hashData: []
       };
     },
+    props: ['redisKey'],
     methods: {
       deleteLine: function (row) {
         this.$confirm(this.$t('message.confirm_to_delete_row_data'), {
@@ -108,6 +98,25 @@
         }).catch(() => {
         });
       }
+    },
+    mounted() {
+      let key = this.redisKey;
+      let client = this.util.get('client');
+
+      if (!key) {
+        return;
+      }
+
+      client.hgetallAsync(key).then(reply => {
+        console.log(reply);
+        let hashData = [];
+        
+        for (var i in reply) {
+          hashData.push({key: i, value: reply[i]});
+        }
+
+        this.hashData = hashData;
+      })
     }
   }
 </script>
