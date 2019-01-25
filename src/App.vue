@@ -1,6 +1,6 @@
 <template>
   <el-container>
-    <el-aside width="200px" style="max-height: 750px;">
+    <el-aside width="200px" style="max-height: 710px;">
       <Aside></Aside>
     </el-aside>
     <el-container>
@@ -11,9 +11,9 @@
         <router-view/>
       </el-main>
 
-      <el-main>
-        <!-- <Command></Command> -->
-      </el-main>
+<!--       <el-main>
+        <Command></Command>
+      </el-main> -->
 
     </el-container>
   </el-container>
