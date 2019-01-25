@@ -89,6 +89,7 @@
         keys: {},
         preConnection: {},
         establishedConnection: {},
+        openedStatus: {},
       };
     },
     methods: {
@@ -109,7 +110,15 @@
           this.establishedConnection[key] = client;
         }
 
-        return this.preConnection.client = this.establishedConnection[key];
+        this.preConnection.client = this.establishedConnection[key];
+        // set global client
+        this.util.set('client', this.establishedConnection[key]);
+
+        if (!this.openedStatus[key]) {
+          this.$bus.$emit('openStatus');
+          this.openedStatus[key] = true;
+        }
+
       },
       deleteConnection(connection) {
         console.log(connection);

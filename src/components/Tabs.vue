@@ -17,7 +17,7 @@
       :label="item.title"
       :name="item.name"
     >
-      <KeyDetail :redisKey="item.redisKey" :component="item.component_name"></KeyDetail>
+      <KeyDetail :redisKey="item.redisKey" :component="item.component_name" :connectionStatus="item.status"></KeyDetail>
     </el-tab-pane>
   </el-tabs>
 
@@ -41,6 +41,28 @@
         });
 
       });
+
+      this.$bus.$on('openStatus', key => {
+        console.log('open status');
+        let client = this.util.get('client');
+
+        client.infoAsync(key).then(reply => {
+          let status = this.initStatus(reply);
+          console.log('init status', status);
+
+          let newTabName = 'Status' + Math.random();
+
+          this.tabs.push({
+            name: newTabName,
+            title: newTabName,
+            component_name: 'Status',
+            status: status,
+          });
+
+          this.selectedTabName = newTabName;
+        });
+
+      });
     },
     data() {
       return {
@@ -52,8 +74,9 @@
           {name: 'tab_name_3', title: 'Set', content: 'tab content3333', component: 'KeyDetail', component_name: 'KeyContentSet'},
           {name: 'tab_name_4', title: 'Zset', content: 'tab content4444', component: 'KeyDetail', component_name: 'KeyContentZset'},
           {name: 'tab_name_5', title: 'List', content: 'tab content5555', component: 'KeyDetail', component_name: 'KeyContentList'},
-          {name: 'tab_name_6', title: 'Status', content: 'tab content6666', component: 'KeyDetail', component_name: 'Status'},
-        ]
+          // {name: 'tab_name_6', title: 'Status', content: 'tab content6666', component: 'KeyDetail', component_name: 'Status'},
+        ],
+        connectionStatus: {},
       };
     },
     components: {Status, KeyDetail},
@@ -139,6 +162,25 @@
             this.selectedTabName = newTabName;
             break;
         }
+      },
+      initStatus(content) {
+        if (!content) {
+          return {};
+        }
+
+        content = content.split("\n");
+        let lines = {};
+
+        for (var i of content) {
+          i = i.replace(/\s/ig,'');
+          if (i.startsWith('#') || !i) continue;
+
+          let kv = i.split(':');
+
+          lines[kv[0]] = kv[1];
+        }
+
+        return lines;
       },
     }
   }
