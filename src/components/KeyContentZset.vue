@@ -107,19 +107,30 @@
       },
       deleteLine: function (row) {
         this.$confirm(this.$t('message.confirm_to_delete_row_data'), {
-          // confirmButtonText: '确定',
-          // cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
 
+          if (!row.member) {
+            return;
+          }
+
           console.log(row)
 
-          this.$message({
-            type: 'success',
-            message: row.member + '删除成功!',
-            duration: 1000,
+          let key = this.redisKey;
+          let client = this.util.get('client');
+          client.zremAsync(key, row.member).then(reply => {
+            console.log(reply);
+
+            if (reply === 1) {
+              this.$message.success({
+                message: row.member + ' ' + this.$t('message.delete_success'),
+                duration: 1000,
+              });
+
+              this.initShow();
+            }
           });
-        }).catch(() => {
+
         });
       },
       addLine() {

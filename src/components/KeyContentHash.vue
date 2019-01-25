@@ -104,19 +104,26 @@
       },
       deleteLine: function (row) {
         this.$confirm(this.$t('message.confirm_to_delete_row_data'), {
-          // confirmButtonText: '确定',
-          // cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
+          if (!row.key) {
+            return;
+          }
 
-          console.log(row)
+          let key = this.redisKey;
+          let client = this.util.get('client');
+          client.hdelAsync(key, row.key).then(reply => {
+            console.log(reply);
 
-          this.$message({
-            type: 'success',
-            message: row.key + '删除成功!',
-            duration: 1000,
+            if (reply === 1) {
+              this.$message.success({
+                message: row.key + ' ' + this.$t('message.delete_success'),
+                duration: 1000,
+              });
+
+              this.initShow();
+            }
           });
-        }).catch(() => {
         });
       },
       addLine() {
