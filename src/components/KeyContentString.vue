@@ -36,8 +36,7 @@ import StringViewPhpUnserialize from '@/components/StringViewPhpUnserialize';
           {value: 'StringViewJson', text: 'View As Json'},
           {value: 'StringViewPhpUnserialize', text: 'View As PHPUnserialize'},
         ],
-        content: 'a:3:{s:4:"name";s:6:"qii404";s:3:"age";i:233;s:2:"ll";a:4:{i:0;i:1;i:1;i:2;i:2;i:3;i:3;i:4;}}'
-        // content: '{"name": "qii404", "sss": [1,2,3,4]}'
+        content: ''
       };
     },
     props: ['redisKey'],

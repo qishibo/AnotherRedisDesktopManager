@@ -64,20 +64,12 @@
     data() {
       return {
         dialogFormVisible: false,
-        setData: [
-          {value: 'valuesettttttttttttttttttttttt'},
-          {value: 'valuefasdfsdfdasfdsfds'},
-          {value: 'valuenfghjnhdfhfgfhffggfh'},
-          {value: 'value3333333333333333333333333'},
-          {value: 'value3333333333333333333333333'},
-          {value: 'value3333333333333333333333333'},
-          {value: 'value3333333333333333333333333'},
-          {value: 'value3333333333333333333333333'},
-          {value: 'value3333333333333333333333333'},
-          {value: 'value3333333333333333333333333'},
-        ]
+        // item {value: xxx}
+        setData: []
       };
     },
+
+    props: ['redisKey'],
 
     methods: {
       deleteLine: function (row) {
@@ -97,6 +89,25 @@
         }).catch(() => {
         });
       }
+    },
+    mounted() {
+      let key = this.redisKey;
+      let client = this.util.get('client');
+
+      if (!key) {
+        return;
+      }
+
+      client.smembersAsync(key).then(reply => {
+        console.log(reply);
+        let setData = [];
+
+        for (var i of reply) {
+          setData.push({value: i});
+        }
+
+        this.setData = setData;
+      })
     }
   }
 </script>

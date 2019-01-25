@@ -25,7 +25,7 @@
 
     <el-table
         stripe
-        :data="setData"
+        :data="listData"
         style="width: 100%"
         size="small"
         border
@@ -64,20 +64,11 @@
     data() {
       return {
         dialogFormVisible: false,
-        setData: [
-          {value: 'listttttttttttt'},
-          {value: '1111111111111'},
-          {value: '222222222222222'},
-          {value: '3333333333333333333333'},
-          {value: 'value3333333333333333333333333'},
-          {value: 'value3333333333333333333333333'},
-          {value: 'value3333333333333333333333333'},
-          {value: 'value3333333333333333333333333'},
-          {value: 'value3333333333333333333333333'},
-          {value: 'value3333333333333333333333333'},
-        ]
+        // item {value: xxx}
+        listData: []
       };
     },
+    props: ['redisKey'],
     methods: {
       deleteLine: function (row) {
         this.$confirm(this.$t('message.confirm_to_delete_row_data'), {
@@ -96,6 +87,25 @@
         }).catch(() => {
         });
       }
+    },
+    mounted() {
+      let key = this.redisKey;
+      let client = this.util.get('client');
+
+      if (!key) {
+        return;
+      }
+
+      client.lrangeAsync([key, 0, -1]).then(reply => {
+        console.log(reply);
+        let listData = [];
+
+        for (var i of reply) {
+          listData.push({value: i});
+        }
+
+        this.listData = listData;
+      })
     }
   }
 </script>

@@ -76,6 +76,7 @@
     data() {
       return {
         dialogFormVisible: false,
+        // item {key: xxx, value: xxx}
         hashData: []
       };
     },
@@ -110,7 +111,7 @@
       client.hgetallAsync(key).then(reply => {
         console.log(reply);
         let hashData = [];
-        
+
         for (var i in reply) {
           hashData.push({key: i, value: reply[i]});
         }

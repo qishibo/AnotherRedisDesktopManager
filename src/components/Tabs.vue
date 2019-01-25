@@ -111,6 +111,33 @@
             });
             this.selectedTabName = newTabName;
             break;
+          case 'zset':
+            this.tabs.push({
+              name: newTabName,
+              title: newTabName,
+              component_name: 'KeyContentZset',
+              redisKey: key,
+            });
+            this.selectedTabName = newTabName;
+            break;
+          case 'set':
+            this.tabs.push({
+              name: newTabName,
+              title: newTabName,
+              component_name: 'KeyContentSet',
+              redisKey: key,
+            });
+            this.selectedTabName = newTabName;
+            break;
+          case 'list':
+            this.tabs.push({
+              name: newTabName,
+              title: newTabName,
+              component_name: 'KeyContentList',
+              redisKey: key,
+            });
+            this.selectedTabName = newTabName;
+            break;
         }
       },
     }

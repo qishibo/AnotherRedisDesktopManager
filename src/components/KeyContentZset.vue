@@ -74,20 +74,12 @@
     data() {
       return {
         dialogFormVisible: false,
-        zsetData: [
-          {score: 1, member: 'member11111111'},
-          {score: 23333, member: 'memberfsadfsd'},
-          {score: 44, member: 'memberfdsaf'},
-          {score: 765, member: 'memberfasdf'},
-          {score: 43, member: 'member1fsdafd1'},
-          {score: 66, member: 'memberfsdfsd'},
-          {score: 233, member: 'memberggdfdg'},
-          {score: 233, member: 'membergds'},
-          {score: 233, member: 'member11111111'},
-          {score: 233, member: 'member11111111'},
-        ]
+        // item {score: 111, member: xxx}
+        zsetData: []
       };
     },
+
+    props: ['redisKey'],
 
     methods: {
       deleteLine: function (row) {
@@ -107,6 +99,28 @@
         }).catch(() => {
         });
       }
+    },
+    mounted() {
+      let key = this.redisKey;
+      let client = this.util.get('client');
+
+      if (!key) {
+        return;
+      }
+
+      client.zrangeAsync([key, 0, -1, 'WITHSCORES']).then(reply => {
+        console.log(reply);
+        let zsetData = [];
+        var length = reply.length;
+
+        for (var i = 0; i < (length - 1); i++) {
+          if (!(i % 2)) {
+            zsetData.push({member: reply[i], score: reply[i + 1]});
+          }
+        }
+
+        this.zsetData = zsetData;
+      })
     }
   }
 </script>
