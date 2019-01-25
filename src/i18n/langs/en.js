@@ -17,6 +17,13 @@ const en = {
     stats: 'Stats',
     settings: 'Settings',
     confirm_to_delete_row_data: 'Confirm To Delete The Row Data?',
+    delete_success: 'Delete Success',
+    delete_failed: 'Delete Failed',
+    modify_success: 'Modify Success',
+    modify_failed: 'Modify Failed',
+    add_success: 'Add Success',
+    add_failed: 'Add Failed',
+    value_exists: 'Value Exists',
   }
 };
 

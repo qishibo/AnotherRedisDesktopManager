@@ -11,17 +11,17 @@
       <el-dialog :title="$t('message.add_new_line')" :visible.sync="dialogFormVisible">
         <el-form>
           <el-form-item label="Field">
-            <el-input autocomplete="off"></el-input>
+            <el-input v-model="newLineItem.field" autocomplete="off"></el-input>
           </el-form-item>
 
           <el-form-item label="Value">
-            <el-input autocomplete="off"></el-input>
+            <el-input v-model="newLineItem.value" autocomplete="off"></el-input>
           </el-form-item>
 
         </el-form>
         <div slot="footer" class="dialog-footer">
           <el-button @click="dialogFormVisible = false">取 消</el-button>
-          <el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>
+          <el-button type="primary" @click="addLine">确 定</el-button>
         </div>
       </el-dialog>
 
@@ -77,11 +77,31 @@
       return {
         dialogFormVisible: false,
         // item {key: xxx, value: xxx}
-        hashData: []
+        hashData: [],
+        newLineItem: {},
       };
     },
     props: ['redisKey'],
     methods: {
+      initShow() {
+        let key = this.redisKey;
+        let client = this.util.get('client');
+
+        if (!key) {
+          return;
+        }
+
+        client.hgetallAsync(key).then(reply => {
+          console.log(reply);
+          let hashData = [];
+
+          for (var i in reply) {
+            hashData.push({key: i, value: reply[i]});
+          }
+
+          this.hashData = hashData;
+        });
+      },
       deleteLine: function (row) {
         this.$confirm(this.$t('message.confirm_to_delete_row_data'), {
           // confirmButtonText: '确定',
@@ -98,26 +118,40 @@
           });
         }).catch(() => {
         });
-      }
-    },
-    mounted() {
-      let key = this.redisKey;
-      let client = this.util.get('client');
+      },
+      addLine() {
+        let key = this.redisKey;
+        let client = this.util.get('client');
 
-      if (!key) {
-        return;
-      }
+        console.log('add line', this.newLineItem);
+        this.dialogFormVisible = false;
 
-      client.hgetallAsync(key).then(reply => {
-        console.log(reply);
-        let hashData = [];
-
-        for (var i in reply) {
-          hashData.push({key: i, value: reply[i]});
+        if (!this.newLineItem.field) {
+          return;
         }
 
-        this.hashData = hashData;
-      })
+        client.hsetAsync(key, this.newLineItem.field, this.newLineItem.value).then(reply => {
+          console.log(reply);
+          if (reply === 1) {
+            this.$message.success({
+              message: this.newLineItem.field + ' ' + this.$t('message.add_success'),
+              duration: 1000,
+            });
+          }
+          else if (reply === 0) {
+           this.$message.success({
+             message: this.newLineItem.field + ' ' + this.$t('message.modify_success'),
+             duration: 1000,
+           });
+          }
+
+          this.initShow();
+        });
+
+      },
+    },
+    mounted() {
+      this.initShow();
     }
   }
 </script>

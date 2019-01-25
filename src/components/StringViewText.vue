@@ -6,7 +6,7 @@
     </el-form-item>
 
     <el-form-item>
-      <el-button type="primary">Save</el-button>
+      <el-button type="primary" @click="execSave">Save</el-button>
     </el-form-item>
 
   </el-form>
@@ -19,16 +19,31 @@
         //
       };
     },
-    props: ['content'],
-    // computed: {
-    //   newContent: {
-    //     get() {
-    //       return this.content;
-    //     },
-    //     set(val) {
-    //       this.content = val;
-    //     }
-    //   }
-    // }
+    props: ['content', 'redisKey'],
+    methods: {
+      execSave() {
+        let key = this.redisKey;
+        let content = this.content.content;
+
+        console.log('setting ' + key + ' ' + content);
+
+        let client = this.util.get('client');
+
+        client.setAsync(key, content).then(reply => {
+          if (reply === 'OK') {
+            this.$message.success({
+              message: key + ' ' + this.$t('message.modify_success'),
+              duration: 1000,
+            });
+          }
+          else {
+            this.$message.error({
+              message: key + ' ' + $t('message.modify_failed'),
+              duration: 1000,
+            });
+          }
+        });
+      }
+    }
   }
 </script>

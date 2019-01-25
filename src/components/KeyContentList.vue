@@ -11,13 +11,13 @@
       <el-dialog :title="$t('message.add_new_line')" :visible.sync="dialogFormVisible">
         <el-form>
           <el-form-item label="Value">
-            <el-input autocomplete="off"></el-input>
+            <el-input v-model="newLineItem.value" autocomplete="off"></el-input>
           </el-form-item>
 
         </el-form>
         <div slot="footer" class="dialog-footer">
           <el-button @click="dialogFormVisible = false">取 消</el-button>
-          <el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>
+          <el-button type="primary" @click="addLine">确 定</el-button>
         </div>
       </el-dialog>
 
@@ -65,11 +65,31 @@
       return {
         dialogFormVisible: false,
         // item {value: xxx}
-        listData: []
+        listData: [],
+        newLineItem: {},
       };
     },
     props: ['redisKey'],
     methods: {
+      initShow() {
+        let key = this.redisKey;
+        let client = this.util.get('client');
+
+        if (!key) {
+          return;
+        }
+
+        client.lrangeAsync([key, 0, -1]).then(reply => {
+          console.log(reply);
+          let listData = [];
+
+          for (var i of reply) {
+            listData.push({value: i});
+          }
+
+          this.listData = listData;
+        });
+      },
       deleteLine: function (row) {
         this.$confirm(this.$t('message.confirm_to_delete_row_data'), {
           // confirmButtonText: '确定',
@@ -86,26 +106,33 @@
           });
         }).catch(() => {
         });
-      }
-    },
-    mounted() {
-      let key = this.redisKey;
-      let client = this.util.get('client');
+      },
+      addLine() {
+        let key = this.redisKey;
+        let client = this.util.get('client');
 
-      if (!key) {
-        return;
-      }
+        console.log('add line', this.newLineItem);
+        this.dialogFormVisible = false;
 
-      client.lrangeAsync([key, 0, -1]).then(reply => {
-        console.log(reply);
-        let listData = [];
-
-        for (var i of reply) {
-          listData.push({value: i});
+        if (!this.newLineItem.value) {
+          return;
         }
 
-        this.listData = listData;
-      })
+        client.rpushAsync(key, this.newLineItem.value).then(reply => {
+          console.log(reply);
+          if (reply > 0) {
+            this.$message.success({
+              message: this.$t('message.add_success'),
+              duration: 1000,
+            });
+          }
+
+          this.initShow();
+        });
+      },
+    },
+    mounted() {
+      this.initShow();
     }
   }
 </script>

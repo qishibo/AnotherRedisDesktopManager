@@ -15,7 +15,7 @@
       </el-form>
     </div>
     <div>
-      <component :is="selectedView" :content="$data"></component>
+      <component :is="selectedView" :content="$data" :redisKey='redisKey'></component>
     </div>
   </div>
 </template>

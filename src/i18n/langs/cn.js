@@ -17,6 +17,13 @@ const cn = {
     stats: '状态',
     settings: '基础设置',
     confirm_to_delete_row_data: '确认删除该行数据？',
+    delete_success: '删除成功',
+    delete_failed: '删除失败',
+    modify_success: '修改成功',
+    modify_failed: '修改失败',
+    add_success: '添加成功',
+    add_failed: '添加失败',
+    value_exists: '值已存在',
   }
 };
 
