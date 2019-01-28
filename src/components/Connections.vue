@@ -113,6 +113,7 @@
         this.preConnection.client = this.establishedConnection[key];
         // set global client
         this.util.set('client', this.establishedConnection[key]);
+        this.util.set('config', connection);
 
         if (!this.openedStatus[key]) {
           this.$bus.$emit('openStatus');

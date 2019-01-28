@@ -2,7 +2,7 @@
   <div>
     <el-container direction="vertical">
       <el-main>
-        <KeyHeader></KeyHeader>
+        <KeyHeader :redisKey="redisKey"></KeyHeader>
       </el-main>
       <el-main :style="{height: '400px'}">
         <component :is="component" :redisKey="redisKey" :connectionStatus="connectionStatus"></component>

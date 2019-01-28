@@ -2,11 +2,11 @@
 <div>
   <el-form :inline="true">
     <el-form-item>
-      <el-input placeholder="key" v-model="key" @keyup.enter.native="renameKey($event.target.value)">
+      <el-input placeholder="key" v-model="myRedisKey" @keyup.enter.native="renameKey">
         <i
           class="el-icon-check el-input__icon"
           slot="suffix"
-          title='click or enter to rename this key'
+          :title="$t('message.click_enter_to_rename')"
           @click="renameKey"
           >
         </i>
@@ -15,11 +15,11 @@
     </el-form-item>
 
     <el-form-item>
-      <el-input placeholder="86400" @keyup.enter.native="ttlKey($event.target.value)">
+      <el-input placeholder="86400" v-model="keyTTL" @keyup.enter.native="ttlKey">
         <i
           class="el-icon-check el-input__icon"
           slot="suffix"
-          title='click or enter to modify ttl'
+          :title="$t('message.click_enter_to_ttl')"
           @click="ttlKey"
           >
         </i>
@@ -48,33 +48,91 @@
   export default {
     data() {
       return {
-        key: 'keyyyyyy',
+        myRedisKey: this.redisKey,
+        myRedisKeyLast: this.redisKey,
+        keyTTL: -1,
       };
     },
+    props: ['redisKey'],
     methods: {
       deleteKey: function () {
-        this.$confirm('确认删除' + this.key + '？', '警告', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
-          this.$message({
-            type: 'success',
-            message: this.key + '删除成功!',
-            duration: 1000,
+        this.$confirm(
+          this.$t('message.confirm_to_delete_key', {key: this.myRedisKey}),
+          {type: 'warning'}
+        ).then(() => {
+
+          let client = this.util.get('client');
+          client.delAsync(this.myRedisKey).then(reply => {
+            console.log('delete ' + this.myRedisKey, reply);
+
+            if (reply === 1) {
+              this.$message.success({
+                message: this.myRedisKey + this.$t('message.delete_success'),
+                duration: 1000,
+              });
+            }
+
+            else {
+              this.$message.error({
+                message: this.myRedisKey + this.$t('message.delete_failed'),
+                duration: 1000,
+              });
+            }
           });
-        }).catch(() => {
-        });
+        }).catch(() => {});
       },
       refreshKey: function () {
         console.log('refreshing ' + this.key)
       },
-      renameKey: function (key) {
-        console.log('remane key ' + this.key + 'new key is ' + key)
+      renameKey: function () {
+        console.log('remane key ' + this.redisKey + ' new key is ' + this.myRedisKey);
+        let client = this.util.get('client');
+
+        if (this.myRedisKeyLast === this.myRedisKey) {
+          return;
+        }
+
+        client.renameAsync(this.myRedisKeyLast, this.myRedisKey).then(reply => {
+          console.log('rename result ' + this.redisKey + ' ' + this.myRedisKey, reply);
+
+          if (reply === 'OK') {
+            this.$message.success({
+              message: this.myRedisKeyLast + ' rename to ' + this.myRedisKey + ' ' + this.$t('message.modify_success'),
+              duration: 1000,
+            });
+
+            this.myRedisKeyLast = this.myRedisKey;
+          }
+        });
       },
-      ttlKey: function (ttl) {
-        console.log('ttl key ' + this.key + ' ttl is ' + ttl)
+      ttlKey: function () {
+        console.log('ttl key ' + this.myRedisKey + ' ttl is ' + this.keyTTL);
+        let client = this.util.get('client');
+
+        client.expireAsync(this.myRedisKey, this.keyTTL).then(reply => {
+          console.log('expire result ' + this.myRedisKey + ' ' + this.keyTTL);
+
+          if (reply) {
+            this.$message.success({
+              message: this.myRedisKey + ' expire ' + this.keyTTL + ' ' + this.$t('message.modify_success'),
+              duration: 1000,
+            });
+          }
+        });
       }
-    }
+    },
+    mounted() {
+      let redisKey = this.myRedisKey;
+      let client = this.util.get('client');
+
+      if (!redisKey) {
+        return;
+      }
+
+      client.ttlAsync(redisKey).then(reply => {
+        console.log(redisKey, reply);
+        this.keyTTL = reply;
+      })
+    },
   }
 </script>

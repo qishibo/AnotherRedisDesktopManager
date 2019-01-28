@@ -45,12 +45,13 @@
       this.$bus.$on('openStatus', key => {
         console.log('open status');
         let client = this.util.get('client');
+        let config = this.util.get('config');
 
         client.infoAsync(key).then(reply => {
           let status = this.initStatus(reply);
           console.log('init status', status);
 
-          let newTabName = 'Status' + Math.random();
+          let newTabName = config.host + ':' + config.port;
 
           this.tabs.push({
             name: newTabName,
@@ -70,10 +71,10 @@
         maxTabNum: 3,
         tabs: [
           // {name: 'tab_name_1', title: 'String', content: 'tab content1111', component: 'KeyDetail', component_name: 'KeyContentString'},
-          {name: 'tab_name_2', title: 'Hash', content: 'tab content2222', component: 'KeyDetail', component_name: 'KeyContentHash'},
-          {name: 'tab_name_3', title: 'Set', content: 'tab content3333', component: 'KeyDetail', component_name: 'KeyContentSet'},
-          {name: 'tab_name_4', title: 'Zset', content: 'tab content4444', component: 'KeyDetail', component_name: 'KeyContentZset'},
-          {name: 'tab_name_5', title: 'List', content: 'tab content5555', component: 'KeyDetail', component_name: 'KeyContentList'},
+          // {name: 'tab_name_2', title: 'Hash', content: 'tab content2222', component: 'KeyDetail', component_name: 'KeyContentHash'},
+          // {name: 'tab_name_3', title: 'Set', content: 'tab content3333', component: 'KeyDetail', component_name: 'KeyContentSet'},
+          // {name: 'tab_name_4', title: 'Zset', content: 'tab content4444', component: 'KeyDetail', component_name: 'KeyContentZset'},
+          // {name: 'tab_name_5', title: 'List', content: 'tab content5555', component: 'KeyDetail', component_name: 'KeyContentList'},
           // {name: 'tab_name_6', title: 'Status', content: 'tab content6666', component: 'KeyDetail', component_name: 'Status'},
         ],
         connectionStatus: {},
@@ -87,7 +88,7 @@
         this.tabs.push({
           name: newTabName,
           title: 'tab' + this.maxTabNum,
-          component: 'Status'
+          component_name: 'Status'
         });
       },
       removeTab(removeName) {
@@ -113,7 +114,16 @@
 
       switchType(key, type) {
         console.log(key, type);
-        let newTabName = 'New Tab ' + type + ++this.maxTabNum;
+        let newTabName = key + ' ' + type;
+        let tabs = [];
+
+        for (var item of this.tabs) {
+          if (item.component_name === 'Status') {
+            tabs.push(item);
+          }
+        }
+
+        this.tabs = tabs;
 
         switch (type) {
           case 'string':
