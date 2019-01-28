@@ -1,6 +1,6 @@
-# redis-manager
+# Another Redis DeskTop Client
 
-> redis desktop manager
+> A faster, better and more stable redis desktop client, which implemented by node, compatible with Linux, windows, mac. What's more, it won't crash when loading a large number of keys. Building...
 
 ## Build Setup
 
@@ -8,14 +8,11 @@
 # install dependencies
 npm install
 
-# serve with hot reload at localhost:8080
+# serve with hot reload at localhost:9988
 npm run dev
 
-# build for production with minification
-npm run build
-
-# build for production and view the bundle analyzer report
-npm run build --report
+# open another tab, build up a nw client
+npm run nw
 ```
 
-For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
+enjoy!
