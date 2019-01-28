@@ -213,9 +213,15 @@
   }
 
   .connection-menu .key-list {
-
+    list-style-type: none;
+    padding-left: 20px;
   }
   .connection-menu .key-list .key-item {
     white-space:nowrap;
+    cursor: pointer;
+    color: #3c5765;
+  }
+  .connection-menu .key-list .key-item:hover {
+    color: #409EFF;
   }
 </style>
