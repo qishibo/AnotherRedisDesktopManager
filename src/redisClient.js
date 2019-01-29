@@ -7,7 +7,11 @@ export default {
   createConnection(host, port, auth) {
     console.log(host, port, auth, redis);
 
-    var client = redis.createClient(port, host);
+    var options = {retry_strategy: function (options) {
+        console.log(options);
+        alert(options.error);
+    }};
+    var client = redis.createClient(port, host, options);
 
     client.on("error", function (err) {
         alert(err);
