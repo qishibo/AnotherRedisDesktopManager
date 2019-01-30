@@ -1,17 +1,19 @@
 <template>
-  <el-container>
-    <el-aside width="200px" style="max-height: 710px;">
+  <el-container class="wrap-container">
+
+    <el-aside width="200px" class="aside-connection" >
       <Aside></Aside>
     </el-aside>
+
     <el-container>
-      <el-header>
+      <el-header class="main-header">
         <Header></Header>
       </el-header>
       <el-main>
         <router-view/>
       </el-main>
 
-<!--       <el-main>
+      <!-- <el-main>
         <Command></Command>
       </el-main> -->
 
@@ -28,7 +30,27 @@ export default {
   name: 'App',
   components: {Header, Aside, Command}
 }
+
 </script>
 
 <style>
+html {
+  height: 100%;
+  /*box-sizing: border-box;*/
+}
+body {
+  height: 100%;
+  padding: 8px;
+  margin: 0;
+  box-sizing: border-box;
+}
+.wrap-container {
+  height: 100%;
+}
+.aside-connection {
+  height: 100%;
+}
+.main-header.el-header {
+  height: 42px !important;
+}
 </style>

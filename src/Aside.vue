@@ -29,7 +29,7 @@
       </el-dialog>
 
     </div>
-    <div>
+    <div class="connections-list">
       <Connections ref="connections"></Connections>
     </div>
   </div>
@@ -65,3 +65,10 @@ export default {
   }
 }
 </script>
+
+<style type="text/css">
+  .connections-list {
+    /*margin: 100px;*/
+    /*max-height: 80%;*/
+  }
+</style>

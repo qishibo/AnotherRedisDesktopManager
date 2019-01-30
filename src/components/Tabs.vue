@@ -1,14 +1,14 @@
 <template>
 <div>
 
-  <div style="margin-bottom: 20px;">
+<!--   <div style="margin-bottom: 20px;">
     <el-button
       size="small"
       @click="addTab"
     >
       add tab
     </el-button>
-  </div>
+  </div> -->
 
   <el-tabs v-model="selectedTabName" type="card" closable @tab-remove="removeTab">
     <el-tab-pane

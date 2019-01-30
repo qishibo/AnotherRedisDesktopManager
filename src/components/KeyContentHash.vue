@@ -33,7 +33,7 @@
         style="width: 100%"
         size="small"
         border
-        max-height=300
+        max-height=328
         >
         <el-table-column
           type="index"

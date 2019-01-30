@@ -1,47 +1,10 @@
 <template>
   <div>
-<!--     <el-collapse>
-      <el-collapse-item v-for="item of connections" :key="item.connection">
-        <template slot="title">
-          <span>{{item.connection}}</span>&nbsp;
-          <span :style="{float: 'right'}">
-            <i class="el-icon-search"></i>
-            <i class="el-icon-edit-outline"></i>
-            <i class="el-icon-delete"></i>
-          </span>
-        </template>
-        <div>
-          <ul>
-            <li v-for="key of item.keys">{{key}}</li>
-          </ul>
-        </div>
-      </el-collapse-item>
-    </el-collapse> -->
-
     <el-menu @open="openConnection" class="connection-menu" active-text-color="#ffd04b" :default-active="activeIndex">
       <el-submenu v-for="(item, index) of connections" :key="item.name || item.host + '@' + item.port" :index="''+index">
 
         <template slot="title">
           <span slot="title" :title="item.name || item.host + '@' + item.port" class="connection-name">{{item.name || item.host + '@' + item.port}}</span>
-<!--           <el-tooltip slot="title" effect="dark" content="Bottom Center 提示文字" placement="right" :enterable="false" :open-delay="500">
-            <span class="connection-name">{{item.connection}}</span>
-          </el-tooltip> -->
-
-<!--           <el-popover
-            placement="top"
-            width="160"
-            v-model="filterShow"
-            :key='Math.random()'>
-            <p>这是一段内容这是一段内容确定删除吗？</p>
-            <div style="text-align: right; margin: 0">
-              <el-input></el-input>
-              <el-button size="mini" type="text" @click="filterShow = false">取消</el-button>
-              <el-button type="primary" size="mini" @click="filterShow = false">确定</el-button>
-            </div>
-            <el-button slot="reference" @click.stop.prevent="aaa"><i class="el-icon-search"></i></el-button>
-            <i slot="reference" @click.stop.prevent="aaa" class="el-icon-search"></i>
-          </el-popover> -->
-
           <i class="el-icon-search" @click.stop.prevent=""></i>
           <i class="el-icon-edit-outline"></i>
           <i class="el-icon-delete" @click.stop.prevent="deleteConnection(item)"></i>
