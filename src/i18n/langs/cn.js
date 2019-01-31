@@ -27,6 +27,7 @@ const cn = {
     click_enter_to_rename: '点击或者按Enter键来重命名',
     click_enter_to_ttl: '点击或者按Enter键来修改过期时间',
     confirm_to_delete_key: '确认删除 {key} ?',
+    edit_line: '修改行',
   }
 };
 

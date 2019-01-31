@@ -5,7 +5,7 @@
         <KeyHeader :redisKey="redisKey"></KeyHeader>
       </el-main>
       <el-main >
-        <component :is="component" :redisKey="redisKey" :connectionStatus="connectionStatus"></component>
+        <component :is="component" :redisKey="redisKey"></component>
       </el-main>
     </el-container>
   </div>
@@ -26,6 +26,6 @@ import Status from '@/components/Status';
       };
     },
     components: {KeyHeader, KeyContentString, KeyContentHash, KeyContentSet, KeyContentZset, KeyContentList, Status},
-    props: ['component', 'redisKey', 'connectionStatus']
+    props: ['component', 'redisKey']
   }
 </script>

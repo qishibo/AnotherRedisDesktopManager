@@ -17,7 +17,8 @@
       :label="item.title"
       :name="item.name"
     >
-      <KeyDetail :redisKey="item.redisKey" :component="item.component_name" :connectionStatus="item.status"></KeyDetail>
+      <Status v-if="item.status" :redisKey="item.redisKey" :connectionStatus="item.status"></Status>
+      <KeyDetail v-else :redisKey="item.redisKey" :component="item.component_name"></KeyDetail>
     </el-tab-pane>
   </el-tabs>
 

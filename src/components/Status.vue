@@ -1,7 +1,7 @@
 <template>
   <div>
 
-      <el-row :gutter="10" class="status-container">
+      <el-row :gutter="10" class="status-container status-card">
         <el-col :span="8">
           <el-card class="box-card">
             <div slot="header" class="clearfix">
@@ -34,7 +34,7 @@
         </el-col>
       </el-row>
 
-      <el-row>
+      <el-row class="status-card">
         <el-col>
           <el-card class="box-card">
             <div slot="header" class="clearfix">
@@ -43,12 +43,10 @@
 
             <el-table
                 :data="DBKeys"
-                height="200"
                 stripe
                 >
                 <el-table-column
                   fixed
-                  sortable
                   prop="db"
                   label="DB"
                   >
@@ -57,18 +55,21 @@
                   sortable
                   prop="keys"
                   label="Keys"
+                  :sort-method="sortByKeys"
                   >
                 </el-table-column>
                 <el-table-column
                   sortable
                   prop="expires"
                   label="Expires"
+                  :sort-method="sortByExpires"
                   >
                 </el-table-column>
                 <el-table-column
                   sortable
                   prop="avg_ttl"
                   label="Avg TTL"
+                  :sort-method="sortByTTL"
                   >
                 </el-table-column>
               </el-table>
@@ -77,7 +78,7 @@
       </el-row>
 
 
-      <el-row>
+      <el-row class="status-card">
         <el-col>
           <el-card class="box-card">
             <div slot="header" class="clearfix">
@@ -87,7 +88,6 @@
             <el-table
                 :data="AllRedisInfo"
                 stripe
-                height="300"
                 >
                 <el-table-column
                   fixed
@@ -148,24 +148,21 @@
       },
     },
     methods: {
-    },
-    filters: {
-      // round(num) {
-      //   return Math.round(num * 100) / 100;
-      // },
+      sortByKeys(a, b) {
+        return a.keys - b.keys;
+      },
+      sortByExpires(a, b) {
+        return a.expires - b.expires;
+      },
+      sortByTTL(a, b) {
+        return a.avg_ttl - b.avg_ttl;
+      },
     },
   }
 </script>
 
 <style type="text/css">
-  .status-container {
-    width: 100%;
-  }
-  .status-container .el-tag {
-    /*display: inline-block;*/
-    max-width: 100%;
-    /*text-overflow: ellipsis;*/
-    /*overflow: hidden;*/
-    /*vertical-align: center;*/
+  .el-row.status-card {
+    margin-top: 20px;
   }
 </style>
