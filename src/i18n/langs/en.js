@@ -28,6 +28,9 @@ const en = {
     click_enter_to_ttl: 'Click Or Press Enter To Modify TTL',
     confirm_to_delete_key: 'Confirm To Delete {key} ?',
     edit_line: 'Edit Line',
+    auto_refresh: 'Auto Refresh',
+    auto_refresh_tip: 'Auto Refresh Switch, Refresh Every {interval} Seconds',
+    key_not_exists: 'Key Not Exists',
   }
 };
 

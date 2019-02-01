@@ -10,7 +10,7 @@
           @click="renameKey"
           >
         </i>
-          <template slot="prepend">String</template>
+          <template slot="prepend"><span class="key-detail-type">{{ keyType }}</span></template>
         </el-input>
     </el-form-item>
 
@@ -53,7 +53,7 @@
         keyTTL: -1,
       };
     },
-    props: ['redisKey'],
+    props: ['redisKey', 'keyType'],
     methods: {
       deleteKey: function () {
         this.$confirm(
@@ -70,6 +70,8 @@
                 message: this.myRedisKey + this.$t('message.delete_success'),
                 duration: 1000,
               });
+
+              this.$bus.$emit('removePreTab');
             }
 
             else {
@@ -136,3 +138,12 @@
     },
   }
 </script>
+
+<style type="text/css">
+  .key-detail-type {
+    text-transform: capitalize;
+    text-align: center;
+    width: 28px;
+    display: inline-block;
+  }
+</style>

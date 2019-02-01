@@ -1,5 +1,16 @@
 <template>
   <div>
+      <el-row>
+        <el-col>
+          <div style="float: right;">
+            <el-tag type="info">{{ $t('message.auto_refresh') }}</el-tag>
+            <el-tooltip class="item" effect="dark" :content="$t('message.auto_refresh_tip', {interval: refreshInterval / 1000})" placement="bottom">
+              <el-switch v-model="autoRefresh" @change="refreshInit">
+              </el-switch>
+            </el-tooltip>
+          </div>
+        </el-col>
+      </el-row>
 
       <el-row :gutter="10" class="status-container status-card">
         <el-col :span="8">
@@ -113,10 +124,12 @@
   export default {
     data() {
       return {
-        //
+        autoRefresh: false,
+        refreshTimer: null,
+        refreshInterval: 2000,
+        connectionStatus: {},
       };
     },
-    props: ['connectionStatus'],
     computed: {
       DBKeys() {
         let dbs = [];
@@ -148,6 +161,28 @@
       },
     },
     methods: {
+      initShow() {
+        let client = this.util.get('client');
+
+        client.infoAsync().then(reply => {
+          let status = this.initStatus(reply);
+          // console.log('init status', status);
+
+          this.connectionStatus = status;
+        });
+      },
+      refreshInit() {
+        console.log('auto refresh ', this.autoRefresh);
+        this.refreshTimer && clearInterval(this.refreshTimer);
+
+        if (this.autoRefresh) {
+          this.initShow();
+          this.refreshTimer = setInterval(() => {
+            console.log('refreshing...');
+            this.initShow();
+          }, this.refreshInterval);
+        }
+      },
       sortByKeys(a, b) {
         return a.keys - b.keys;
       },
@@ -157,6 +192,29 @@
       sortByTTL(a, b) {
         return a.avg_ttl - b.avg_ttl;
       },
+      initStatus(content) {
+        if (!content) {
+          return {};
+        }
+
+        content = content.split("\n");
+        let lines = {};
+
+        for (var i of content) {
+          i = i.replace(/\s/ig,'');
+          if (i.startsWith('#') || !i) continue;
+
+          let kv = i.split(':');
+
+          lines[kv[0]] = kv[1];
+        }
+
+        return lines;
+      },
+    },
+    mounted() {
+      this.initShow();
+      this.refreshInit();
     },
   }
 </script>

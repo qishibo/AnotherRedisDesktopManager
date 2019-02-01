@@ -10,7 +10,8 @@
         <Header></Header>
       </el-header>
       <el-main>
-        <router-view/>
+        <!-- <router-view/> -->
+        <Tabs></Tabs>
       </el-main>
 
       <!-- <el-main>
@@ -25,10 +26,11 @@
 import Header from './Header';
 import Aside from './Aside';
 import Command from '@/components/Command';
+import Tabs from '@/components/Tabs';
 
 export default {
   name: 'App',
-  components: {Header, Aside, Command}
+  components: {Header, Aside, Command, Tabs}
 }
 
 </script>

@@ -17,8 +17,8 @@
       :label="item.title"
       :name="item.name"
     >
-      <Status v-if="item.status" :redisKey="item.redisKey" :connectionStatus="item.status"></Status>
-      <KeyDetail v-else :redisKey="item.redisKey" :component="item.component_name"></KeyDetail>
+      <Status v-if="item.component_name === 'Status'"></Status>
+      <KeyDetail v-else :redisKey="item.redisKey" :keyType="item.keyType" :component="item.component_name"></KeyDetail>
     </el-tab-pane>
   </el-tabs>
 
@@ -33,37 +33,42 @@
 
   export default {
     created() {
-      this.$bus.$on('openTab', key => {
+      this.$bus.$on('clickedKey', key => {
         console.log('click key pass to tabs: ' + key);
         let client = this.util.get('client');
 
         client.typeAsync(key).then(type => {
+          if (type === 'none') {
+            this.$message.error({
+              message: key + ' ' + this.$t('message.key_not_exists'),
+              duration: 1000,
+            });
+            return;
+          }
           this.switchType(key, type);
         });
 
       });
 
-      this.$bus.$on('openStatus', key => {
+      this.$bus.$on('openStatus', () => {
         console.log('open status');
         let client = this.util.get('client');
         let config = this.util.get('config');
 
-        client.infoAsync(key).then(reply => {
-          let status = this.initStatus(reply);
-          console.log('init status', status);
+        let newTabName = config.host + ':' + config.port;
 
-          let newTabName = config.host + ':' + config.port;
-
-          this.tabs.push({
-            name: newTabName,
-            title: newTabName,
-            component_name: 'Status',
-            status: status,
-          });
-
-          this.selectedTabName = newTabName;
+        this.tabs.push({
+          name: newTabName,
+          title: newTabName,
+          component_name: 'Status',
         });
 
+        this.selectedTabName = newTabName;
+      });
+
+      this.$bus.$on('removePreTab', () => {
+        console.log('removing pre tab...');
+        this.removeTab(this.selectedTabName);
       });
     },
     data() {
@@ -118,80 +123,37 @@
         let newTabName = key + ' ' + type;
         let tabs = [];
 
+        // keep status tabs and remove other tabs
         for (var item of this.tabs) {
           if (item.component_name === 'Status') {
             tabs.push(item);
           }
         }
 
-        this.tabs = tabs;
+        let newTabItem = {name: newTabName, title: newTabName, redisKey: key, keyType: type};
 
         switch (type) {
           case 'string':
-            this.tabs.push({
-              name: newTabName,
-              title: newTabName,
-              component_name: 'KeyContentString',
-              redisKey: key,
-            });
-            this.selectedTabName = newTabName;
+            newTabItem.component_name = 'KeyContentString';
             break;
           case 'hash':
-            this.tabs.push({
-              name: newTabName,
-              title: newTabName,
-              component_name: 'KeyContentHash',
-              redisKey: key,
-            });
-            this.selectedTabName = newTabName;
+            newTabItem.component_name = 'KeyContentHash';
             break;
           case 'zset':
-            this.tabs.push({
-              name: newTabName,
-              title: newTabName,
-              component_name: 'KeyContentZset',
-              redisKey: key,
-            });
-            this.selectedTabName = newTabName;
+            newTabItem.component_name = 'KeyContentZset';
             break;
           case 'set':
-            this.tabs.push({
-              name: newTabName,
-              title: newTabName,
-              component_name: 'KeyContentSet',
-              redisKey: key,
-            });
-            this.selectedTabName = newTabName;
+            newTabItem.component_name = 'KeyContentSet';
             break;
           case 'list':
-            this.tabs.push({
-              name: newTabName,
-              title: newTabName,
-              component_name: 'KeyContentList',
-              redisKey: key,
-            });
-            this.selectedTabName = newTabName;
+            newTabItem.component_name = 'KeyContentList';
             break;
         }
-      },
-      initStatus(content) {
-        if (!content) {
-          return {};
-        }
 
-        content = content.split("\n");
-        let lines = {};
+        tabs.push(newTabItem);
 
-        for (var i of content) {
-          i = i.replace(/\s/ig,'');
-          if (i.startsWith('#') || !i) continue;
-
-          let kv = i.split(':');
-
-          lines[kv[0]] = kv[1];
-        }
-
-        return lines;
+        this.tabs = tabs;
+        this.selectedTabName = newTabName;
       },
     }
   }

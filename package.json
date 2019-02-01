@@ -21,8 +21,7 @@
     "redis": "^2.8.0",
     "vue": "^2.5.2",
     "vue-i18n": "^8.7.0",
-    "vue-json-pretty": "^1.4.1",
-    "vue-router": "^3.0.1"
+    "vue-json-pretty": "^1.4.1"
   },
   "devDependencies": {
     "autoprefixer": "^7.1.2",

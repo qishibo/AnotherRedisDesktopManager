@@ -2,7 +2,7 @@
   <div>
     <el-container direction="vertical">
       <el-main>
-        <KeyHeader :redisKey="redisKey"></KeyHeader>
+        <KeyHeader :redisKey="redisKey" :keyType="keyType"></KeyHeader>
       </el-main>
       <el-main >
         <component :is="component" :redisKey="redisKey"></component>
@@ -26,6 +26,6 @@ import Status from '@/components/Status';
       };
     },
     components: {KeyHeader, KeyContentString, KeyContentHash, KeyContentSet, KeyContentZset, KeyContentList, Status},
-    props: ['component', 'redisKey']
+    props: ['component', 'redisKey', 'keyType']
   }
 </script>

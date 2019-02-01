@@ -118,6 +118,10 @@
         // set global client
         this.util.set('client', client);
 
+        this.initDBKeys(client, preDbIndex);
+      },
+      initDBKeys(client, preDbIndex) {
+
         client.scanAsync(0, 'MATCH', '*', 'COUNT', 10).then(reply => {
           console.log(reply);
           Vue.set(this.keys, preDbIndex, reply[1]);
@@ -125,7 +129,7 @@
       },
       clickKey(key) {
         console.log('clicked key ' + key);
-        this.$bus.$emit('openTab', key);
+        this.$bus.$emit('clickedKey', key);
       },
     },
 

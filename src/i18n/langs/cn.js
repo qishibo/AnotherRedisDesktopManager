@@ -28,6 +28,9 @@ const cn = {
     click_enter_to_ttl: '点击或者按Enter键来修改过期时间',
     confirm_to_delete_key: '确认删除 {key} ?',
     edit_line: '修改行',
+    auto_refresh: '自动刷新',
+    auto_refresh_tip: '自动刷新开关，每{interval}秒刷新一次',
+    key_not_exists: '键不存在',
   }
 };
 
