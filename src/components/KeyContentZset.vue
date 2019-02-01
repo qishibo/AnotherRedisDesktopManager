@@ -23,6 +23,26 @@
           <el-button type="primary" @click="addLine">{{ $t('el.messagebox.confirm') }}</el-button>
         </div>
       </el-dialog>
+
+      <!-- edit dialog -->
+      <el-dialog :title="$t('message.edit_line')" :visible.sync="editDialog">
+        <el-form>
+
+          <el-form-item label="Member">
+            <el-input v-model="editLineItem.member" autocomplete="off"></el-input>
+          </el-form-item>
+
+          <el-form-item label="Score">
+            <el-input v-model="editLineItem.score" autocomplete="off"></el-input>
+          </el-form-item>
+
+        </el-form>
+        <div slot="footer" class="dialog-footer">
+          <el-button @click="editDialog = false">{{ $t('el.messagebox.cancel') }}</el-button>
+          <el-button type="primary" @click="editLine">{{ $t('el.messagebox.confirm') }}</el-button>
+        </div>
+      </el-dialog>
+
     </div>
 
     <el-table
@@ -60,7 +80,7 @@
           label="Operation"
           >
           <template slot-scope="scope">
-            <el-button type="text" icon="el-icon-edit" circle></el-button>
+            <el-button type="text" @click="showEditDialog(scope.row)" icon="el-icon-edit" circle></el-button>
             <el-button type="text" @click="deleteLine(scope.row)" icon="el-icon-delete" circle></el-button>
           </template>
         </el-table-column>
@@ -74,9 +94,12 @@
     data() {
       return {
         dialogFormVisible: false,
+        editDialog: false,
         // item {score: 111, member: xxx}
         zsetData: [],
         newLineItem: {},
+        beforeEditItem: {},
+        editLineItem: {},
       };
     },
 
@@ -104,6 +127,38 @@
 
           this.zsetData = zsetData;
         });
+      },
+      showEditDialog(row) {
+        this.editLineItem = row;
+        this.beforeEditItem = JSON.parse(JSON.stringify(row));
+        this.editDialog = true;
+      },
+      editLine() {
+        let key = this.redisKey;
+        let client = this.util.get('client');
+
+        let before = this.beforeEditItem;
+        let after = this.editLineItem;
+
+        console.log('editing...', before, after);
+
+        client.zaddAsync(key, after.score, after.member).then(reply => {
+          console.log('zadd...', reply);
+        });
+
+        // member changed
+        if (after.member !== before.member) {
+          client.zremAsync(key, before.member).then(reply => {
+            console.log('member changed, zrem...', reply);
+          });
+        }
+
+        this.$message.success({
+          message: after.member + ' ' + this.$t('message.modify_success'),
+          duration: 1000,
+        });
+
+        this.editDialog = false;
       },
       deleteLine: function (row) {
         this.$confirm(this.$t('message.confirm_to_delete_row_data'), {
