@@ -24,7 +24,7 @@
 
             <div>
               <ul class="key-list">
-                <li class="key-item" v-for="key of getKeys(dbIndex)" @click="clickKey(key)">{{key}}</li>
+                <li class="key-item" v-for="key of getKeys(dbIndex)" @click="clickKey(key, dbIndex)">{{key}}</li>
               </ul>
             </div>
 
@@ -123,9 +123,9 @@
           Vue.set(this.keys, preDbIndex, reply[1]);
         });
       },
-      clickKey(key) {
-        console.log('clicked key ' + key);
-        this.$bus.$emit('clickedKey', key);
+      clickKey(key, dbIndex) {
+        console.log('clicked key ' + key, 'dbIndex ' + dbIndex);
+        this.$bus.$emit('clickedKey', key, dbIndex);
       },
     },
 

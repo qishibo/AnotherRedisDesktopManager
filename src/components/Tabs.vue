@@ -1,15 +1,6 @@
 <template>
 <div>
 
-<!--   <div style="margin-bottom: 20px;">
-    <el-button
-      size="small"
-      @click="addTab"
-    >
-      add tab
-    </el-button>
-  </div> -->
-
   <el-tabs v-model="selectedTabName" type="card" closable @tab-remove="removeTab">
     <el-tab-pane
       v-for="(item, index) in tabs"
@@ -23,38 +14,47 @@
   </el-tabs>
 
 </div>
-
 </template>
 
 <script>
-
   import Status from '@/components/Status';
   import KeyDetail from '@/components/KeyDetail';
 
   export default {
+    data() {
+      return {
+        selectedTabName: '',
+        tabs: [],
+      };
+    },
+    components: {Status, KeyDetail},
     created() {
-      this.$bus.$on('clickedKey', key => {
+      // key clicked
+      this.$bus.$on('clickedKey', (key, dbIndex) => {
         console.log('click key pass to tabs: ' + key);
+
         let client = this.$util.get('client');
+        let selectPromise = client.selectAsync(dbIndex);
 
-        client.typeAsync(key).then(type => {
-          if (type === 'none') {
-            this.$message.error({
-              message: key + ' ' + this.$t('message.key_not_exists'),
-              duration: 1000,
-            });
-            return;
-          }
-          this.switchType(key, type);
+        selectPromise.then(() => {
+          client.typeAsync(key).then(type => {
+            if (type === 'none') {
+              this.$message.error({
+                message: key + ' ' + this.$t('message.key_not_exists'),
+                duration: 1000,
+              });
+              return;
+            }
+            this.switchType(key, type);
+          });
         });
-
       });
 
+      // open status tab
       this.$bus.$on('openStatus', () => {
         console.log('open status');
-        let client = this.$util.get('client');
-        let config = this.$util.get('config');
 
+        let config = this.$util.get('config');
         let newTabName = config.host + ':' + config.port;
 
         this.tabs.push({
@@ -66,52 +66,25 @@
         this.selectedTabName = newTabName;
       });
 
+      // remove pre tab
       this.$bus.$on('removePreTab', () => {
         console.log('removing pre tab...');
         this.removeTab(this.selectedTabName);
       });
     },
-    data() {
-      return {
-        selectedTabName: 'tab_name_1',
-        maxTabNum: 3,
-        tabs: [
-          // {name: 'tab_name_1', title: 'String', content: 'tab content1111', component: 'KeyDetail', component_name: 'KeyContentString'},
-          // {name: 'tab_name_2', title: 'Hash', content: 'tab content2222', component: 'KeyDetail', component_name: 'KeyContentHash'},
-          // {name: 'tab_name_3', title: 'Set', content: 'tab content3333', component: 'KeyDetail', component_name: 'KeyContentSet'},
-          // {name: 'tab_name_4', title: 'Zset', content: 'tab content4444', component: 'KeyDetail', component_name: 'KeyContentZset'},
-          // {name: 'tab_name_5', title: 'List', content: 'tab content5555', component: 'KeyDetail', component_name: 'KeyContentList'},
-          // {name: 'tab_name_6', title: 'Status', content: 'tab content6666', component: 'KeyDetail', component_name: 'Status'},
-        ],
-        connectionStatus: {},
-      };
-    },
-    components: {Status, KeyDetail},
     methods: {
-      addTab() {
-        let newTabName = 'tab_name_' + ++this.maxTabNum;
-
-        this.tabs.push({
-          name: newTabName,
-          title: 'tab' + this.maxTabNum,
-          component_name: 'Status'
-        });
-      },
       removeTab(removeName) {
         console.log(this.selectedTabName, removeName);
 
         let tabs = this.tabs;
         let nextSelectTab;
 
-        // 如果要删除当前选中的tab 需要选出下一个高亮tab
         if (this.selectedTabName == removeName) {
           tabs.forEach((tab, index) => {
-            // 遍历得出当前高亮的tab index
             if (tab.name == removeName) {
-              // index为当前选中切要删除的索引 高亮设置为下一个或者上一个
               nextSelectTab = tabs[index + 1] || tabs[index - 1];
             }
-          })
+          });
         }
 
         nextSelectTab && (this.selectedTabName = nextSelectTab.name);
@@ -120,6 +93,7 @@
 
       switchType(key, type) {
         console.log(key, type);
+
         let newTabName = key + ' ' + type;
         let tabs = [];
 
@@ -156,5 +130,5 @@
         this.selectedTabName = newTabName;
       },
     }
-  }
+  };
 </script>

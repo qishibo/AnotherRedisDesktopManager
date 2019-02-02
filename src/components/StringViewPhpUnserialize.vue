@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="text-formated-container">
     <vue-json-pretty
         :path="'res'"
         :data="newContent"
