@@ -35,10 +35,9 @@ export default {
 
 </script>
 
-<style>
+<style type="text/css">
 html {
   height: 100%;
-  /*box-sizing: border-box;*/
 }
 body {
   height: 100%;

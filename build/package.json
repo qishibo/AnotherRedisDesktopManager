@@ -12,16 +12,16 @@
     "height": 728,
     "as_desktop": true,
     "show_in_taskbar": true
-},
-"domain": "nodejsapp",
-"version": "1.0",
-"nodejs": true,
-"node-remote": "http://localhost",
-"contributors": [
-  {
-    "name": "qii404",
-    "email": "qii404@126.com",
-    "web": "https://qii404.me"
-  }
-]
+  },
+  "domain": "nodejsapp",
+  "version": "1.0",
+  "nodejs": true,
+  "node-remote": "http://localhost",
+  "contributors": [
+    {
+      "name": "qii404",
+      "email": "qii404@126.com",
+      "web": "https://qii404.me"
+    }
+  ]
 }

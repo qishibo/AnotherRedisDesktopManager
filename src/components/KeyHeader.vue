@@ -1,47 +1,43 @@
 <template>
-<div>
-  <el-form :inline="true">
-    <el-form-item>
-      <el-input placeholder="key" v-model="myRedisKey" @keyup.enter.native="renameKey">
-        <i
-          class="el-icon-check el-input__icon"
-          slot="suffix"
-          :title="$t('message.click_enter_to_rename')"
-          @click="renameKey"
-          >
-        </i>
-          <template slot="prepend"><span class="key-detail-type">{{ keyType }}</span></template>
-        </el-input>
-    </el-form-item>
+  <div>
+    <el-form :inline="true">
+      <el-form-item>
+        <el-input placeholder="key" v-model="myRedisKey" @keyup.enter.native="renameKey">
+          <i
+            class="el-icon-check el-input__icon"
+            slot="suffix"
+            :title="$t('message.click_enter_to_rename')"
+            @click="renameKey"
+            >
+          </i>
+            <template slot="prepend"><span class="key-detail-type">{{ keyType }}</span></template>
+          </el-input>
+      </el-form-item>
 
-    <el-form-item>
-      <el-input placeholder="86400" v-model="keyTTL" @keyup.enter.native="ttlKey">
-        <i
-          class="el-icon-check el-input__icon"
-          slot="suffix"
-          :title="$t('message.click_enter_to_ttl')"
-          @click="ttlKey"
-          >
-        </i>
-          <template slot="prepend">TTL</template>
-        </el-input>
-    </el-form-item>
+      <el-form-item>
+        <el-input placeholder="86400" v-model="keyTTL" @keyup.enter.native="ttlKey">
+          <i
+            class="el-icon-check el-input__icon"
+            slot="suffix"
+            :title="$t('message.click_enter_to_ttl')"
+            @click="ttlKey"
+            >
+          </i>
+            <template slot="prepend">TTL</template>
+          </el-input>
+      </el-form-item>
 
-<!--     <el-form-item>
-      <el-button type="primary">Save</el-button>
-    </el-form-item> -->
+      <el-form-item>
+        <el-button type="danger" @click="deleteKey" icon="el-icon-delete" circle></el-button>
+      </el-form-item>
 
-    <el-form-item>
-      <el-button type="danger" @click="deleteKey" icon="el-icon-delete" circle></el-button>
-    </el-form-item>
+      <el-form-item>
+        <el-button type="success" @click="refreshKey" icon="el-icon-refresh" circle></el-button>
+      </el-form-item>
 
-    <el-form-item>
-      <el-button type="success" @click="refreshKey" icon="el-icon-refresh" circle></el-button>
-    </el-form-item>
+    </el-form>
 
-  </el-form>
-
-</div>
+  </div>
 </template>
 
 <script>
@@ -55,13 +51,26 @@
     },
     props: ['redisKey', 'keyType'],
     methods: {
+      initShow() {
+        let redisKey = this.myRedisKey;
+        let client = this.$util.get('client');
+
+        if (!redisKey) {
+          return;
+        }
+
+        client.ttlAsync(redisKey).then(reply => {
+          console.log(redisKey, reply);
+          this.keyTTL = reply;
+        })
+      },
       deleteKey: function () {
         this.$confirm(
           this.$t('message.confirm_to_delete_key', {key: this.myRedisKey}),
           {type: 'warning'}
         ).then(() => {
-
           let client = this.$util.get('client');
+
           client.delAsync(this.myRedisKey).then(reply => {
             console.log('delete ' + this.myRedisKey, reply);
 
@@ -81,13 +90,14 @@
               });
             }
           });
-        }).catch(() => {});
+        });
       },
       refreshKey: function () {
-        console.log('refreshing ' + this.key)
+        console.log('refreshing ' + this.myRedisKey);
       },
       renameKey: function () {
         console.log('remane key ' + this.redisKey + ' new key is ' + this.myRedisKey);
+
         let client = this.$util.get('client');
 
         if (this.myRedisKeyLast === this.myRedisKey) {
@@ -109,6 +119,7 @@
       },
       ttlKey: function () {
         console.log('ttl key ' + this.myRedisKey + ' ttl is ' + this.keyTTL);
+
         let client = this.$util.get('client');
 
         client.expireAsync(this.myRedisKey, this.keyTTL).then(reply => {
@@ -124,17 +135,7 @@
       }
     },
     mounted() {
-      let redisKey = this.myRedisKey;
-      let client = this.$util.get('client');
-
-      if (!redisKey) {
-        return;
-      }
-
-      client.ttlAsync(redisKey).then(reply => {
-        console.log(redisKey, reply);
-        this.keyTTL = reply;
-      })
+      this.initShow();
     },
   }
 </script>

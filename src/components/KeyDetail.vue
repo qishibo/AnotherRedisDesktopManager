@@ -20,12 +20,12 @@ import KeyContentZset from '@/components/KeyContentZset';
 import KeyContentList from '@/components/KeyContentList';
 import Status from '@/components/Status';
 
-  export default {
-    data() {
-      return {
-      };
-    },
-    components: {KeyHeader, KeyContentString, KeyContentHash, KeyContentSet, KeyContentZset, KeyContentList, Status},
-    props: ['component', 'redisKey', 'keyType']
-  }
+export default {
+  data() {
+    return {
+    };
+  },
+  components: {KeyHeader, KeyContentString, KeyContentHash, KeyContentSet, KeyContentZset, KeyContentList, Status},
+  props: ['component', 'redisKey', 'keyType']
+};
 </script>

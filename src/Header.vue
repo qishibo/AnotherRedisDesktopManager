@@ -14,9 +14,10 @@
           </el-select>
         </el-form-item>
       </el-form>
+
       <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false">取 消</el-button>
-        <el-button type="primary" @click="saveSettings">确 定</el-button>
+        <el-button @click="dialogFormVisible = false">{{ $t('el.messagebox.cancel') }}</el-button>
+        <el-button type="primary" @click="saveSettings">{{ $t('el.messagebox.confirm') }}</el-button>
       </div>
     </el-dialog>
 
@@ -35,8 +36,6 @@
 
 <script>
 export default {
-  name: 'Header',
-
   data() {
     return {
       form: {
@@ -54,6 +53,7 @@ export default {
   methods: {
     showSettings: function () {
       let settings = this.getSettings();
+
       if (!settings) {
         return;
       }
@@ -63,12 +63,11 @@ export default {
       this.form = settings;
     },
     getSettings () {
-      console.log('gettint settings from storage');
       return localStorage.getItem('settings');
     },
     saveSettings() {
       let settings = JSON.stringify(this.form);
-      console.log(settings);
+      console.log('saving settings...', settings);
 
       localStorage.setItem('settings', settings);
 
@@ -83,5 +82,5 @@ export default {
     this.selectedLang = localStorage.lang || this.selectedLang;
     this.showSettings();
   }
-}
+};
 </script>

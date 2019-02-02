@@ -2,12 +2,14 @@
   <div>
     <div>
 
+      <!-- add button -->
       <el-form :inline="true" size="small">
         <el-form-item>
           <el-button size="small" type="primary" round @click="dialogFormVisible = true">{{ $t('message.add_new_line') }}</el-button>
         </el-form-item>
       </el-form>
 
+      <!-- add dialog -->
       <el-dialog :title="$t('message.add_new_line')" :visible.sync="dialogFormVisible">
         <el-form>
           <el-form-item label="Field">
@@ -45,47 +47,48 @@
 
     </div>
 
+    <!-- content table -->
     <el-table
-        stripe
-        :data="hashData"
-        style="width: 100%"
-        size="small"
-        border
-        min-height=300
+      stripe
+      :data="hashData"
+      style="width: 100%"
+      size="small"
+      border
+      min-height=300
+      >
+      <el-table-column
+        type="index"
+        label="ID"
+        sortable
+        width="150">
+      </el-table-column>
+      <el-table-column
+        prop="key"
+        sortable
+        resizable
+        label="Key"
+        width=150
         >
-        <el-table-column
-          type="index"
-          label="ID"
-          sortable
-          width="150">
-        </el-table-column>
-        <el-table-column
-          prop="key"
-          sortable
-          resizable
-          label="Key"
-          width=150
-          >
-        </el-table-column>
-        <el-table-column
-          prop="value"
-          resizable
-          sortable
-          show-overflow-tooltip
-          label="Value"
-          >
-        </el-table-column>
+      </el-table-column>
+      <el-table-column
+        prop="value"
+        resizable
+        sortable
+        show-overflow-tooltip
+        label="Value"
+        >
+      </el-table-column>
 
-        <el-table-column
-          label="Operation"
-          >
-          <template slot-scope="scope">
-            <el-button type="text" @click="showEditDialog(scope.row)" icon="el-icon-edit" circle></el-button>
-            <el-button type="text" @click="deleteLine(scope.row)" icon="el-icon-delete" circle></el-button>
-          </template>
-        </el-table-column>
+      <el-table-column
+        label="Operation"
+        >
+        <template slot-scope="scope">
+          <el-button type="text" @click="showEditDialog(scope.row)" icon="el-icon-edit" circle></el-button>
+          <el-button type="text" @click="deleteLine(scope.row)" icon="el-icon-delete" circle></el-button>
+        </template>
+      </el-table-column>
 
-      </el-table>
+    </el-table>
   </div>
 </template>
 
@@ -95,8 +98,7 @@
       return {
         dialogFormVisible: false,
         editDialog: false,
-        // item {key: xxx, value: xxx}
-        hashData: [],
+        hashData: [], // {key: xxx, value: xxx}
         newLineItem: {},
         beforeEditItem: {},
         editLineItem: {},
@@ -139,36 +141,35 @@
 
         client.hsetAsync(key, after.key, after.value).then(reply => {
           console.log('hset...', reply);
-        });
 
-        // key changed
-        if (before.key !== after.key) {
-          client.hdelAsync(key, before.key).then(reply => {
-            console.log('key changed, hdel...', reply);
-          });
-        }
+          // key changed
+          if (before.key !== after.key) {
+            client.hdelAsync(key, before.key).then(reply => {
+              console.log('key changed, hdel...', reply);
+              this.initShow();
+            });
+          }
+
+          else {
+            this.initShow();
+          }
+        });
 
         this.$message.success({
           message: after.key + ' ' + this.$t('message.modify_success'),
           duration: 1000,
         });
 
-        this.initShow();
         this.editDialog = false;
       },
       deleteLine(row) {
         this.$confirm(this.$t('message.confirm_to_delete_row_data'), {
           type: 'warning'
         }).then(() => {
-          if (!row.key) {
-            return;
-          }
-
           let key = this.redisKey;
           let client = this.$util.get('client');
-          client.hdelAsync(key, row.key).then(reply => {
-            console.log(reply);
 
+          client.hdelAsync(key, row.key).then(reply => {
             if (reply === 1) {
               this.$message.success({
                 message: row.key + ' ' + this.$t('message.delete_success'),
@@ -181,10 +182,11 @@
         });
       },
       addLine() {
+        console.log('add line', this.newLineItem);
+
         let key = this.redisKey;
         let client = this.$util.get('client');
 
-        console.log('add line', this.newLineItem);
         this.dialogFormVisible = false;
 
         if (!this.newLineItem.field) {
@@ -193,22 +195,14 @@
 
         client.hsetAsync(key, this.newLineItem.field, this.newLineItem.value).then(reply => {
           console.log(reply);
-          if (reply === 1) {
-            this.$message.success({
-              message: this.newLineItem.field + ' ' + this.$t('message.add_success'),
-              duration: 1000,
-            });
-          }
-          else if (reply === 0) {
-           this.$message.success({
-             message: this.newLineItem.field + ' ' + this.$t('message.modify_success'),
-             duration: 1000,
-           });
-          }
+
+          this.$message.success({
+            message: this.newLineItem.field + ' ' + reply ? this.$t('message.add_success') : this.$t('message.modify_success'),
+            duration: 1000,
+          });
 
           this.initShow();
         });
-
       },
     },
     mounted() {
@@ -216,13 +210,3 @@
     }
   }
 </script>
-
-<style type="text/css">
-  .flex-height {
-    position: absolute;
-    top: 100px;
-    bottom: 0;
-    min-height: 300px;
-    overflow-y: auto;
-  }
-</style>

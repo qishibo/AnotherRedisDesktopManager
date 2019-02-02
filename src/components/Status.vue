@@ -53,41 +53,40 @@
             </div>
 
             <el-table
-                :data="DBKeys"
-                stripe
+              :data="DBKeys"
+              stripe
+              >
+              <el-table-column
+                fixed
+                prop="db"
+                label="DB"
                 >
-                <el-table-column
-                  fixed
-                  prop="db"
-                  label="DB"
-                  >
-                </el-table-column>
-                <el-table-column
-                  sortable
-                  prop="keys"
-                  label="Keys"
-                  :sort-method="sortByKeys"
-                  >
-                </el-table-column>
-                <el-table-column
-                  sortable
-                  prop="expires"
-                  label="Expires"
-                  :sort-method="sortByExpires"
-                  >
-                </el-table-column>
-                <el-table-column
-                  sortable
-                  prop="avg_ttl"
-                  label="Avg TTL"
-                  :sort-method="sortByTTL"
-                  >
-                </el-table-column>
-              </el-table>
+              </el-table-column>
+              <el-table-column
+                sortable
+                prop="keys"
+                label="Keys"
+                :sort-method="sortByKeys"
+                >
+              </el-table-column>
+              <el-table-column
+                sortable
+                prop="expires"
+                label="Expires"
+                :sort-method="sortByExpires"
+                >
+              </el-table-column>
+              <el-table-column
+                sortable
+                prop="avg_ttl"
+                label="Avg TTL"
+                :sort-method="sortByTTL"
+                >
+              </el-table-column>
+            </el-table>
           </el-card>
         </el-col>
       </el-row>
-
 
       <el-row class="status-card">
         <el-col>
@@ -97,25 +96,24 @@
             </div>
 
             <el-table
-                :data="AllRedisInfo"
-                stripe
+              :data="AllRedisInfo"
+              stripe
+              >
+              <el-table-column
+                fixed
+                prop="key"
+                label="Key"
                 >
-                <el-table-column
-                  fixed
-                  prop="key"
-                  label="Key"
-                  >
-                </el-table-column>
-                <el-table-column
-                  prop="value"
-                  label="Value"
-                  >
-                </el-table-column>
-              </el-table>
+              </el-table-column>
+              <el-table-column
+                prop="value"
+                label="Value"
+                >
+              </el-table-column>
+            </el-table>
           </el-card>
         </el-col>
       </el-row>
-
 
   </div>
 </template>
@@ -166,17 +164,17 @@
 
         client.infoAsync().then(reply => {
           let status = this.initStatus(reply);
-          // console.log('init status', status);
-
           this.connectionStatus = status;
         });
       },
       refreshInit() {
         console.log('auto refresh ', this.autoRefresh);
+
         this.refreshTimer && clearInterval(this.refreshTimer);
 
         if (this.autoRefresh) {
           this.initShow();
+
           this.refreshTimer = setInterval(() => {
             console.log('refreshing...');
             this.initShow();
@@ -216,7 +214,7 @@
       this.initShow();
       this.refreshInit();
     },
-  }
+  };
 </script>
 
 <style type="text/css">

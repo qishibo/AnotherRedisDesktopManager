@@ -1,8 +1,11 @@
 <template>
   <div>
     <div>
+
+      <!-- new connection button -->
       <el-button type="info" @click="dialogFormVisible = true" icon="el-icon-plus">{{ $t('message.new_connection') }}</el-button>
 
+      <!-- new connection dialog -->
       <el-dialog :title="$t('message.new_connection')" :visible.sync="dialogFormVisible">
         <el-form v-model="newConnection" :label-position="labelPosition" label-width="80px">
           <el-form-item label="Host">
@@ -22,6 +25,7 @@
           </el-form-item>
 
         </el-form>
+
         <div slot="footer" class="dialog-footer">
           <el-button @click="dialogFormVisible = false">取 消</el-button>
           <el-button type="primary" @click="addNewConnection">确 定</el-button>
@@ -29,19 +33,20 @@
       </el-dialog>
 
     </div>
+
+    <!-- connection list -->
     <div class="connections-list">
       <Connections ref="connections"></Connections>
     </div>
+
   </div>
 </template>
-
 
 <script>
 import Connections from '@/components/Connections';
 import storage from './storage';
 
 export default {
-  name: 'Aside',
   data() {
     return {
       dialogFormVisible: false,
@@ -52,7 +57,7 @@ export default {
         auth: '',
         name: '',
       }
-    }
+    };
   },
   components: {Connections},
   methods: {
@@ -63,12 +68,5 @@ export default {
       this.$refs.connections.initConnections();
     },
   }
-}
+};
 </script>
-
-<style type="text/css">
-  .connections-list {
-    /*margin: 100px;*/
-    /*max-height: 80%;*/
-  }
-</style>
