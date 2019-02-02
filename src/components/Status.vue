@@ -162,7 +162,7 @@
     },
     methods: {
       initShow() {
-        let client = this.util.get('client');
+        let client = this.$util.get('client');
 
         client.infoAsync().then(reply => {
           let status = this.initStatus(reply);

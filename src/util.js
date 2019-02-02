@@ -1,13 +1,13 @@
 export default {
-	data: {},
-	get(name) {
-		if (this.data[name]) {
-			return this.data[name];
-		}
+  data: {},
+  get(name) {
+    if (this.data[name]) {
+      return this.data[name];
+    }
 
-		return null;
-	},
-	set(name, value) {
-		this.data[name] = value;
-	},
-}
+    return null;
+  },
+  set(name, value) {
+    this.data[name] = value;
+  },
+};

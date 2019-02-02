@@ -108,7 +108,7 @@
     methods: {
       initShow() {
         let key = this.redisKey;
-        let client = this.util.get('client');
+        let client = this.$util.get('client');
 
         if (!key) {
           return;
@@ -135,7 +135,7 @@
       },
       editLine() {
         let key = this.redisKey;
-        let client = this.util.get('client');
+        let client = this.$util.get('client');
 
         let before = this.beforeEditItem;
         let after = this.editLineItem;
@@ -172,7 +172,7 @@
           console.log(row)
 
           let key = this.redisKey;
-          let client = this.util.get('client');
+          let client = this.$util.get('client');
           client.zremAsync(key, row.member).then(reply => {
             console.log(reply);
 
@@ -190,7 +190,7 @@
       },
       addLine() {
         let key = this.redisKey;
-        let client = this.util.get('client');
+        let client = this.$util.get('client');
 
         console.log('add line', this.newLineItem);
         this.dialogFormVisible = false;

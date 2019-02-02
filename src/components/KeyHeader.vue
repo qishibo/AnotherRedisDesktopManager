@@ -61,7 +61,7 @@
           {type: 'warning'}
         ).then(() => {
 
-          let client = this.util.get('client');
+          let client = this.$util.get('client');
           client.delAsync(this.myRedisKey).then(reply => {
             console.log('delete ' + this.myRedisKey, reply);
 
@@ -88,7 +88,7 @@
       },
       renameKey: function () {
         console.log('remane key ' + this.redisKey + ' new key is ' + this.myRedisKey);
-        let client = this.util.get('client');
+        let client = this.$util.get('client');
 
         if (this.myRedisKeyLast === this.myRedisKey) {
           return;
@@ -109,7 +109,7 @@
       },
       ttlKey: function () {
         console.log('ttl key ' + this.myRedisKey + ' ttl is ' + this.keyTTL);
-        let client = this.util.get('client');
+        let client = this.$util.get('client');
 
         client.expireAsync(this.myRedisKey, this.keyTTL).then(reply => {
           console.log('expire result ' + this.myRedisKey + ' ' + this.keyTTL);
@@ -125,7 +125,7 @@
     },
     mounted() {
       let redisKey = this.myRedisKey;
-      let client = this.util.get('client');
+      let client = this.$util.get('client');
 
       if (!redisKey) {
         return;

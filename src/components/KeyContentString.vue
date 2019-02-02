@@ -43,7 +43,7 @@ import StringViewPhpUnserialize from '@/components/StringViewPhpUnserialize';
     components: {StringViewText, StringViewJson, StringViewPhpUnserialize},
     mounted() {
       let key = this.redisKey;
-      let client = this.util.get('client');
+      let client = this.$util.get('client');
 
       client.getAsync(key).then(reply => {
         this.content = reply;

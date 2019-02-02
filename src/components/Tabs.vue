@@ -35,7 +35,7 @@
     created() {
       this.$bus.$on('clickedKey', key => {
         console.log('click key pass to tabs: ' + key);
-        let client = this.util.get('client');
+        let client = this.$util.get('client');
 
         client.typeAsync(key).then(type => {
           if (type === 'none') {
@@ -52,8 +52,8 @@
 
       this.$bus.$on('openStatus', () => {
         console.log('open status');
-        let client = this.util.get('client');
-        let config = this.util.get('config');
+        let client = this.$util.get('client');
+        let config = this.$util.get('config');
 
         let newTabName = config.host + ':' + config.port;
 

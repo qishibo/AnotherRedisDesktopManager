@@ -27,7 +27,7 @@
 
         console.log('setting ' + key + ' ' + content);
 
-        let client = this.util.get('client');
+        let client = this.$util.get('client');
 
         client.setAsync(key, content).then(reply => {
           if (reply === 'OK') {
