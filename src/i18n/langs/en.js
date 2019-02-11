@@ -33,6 +33,8 @@ const en = {
     key_not_exists: 'Key Not Exists',
     collapse_all: 'Collapse All',
     expand_all: 'Expand All',
+    json_format_failed: 'Json Parse Failed',
+    php_unserialize_format_failed: 'PHP Unserialize Failed',
   }
 };
 

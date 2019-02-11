@@ -33,6 +33,8 @@ const cn = {
     key_not_exists: '键不存在',
     collapse_all: '全部折叠',
     expand_all: '全部展开',
+    json_format_failed: 'Json 格式化失败',
+    php_unserialize_format_failed: 'PHP Unserialize 格式化失败',
   }
 };
 

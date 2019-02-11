@@ -21,7 +21,7 @@ export default{
   data() {
     return {
       maxDeep: 2,
-      maxDeepDefault: 2,
+      collapseAllDeep: 0,
       collapsed: true,
       collapseText: 'expand_all'
     };
@@ -34,13 +34,13 @@ export default{
         return unserialize(this.content.content);
       }
       catch (e) {
-        return 'PHP Unserialize Failed, Please Check Data Format!';
+        return this.$t('message.php_unserialize_format_failed');
       }
     }
   },
   methods: {
     toggleCollapse() {
-      this.maxDeep = this.collapsed ? Infinity : 1;
+      this.maxDeep = this.collapsed ? Infinity : this.collapseAllDeep;
       this.collapsed = !this.collapsed;
 
       this.collapseText = this.collapsed ? 'expand_all' : 'collapse_all';
