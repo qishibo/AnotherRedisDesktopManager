@@ -81,6 +81,7 @@
               });
 
               this.$bus.$emit('removePreTab');
+              this.refreshKeyList();
             }
 
             else {
@@ -114,6 +115,7 @@
             });
 
             this.myRedisKeyLast = this.myRedisKey;
+            this.refreshKeyList();
           }
         });
       },
@@ -130,9 +132,14 @@
               message: this.myRedisKey + ' expire ' + this.keyTTL + ' ' + this.$t('message.modify_success'),
               duration: 1000,
             });
+
+            this.refreshKeyList();
           }
         });
-      }
+      },
+      refreshKeyList() {
+        this.$bus.$emit('refreshKeyList');
+      },
     },
     mounted() {
       this.initShow();

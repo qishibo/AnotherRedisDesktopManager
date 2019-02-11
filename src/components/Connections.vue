@@ -54,6 +54,11 @@
         openedDbs: [],
       };
     },
+    created() {
+      this.$bus.$on('refreshKeyList', () => {
+        this.initDBKeys();
+      });
+    },
     methods: {
       openConnection(index) {
         // get connection config
@@ -114,18 +119,31 @@
           return;
         }
 
-        this.$util.get('client').select(preDbIndex);
-        this.initDBKeys(preDbIndex);
+        let selectPromise = this.$util.get('client').selectAsync(preDbIndex);
+
+        selectPromise.then(() => {
+          this.$util.set('dbIndex', preDbIndex);
+          this.initDBKeys();
+        });
       },
-      initDBKeys(preDbIndex) {
-        this.$util.get('client').scanAsync(0, 'MATCH', '*', 'COUNT', 10).then(reply => {
+      initDBKeys() {
+        let client = this.$util.get('client');
+        let dbIndex = this.$util.get('dbIndex');
+
+        // dbIndex = dbIndex ? dbIndex : 0;
+
+        client.scanAsync(0, 'MATCH', '*', 'COUNT', 10).then(reply => {
           console.log(reply);
-          Vue.set(this.keys, preDbIndex, reply[1]);
+          Vue.set(this.keys, dbIndex, reply[1]);
         });
       },
       clickKey(key, dbIndex) {
         console.log('clicked key ' + key, 'dbIndex ' + dbIndex);
-        this.$bus.$emit('clickedKey', key, dbIndex);
+
+        this.$util.get('client').selectAsync(dbIndex).then(() => {
+          this.$util.set('dbIndex', dbIndex);
+          this.$bus.$emit('clickedKey', key);
+        });
       },
     },
 

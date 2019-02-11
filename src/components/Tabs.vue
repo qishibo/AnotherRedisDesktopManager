@@ -30,23 +30,18 @@
     components: {Status, KeyDetail},
     created() {
       // key clicked
-      this.$bus.$on('clickedKey', (key, dbIndex) => {
+      this.$bus.$on('clickedKey', (key) => {
         console.log('click key pass to tabs: ' + key);
 
-        let client = this.$util.get('client');
-        let selectPromise = client.selectAsync(dbIndex);
-
-        selectPromise.then(() => {
-          client.typeAsync(key).then(type => {
-            if (type === 'none') {
-              this.$message.error({
-                message: key + ' ' + this.$t('message.key_not_exists'),
-                duration: 1000,
-              });
-              return;
-            }
-            this.switchType(key, type);
-          });
+        this.$util.get('client').typeAsync(key).then(type => {
+          if (type === 'none') {
+            this.$message.error({
+              message: key + ' ' + this.$t('message.key_not_exists'),
+              duration: 1000,
+            });
+            return;
+          }
+          this.switchType(key, type);
         });
       });
 

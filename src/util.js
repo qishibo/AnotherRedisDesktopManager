@@ -1,11 +1,7 @@
 export default {
   data: {},
   get(name) {
-    if (this.data[name]) {
-      return this.data[name];
-    }
-
-    return null;
+    return this.data[name];
   },
   set(name, value) {
     this.data[name] = value;
