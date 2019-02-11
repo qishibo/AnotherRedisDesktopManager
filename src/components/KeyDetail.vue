@@ -5,7 +5,7 @@
         <KeyHeader :redisKey="redisKey" :keyType="keyType"></KeyHeader>
       </el-main>
       <el-main >
-        <component :is="component" :redisKey="redisKey"></component>
+        <component ref="keyContent" :is="component" :redisKey="redisKey"></component>
       </el-main>
     </el-container>
   </div>
@@ -25,7 +25,20 @@ export default {
     return {
     };
   },
+  created() {
+    this.$bus.$on('refreshKey', (redisKey) => {
+      if (!this.redisKey || !this.$refs.keyContent || (this.redisKey !== redisKey)) {
+        return;
+      }
+
+      this.$refs.keyContent.initShow();
+    });
+  },
   components: {KeyHeader, KeyContentString, KeyContentHash, KeyContentSet, KeyContentZset, KeyContentList, Status},
-  props: ['component', 'redisKey', 'keyType']
+  props: ['component', 'redisKey', 'keyType'],
+
+  beforeDestroy() {
+    // this.$bus.$off('refreshKey');
+  },
 };
 </script>

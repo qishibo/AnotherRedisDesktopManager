@@ -45,13 +45,19 @@ export default {
   },
   props: ['redisKey'],
   components: {StringViewText, StringViewJson, StringViewPhpUnserialize},
-  mounted() {
-    let key = this.redisKey;
-    let client = this.$util.get('client');
+  methods: {
+    initShow() {
+      let key = this.redisKey;
+      let client = this.$util.get('client');
 
-    client.getAsync(key).then(reply => {
-      this.content = reply;
-    });
+      client.getAsync(key).then(reply => {
+        console.log(reply);
+        this.content = reply;
+      });
+    },
+  },
+  mounted() {
+    this.initShow();
   }
 };
 </script>

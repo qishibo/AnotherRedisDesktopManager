@@ -95,6 +95,9 @@
       },
       refreshKey: function () {
         console.log('refreshing ' + this.myRedisKey);
+
+        this.$bus.$emit('refreshKey', this.myRedisKey);
+        this.initShow();
       },
       renameKey: function () {
         console.log('remane key ' + this.redisKey + ' new key is ' + this.myRedisKey);
