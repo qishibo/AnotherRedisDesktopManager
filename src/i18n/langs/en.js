@@ -31,6 +31,8 @@ const en = {
     auto_refresh: 'Auto Refresh',
     auto_refresh_tip: 'Auto Refresh Switch, Refresh Every {interval} Seconds',
     key_not_exists: 'Key Not Exists',
+    collapse_all: 'Collapse All',
+    expand_all: 'Expand All',
   }
 };
 

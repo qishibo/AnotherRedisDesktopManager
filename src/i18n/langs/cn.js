@@ -31,6 +31,8 @@ const cn = {
     auto_refresh: '自动刷新',
     auto_refresh_tip: '自动刷新开关，每{interval}秒刷新一次',
     key_not_exists: '键不存在',
+    collapse_all: '全部折叠',
+    expand_all: '全部展开',
   }
 };
 

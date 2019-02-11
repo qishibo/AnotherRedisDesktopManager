@@ -68,4 +68,13 @@ export default {
   .vjs__tree span {
     color: #616069;
   }
+
+  .collapse-container {
+    height: 27px;
+  }
+
+  .collapse-container .collapse-btn {
+    float: right;
+    padding: 9px 0;
+  }
 </style>
