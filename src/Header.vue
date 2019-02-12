@@ -21,6 +21,22 @@
       </div>
     </el-dialog>
 
+    <!-- cli console -->
+    <el-button type="primary" icon="el-icon-news" @click="cliDialogVisible = true"></el-button>
+
+    <el-dialog width="90%" :title="cliTitle" :visible.sync="cliDialogVisible">
+      <el-form @submit.native.prevent>
+        <el-input id="cli-content" type="textarea" v-model="cliContent.content" :autosize="{ minRows: 7, maxRows: 8}" placeholder="console result"></el-input>
+        <br><br>
+        <el-input id="cli-params" autofocus v-model="cliContent.params" @keyup.enter.native="consoleExec" placeholder=' set some_key some_value'></el-input>
+      </el-form>
+
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="cliDialogVisible = false">{{ $t('el.messagebox.cancel') }}</el-button>
+        <el-button type="primary" @click="saveSettings">{{ $t('el.messagebox.confirm') }}</el-button>
+      </div>
+    </el-dialog>
+
     <el-select v-model="selectedLang" @change="changeLang" placeholder="Language">
         <el-option
           v-for="item in langItems"
@@ -35,6 +51,8 @@
 
 
 <script>
+import rawCommand from '@/rawCommand';
+
 export default {
   data() {
     return {
@@ -48,7 +66,9 @@ export default {
         {value: 'en', label: 'English'},
         {value: 'cn', label: '简体中文'},
       ],
-    }
+      cliDialogVisible: false,
+      cliContent: {content: '', params: ''},
+    };
   },
   methods: {
     showSettings: function () {
@@ -76,6 +96,49 @@ export default {
     changeLang(lang) {
       localStorage.lang = this.selectedLang;
       this.$i18n.locale = this.selectedLang;
+    },
+    consoleExec() {
+      let params = this.cliContent.params;
+      let promise = rawCommand.exec(this, params);
+
+      promise.then((reply) => {
+        console.log(reply, typeof reply, reply.length);
+
+        let append  = '';
+
+        if (typeof reply === 'object') {
+          let isArray = !isNaN(reply.length);
+
+          for (var i in reply) {
+            append += (isArray ? '' : (i + "\n")) + reply[i] + "\n";
+          }
+        }
+
+        else {
+          append = reply + "\n";
+        }
+
+        this.cliContent.content += '> ' + params + "\n";
+        this.cliContent.content += append;
+        this.cliContent.params = '';
+
+        this.$nextTick(() => {
+          let textarea = document.getElementById('cli-content');
+          textarea.scrollTop = textarea.scrollHeight;
+        });
+      });
+
+    },
+  },
+  computed: {
+    cliTitle() {
+      let host = this.$util.get('config');
+      let dbIndex = this.$util.get('dbIndex');
+      // console.log(this.$util.get('client'));
+      // return host + ' DB' + dbIndex;
+      console.log(host, dbIndex);
+
+      return 'Redis Console';
     }
   },
   mounted() {
