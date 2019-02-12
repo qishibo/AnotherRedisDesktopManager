@@ -26,14 +26,25 @@
 
     <el-dialog width="90%" :title="cliTitle" :visible.sync="cliDialogVisible">
       <el-form @submit.native.prevent>
-        <el-input id="cli-content" type="textarea" v-model="cliContent.content" :autosize="{ minRows: 7, maxRows: 8}" placeholder="console result"></el-input>
-        <br><br>
-        <el-input id="cli-params" autofocus v-model="cliContent.params" @keyup.enter.native="consoleExec" placeholder=' set some_key some_value'></el-input>
+        <el-form-item>
+          <el-input id="cli-content" type="textarea" v-model="cliContent.content" :autosize="{ minRows: 7, maxRows: 8}" placeholder="console result"></el-input>
+        </el-form-item>
+
+        <el-form-item>
+          <el-autocomplete
+            class="input-suggestion"
+            v-model="cliContent.params"
+            :fetch-suggestions="inputSuggestion"
+            placeholder=" Such As [set some_key some_value], Click Enter To Submit"
+            :trigger-on-focus="false"
+            @keyup.enter.native="consoleExec"
+          ></el-autocomplete>
+        </el-form-item>
       </el-form>
 
       <div slot="footer" class="dialog-footer">
         <el-button @click="cliDialogVisible = false">{{ $t('el.messagebox.cancel') }}</el-button>
-        <el-button type="primary" @click="saveSettings">{{ $t('el.messagebox.confirm') }}</el-button>
+        <!-- <el-button type="primary" @click="consoleExec">{{ $t('el.messagebox.confirm') }}</el-button> -->
       </div>
     </el-dialog>
 
@@ -68,9 +79,19 @@ export default {
       ],
       cliDialogVisible: false,
       cliContent: {content: '', params: ''},
+      inputSuggestionItems: {},
     };
   },
   methods: {
+    inputSuggestion(input, cb) {
+      let suggestions = [];
+      for (var key in this.inputSuggestionItems) {
+        if (key.indexOf(input) !== -1) {
+          suggestions.push({value: key});
+        }
+      }
+      cb(suggestions);
+    },
     showSettings: function () {
       let settings = this.getSettings();
 
@@ -102,8 +123,6 @@ export default {
       let promise = rawCommand.exec(this, params);
 
       promise.then((reply) => {
-        console.log(reply, typeof reply, reply.length);
-
         let append  = '';
 
         if (typeof reply === 'object') {
@@ -120,6 +139,8 @@ export default {
 
         this.cliContent.content += '> ' + params + "\n";
         this.cliContent.content += append;
+
+        this.inputSuggestionItems[this.cliContent.params] = 1;
         this.cliContent.params = '';
 
         this.$nextTick(() => {
@@ -147,3 +168,9 @@ export default {
   }
 };
 </script>
+
+<style type="text/css">
+  .input-suggestion {
+    width: 100%;
+  }
+</style>
