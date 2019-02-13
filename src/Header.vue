@@ -27,7 +27,7 @@
     <el-dialog width="90%" :title="cliTitle" :visible.sync="cliDialogVisible">
       <el-form @submit.native.prevent>
         <el-form-item>
-          <el-input id="cli-content" type="textarea" v-model="cliContent.content" :autosize="{ minRows: 7, maxRows: 8}" placeholder="console result"></el-input>
+          <el-input id="cli-content" type="textarea" v-model="cliContent.content" :autosize="{ minRows: 7, maxRows: 8}" placeholder="console result" :disabled="true" class="cli-content-textarea"></el-input>
         </el-form-item>
 
         <el-form-item>
@@ -122,33 +122,49 @@ export default {
       let params = this.cliContent.params;
       let promise = rawCommand.exec(this, params);
 
-      promise.then((reply) => {
-        let append  = '';
+      this.cliContent.content += '> ' + params + "\n";
+      this.cliContent.params = '';
 
-        if (typeof reply === 'object') {
-          let isArray = !isNaN(reply.length);
-
-          for (var i in reply) {
-            append += (isArray ? '' : (i + "\n")) + reply[i] + "\n";
-          }
-        }
-
-        else {
-          append = reply + "\n";
-        }
-
-        this.cliContent.content += '> ' + params + "\n";
-        this.cliContent.content += append;
-
-        this.inputSuggestionItems[this.cliContent.params] = 1;
-        this.cliContent.params = '';
+      if (!promise) {
+        this.cliContent.content += "Error!\n";
 
         this.$nextTick(() => {
-          let textarea = document.getElementById('cli-content');
-          textarea.scrollTop = textarea.scrollHeight;
+          this.scrollToBottom();
         });
-      });
+      }
 
+      else {
+        promise.then((reply) => {
+          let append  = '';
+
+          if (reply === null) {
+            append = null + "\n";
+          }
+
+          else if (typeof reply === 'object') {
+            let isArray = !isNaN(reply.length);
+
+            for (var i in reply) {
+              append += (isArray ? '' : (i + "\n")) + reply[i] + "\n";
+            }
+          }
+
+          else {
+            append = reply + "\n";
+          }
+
+          this.cliContent.content += append;
+          this.inputSuggestionItems[params] = 1;
+
+          this.$nextTick(() => {
+            this.scrollToBottom();
+          });
+        });
+      }
+    },
+    scrollToBottom() {
+      let textarea = document.getElementById('cli-content');
+      textarea.scrollTop = textarea.scrollHeight;
     },
   },
   computed: {
@@ -172,5 +188,9 @@ export default {
 <style type="text/css">
   .input-suggestion {
     width: 100%;
+  }
+
+  .cli-content-textarea textarea {
+    color: #7e8186 !important;
   }
 </style>

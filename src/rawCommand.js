@@ -12,11 +12,15 @@ export default {
 
     let operation = params.shift();
 
+    console.log(operation, params);
+
     if (!operation) {
       return;
     }
 
-    console.log(operation, params);
+    if (!client[operation]) {
+      return;
+    }
 
     return client[operation + 'Async'].apply(client, params);
   }
