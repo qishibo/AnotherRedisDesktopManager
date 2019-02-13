@@ -43,8 +43,8 @@
       </el-form>
 
       <div slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="cliContent.content=''">{{ $t('message.clean_up') }}</el-button>
         <el-button @click="cliDialogVisible = false">{{ $t('el.messagebox.cancel') }}</el-button>
-        <!-- <el-button type="primary" @click="consoleExec">{{ $t('el.messagebox.confirm') }}</el-button> -->
       </div>
     </el-dialog>
 

@@ -35,6 +35,7 @@ const en = {
     expand_all: 'Expand All',
     json_format_failed: 'Json Parse Failed',
     php_unserialize_format_failed: 'PHP Unserialize Failed',
+    clean_up: 'Clean Up',
   }
 };
 
