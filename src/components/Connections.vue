@@ -89,9 +89,21 @@
       },
       deleteConnection(connection) {
         console.log(connection);
-        storage.deleteConnection(connection);
 
-        this.initConnections();
+        this.$confirm(
+          this.$t('message.confirm_to_delete_connection'),
+          {type: 'warning'}
+        ).then(() => {
+          storage.deleteConnection(connection);
+          this.initConnections();
+
+          this.$message.success({
+            message: this.$t('message.delete_success'),
+            duration: 1000,
+          });
+        }).catch(() => {
+          //
+        });
       },
       initConnections() {
         let connections = storage.getConnections();

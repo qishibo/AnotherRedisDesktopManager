@@ -37,6 +37,7 @@ const cn = {
     php_unserialize_format_failed: 'PHP Unserialize 格式化失败',
     clean_up: '清空',
     redis_console: 'Redis 控制台',
+    confirm_to_delete_connection: '确认删除连接？',
   }
 };
 

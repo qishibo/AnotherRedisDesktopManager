@@ -37,6 +37,7 @@ const en = {
     php_unserialize_format_failed: 'PHP Unserialize Failed',
     clean_up: 'Clean Up',
     redis_console: 'Redis Console',
+    confirm_to_delete_connection: 'Confirm To Delete Connection ?',
   }
 };
 
