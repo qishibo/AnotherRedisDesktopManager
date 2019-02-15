@@ -36,6 +36,7 @@ const cn = {
     json_format_failed: 'Json 格式化失败',
     php_unserialize_format_failed: 'PHP Unserialize 格式化失败',
     clean_up: '清空',
+    redis_console: 'Redis 控制台',
   }
 };
 

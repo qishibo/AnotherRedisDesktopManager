@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-button type="primary" icon="el-icon-setting" @click="dialogFormVisible = true"></el-button>
+    <el-button type="primary" icon="el-icon-setting" @click="dialogFormVisible = true" plain></el-button>
 
     <el-dialog :title="$t('message.settings')" :visible.sync="dialogFormVisible">
       <el-form>
@@ -22,9 +22,11 @@
     </el-dialog>
 
     <!-- cli console -->
-    <el-button type="primary" icon="el-icon-news" @click="cliDialogVisible = true"></el-button>
+    <el-tooltip effect="dark" :content="$t('message.redis_console')" placement="bottom">
+      <el-button type="info" @click="cliDialogVisible = true" plain><i class="fa fa-terminal"></i></el-button>
+    </el-tooltip>
 
-    <el-dialog width="90%" :title="cliTitle" :visible.sync="cliDialogVisible">
+    <el-dialog width="90%" :title="cliTitle" @opened="openConsole" :visible.sync="cliDialogVisible">
       <el-form @submit.native.prevent>
         <el-form-item>
           <el-input id="cli-content" type="textarea" v-model="cliContent.content" :autosize="{ minRows: 7, maxRows: 8}" placeholder="console result" :disabled="true" class="cli-content-textarea"></el-input>
@@ -38,6 +40,7 @@
             placeholder=" Such As [set some_key some_value], Click Enter To Submit"
             :trigger-on-focus="false"
             @keyup.enter.native="consoleExec"
+            ref="cliParams"
           ></el-autocomplete>
         </el-form-item>
       </el-form>
@@ -166,6 +169,9 @@ export default {
       let textarea = document.getElementById('cli-content');
       textarea.scrollTop = textarea.scrollHeight;
     },
+    openConsole() {
+      this.$refs.cliParams.focus();
+    },
   },
   computed: {
     cliTitle() {
@@ -175,7 +181,7 @@ export default {
       // return host + ' DB' + dbIndex;
       console.log(host, dbIndex);
 
-      return 'Redis Console';
+      return this.$t('message.redis_console');
     }
   },
   mounted() {
