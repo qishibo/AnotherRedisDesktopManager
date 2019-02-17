@@ -40,6 +40,8 @@
             placeholder=" Such As [set some_key some_value], Click Enter To Submit"
             :trigger-on-focus="false"
             @keyup.enter.native="consoleExec"
+            @keyup.up.native="searchUp"
+            @keyup.down.native="searchDown"
             ref="cliParams"
           ></el-autocomplete>
         </el-form-item>
@@ -82,13 +84,14 @@ export default {
       ],
       cliDialogVisible: false,
       cliContent: {content: '', params: ''},
-      inputSuggestionItems: {},
+      inputSuggestionItems: new Set(),
+      historyIndex: 0,
     };
   },
   methods: {
     inputSuggestion(input, cb) {
       let suggestions = [];
-      for (var key in this.inputSuggestionItems) {
+      for (var key of this.inputSuggestionItems) {
         if (key.indexOf(input) !== -1) {
           suggestions.push({value: key});
         }
@@ -127,6 +130,7 @@ export default {
 
       this.cliContent.content += '> ' + params + "\n";
       this.cliContent.params = '';
+      this.historyIndex = 0;
 
       if (!promise) {
         this.cliContent.content += "Error!\n";
@@ -157,12 +161,53 @@ export default {
           }
 
           this.cliContent.content += append;
-          this.inputSuggestionItems[params] = 1;
+          this.inputSuggestionItems.delete(params);
+          this.inputSuggestionItems.add(params);
 
           this.$nextTick(() => {
             this.scrollToBottom();
           });
         });
+      }
+    },
+    searchUp() {
+      if (--this.historyIndex < (-this.inputSuggestionItems.size - 1)) {
+        this.historyIndex = -this.inputSuggestionItems.size - 1;
+      }
+
+      let stopIndex = this.inputSuggestionItems.size + this.historyIndex;
+
+      if (stopIndex < 0) {
+        this.cliContent.params = '';
+        return;
+      }
+
+      let counter = 0;
+
+      for (var i of this.inputSuggestionItems) {
+        if (counter++ == stopIndex) {
+          this.cliContent.params = i;
+        }
+      }
+    },
+    searchDown() {
+      if (++this.historyIndex > 0) {
+        this.historyIndex = 0;
+      }
+
+      let stopIndex = this.inputSuggestionItems.size + this.historyIndex;
+
+      if (stopIndex >= this.inputSuggestionItems.size) {
+        this.cliContent.params = '';
+        return;
+      }
+
+      let counter = 0;
+
+      for (var i of this.inputSuggestionItems) {
+        if (counter++ == stopIndex) {
+          this.cliContent.params = i;
+        }
       }
     },
     scrollToBottom() {
@@ -171,6 +216,7 @@ export default {
     },
     openConsole() {
       this.$refs.cliParams.focus();
+      this.historyIndex = 0;
     },
   },
   computed: {
