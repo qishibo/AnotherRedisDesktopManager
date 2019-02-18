@@ -38,7 +38,7 @@
         <!-- page -->
         <div class="pagenation">
           <el-button type="text" @click="pagePre" size="mini" icon="el-icon-arrow-left"></el-button>
-          <input @keyup.enter="jumpToPage" class="page-jumper el-input__inner" v-model="inputPageIndex"></input>
+          <input @keyup.enter="jumpToPage($event.target.value)" class="page-jumper el-input__inner" :value="pageIndex"></input>
           <el-button type="text" @click="pageNext" size="mini" icon="el-icon-arrow-right"></el-button>
         </div>
 
@@ -248,23 +248,28 @@
         let cursor = this.scanCursorList[this.pageIndex - 1];
         this.refreshKeyList(cursor);
       },
-      jumpToPage() {
-        console.log(this.inputPageIndex);
-        let cursor = this.scanCursorList[this.inputPageIndex - 1];
-        let inputPageIndex = this.inputPageIndex;
+      jumpToPage(targetPage) {
+         console.log('prepare to jump to', targetPage);
+
+        let cursor = this.scanCursorList[targetPage - 1];
 
         if (cursor === undefined) {
-          for (var i = (this.pageIndex + 1); i <= this.inputPageIndex; i++) {
+          for (var i = this.pageIndex; i < targetPage; i++) {
             this.pageNext();
           }
         }
 
         else {
-          this.refreshKeyList(cursor);
+          this.refreshKeyList(cursor, false);
         }
       },
       refreshKeyList(cursor, pushToCursorList) {
         let match = this.searchMatch ? this.searchMatch : '*';
+
+        if (!match.match(/\*/)) {
+          match = ('*' + match + '*');
+        }
+        console.log('match pattern', match);
 
         (pushToCursorList === undefined) && (pushToCursorList = true);
 
@@ -283,7 +288,6 @@
 
     mounted() {
       this.initConnections();
-      // this.getKeys1();
     }
   };
 </script>
