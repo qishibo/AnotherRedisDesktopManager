@@ -40,10 +40,10 @@
             placeholder=" Such As [set some_key some_value], Click Enter To Submit"
             :trigger-on-focus="false"
             @keyup.enter.native="consoleExec"
-            @keyup.up.native="searchUp"
-            @keyup.down.native="searchDown"
             ref="cliParams"
           ></el-autocomplete>
+          <!-- @keyup.enter.native="consoleExec" -->
+          <!-- @keyup.up.native="searchUp" -->
         </el-form-item>
       </el-form>
 
