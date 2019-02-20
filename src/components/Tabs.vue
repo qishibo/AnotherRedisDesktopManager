@@ -49,8 +49,11 @@
       this.$bus.$on('openStatus', () => {
         console.log('open status');
 
-        let config = this.$util.get('config');
-        let newTabName = config.host + ':' + config.port;
+        let client = this.$util.get('client');
+
+        let host = client.options.host;
+        let port = client.options.port;
+        let newTabName = host + ':' + port;
 
         this.tabs.push({
           name: newTabName,

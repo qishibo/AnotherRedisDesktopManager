@@ -68,6 +68,8 @@
 
 <script>
 import rawCommand from '@/rawCommand';
+import storage from '@/storage.js';
+import redisClient from '@/redisClient.js';
 
 export default {
   data() {
@@ -128,16 +130,16 @@ export default {
       let client = this.$util.get('client');
 
       if (!client) {
-        return 'Client Not Yet';
+        return 'Client Not Yet, Please Add A Connection First';
       }
 
       let host = client.options.host;
       let port = client.options.port;
       let dbIndex = client.selected_db;
 
-      let consoleName = host + ':' + port + ' DB' + (dbIndex ? dbIndex : '0');
+      let consoleName = host + ':' + port + " #db" + (dbIndex ? dbIndex : '0');
 
-      return this.$t('message.redis_console') + ' ' + consoleName;
+      return this.$t('message.redis_console') + ' [' + consoleName + ']';
     },
     consoleExec() {
       let params = this.cliContent.params;
@@ -233,10 +235,29 @@ export default {
       this.$refs.cliParams.focus();
       this.historyIndex = 0;
     },
+    initDefaultConnection() {
+      if (this.$util.get('client')) {
+        return true;
+      }
+
+      let connections = storage.getConnections();
+      let connection = connections[0];
+
+      if (!connection) {
+        return;
+      }
+
+      let client = redisClient.createConnection(connection.host, connection.port, connection.auth);
+
+      // set global client
+      this.$util.set('client', client);
+    },
   },
   mounted() {
     this.selectedLang = localStorage.lang || this.selectedLang;
     this.showSettings();
+
+    this.initDefaultConnection();
   }
 };
 </script>

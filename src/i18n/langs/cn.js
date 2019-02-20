@@ -38,6 +38,7 @@ const cn = {
     clean_up: '清空',
     redis_console: 'Redis 控制台',
     confirm_to_delete_connection: '确认删除连接？',
+    connection_exists: '连接配置已存在',
   }
 };
 

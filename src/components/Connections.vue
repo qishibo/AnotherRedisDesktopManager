@@ -101,7 +101,6 @@
 
         // set global client
         this.$util.set('client', this.connectionPool[key]);
-        this.$util.set('config', connection);
 
         // open status tab
         if (!this.openedStatus[key]) {
