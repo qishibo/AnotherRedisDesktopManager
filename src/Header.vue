@@ -26,10 +26,10 @@
       <el-button type="info" @click="cliDialogVisible = true" plain><i class="fa fa-terminal"></i></el-button>
     </el-tooltip>
 
-    <el-dialog width="90%" :title="cliTitle" @opened="openConsole" :visible.sync="cliDialogVisible">
+    <el-dialog width="90%" :title="consoleTitle()" @opened="openConsole" :visible.sync="cliDialogVisible">
       <el-form @submit.native.prevent>
         <el-form-item>
-          <el-input id="cli-content" type="textarea" v-model="cliContent.content" :autosize="{ minRows: 7, maxRows: 8}" placeholder="console result" :disabled="true" class="cli-content-textarea"></el-input>
+          <el-input id="cli-content" type="textarea" v-model="cliContent.content" :autosize="{ minRows: 8, maxRows: 8}" placeholder="console result" :disabled="true" class="cli-content-textarea"></el-input>
         </el-form-item>
 
         <el-form-item>
@@ -123,6 +123,21 @@ export default {
     changeLang(lang) {
       localStorage.lang = this.selectedLang;
       this.$i18n.locale = this.selectedLang;
+    },
+    consoleTitle() {
+      let client = this.$util.get('client');
+
+      if (!client) {
+        return 'Client Not Yet';
+      }
+
+      let host = client.options.host;
+      let port = client.options.port;
+      let dbIndex = client.selected_db;
+
+      let consoleName = host + ':' + port + ' DB' + (dbIndex ? dbIndex : '0');
+
+      return this.$t('message.redis_console') + ' ' + consoleName;
     },
     consoleExec() {
       let params = this.cliContent.params;
@@ -218,17 +233,6 @@ export default {
       this.$refs.cliParams.focus();
       this.historyIndex = 0;
     },
-  },
-  computed: {
-    cliTitle() {
-      let host = this.$util.get('config');
-      let dbIndex = this.$util.get('dbIndex');
-      // console.log(this.$util.get('client'));
-      // return host + ' DB' + dbIndex;
-      console.log(host, dbIndex);
-
-      return this.$t('message.redis_console');
-    }
   },
   mounted() {
     this.selectedLang = localStorage.lang || this.selectedLang;

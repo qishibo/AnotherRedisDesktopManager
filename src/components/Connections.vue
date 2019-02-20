@@ -6,7 +6,7 @@
         <!-- connection item -->
         <template slot="title">
           <span slot="title" :title="item.showName" class="connection-name">{{item.showName}}</span>
-          <i class="el-icon-search" @click.stop.prevent=""></i>
+          <!-- <i class="el-icon-search" @click.stop.prevent=""></i> -->
           <i class="el-icon-edit-outline"></i>
           <i class="el-icon-delete" @click.stop.prevent="deleteConnection(item)"></i>
         </template>
@@ -14,7 +14,7 @@
         <el-form :inline="true" class="demo-form-inline" size="mini">
           <el-form-item>
             <!-- db index select -->
-            <el-select v-model="selectedDbIndex" placeholder="DB" size="mini" @change="getKeys1">
+            <el-select v-model="selectedDbIndex" placeholder="DB" size="mini" @change="changeDb">
               <el-option
                 v-for="index in dbs"
                 :key="index"
@@ -26,43 +26,21 @@
 
           <!-- search match -->
           <el-form-item>
-            <el-input v-model="searchMatch" @keyup.enter.native="getKeys1" placeholder="Enter To Search" suffix-icon="el-icon-search" size="mini"></el-input>
+            <el-input v-model="searchMatch" @keyup.enter.native="changeMatchMode" placeholder="Enter To Search" suffix-icon="el-icon-search" size="mini"></el-input>
           </el-form-item>
 
         </el-form>
 
         <ul class="key-list">
-          <li class="key-item" v-for="key of keyList" @click="clickKey1(key)">{{key}}</li>
+          <li class="key-item" v-for="key of keyList" @click="clickKey(key)">{{key}}</li>
         </ul>
 
         <!-- page -->
         <div class="pagenation">
-          <el-button type="text" @click="pagePre" size="mini" icon="el-icon-arrow-left"></el-button>
+          <el-button ref="pagePreButton" type="text" @click="pagePre" :disabled="prePageButtonDisabled" size="mini" icon="el-icon-arrow-left"></el-button>
           <input @keyup.enter="jumpToPage($event.target.value)" class="page-jumper el-input__inner" :value="pageIndex"></input>
-          <el-button type="text" @click="pageNext" size="mini" icon="el-icon-arrow-right"></el-button>
+          <el-button ref="pageNextButton" type="text" @click="pageNext" :disabled="nextPageButtonDisabled" size="mini" icon="el-icon-arrow-right"></el-button>
         </div>
-
-
-
-        <!-- db item -->
-        <el-collapse @change="changeDB">
-          <el-collapse-item v-for="dbIndex of dbs" :key="dbIndex" :name="dbIndex">
-
-            <template slot="title">
-              <span class="connection-db">db{{dbIndex}}</span>
-              <i class="el-icon-search" @click=""></i>
-              <i class="el-icon-edit-outline"></i>
-              <i class="el-icon-delete"></i>
-            </template>
-
-            <div>
-              <ul class="key-list">
-                <li class="key-item" v-for="key of keys[dbIndex]" @click="clickKey(key, dbIndex)">{{key}}</li>
-              </ul>
-            </div>
-
-          </el-collapse-item>
-        </el-collapse>
 
       </el-submenu>
     </el-menu>
@@ -81,25 +59,27 @@
       return {
         dbs: [...Array(16).keys()],
         connections: [],
-        keys: {}, // {db0: ['k1', 'k2']}
-        keysPageSize: 5,
+        keysPageSize: 20,
         connectionPool: {},
         openedStatus: {},
-        openedDbs: [],
         selectedDbIndex: 0,
         searchMatch: '',
-        preCursor: 0,
         keyList: [],
         scanCursorList: [0],
-        prePageCounter: 0,
         pageIndex: 1,
-        inputPageIndex: 1,
+        // prePageButtonDisabled: false,
+        nextPageButtonDisabled: false,
       };
     },
     created() {
       this.$bus.$on('refreshKeyList', () => {
-        this.initDBKeys();
+        this.refreshKeyList();
       });
+    },
+    computed: {
+      prePageButtonDisabled() {
+        return this.pageIndex <= 1;
+      },
     },
     methods: {
       openConnection(index) {
@@ -129,7 +109,7 @@
           this.openedStatus[key] = true;
         }
 
-        this.getKeys1();
+        this.refreshKeyList();
       },
       deleteConnection(connection) {
         console.log(connection);
@@ -158,95 +138,33 @@
 
         this.connections = connections;
       },
-      getKeys(dbIndex) {
-        let keys = this.keys[dbIndex] ? this.keys[dbIndex] : [];
-        return keys;
-      },
-      getKeys1() {
+      changeDb() {
+        this.pageIndex = 1;
+        this.scanCursorList = [0];
+
         let dbIndex = this.selectedDbIndex;
-        let match = this.searchMatch ? this.searchMatch : '*';
-        let client = this.$util.get('client');
-
-        // this.preCursor = 0;
-        let cursor = this.scanCursorList[this.pageIndex - 1];
-
-        let selectPromise = client.selectAsync(dbIndex);
-
-        selectPromise.then(() => {
-          console.log('=======');
-          client.scanAsync(cursor, 'MATCH', match, 'COUNT', this.keysPageSize).then(reply => {
-            console.log(reply, dbIndex);
-            this.$util.set('dbIndex', dbIndex);
-            // this.preCursor = reply[0];
-            this.scanCursorList.push(reply[0]);
-            this.keyList = reply[1];
-            // Vue.set(this.keys, dbIndex, reply[1]);
-          });
-        });
-
-      },
-      changeDB(activeNames) {
-        let oldDbs = this.openedDbs;
-        let isClose = oldDbs.length > activeNames.length;
-
-        let preDbIndex = oldDbs.filter(function(v){ return activeNames.indexOf(v) === -1 }).concat(activeNames.filter(function(v){ return oldDbs.indexOf(v) === -1 }))[0];
-
-        console.log(preDbIndex, isClose ? 'close' : 'open');
-        this.openedDbs = activeNames;
-
-        if (isClose) {
-          return;
-        }
-
-        let selectPromise = this.$util.get('client').selectAsync(preDbIndex);
-
-        selectPromise.then(() => {
-          this.$util.set('dbIndex', preDbIndex);
-          this.initDBKeys();
-        });
-      },
-      initDBKeys() {
-        let client = this.$util.get('client');
-        let dbIndex = this.$util.get('dbIndex');
-
-        client.scanAsync(this.preCursor, 'MATCH', '*', 'COUNT', this.keysPageSize).then(reply => {
-          console.log(reply);
-
-          this.preCursor = reply[0];
-          Vue.set(this.keys, dbIndex, reply[1]);
-        });
-      },
-      clickKey(key, dbIndex) {
-        console.log('clicked key ' + key, 'dbIndex ' + dbIndex);
+        let c = this.$util.get('client');
+        console.log(c, c.server_info, '==--');
 
         this.$util.get('client').selectAsync(dbIndex).then(() => {
-          this.$util.set('dbIndex', dbIndex);
-          this.$bus.$emit('clickedKey', key);
+          this.refreshKeyList();
         });
       },
-      clickKey1(key) {
+      clickKey(key) {
         console.log('clicked key ' + key, 'dbIndex ' + this.selectedDbIndex);
 
-        this.$util.set('dbIndex', this.selectedDbIndex);
         this.$bus.$emit('clickedKey', key);
-        return;
-
-        this.$util.get('client').selectAsync(dbIndex).then(() => {
-          this.$bus.$emit('clickedKey', key);
-        });
       },
       pagePre() {
         if (--this.pageIndex < 1) {
           this.pageIndex = 1;
         }
 
-        let cursor = this.scanCursorList[this.pageIndex - 1];
-        this.refreshKeyList(cursor, false);
+        this.refreshKeyList(undefined, false);
       },
       pageNext() {
         this.pageIndex++;
-        let cursor = this.scanCursorList[this.pageIndex - 1];
-        this.refreshKeyList(cursor);
+        this.refreshKeyList();
       },
       jumpToPage(targetPage) {
          console.log('prepare to jump to', targetPage);
@@ -263,25 +181,34 @@
           this.refreshKeyList(cursor, false);
         }
       },
-      refreshKeyList(cursor, pushToCursorList) {
+      changeMatchMode() {
+        this.pageIndex = 1;
+        this.refreshKeyList();
+      },
+      refreshKeyList(cursor, pushToCursorList = true) {
+        (cursor === undefined) && (cursor = this.scanCursorList[this.pageIndex - 1]);
+
         let match = this.searchMatch ? this.searchMatch : '*';
 
         if (!match.match(/\*/)) {
           match = ('*' + match + '*');
         }
-        console.log('match pattern', match);
-
-        (pushToCursorList === undefined) && (pushToCursorList = true);
 
         this.$util.get('client').scanAsync(cursor, 'MATCH', match, 'COUNT', this.keysPageSize).then(reply => {
-          console.log(cursor, 'scan result', reply);
+          console.log(this.selectedDbIndex, cursor, match, 'scan result', reply);
 
-          // this.preCursor = reply[0];
+          if (reply[0] === '0') {
+            this.nextPageButtonDisabled = true;
+          }
+
+          else {
+            this.nextPageButtonDisabled = false;
+          }
+
           pushToCursorList && this.scanCursorList.push(reply[0]);
           this.keyList = reply[1];
 
-          console.log('pushed', this.scanCursorList);
-          // Vue.set(this.keys, dbIndex, reply[1]);
+          console.log('new cursor list', this.scanCursorList);
         });
       },
     },
