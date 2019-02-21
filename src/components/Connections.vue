@@ -1,13 +1,13 @@
 <template>
   <div>
-    <el-menu @open="openConnection" class="connection-menu" active-text-color="#ffd04b">
+    <el-menu ref="connectionMenu" @open="openConnection" class="connection-menu" active-text-color="#ffd04b">
       <el-submenu v-for="(item, index) of connections" :key="item.showName" :index="''+index">
 
         <!-- connection item -->
         <template slot="title">
           <span slot="title" :title="item.showName" class="connection-name">{{item.showName}}</span>
           <!-- <i class="el-icon-search" @click.stop.prevent=""></i> -->
-          <i class="el-icon-edit-outline"></i>
+          <i class="el-icon-edit-outline" @click.stop.prevent="showEditConnection(item, index)"></i>
           <i class="el-icon-delete" @click.stop.prevent="deleteConnection(item)"></i>
         </template>
 
@@ -45,6 +45,33 @@
       </el-submenu>
     </el-menu>
 
+    <!-- edit connection dialog -->
+    <el-dialog :title="$t('message.new_connection')" :visible.sync="editConnectionDialog">
+      <el-form v-model="afterEditData" label-width="80px">
+        <el-form-item label="Host">
+          <el-input v-model="afterEditData.host" autocomplete="off" placeholder="127.0.0.1"></el-input>
+        </el-form-item>
+
+        <el-form-item label="Port">
+          <el-input v-model="afterEditData.port" autocomplete="off" placeholder="6379"></el-input>
+        </el-form-item>
+
+        <el-form-item label="Auth">
+          <el-input v-model="afterEditData.auth" autocomplete="off"></el-input>
+        </el-form-item>
+
+        <el-form-item label="Alias Name">
+          <el-input v-model="afterEditData.name" autocomplete="off"></el-input>
+        </el-form-item>
+
+      </el-form>
+
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="editConnectionDialog = false">取 消</el-button>
+        <el-button type="primary" @click="editConnection">确 定</el-button>
+      </div>
+    </el-dialog>
+
   </div>
 
 </template>
@@ -69,6 +96,9 @@
         pageIndex: 1,
         // prePageButtonDisabled: false,
         nextPageButtonDisabled: false,
+        beforeEditData: {},
+        afterEditData: {},
+        editConnectionDialog: false,
       };
     },
     created() {
@@ -84,7 +114,7 @@
     methods: {
       openConnection(index) {
         // get connection config
-        let connections = storage.getConnections();
+        let connections = this.connections;
         let connection = connections[index];
 
         if (!connection) {
@@ -92,7 +122,7 @@
           return;
         }
 
-        let key = connection.host + connection.port + connection.name;
+        let key = this.getConnectionPoolKey(connection);
 
         if (!this.connectionPool[key]) {
           let client = redisClient.createConnection(connection.host, connection.port, connection.auth);
@@ -128,14 +158,65 @@
           //
         });
       },
+      showEditConnection(oldConnection, menuIndex) {
+        this.$confirm(
+          this.$t('message.close_to_edit_connection'),
+          {type: 'warning'}
+        ).then(() => {
+          this.closeConnection(oldConnection, menuIndex);
+          return;
+
+          this.editConnectionDialog = true;
+          this.beforeEditData = oldConnection;
+
+          this.afterEditData = JSON.parse(JSON.stringify(oldConnection));
+          delete this.afterEditData.showName;
+        }).catch(_ => {});
+      },
+      editConnection() {
+        console.log('edit connection',this.beforeEditData, this.afterEditData);
+
+        // not changed
+        if (
+          this.beforeEditData.host == this.afterEditData.host &&
+          this.beforeEditData.port == this.afterEditData.port &&
+          this.beforeEditData.name == this.afterEditData.name &&
+          this.beforeEditData.auth == this.afterEditData.auth
+          ) {
+          this.editConnectionDialog = false;
+          return;
+        }
+
+        if (storage.editConnection(this.beforeEditData, this.afterEditData) !== false) {
+          this.editConnectionDialog = false;
+          this.initConnections();
+          return;
+        }
+
+        this.$message.error({
+          message: this.$t('message.modify_failed'),
+          duration: 1000,
+        });
+      },
       initConnections() {
-        let connections = storage.getConnections();
+        let connections = storage.getConnections(true);
 
         for (var item of connections) {
           item.showName = item.name || item.host + '@' + item.port;
         }
 
         this.connections = connections;
+      },
+      closeConnection(connection, menuIndex) {
+        console.log('closing...', connection , menuIndex);
+
+        let key = this.getConnectionPoolKey(connection);
+        delete this.connectionPool[key];
+
+        this.$refs.connectionMenu.close('' + menuIndex);
+      },
+      getConnectionPoolKey(connection) {
+        return connection.host + connection.port + connection.name;
       },
       changeDb() {
         this.pageIndex = 1;

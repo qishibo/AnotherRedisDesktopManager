@@ -39,6 +39,7 @@ const cn = {
     redis_console: 'Redis 控制台',
     confirm_to_delete_connection: '确认删除连接？',
     connection_exists: '连接配置已存在',
+    close_to_edit_connection: '编辑前必须关闭连接，要继续么',
   }
 };
 

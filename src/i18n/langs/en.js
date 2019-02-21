@@ -39,6 +39,7 @@ const en = {
     redis_console: 'Redis Console',
     confirm_to_delete_connection: 'Confirm To Delete Connection ?',
     connection_exists: 'Connection Config Already Exists',
+    close_to_edit_connection: 'You Must Close The Connection Before Editing',
   }
 };
 

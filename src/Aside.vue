@@ -67,7 +67,7 @@ export default {
       !connection.host && (connection.host = '127.0.0.1');
       !connection.port && (connection.port = 6379);
 
-      if (this.connectionExists(connection)) {
+      if (storage.addConnection(connection) === false) {
         this.$message.error({
           message: this.$t('message.connection_exists'),
           duration: 2000,
@@ -77,24 +77,7 @@ export default {
       }
 
       this.dialogFormVisible = false;
-
-      storage.addConnection(connection);
       this.$refs.connections.initConnections();
-    },
-    connectionExists(connection) {
-      let connections = storage.getConnections();
-
-      for (var config of connections) {
-        if (
-          config.host == connection.host &&
-          config.port == connection.port &&
-          config.name == connection.name
-          ) {
-          return true;
-        }
-      }
-
-      return false;
     },
   }
 };

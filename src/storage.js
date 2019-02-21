@@ -1,43 +1,56 @@
 export default {
   addConnection (connection) {
     let connections = this.getConnections();
-    connections.push(connection);
+    let key = this.getConnectionKey(connection);
 
+    if (connections[key]) {
+      return false;
+    }
+
+    connections[key] = connection;
     this.setConnections(connections);
   },
 
-  getConnections () {
-    let connections = localStorage.connections || '[]';
+  getConnections (returnList = false) {
+    let connections = localStorage.connections || '{}';
+
     connections = JSON.parse(connections);
 
+    if (returnList) {
+      connections = Object.keys(connections).map(function(key) {
+        return connections[key];
+      });
+    }
+
     return connections;
+  },
+  editConnection(oldConnection, newConnection) {
+    let connections = this.getConnections();
+    let oldKey = this.getConnectionKey(oldConnection);
+
+    if (!connections[oldKey]) {
+      return false;
+    }
+
+    delete connections[oldKey];
+
+    let newKey = this.getConnectionKey(newConnection);
+
+    connections[newKey] = newConnection;
+    this.setConnections(connections);
   },
   setConnections(connections) {
     localStorage.connections = JSON.stringify(connections);
   },
   deleteConnection(connection) {
-    let host = connection.host;
-    let port = connection.port;
-    let auth = connection.auth;
-    let name = connection.name;
-
     let connections = this.getConnections();
+    let key = this.getConnectionKey(connection);
 
-    for (var i in connections) {
-      let item = connections[i];
-
-      if (
-        item.host === connection.host &&
-        item.port === connection.port &&
-        item.auth === connection.auth &&
-        item.name === connection.name
-        ) {
-        connections.splice(i, 1);
-      }
-    }
+    delete connections[key];
 
     this.setConnections(connections);
-
-    return connections;
-  }
+  },
+  getConnectionKey(connection) {
+    return connection.host + connection.port + connection.name;
+  },
 }
