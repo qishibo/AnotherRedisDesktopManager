@@ -38,7 +38,7 @@
         <!-- page -->
         <div class="pagenation">
           <el-button ref="pagePreButton" type="text" @click="pagePre(index)" :disabled="preButtonDisable(index)" size="mini" icon="el-icon-arrow-left"></el-button>
-          <input @keyup.enter="jumpToPage($event.target.value)" class="page-jumper el-input__inner" :value="getPageIndex(index)"></input>
+          <input @keyup.enter="jumpToPage(index, $event.target.value)" class="page-jumper el-input__inner" :value="getPageIndex(index)"></input>
           <el-button ref="pageNextButton" type="text" @click="pageNext(index)" :disabled="nextPageDisabled[index]" size="mini" icon="el-icon-arrow-right"></el-button>
         </div>
 
@@ -86,7 +86,7 @@
       return {
         dbs: [...Array(16).keys()],
         connections: [],
-        keysPageSize: 20,
+        keysPageSize: 5,
         connectionPool: {},
         openedStatus: {},
         selectedDbIndex: {},
@@ -262,19 +262,19 @@
         
         this.refreshKeyList();
       },
-      jumpToPage(targetPage) {
-         console.log('prepare to jump to', targetPage);
+      jumpToPage(menuIndex, targetPage) {
+        let nowPage = this.getPageIndex(menuIndex);
+        
+        console.log('prepare to jump to', targetPage);
 
-        let cursor = this.scanCursorList[targetPage - 1];
-
-        if (cursor === undefined) {
-          for (var i = this.pageIndex; i < targetPage; i++) {
+        if (nowPage < targetPage) {
+          for (var i = nowPage; i < targetPage; i++) {
             this.pageNext();
           }
         }
 
         else {
-          this.refreshKeyList(cursor, false);
+          this.refreshKeyList(false);
         }
       },
       getPageIndex(menuIndex) {

@@ -5,7 +5,7 @@
       <!-- add button -->
       <el-form :inline="true" size="small">
         <el-form-item>
-          <el-button size="small" type="primary" round @click="dialogFormVisible = true">{{ $t('message.add_new_line') }}</el-button>
+          <el-button size="small" type="primary" @click="dialogFormVisible = true">{{ $t('message.add_new_line') }}</el-button>
         </el-form-item>
       </el-form>
 
