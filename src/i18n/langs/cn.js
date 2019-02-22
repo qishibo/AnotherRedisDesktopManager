@@ -40,6 +40,7 @@ const cn = {
     confirm_to_delete_connection: '确认删除连接？',
     connection_exists: '连接配置已存在',
     close_to_edit_connection: '编辑前必须关闭连接，要继续么',
+    ttl_delete: '设置TTL<=0将删除该key，是否确认？',
   }
 };
 

@@ -123,6 +123,21 @@
         });
       },
       ttlKey: function () {
+        // ttl <= 0
+        if (this.keyTTL <= 0) {
+          this.$confirm(
+            this.$t('message.ttl_delete', {key: this.myRedisKey}),
+            {type: 'warning'}
+          ).then(() => {
+            this.setTTL();
+          }).catch(() => {});
+        }
+
+        else {
+          this.setTTL();
+        }
+      },
+      setTTL() {
         console.log('ttl key ' + this.myRedisKey + ' ttl is ' + this.keyTTL);
 
         let client = this.$util.get('client');
