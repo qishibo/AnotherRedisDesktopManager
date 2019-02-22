@@ -14,7 +14,7 @@
         <el-form :inline="true" class="demo-form-inline" size="mini">
           <el-form-item>
             <!-- db index select -->
-            <el-select v-model="selectedDbIndex" placeholder="DB" size="mini" @change="changeDb">
+            <el-select v-model="selectedDbIndex[index]" placeholder="DB" size="mini" @change="changeDb(index)">
               <el-option
                 v-for="index in dbs"
                 :key="index"
@@ -26,20 +26,20 @@
 
           <!-- search match -->
           <el-form-item>
-            <el-input v-model="searchMatch" @keyup.enter.native="changeMatchMode" placeholder="Enter To Search" suffix-icon="el-icon-search" size="mini"></el-input>
+            <el-input v-model="searchMatch[index]" @keyup.enter.native="changeMatchMode(index)" placeholder="Enter To Search" suffix-icon="el-icon-search" size="mini"></el-input>
           </el-form-item>
 
         </el-form>
 
         <ul class="key-list">
-          <li class="key-item" v-for="key of keyList" @click="clickKey(key)">{{key}}</li>
+          <li class="key-item" v-for="key of keyList[index]" @click="clickKey(key, index)">{{key}}</li>
         </ul>
 
         <!-- page -->
         <div class="pagenation">
-          <el-button ref="pagePreButton" type="text" @click="pagePre" :disabled="prePageButtonDisabled" size="mini" icon="el-icon-arrow-left"></el-button>
-          <input @keyup.enter="jumpToPage($event.target.value)" class="page-jumper el-input__inner" :value="pageIndex"></input>
-          <el-button ref="pageNextButton" type="text" @click="pageNext" :disabled="nextPageButtonDisabled" size="mini" icon="el-icon-arrow-right"></el-button>
+          <el-button ref="pagePreButton" type="text" @click="pagePre(index)" :disabled="preButtonDisable(index)" size="mini" icon="el-icon-arrow-left"></el-button>
+          <input @keyup.enter="jumpToPage($event.target.value)" class="page-jumper el-input__inner" :value="getPageIndex(index)"></input>
+          <el-button ref="pageNextButton" type="text" @click="pageNext(index)" :disabled="nextPageDisabled[index]" size="mini" icon="el-icon-arrow-right"></el-button>
         </div>
 
       </el-submenu>
@@ -89,13 +89,12 @@
         keysPageSize: 20,
         connectionPool: {},
         openedStatus: {},
-        selectedDbIndex: 0,
-        searchMatch: '',
+        selectedDbIndex: {},
+        searchMatch: {},
         keyList: [],
-        scanCursorList: [0],
-        pageIndex: 1,
-        // prePageButtonDisabled: false,
-        nextPageButtonDisabled: false,
+        scanCursorList: {},
+        pageIndex: {},
+        nextPageDisabled: {},
         beforeEditData: {},
         afterEditData: {},
         editConnectionDialog: false,
@@ -105,11 +104,6 @@
       this.$bus.$on('refreshKeyList', () => {
         this.refreshKeyList();
       });
-    },
-    computed: {
-      prePageButtonDisabled() {
-        return this.pageIndex <= 1;
-      },
     },
     methods: {
       openConnection(index) {
@@ -122,23 +116,25 @@
           return;
         }
 
-        let key = this.getConnectionPoolKey(connection);
-
-        if (!this.connectionPool[key]) {
-          let client = redisClient.createConnection(connection.host, connection.port, connection.auth);
-          this.connectionPool[key] = client;
-        }
-
-        // set global client
-        this.$util.set('client', this.connectionPool[key]);
+        this.getDbIndex(index);
+        this.setGlobalConnection(index, connection);
 
         // open status tab
-        if (!this.openedStatus[key]) {
+        if (!this.openedStatus[index]) {
           this.$bus.$emit('openStatus');
-          this.openedStatus[key] = true;
+          this.openedStatus[index] = true;
         }
 
         this.refreshKeyList();
+      },
+      setGlobalConnection(menuIndex, connection) {
+        if (!this.connectionPool[menuIndex]) {
+          let client = redisClient.createConnection(connection.host, connection.port, connection.auth, menuIndex);
+          this.connectionPool[menuIndex] = client;
+        }
+
+        // set global client
+        this.$util.set('client', this.connectionPool[menuIndex]);
       },
       deleteConnection(connection) {
         console.log(connection);
@@ -218,32 +214,52 @@
       getConnectionPoolKey(connection) {
         return connection.host + connection.port + connection.name;
       },
-      changeDb() {
-        this.pageIndex = 1;
-        this.scanCursorList = [0];
+      changeDb(menuIndex) {
+        this.resetDb(menuIndex);
 
-        let dbIndex = this.selectedDbIndex;
-        let c = this.$util.get('client');
-        console.log(c, c.server_info, '==--');
+        let dbIndex = this.getDbIndex(menuIndex);
+
+        this.setGlobalConnection(menuIndex);
 
         this.$util.get('client').selectAsync(dbIndex).then(() => {
           this.refreshKeyList();
         });
       },
-      clickKey(key) {
-        console.log('clicked key ' + key, 'dbIndex ' + this.selectedDbIndex);
-
-        this.$bus.$emit('clickedKey', key);
-      },
-      pagePre() {
-        if (--this.pageIndex < 1) {
-          this.pageIndex = 1;
+      getDbIndex(menuIndex) {
+        if (this.selectedDbIndex[menuIndex] === undefined) {
+          this.selectedDbIndex[menuIndex] = 0;
         }
 
-        this.refreshKeyList(undefined, false);
+        return this.selectedDbIndex[menuIndex];
       },
-      pageNext() {
-        this.pageIndex++;
+      resetDb(menuIndex) {
+        this.$set(this.pageIndex, menuIndex, 1);
+        this.scanCursorList[menuIndex] = [0];
+      },
+      clickKey(key, menuIndex) {
+        console.log('clicked key ' + key, 'dbIndex ' + this.selectedDbIndex);
+
+        this.setGlobalConnection(menuIndex);
+        this.$bus.$emit('clickedKey', key);
+      },
+      pagePre(menuIndex) {
+        let pageIndex = this.getPageIndex(menuIndex);
+
+        if (--pageIndex < 1) {
+          pageIndex = 1;
+        }
+
+        this.$set(this.pageIndex, menuIndex, pageIndex);
+        this.setGlobalConnection(menuIndex);
+
+        this.refreshKeyList(false);
+      },
+      pageNext(menuIndex) {
+        let pageIndex = this.getPageIndex(menuIndex);
+
+        this.$set(this.pageIndex, menuIndex, ++pageIndex);
+        this.setGlobalConnection(menuIndex);
+        
         this.refreshKeyList();
       },
       jumpToPage(targetPage) {
@@ -261,32 +277,70 @@
           this.refreshKeyList(cursor, false);
         }
       },
-      changeMatchMode() {
-        this.pageIndex = 1;
+      getPageIndex(menuIndex) {
+        if (this.pageIndex[menuIndex] === undefined) {
+          this.pageIndex[menuIndex] = 1;
+        }
+
+        return this.pageIndex[menuIndex];
+      },
+      preButtonDisable(menuIndex) {
+        let pageIndex = this.getPageIndex(menuIndex);
+        return pageIndex <= 1;
+      },
+      changeMatchMode(menuIndex) {
+        this.resetDb(menuIndex);
+        this.setGlobalConnection(menuIndex);
         this.refreshKeyList();
       },
-      refreshKeyList(cursor, pushToCursorList = true) {
-        (cursor === undefined) && (cursor = this.scanCursorList[this.pageIndex - 1]);
+      getKeyList(connection) {
+        let key = this.getConnectionPoolKey(connection);
 
-        let match = this.searchMatch ? this.searchMatch : '*';
+      },
+      getScanCursor(menuIndex) {
+        if (this.scanCursorList[menuIndex] === undefined) {
+          this.scanCursorList[menuIndex] = [0];
+        }
+
+        let pageIndex = this.getPageIndex(menuIndex);
+        let cursorList = this.scanCursorList[menuIndex];
+
+        return cursorList[pageIndex - 1];
+      },
+      getMatchMode(menuIndex) {
+        if (this.searchMatch[menuIndex] === undefined) {
+          this.searchMatch[menuIndex] = '';
+        }
+
+        let match = this.searchMatch[menuIndex];
+        match = match ? match : '*';
 
         if (!match.match(/\*/)) {
           match = ('*' + match + '*');
         }
 
-        this.$util.get('client').scanAsync(cursor, 'MATCH', match, 'COUNT', this.keysPageSize).then(reply => {
+        return match;
+      },
+      refreshKeyList(pushToCursorList = true) {
+        let client = this.$util.get('client');
+        let menuIndex = client.options.menu_index;
+
+        let cursor = this.getScanCursor(menuIndex);
+        let match = this.getMatchMode(menuIndex);
+
+        client.scanAsync(cursor, 'MATCH', match, 'COUNT', this.keysPageSize).then(reply => {
           console.log(this.selectedDbIndex, cursor, match, 'scan result', reply);
 
           if (reply[0] === '0') {
-            this.nextPageButtonDisabled = true;
+            this.$set(this.nextPageDisabled, menuIndex, true);
           }
 
           else {
-            this.nextPageButtonDisabled = false;
+            this.$set(this.nextPageDisabled, menuIndex, false);
           }
 
-          pushToCursorList && this.scanCursorList.push(reply[0]);
-          this.keyList = reply[1];
+          pushToCursorList && this.scanCursorList[menuIndex].push(reply[0]);
+          this.$set(this.keyList, menuIndex, reply[1]);
 
           console.log('new cursor list', this.scanCursorList);
         });
