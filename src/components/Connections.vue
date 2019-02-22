@@ -256,24 +256,27 @@
       },
       pageNext(menuIndex) {
         let pageIndex = this.getPageIndex(menuIndex);
+        let cursorListLength = this.scanCursorList[menuIndex].length;
 
         this.$set(this.pageIndex, menuIndex, ++pageIndex);
         this.setGlobalConnection(menuIndex);
-        
-        this.refreshKeyList();
+
+        this.refreshKeyList(pageIndex >= cursorListLength);
       },
       jumpToPage(menuIndex, targetPage) {
         let nowPage = this.getPageIndex(menuIndex);
         
-        console.log('prepare to jump to', targetPage);
+        console.log('prepare to jump to',nowPage , targetPage);
 
         if (nowPage < targetPage) {
           for (var i = nowPage; i < targetPage; i++) {
-            this.pageNext();
+            this.pageNext(menuIndex);
           }
         }
 
         else {
+          this.$set(this.pageIndex, menuIndex, targetPage);
+          this.setGlobalConnection(menuIndex);
           this.refreshKeyList(false);
         }
       },
