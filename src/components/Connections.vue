@@ -56,7 +56,7 @@
     </el-menu>
 
     <!-- edit connection dialog -->
-    <el-dialog :title="$t('message.new_connection')" :visible.sync="editConnectionDialog">
+    <el-dialog :title="$t('message.edit_connection')" :visible.sync="editConnectionDialog">
       <el-form v-model="afterEditData" label-width="80px">
         <el-form-item label="Host">
           <el-input v-model="afterEditData.host" autocomplete="off" placeholder="127.0.0.1"></el-input>
@@ -169,8 +169,8 @@
           this.$t('message.close_to_edit_connection'),
           {type: 'warning'}
         ).then(() => {
-          this.closeConnection(oldConnection, menuIndex);
-          return;
+          this.closeAllConnection(oldConnection, menuIndex);
+          // return;
 
           this.editConnectionDialog = true;
           this.beforeEditData = oldConnection;
@@ -220,6 +220,19 @@
         delete this.connectionPool[key];
 
         this.$refs.connectionMenu.close('' + menuIndex);
+      },
+      closeAllConnection() {
+        console.log('closing all...');
+
+        let connections = storage.getConnections(true);
+
+        for (var i in connections) {
+          this.$refs.connectionMenu.close('' + i);
+        }
+
+        this.connectionPool = {};
+        this.openedStatus = {};
+        this.$bus.$emit('removeAllTab');
       },
       getConnectionPoolKey(connection) {
         return connection.host + connection.port + connection.name;

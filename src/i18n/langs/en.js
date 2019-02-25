@@ -1,6 +1,7 @@
 const en = {
   message: {
     new_connection: 'New Connection',
+    edit_connection: 'Edit Connection',
     add_new_line: 'Add New Line',
     redis_version: 'Redis Verson',
     process_id: 'Process ID',

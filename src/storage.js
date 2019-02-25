@@ -15,6 +15,7 @@ export default {
     let connections = localStorage.connections || '{}';
 
     connections = JSON.parse(connections);
+    connections = this.sortByKey(connections);
 
     if (returnList) {
       connections = Object.keys(connections).map(function(key) {
@@ -52,5 +53,9 @@ export default {
   },
   getConnectionKey(connection) {
     return connection.host + connection.port + connection.name;
+  },
+  sortByKey(obj) {
+    return Object.keys(obj).sort()
+        .reduce((acc, c) => { acc[c] = obj[c]; return acc }, {})
   },
 }

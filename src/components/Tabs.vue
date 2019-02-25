@@ -69,6 +69,12 @@
         console.log('removing pre tab...');
         this.removeTab(this.selectedTabName);
       });
+
+      // remove all tab
+      this.$bus.$on('removeAllTab', () => {
+        console.log('removing all tab...');
+        this.tabs = [];
+      });
     },
     methods: {
       removeTab(removeName) {

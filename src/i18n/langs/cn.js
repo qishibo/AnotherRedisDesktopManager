@@ -1,6 +1,7 @@
 const cn = {
   message: {
     new_connection: '新建连接',
+    edit_connection: '编辑连接',
     add_new_line: '添加新行',
     redis_version: 'Redis版本',
     process_id: '进程ID',
