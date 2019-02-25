@@ -38,7 +38,16 @@
         <!-- page -->
         <div class="pagenation">
           <el-button ref="pagePreButton" type="text" @click="pagePre(index)" :disabled="preButtonDisable(index)" size="mini" icon="el-icon-arrow-left"></el-button>
-          <input @keyup.enter="jumpToPage(index, $event.target.value)" class="page-jumper el-input__inner" :value="getPageIndex(index)"></input>
+          <input 
+            :value="getPageIndex(index)"
+            ref="pageIndexInput"
+            @click="$event.target.select()" 
+            @keyup.up="$event.target.value=parseInt($event.target.value) + 1" 
+            @keyup.down="$event.target.value = pageIndexDown($event.target.value)" 
+            @keyup.enter="jumpToPage(index, $event.target.value)" 
+            class="page-jumper el-input__inner"
+          >
+          </input>
           <el-button ref="pageNextButton" type="text" @click="pageNext(index)" :disabled="nextPageDisabled[index]" size="mini" icon="el-icon-arrow-right"></el-button>
         </div>
 
@@ -278,6 +287,13 @@
         }
       },
       jumpToPage(menuIndex, targetPage) {
+        targetPage = parseInt(targetPage);
+
+        if (isNaN(targetPage) || targetPage <= 0) {
+          this.$refs.pageIndexInput[menuIndex].value = 1;
+          targetPage = 1;
+        }
+
         let nowPage = this.getPageIndex(menuIndex);
         let cursorListLength = this.scanCursorList[menuIndex].length;
 
@@ -311,6 +327,13 @@
         this.resetDb(menuIndex);
         this.setGlobalConnection(menuIndex);
         this.refreshKeyList();
+      },
+      pageIndexDown(pageIndex) {
+        if (pageIndex <= 1) {
+          return pageIndex;
+        }
+
+        return --pageIndex;
       },
       getKeyList(connection) {
         let key = this.getConnectionPoolKey(connection);
