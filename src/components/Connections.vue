@@ -263,20 +263,34 @@
 
         this.refreshKeyList(pageIndex >= cursorListLength);
       },
+      pageNextRecursive(menuIndex, targetPage) {
+        let pageIndex = this.getPageIndex(menuIndex);
+        let cursorListLength = this.scanCursorList[menuIndex].length;
+        
+        console.log('begin jump recursive...',pageIndex , targetPage);
+
+        if (pageIndex < targetPage) {
+          this.$set(this.pageIndex, menuIndex, ++pageIndex);
+
+          this.refreshKeyList(pageIndex >= cursorListLength).then(() => {
+            this.pageNextRecursive(menuIndex, targetPage);
+          });
+        }
+      },
       jumpToPage(menuIndex, targetPage) {
         let nowPage = this.getPageIndex(menuIndex);
+        let cursorListLength = this.scanCursorList[menuIndex].length;
+
+        this.setGlobalConnection(menuIndex);
         
         console.log('prepare to jump to',nowPage , targetPage);
 
-        if (nowPage < targetPage) {
-          for (var i = nowPage; i < targetPage; i++) {
-            this.pageNext(menuIndex);
-          }
+        if (targetPage >= cursorListLength) {
+          this.pageNextRecursive(menuIndex, targetPage);
         }
 
         else {
           this.$set(this.pageIndex, menuIndex, targetPage);
-          this.setGlobalConnection(menuIndex);
           this.refreshKeyList(false);
         }
       },
@@ -331,7 +345,7 @@
         let cursor = this.getScanCursor(menuIndex);
         let match = this.getMatchMode(menuIndex);
 
-        client.scanAsync(cursor, 'MATCH', match, 'COUNT', this.keysPageSize).then(reply => {
+        let promise = client.scanAsync(cursor, 'MATCH', match, 'COUNT', this.keysPageSize).then(reply => {
           console.log(this.selectedDbIndex, cursor, match, 'scan result', reply);
 
           if (reply[0] === '0') {
@@ -347,6 +361,8 @@
 
           console.log('new cursor list', this.scanCursorList);
         });
+
+        return promise;
       },
     },
 
