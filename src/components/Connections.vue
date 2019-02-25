@@ -286,6 +286,8 @@
         console.log('prepare to jump to',nowPage , targetPage);
 
         if (targetPage >= cursorListLength) {
+          // to biggest page index
+          this.$set(this.pageIndex, menuIndex, cursorListLength - 1);
           this.pageNextRecursive(menuIndex, targetPage);
         }
 
