@@ -288,9 +288,16 @@
       },
       pageNextRecursive(menuIndex, targetPage) {
         let pageIndex = this.getPageIndex(menuIndex);
-        let cursorListLength = this.scanCursorList[menuIndex].length;
-        
+        let cursorList = this.scanCursorList[menuIndex];
+        let cursorListLength = cursorList.length;
+
         console.log('begin jump recursive...',pageIndex , targetPage);
+
+        // last page
+        if (cursorList[cursorListLength - 1] == '0') {
+          return false;
+        }
+        
 
         if (pageIndex < targetPage) {
           this.$set(this.pageIndex, menuIndex, ++pageIndex);
@@ -318,7 +325,19 @@
         if (targetPage >= cursorListLength) {
           // to biggest page index
           this.$set(this.pageIndex, menuIndex, cursorListLength - 1);
-          this.pageNextRecursive(menuIndex, targetPage);
+          let recursiveResult = this.pageNextRecursive(menuIndex, targetPage);
+
+          // last page
+          if (recursiveResult === false) {
+            this.$refs.pageIndexInput[menuIndex].value = this.pageIndex[menuIndex];
+
+            this.$message.error({
+              message: this.$t('message.max_page_reached'),
+              duration: 2000,
+            });
+
+            return;
+          }
         }
 
         else {
@@ -397,7 +416,6 @@
         return promise;
       },
     },
-
     mounted() {
       this.initConnections();
     }

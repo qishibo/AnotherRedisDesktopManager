@@ -42,6 +42,7 @@ const en = {
     connection_exists: 'Connection Config Already Exists',
     close_to_edit_connection: 'You Must Close The Connection Before Editing',
     ttl_delete: 'Set TTL<=0 Will Delete The Key Directly',
+    max_page_reached: 'Max Page Reached',
   }
 };
 
