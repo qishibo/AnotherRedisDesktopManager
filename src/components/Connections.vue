@@ -42,10 +42,11 @@
             :value="getPageIndex(index)"
             ref="pageIndexInput"
             @click="$event.target.select()" 
-            @keyup.up="$event.target.value=parseInt($event.target.value) + 1" 
-            @keyup.down="$event.target.value = pageIndexDown($event.target.value)" 
             @keyup.enter="jumpToPage(index, $event.target.value)" 
             class="page-jumper el-input__inner"
+            type="number"
+            min="1"
+            step="1"
           >
           </input>
           <el-button ref="pageNextButton" type="text" @click="pageNext(index)" :disabled="nextPageDisabled[index]" size="mini" icon="el-icon-arrow-right"></el-button>
@@ -328,13 +329,6 @@
         this.setGlobalConnection(menuIndex);
         this.refreshKeyList();
       },
-      pageIndexDown(pageIndex) {
-        if (pageIndex <= 1) {
-          return pageIndex;
-        }
-
-        return --pageIndex;
-      },
       getKeyList(connection) {
         let key = this.getConnectionPoolKey(connection);
 
@@ -463,5 +457,11 @@
     font-size: 50%;
     margin: 0 10px;
     text-align: center;
+  }
+
+  .pagenation input::-webkit-outer-spin-button,
+  .pagenation input::-webkit-inner-spin-button {
+    -webkit-appearance: none !important;
+    margin: 0;
   }
 </style>
