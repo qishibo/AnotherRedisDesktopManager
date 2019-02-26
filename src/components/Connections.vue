@@ -96,7 +96,7 @@
       return {
         dbs: [...Array(16).keys()],
         connections: [],
-        keysPageSize: 5,
+        keysPageSize: 20,
         connectionPool: {},
         openedStatus: {},
         selectedDbIndex: {},

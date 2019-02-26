@@ -1,0 +1,7 @@
+[Desktop Entry]
+Exec=FOLDER_PATH/node_redis_client
+Name=Redis Manager Linux
+StartupNotify=false
+Terminal=false
+Type=Application
+Icon=FOLDER_PATH/../logo.png
