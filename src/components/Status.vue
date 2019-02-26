@@ -126,6 +126,7 @@
         refreshTimer: null,
         refreshInterval: 2000,
         connectionStatus: {},
+        statusConnection: null,
       };
     },
     computed: {
@@ -159,8 +160,11 @@
       },
     },
     methods: {
+      initConnection() {
+        this.statusConnection = this.$util.get('client');;
+      },
       initShow() {
-        let client = this.$util.get('client');
+        let client = this.statusConnection;
 
         client.infoAsync().then(reply => {
           let status = this.initStatus(reply);
@@ -211,6 +215,7 @@
       },
     },
     mounted() {
+      this.initConnection();
       this.initShow();
       this.refreshInit();
     },
