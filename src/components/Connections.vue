@@ -101,6 +101,7 @@
         openedStatus: {},
         selectedDbIndex: {},
         searchMatch: {},
+        searchPageSize: 10000,
         keyList: [],
         scanCursorList: {},
         pageIndex: {},
@@ -385,9 +386,10 @@
 
         let cursor = this.getScanCursor(menuIndex);
         let match = this.getMatchMode(menuIndex);
-        let promise = client.scanAsync(cursor, 'MATCH', match, 'COUNT', this.keysPageSize).then(reply => {
-          console.log(this.selectedDbIndex, cursor, match, 'scan result', reply);
+        // let promise = client.scanAsync(cursor, 'MATCH', match, 'COUNT', this.keysPageSize).then();
+        let pageSize = (match === '*') ? this.keysPageSize : this.searchPageSize;
 
+        let promise = this.beginScanning(cursor, match, pageSize, reply => {
           if (reply[0] === '0') {
             this.$set(this.nextPageDisabled, menuIndex, true);
           }
@@ -400,6 +402,22 @@
           this.$set(this.keyList, menuIndex, reply[1]);
 
           console.log('new cursor list', this.scanCursorList);
+        });
+
+        return promise;
+      },
+      beginScanning(cursor, match, count, callback, recursive = true) {
+        let client = this.$util.get('client');
+
+        let promise = client.scanAsync(cursor, 'MATCH', match, 'COUNT', count).then((reply) => {
+          console.log('cursor:' + cursor + ' count: ' + count + ' match:' + match, 'scan result', reply);
+
+          // empty result
+          if (recursive && (reply[0] !== '0') && (reply[1].length === 0)) {
+            return this.beginScanning(reply[0], match, count, callback, recursive);
+          }
+
+          callback && callback(reply);
         });
 
         return promise;
