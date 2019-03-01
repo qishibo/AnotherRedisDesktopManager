@@ -119,107 +119,107 @@
 </template>
 
 <script>
-  export default {
-    data() {
-      return {
-        autoRefresh: false,
-        refreshTimer: null,
-        refreshInterval: 2000,
-        connectionStatus: {},
-        statusConnection: null,
-      };
-    },
-    computed: {
-      DBKeys() {
-        let dbs = [];
+export default {
+  data() {
+    return {
+      autoRefresh: false,
+      refreshTimer: null,
+      refreshInterval: 2000,
+      connectionStatus: {},
+      statusConnection: null,
+    };
+  },
+  computed: {
+    DBKeys() {
+      const dbs = [];
 
-        for (var i in this.connectionStatus) {
-          if (i.startsWith('db')) {
-            let item = this.connectionStatus[i];
-            let array = item.split(',');
+      for (const i in this.connectionStatus) {
+        if (i.startsWith('db')) {
+          const item = this.connectionStatus[i];
+          const array = item.split(',');
 
-            dbs.push({
-              db: i,
-              keys: array[0].split('=')[1],
-              expires: array[1].split('=')[1],
-              avg_ttl: array[2].split('=')[1],
-            });
-          }
+          dbs.push({
+            db: i,
+            keys: array[0].split('=')[1],
+            expires: array[1].split('=')[1],
+            avg_ttl: array[2].split('=')[1],
+          });
         }
+      }
 
-        return dbs;
-      },
-      AllRedisInfo() {
-        let infos = [];
-
-        for (var i in this.connectionStatus) {
-          infos.push({key: i, value: this.connectionStatus[i]});
-        }
-
-        return infos;
-      },
+      return dbs;
     },
-    methods: {
-      initConnection() {
-        this.statusConnection = this.$util.get('client');;
-      },
-      initShow() {
-        let client = this.statusConnection;
+    AllRedisInfo() {
+      const infos = [];
 
-        client.infoAsync().then(reply => {
-          let status = this.initStatus(reply);
-          this.connectionStatus = status;
-        });
-      },
-      refreshInit() {
-        console.log('auto refresh ', this.autoRefresh);
+      for (const i in this.connectionStatus) {
+        infos.push({ key: i, value: this.connectionStatus[i] });
+      }
 
-        this.refreshTimer && clearInterval(this.refreshTimer);
+      return infos;
+    },
+  },
+  methods: {
+    initConnection() {
+      this.statusConnection = this.$util.get('client');
+    },
+    initShow() {
+      const client = this.statusConnection;
 
-        if (this.autoRefresh) {
+      client.infoAsync().then((reply) => {
+        const status = this.initStatus(reply);
+        this.connectionStatus = status;
+      });
+    },
+    refreshInit() {
+      console.log('auto refresh ', this.autoRefresh);
+
+      this.refreshTimer && clearInterval(this.refreshTimer);
+
+      if (this.autoRefresh) {
+        this.initShow();
+
+        this.refreshTimer = setInterval(() => {
+          console.log('refreshing...');
           this.initShow();
-
-          this.refreshTimer = setInterval(() => {
-            console.log('refreshing...');
-            this.initShow();
-          }, this.refreshInterval);
-        }
-      },
-      sortByKeys(a, b) {
-        return a.keys - b.keys;
-      },
-      sortByExpires(a, b) {
-        return a.expires - b.expires;
-      },
-      sortByTTL(a, b) {
-        return a.avg_ttl - b.avg_ttl;
-      },
-      initStatus(content) {
-        if (!content) {
-          return {};
-        }
-
-        content = content.split("\n");
-        let lines = {};
-
-        for (var i of content) {
-          i = i.replace(/\s/ig,'');
-          if (i.startsWith('#') || !i) continue;
-
-          let kv = i.split(':');
-
-          lines[kv[0]] = kv[1];
-        }
-
-        return lines;
-      },
+        }, this.refreshInterval);
+      }
     },
-    mounted() {
-      this.initConnection();
-      this.initShow();
-      this.refreshInit();
+    sortByKeys(a, b) {
+      return a.keys - b.keys;
     },
-  };
+    sortByExpires(a, b) {
+      return a.expires - b.expires;
+    },
+    sortByTTL(a, b) {
+      return a.avg_ttl - b.avg_ttl;
+    },
+    initStatus(content) {
+      if (!content) {
+        return {};
+      }
+
+      content = content.split('\n');
+      const lines = {};
+
+      for (let i of content) {
+        i = i.replace(/\s/ig, '');
+        if (i.startsWith('#') || !i) continue;
+
+        const kv = i.split(':');
+
+        lines[kv[0]] = kv[1];
+      }
+
+      return lines;
+    },
+  },
+  mounted() {
+    this.initConnection();
+    this.initShow();
+    this.refreshInit();
+  },
+};
 </script>
 
 <style type="text/css">

@@ -41,128 +41,124 @@
 </template>
 
 <script>
-  export default {
-    data() {
-      return {
-        myRedisKey: this.redisKey,
-        myRedisKeyLast: this.redisKey,
-        keyTTL: -1,
-      };
+export default {
+  data() {
+    return {
+      myRedisKey: this.redisKey,
+      myRedisKeyLast: this.redisKey,
+      keyTTL: -1,
+    };
+  },
+  props: ['redisKey', 'keyType'],
+  methods: {
+    initShow() {
+      const redisKey = this.myRedisKey;
+      const client = this.$util.get('client');
+
+      if (!redisKey) {
+        return;
+      }
+
+      client.ttlAsync(redisKey).then((reply) => {
+        console.log(redisKey, reply);
+        this.keyTTL = reply;
+      });
     },
-    props: ['redisKey', 'keyType'],
-    methods: {
-      initShow() {
-        let redisKey = this.myRedisKey;
-        let client = this.$util.get('client');
+    deleteKey() {
+      this.$confirm(
+        this.$t('message.confirm_to_delete_key', { key: this.myRedisKey }),
+        { type: 'warning' },
+      ).then(() => {
+        const client = this.$util.get('client');
 
-        if (!redisKey) {
-          return;
-        }
+        client.delAsync(this.myRedisKey).then((reply) => {
+          console.log(`delete ${this.myRedisKey}`, reply);
 
-        client.ttlAsync(redisKey).then(reply => {
-          console.log(redisKey, reply);
-          this.keyTTL = reply;
-        })
-      },
-      deleteKey: function () {
-        this.$confirm(
-          this.$t('message.confirm_to_delete_key', {key: this.myRedisKey}),
-          {type: 'warning'}
-        ).then(() => {
-          let client = this.$util.get('client');
-
-          client.delAsync(this.myRedisKey).then(reply => {
-            console.log('delete ' + this.myRedisKey, reply);
-
-            if (reply === 1) {
-              this.$message.success({
-                message: this.myRedisKey + this.$t('message.delete_success'),
-                duration: 1000,
-              });
-
-              this.$bus.$emit('removePreTab');
-              this.refreshKeyList();
-            }
-
-            else {
-              this.$message.error({
-                message: this.myRedisKey + this.$t('message.delete_failed'),
-                duration: 1000,
-              });
-            }
-          });
-        });
-      },
-      refreshKey: function () {
-        console.log('refreshing ' + this.myRedisKey);
-
-        this.$bus.$emit('refreshKey', this.myRedisKey);
-        this.initShow();
-      },
-      renameKey: function () {
-        console.log('remane key ' + this.redisKey + ' new key is ' + this.myRedisKey);
-
-        let client = this.$util.get('client');
-
-        if (this.myRedisKeyLast === this.myRedisKey) {
-          return;
-        }
-
-        client.renameAsync(this.myRedisKeyLast, this.myRedisKey).then(reply => {
-          console.log('rename result ' + this.redisKey + ' ' + this.myRedisKey, reply);
-
-          if (reply === 'OK') {
+          if (reply === 1) {
             this.$message.success({
-              message: this.myRedisKeyLast + ' rename to ' + this.myRedisKey + ' ' + this.$t('message.modify_success'),
+              message: this.myRedisKey + this.$t('message.delete_success'),
               duration: 1000,
             });
 
-            this.myRedisKeyLast = this.myRedisKey;
+            this.$bus.$emit('removePreTab');
             this.refreshKeyList();
-          }
-        });
-      },
-      ttlKey: function () {
-        // ttl <= 0
-        if (this.keyTTL <= 0) {
-          this.$confirm(
-            this.$t('message.ttl_delete', {key: this.myRedisKey}),
-            {type: 'warning'}
-          ).then(() => {
-            this.setTTL();
-          }).catch(() => {});
-        }
-
-        else {
-          this.setTTL();
-        }
-      },
-      setTTL() {
-        console.log('ttl key ' + this.myRedisKey + ' ttl is ' + this.keyTTL);
-
-        let client = this.$util.get('client');
-
-        client.expireAsync(this.myRedisKey, this.keyTTL).then(reply => {
-          console.log('expire result ' + this.myRedisKey + ' ' + this.keyTTL);
-
-          if (reply) {
-            this.$message.success({
-              message: this.myRedisKey + ' expire ' + this.keyTTL + ' ' + this.$t('message.modify_success'),
+          } else {
+            this.$message.error({
+              message: this.myRedisKey + this.$t('message.delete_failed'),
               duration: 1000,
             });
-
-            this.refreshKeyList();
           }
         });
-      },
-      refreshKeyList() {
-        this.$bus.$emit('refreshKeyList');
-      },
+      });
     },
-    mounted() {
+    refreshKey() {
+      console.log(`refreshing ${this.myRedisKey}`);
+
+      this.$bus.$emit('refreshKey', this.myRedisKey);
       this.initShow();
     },
-  }
+    renameKey() {
+      console.log(`remane key ${this.redisKey} new key is ${this.myRedisKey}`);
+
+      const client = this.$util.get('client');
+
+      if (this.myRedisKeyLast === this.myRedisKey) {
+        return;
+      }
+
+      client.renameAsync(this.myRedisKeyLast, this.myRedisKey).then((reply) => {
+        console.log(`rename result ${this.redisKey} ${this.myRedisKey}`, reply);
+
+        if (reply === 'OK') {
+          this.$message.success({
+            message: `${this.myRedisKeyLast} rename to ${this.myRedisKey} ${this.$t('message.modify_success')}`,
+            duration: 1000,
+          });
+
+          this.myRedisKeyLast = this.myRedisKey;
+          this.refreshKeyList();
+        }
+      });
+    },
+    ttlKey() {
+      // ttl <= 0
+      if (this.keyTTL <= 0) {
+        this.$confirm(
+          this.$t('message.ttl_delete', { key: this.myRedisKey }),
+          { type: 'warning' },
+        ).then(() => {
+          this.setTTL();
+        }).catch(() => {});
+      } else {
+        this.setTTL();
+      }
+    },
+    setTTL() {
+      console.log(`ttl key ${this.myRedisKey} ttl is ${this.keyTTL}`);
+
+      const client = this.$util.get('client');
+
+      client.expireAsync(this.myRedisKey, this.keyTTL).then((reply) => {
+        console.log(`expire result ${this.myRedisKey} ${this.keyTTL}`);
+
+        if (reply) {
+          this.$message.success({
+            message: `${this.myRedisKey} expire ${this.keyTTL} ${this.$t('message.modify_success')}`,
+            duration: 1000,
+          });
+
+          this.refreshKeyList();
+        }
+      });
+    },
+    refreshKeyList() {
+      this.$bus.$emit('refreshKeyList');
+    },
+  },
+  mounted() {
+    this.initShow();
+  },
+};
 </script>
 
 <style type="text/css">

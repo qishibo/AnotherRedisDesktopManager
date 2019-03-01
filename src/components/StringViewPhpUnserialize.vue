@@ -17,26 +17,25 @@
 import VueJsonPretty from 'vue-json-pretty';
 import unserialize from 'locutus/php/var/unserialize';
 
-export default{
+export default {
   data() {
     return {
       maxDeep: 2,
       collapseAllDeep: 0,
       collapsed: true,
-      collapseText: 'expand_all'
+      collapseText: 'expand_all',
     };
   },
-  components: {VueJsonPretty},
+  components: { VueJsonPretty },
   props: ['content'],
   computed: {
     newContent() {
       try {
         return unserialize(this.content.content);
-      }
-      catch (e) {
+      } catch (e) {
         return this.$t('message.php_unserialize_format_failed');
       }
-    }
+    },
   },
   methods: {
     toggleCollapse() {
@@ -44,7 +43,7 @@ export default{
       this.collapsed = !this.collapsed;
 
       this.collapseText = this.collapsed ? 'expand_all' : 'collapse_all';
-    }
-  }
+    },
+  },
 };
 </script>

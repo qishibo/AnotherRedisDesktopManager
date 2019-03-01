@@ -87,346 +87,340 @@
 </template>
 
 <script>
-  import storage from '../storage.js';
-  import redisClient from '../redisClient.js';
-  import Vue from 'vue';
+import Vue from 'vue';
+import storage from '../storage.js';
+import redisClient from '../redisClient.js';
 
-  export default {
-    data: function () {
-      return {
-        dbs: [...Array(16).keys()],
-        connections: [],
-        keysPageSize: 20,
-        connectionPool: {},
-        openedStatus: {},
-        selectedDbIndex: {},
-        searchMatch: {},
-        searchPageSize: 10000,
-        keyList: [],
-        scanCursorList: {},
-        pageIndex: {},
-        nextPageDisabled: {},
-        beforeEditData: {},
-        afterEditData: {},
-        editConnectionDialog: false,
-      };
+export default {
+  data() {
+    return {
+      dbs: [...Array(16).keys()],
+      connections: [],
+      keysPageSize: 20,
+      connectionPool: {},
+      openedStatus: {},
+      selectedDbIndex: {},
+      searchMatch: {},
+      searchPageSize: 10000,
+      keyList: [],
+      scanCursorList: {},
+      pageIndex: {},
+      nextPageDisabled: {},
+      beforeEditData: {},
+      afterEditData: {},
+      editConnectionDialog: false,
+    };
+  },
+  created() {
+    this.$bus.$on('refreshKeyList', () => {
+      this.refreshKeyList();
+    });
+  },
+  methods: {
+    openConnection(openedMenuKey) {
+      // get connection config
+      // openedMenuKey like 10.20.1.1336379_0
+      const menuIndex = openedMenuKey.split('_')[0];
+      const connectionIndex = openedMenuKey.split('_')[1];
+      const connection = this.connections[connectionIndex];
+
+      if (!connection) {
+        alert('open error');
+        return;
+      }
+
+      this.getDbIndex(menuIndex);
+      this.setGlobalConnection(menuIndex, connection);
+
+      // open status tab
+      if (!this.openedStatus[menuIndex]) {
+        this.$bus.$emit('openStatus');
+        this.openedStatus[menuIndex] = true;
+      }
+
+      this.refreshKeyList();
     },
-    created() {
-      this.$bus.$on('refreshKeyList', () => {
+    setGlobalConnection(menuIndex, connection) {
+      if (!this.connectionPool[menuIndex]) {
+        const client = redisClient.createConnection(connection.host, connection.port, connection.auth, menuIndex);
+        this.connectionPool[menuIndex] = client;
+      }
+
+      // set global client
+      this.$util.set('client', this.connectionPool[menuIndex]);
+    },
+    deleteConnection(connection) {
+      console.log(connection);
+
+      this.$confirm(
+        this.$t('message.confirm_to_delete_connection'),
+        { type: 'warning' },
+      ).then(() => {
+        storage.deleteConnection(connection);
+        this.initConnections();
+
+        this.$message.success({
+          message: this.$t('message.delete_success'),
+          duration: 1000,
+        });
+      }).catch(() => {
+        //
+      });
+    },
+    showEditConnection(oldConnection, menuIndex) {
+      this.$confirm(
+        this.$t('message.close_to_edit_connection'),
+        { type: 'warning' },
+      ).then(() => {
+        this.closeAllConnection(oldConnection, menuIndex);
+        // return;
+
+        this.editConnectionDialog = true;
+        this.beforeEditData = oldConnection;
+
+        this.afterEditData = JSON.parse(JSON.stringify(oldConnection));
+        delete this.afterEditData.showName;
+      }).catch((_) => {});
+    },
+    editConnection() {
+      console.log('edit connection', this.beforeEditData, this.afterEditData);
+
+      // not changed
+      if (
+        this.beforeEditData.host == this.afterEditData.host
+          && this.beforeEditData.port == this.afterEditData.port
+          && this.beforeEditData.name == this.afterEditData.name
+          && this.beforeEditData.auth == this.afterEditData.auth
+      ) {
+        this.editConnectionDialog = false;
+        return;
+      }
+
+      if (storage.editConnection(this.beforeEditData, this.afterEditData) !== false) {
+        this.editConnectionDialog = false;
+        this.initConnections();
+        return;
+      }
+
+      this.$message.error({
+        message: this.$t('message.modify_failed'),
+        duration: 1000,
+      });
+    },
+    initConnections() {
+      const connections = storage.getConnections(true);
+
+      for (const item of connections) {
+        item.showName = item.name || `${item.host}@${item.port}`;
+      }
+
+      this.connections = connections;
+    },
+    closeAllConnection() {
+      console.log('closing all...');
+
+      const connections = storage.getConnections(true);
+
+      for (const i in connections) {
+        this.$refs.connectionMenu.close(`${i}`);
+      }
+
+      this.connectionPool = {};
+      this.openedStatus = {};
+      this.$bus.$emit('removeAllTab');
+    },
+    getConnectionPoolKey(connection) {
+      return connection.host + connection.port + connection.name;
+    },
+    changeDb(menuIndex) {
+      this.resetDb(menuIndex);
+
+      const dbIndex = this.getDbIndex(menuIndex);
+
+      this.setGlobalConnection(menuIndex);
+
+      this.$util.get('client').selectAsync(dbIndex).then(() => {
         this.refreshKeyList();
       });
     },
-    methods: {
-      openConnection(openedMenuKey) {
-        // get connection config
-        // openedMenuKey like 10.20.1.1336379_0
-        let menuIndex = openedMenuKey.split('_')[0];
-        let connectionIndex = openedMenuKey.split('_')[1];
-        let connection = this.connections[connectionIndex];
+    getDbIndex(menuIndex) {
+      if (this.selectedDbIndex[menuIndex] === undefined) {
+        this.selectedDbIndex[menuIndex] = 0;
+      }
 
-        if (!connection) {
-          alert('open error');
-          return;
-        }
+      return this.selectedDbIndex[menuIndex];
+    },
+    resetDb(menuIndex) {
+      this.$set(this.pageIndex, menuIndex, 1);
+      this.scanCursorList[menuIndex] = [0];
+    },
+    clickKey(key, menuIndex) {
+      console.log(`clicked key ${key}`, `dbIndex ${this.selectedDbIndex}`);
 
-        this.getDbIndex(menuIndex);
-        this.setGlobalConnection(menuIndex, connection);
+      this.setGlobalConnection(menuIndex);
+      this.$bus.$emit('clickedKey', key);
+    },
+    pagePre(menuIndex) {
+      let pageIndex = this.getPageIndex(menuIndex);
 
-        // open status tab
-        if (!this.openedStatus[menuIndex]) {
-          this.$bus.$emit('openStatus');
-          this.openedStatus[menuIndex] = true;
-        }
+      if (--pageIndex < 1) {
+        pageIndex = 1;
+      }
 
-        this.refreshKeyList();
-      },
-      setGlobalConnection(menuIndex, connection) {
-        if (!this.connectionPool[menuIndex]) {
-          let client = redisClient.createConnection(connection.host, connection.port, connection.auth, menuIndex);
-          this.connectionPool[menuIndex] = client;
-        }
+      this.$set(this.pageIndex, menuIndex, pageIndex);
+      this.setGlobalConnection(menuIndex);
 
-        // set global client
-        this.$util.set('client', this.connectionPool[menuIndex]);
-      },
-      deleteConnection(connection) {
-        console.log(connection);
+      this.refreshKeyList(false);
+    },
+    pageNext(menuIndex) {
+      let pageIndex = this.getPageIndex(menuIndex);
+      const cursorListLength = this.scanCursorList[menuIndex].length;
 
-        this.$confirm(
-          this.$t('message.confirm_to_delete_connection'),
-          {type: 'warning'}
-        ).then(() => {
-          storage.deleteConnection(connection);
-          this.initConnections();
+      this.$set(this.pageIndex, menuIndex, ++pageIndex);
+      this.setGlobalConnection(menuIndex);
 
-          this.$message.success({
-            message: this.$t('message.delete_success'),
-            duration: 1000,
-          });
-        }).catch(() => {
-          //
-        });
-      },
-      showEditConnection(oldConnection, menuIndex) {
-        this.$confirm(
-          this.$t('message.close_to_edit_connection'),
-          {type: 'warning'}
-        ).then(() => {
-          this.closeAllConnection(oldConnection, menuIndex);
-          // return;
+      this.refreshKeyList(pageIndex >= cursorListLength);
+    },
+    pageNextRecursive(menuIndex, targetPage) {
+      let pageIndex = this.getPageIndex(menuIndex);
+      const cursorList = this.scanCursorList[menuIndex];
+      const cursorListLength = cursorList.length;
 
-          this.editConnectionDialog = true;
-          this.beforeEditData = oldConnection;
+      console.log('begin jump recursive...', pageIndex, targetPage);
 
-          this.afterEditData = JSON.parse(JSON.stringify(oldConnection));
-          delete this.afterEditData.showName;
-        }).catch(_ => {});
-      },
-      editConnection() {
-        console.log('edit connection',this.beforeEditData, this.afterEditData);
+      // last page
+      if (cursorList[cursorListLength - 1] == '0') {
+        return false;
+      }
 
-        // not changed
-        if (
-          this.beforeEditData.host == this.afterEditData.host &&
-          this.beforeEditData.port == this.afterEditData.port &&
-          this.beforeEditData.name == this.afterEditData.name &&
-          this.beforeEditData.auth == this.afterEditData.auth
-          ) {
-          this.editConnectionDialog = false;
-          return;
-        }
 
-        if (storage.editConnection(this.beforeEditData, this.afterEditData) !== false) {
-          this.editConnectionDialog = false;
-          this.initConnections();
-          return;
-        }
-
-        this.$message.error({
-          message: this.$t('message.modify_failed'),
-          duration: 1000,
-        });
-      },
-      initConnections() {
-        let connections = storage.getConnections(true);
-
-        for (var item of connections) {
-          item.showName = item.name || item.host + '@' + item.port;
-        }
-
-        this.connections = connections;
-      },
-      closeAllConnection() {
-        console.log('closing all...');
-
-        let connections = storage.getConnections(true);
-
-        for (var i in connections) {
-          this.$refs.connectionMenu.close('' + i);
-        }
-
-        this.connectionPool = {};
-        this.openedStatus = {};
-        this.$bus.$emit('removeAllTab');
-      },
-      getConnectionPoolKey(connection) {
-        return connection.host + connection.port + connection.name;
-      },
-      changeDb(menuIndex) {
-        this.resetDb(menuIndex);
-
-        let dbIndex = this.getDbIndex(menuIndex);
-
-        this.setGlobalConnection(menuIndex);
-
-        this.$util.get('client').selectAsync(dbIndex).then(() => {
-          this.refreshKeyList();
-        });
-      },
-      getDbIndex(menuIndex) {
-        if (this.selectedDbIndex[menuIndex] === undefined) {
-          this.selectedDbIndex[menuIndex] = 0;
-        }
-
-        return this.selectedDbIndex[menuIndex];
-      },
-      resetDb(menuIndex) {
-        this.$set(this.pageIndex, menuIndex, 1);
-        this.scanCursorList[menuIndex] = [0];
-      },
-      clickKey(key, menuIndex) {
-        console.log('clicked key ' + key, 'dbIndex ' + this.selectedDbIndex);
-
-        this.setGlobalConnection(menuIndex);
-        this.$bus.$emit('clickedKey', key);
-      },
-      pagePre(menuIndex) {
-        let pageIndex = this.getPageIndex(menuIndex);
-
-        if (--pageIndex < 1) {
-          pageIndex = 1;
-        }
-
-        this.$set(this.pageIndex, menuIndex, pageIndex);
-        this.setGlobalConnection(menuIndex);
-
-        this.refreshKeyList(false);
-      },
-      pageNext(menuIndex) {
-        let pageIndex = this.getPageIndex(menuIndex);
-        let cursorListLength = this.scanCursorList[menuIndex].length;
-
+      if (pageIndex < targetPage) {
         this.$set(this.pageIndex, menuIndex, ++pageIndex);
-        this.setGlobalConnection(menuIndex);
 
-        this.refreshKeyList(pageIndex >= cursorListLength);
-      },
-      pageNextRecursive(menuIndex, targetPage) {
-        let pageIndex = this.getPageIndex(menuIndex);
-        let cursorList = this.scanCursorList[menuIndex];
-        let cursorListLength = cursorList.length;
+        this.refreshKeyList(pageIndex >= cursorListLength).then(() => {
+          this.pageNextRecursive(menuIndex, targetPage);
+        });
+      }
+    },
+    jumpToPage(menuIndex, targetPage) {
+      targetPage = parseInt(targetPage);
 
-        console.log('begin jump recursive...',pageIndex , targetPage);
+      if (isNaN(targetPage) || targetPage <= 0) {
+        this.$refs[`pageIndexInput${menuIndex}`][0].value = 1;
+        targetPage = 1;
+      }
+
+      const nowPage = this.getPageIndex(menuIndex);
+      const cursorListLength = this.scanCursorList[menuIndex].length;
+
+      this.setGlobalConnection(menuIndex);
+
+      console.log('prepare to jump to', nowPage, targetPage);
+
+      if (targetPage >= cursorListLength) {
+        // to biggest page index
+        this.$set(this.pageIndex, menuIndex, cursorListLength - 1);
+        const recursiveResult = this.pageNextRecursive(menuIndex, targetPage);
 
         // last page
-        if (cursorList[cursorListLength - 1] == '0') {
-          return false;
-        }
+        if (recursiveResult === false) {
+          this.$refs[`pageIndexInput${menuIndex}`][0].value = this.pageIndex[menuIndex];
 
-
-        if (pageIndex < targetPage) {
-          this.$set(this.pageIndex, menuIndex, ++pageIndex);
-
-          this.refreshKeyList(pageIndex >= cursorListLength).then(() => {
-            this.pageNextRecursive(menuIndex, targetPage);
+          this.$message.error({
+            message: this.$t('message.max_page_reached'),
+            duration: 2000,
           });
         }
-      },
-      jumpToPage(menuIndex, targetPage) {
-        targetPage = parseInt(targetPage);
-
-        if (isNaN(targetPage) || targetPage <= 0) {
-          this.$refs['pageIndexInput' + menuIndex][0].value = 1;
-          targetPage = 1;
-        }
-
-        let nowPage = this.getPageIndex(menuIndex);
-        let cursorListLength = this.scanCursorList[menuIndex].length;
-
-        this.setGlobalConnection(menuIndex);
-
-        console.log('prepare to jump to',nowPage , targetPage);
-
-        if (targetPage >= cursorListLength) {
-          // to biggest page index
-          this.$set(this.pageIndex, menuIndex, cursorListLength - 1);
-          let recursiveResult = this.pageNextRecursive(menuIndex, targetPage);
-
-          // last page
-          if (recursiveResult === false) {
-            this.$refs['pageIndexInput' + menuIndex][0].value = this.pageIndex[menuIndex];
-
-            this.$message.error({
-              message: this.$t('message.max_page_reached'),
-              duration: 2000,
-            });
-
-            return;
-          }
-        }
-
-        else {
-          this.$set(this.pageIndex, menuIndex, targetPage);
-          this.refreshKeyList(false);
-        }
-      },
-      getPageIndex(menuIndex) {
-        if (this.pageIndex[menuIndex] === undefined) {
-          this.pageIndex[menuIndex] = 1;
-        }
-
-        return this.pageIndex[menuIndex];
-      },
-      preButtonDisable(menuIndex) {
-        let pageIndex = this.getPageIndex(menuIndex);
-        return pageIndex <= 1;
-      },
-      changeMatchMode(menuIndex) {
-        this.resetDb(menuIndex);
-        this.setGlobalConnection(menuIndex);
-        this.refreshKeyList();
-      },
-      getScanCursor(menuIndex) {
-        if (this.scanCursorList[menuIndex] === undefined) {
-          this.scanCursorList[menuIndex] = [0];
-        }
-
-        let pageIndex = this.getPageIndex(menuIndex);
-        let cursorList = this.scanCursorList[menuIndex];
-
-        return cursorList[pageIndex - 1];
-      },
-      getMatchMode(menuIndex) {
-        if (this.searchMatch[menuIndex] === undefined) {
-          this.searchMatch[menuIndex] = '';
-        }
-
-        let match = this.searchMatch[menuIndex];
-        match = match ? match : '*';
-
-        if (!match.match(/\*/)) {
-          match = ('*' + match + '*');
-        }
-
-        return match;
-      },
-      refreshKeyList(pushToCursorList = true) {
-        let client = this.$util.get('client');
-        let menuIndex = client.options.menu_index;
-
-        let cursor = this.getScanCursor(menuIndex);
-        let match = this.getMatchMode(menuIndex);
-        // let promise = client.scanAsync(cursor, 'MATCH', match, 'COUNT', this.keysPageSize).then();
-        let pageSize = (match === '*') ? this.keysPageSize : this.searchPageSize;
-
-        let promise = this.beginScanning(cursor, match, pageSize, reply => {
-          if (reply[0] === '0') {
-            this.$set(this.nextPageDisabled, menuIndex, true);
-          }
-
-          else {
-            this.$set(this.nextPageDisabled, menuIndex, false);
-          }
-
-          pushToCursorList && this.scanCursorList[menuIndex].push(reply[0]);
-          this.$set(this.keyList, menuIndex, reply[1]);
-
-          console.log('new cursor list', this.scanCursorList);
-        });
-
-        return promise;
-      },
-      beginScanning(cursor, match, count, callback, recursive = true) {
-        let client = this.$util.get('client');
-
-        let promise = client.scanAsync(cursor, 'MATCH', match, 'COUNT', count).then((reply) => {
-          console.log('cursor:' + cursor + ' count: ' + count + ' match:' + match, 'scan result', reply);
-
-          // empty result
-          if (recursive && (reply[0] !== '0') && (reply[1].length === 0)) {
-            return this.beginScanning(reply[0], match, count, callback, recursive);
-          }
-
-          callback && callback(reply);
-        });
-
-        return promise;
-      },
+      } else {
+        this.$set(this.pageIndex, menuIndex, targetPage);
+        this.refreshKeyList(false);
+      }
     },
-    mounted() {
-      this.initConnections();
-    }
-  };
+    getPageIndex(menuIndex) {
+      if (this.pageIndex[menuIndex] === undefined) {
+        this.pageIndex[menuIndex] = 1;
+      }
+
+      return this.pageIndex[menuIndex];
+    },
+    preButtonDisable(menuIndex) {
+      const pageIndex = this.getPageIndex(menuIndex);
+      return pageIndex <= 1;
+    },
+    changeMatchMode(menuIndex) {
+      this.resetDb(menuIndex);
+      this.setGlobalConnection(menuIndex);
+      this.refreshKeyList();
+    },
+    getScanCursor(menuIndex) {
+      if (this.scanCursorList[menuIndex] === undefined) {
+        this.scanCursorList[menuIndex] = [0];
+      }
+
+      const pageIndex = this.getPageIndex(menuIndex);
+      const cursorList = this.scanCursorList[menuIndex];
+
+      return cursorList[pageIndex - 1];
+    },
+    getMatchMode(menuIndex) {
+      if (this.searchMatch[menuIndex] === undefined) {
+        this.searchMatch[menuIndex] = '';
+      }
+
+      let match = this.searchMatch[menuIndex];
+      match = match || '*';
+
+      if (!match.match(/\*/)) {
+        match = (`*${match}*`);
+      }
+
+      return match;
+    },
+    refreshKeyList(pushToCursorList = true) {
+      const client = this.$util.get('client');
+      const menuIndex = client.options.menu_index;
+
+      const cursor = this.getScanCursor(menuIndex);
+      const match = this.getMatchMode(menuIndex);
+      // let promise = client.scanAsync(cursor, 'MATCH', match, 'COUNT', this.keysPageSize).then();
+      const pageSize = (match === '*') ? this.keysPageSize : this.searchPageSize;
+
+      const promise = this.beginScanning(cursor, match, pageSize, (reply) => {
+        if (reply[0] === '0') {
+          this.$set(this.nextPageDisabled, menuIndex, true);
+        } else {
+          this.$set(this.nextPageDisabled, menuIndex, false);
+        }
+
+        pushToCursorList && this.scanCursorList[menuIndex].push(reply[0]);
+        this.$set(this.keyList, menuIndex, reply[1]);
+
+        console.log('new cursor list', this.scanCursorList);
+      });
+
+      return promise;
+    },
+    beginScanning(cursor, match, count, callback, recursive = true) {
+      const client = this.$util.get('client');
+
+      const promise = client.scanAsync(cursor, 'MATCH', match, 'COUNT', count).then((reply) => {
+        console.log(`cursor:${cursor} count: ${count} match:${match}`, 'scan result', reply);
+
+        // empty result
+        if (recursive && (reply[0] !== '0') && (reply[1].length === 0)) {
+          return this.beginScanning(reply[0], match, count, callback, recursive);
+        }
+
+        callback && callback(reply);
+      });
+
+      return promise;
+    },
+  },
+  mounted() {
+    this.initConnections();
+  },
+};
 </script>
 
 <style type="text/css">

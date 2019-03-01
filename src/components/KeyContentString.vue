@@ -36,21 +36,21 @@ export default {
     return {
       selectedView: 'StringViewText',
       views: [
-        {value: 'StringViewText', text: 'View As Text'},
-        {value: 'StringViewJson', text: 'View As Json'},
-        {value: 'StringViewPhpUnserialize', text: 'View As PHPUnserialize'},
+        { value: 'StringViewText', text: 'View As Text' },
+        { value: 'StringViewJson', text: 'View As Json' },
+        { value: 'StringViewPhpUnserialize', text: 'View As PHPUnserialize' },
       ],
-      content: ''
+      content: '',
     };
   },
   props: ['redisKey'],
-  components: {StringViewText, StringViewJson, StringViewPhpUnserialize},
+  components: { StringViewText, StringViewJson, StringViewPhpUnserialize },
   methods: {
     initShow() {
-      let key = this.redisKey;
-      let client = this.$util.get('client');
+      const key = this.redisKey;
+      const client = this.$util.get('client');
 
-      client.getAsync(key).then(reply => {
+      client.getAsync(key).then((reply) => {
         console.log(reply);
         this.content = reply;
       });
@@ -58,7 +58,7 @@ export default {
   },
   mounted() {
     this.initShow();
-  }
+  },
 };
 </script>
 

@@ -1,7 +1,7 @@
 export default {
-  addConnection (connection) {
-    let connections = this.getConnections();
-    let key = this.getConnectionKey(connection);
+  addConnection(connection) {
+    const connections = this.getConnections();
+    const key = this.getConnectionKey(connection);
 
     if (connections[key]) {
       return false;
@@ -11,23 +11,21 @@ export default {
     this.setConnections(connections);
   },
 
-  getConnections (returnList = false) {
+  getConnections(returnList = false) {
     let connections = localStorage.connections || '{}';
 
     connections = JSON.parse(connections);
     connections = this.sortByKey(connections);
 
     if (returnList) {
-      connections = Object.keys(connections).map(function(key) {
-        return connections[key];
-      });
+      connections = Object.keys(connections).map(key => connections[key]);
     }
 
     return connections;
   },
   editConnection(oldConnection, newConnection) {
-    let connections = this.getConnections();
-    let oldKey = this.getConnectionKey(oldConnection);
+    const connections = this.getConnections();
+    const oldKey = this.getConnectionKey(oldConnection);
 
     if (!connections[oldKey]) {
       return false;
@@ -35,7 +33,7 @@ export default {
 
     delete connections[oldKey];
 
-    let newKey = this.getConnectionKey(newConnection);
+    const newKey = this.getConnectionKey(newConnection);
 
     connections[newKey] = newConnection;
     this.setConnections(connections);
@@ -44,8 +42,8 @@ export default {
     localStorage.connections = JSON.stringify(connections);
   },
   deleteConnection(connection) {
-    let connections = this.getConnections();
-    let key = this.getConnectionKey(connection);
+    const connections = this.getConnections();
+    const key = this.getConnectionKey(connection);
 
     delete connections[key];
 
@@ -56,6 +54,6 @@ export default {
   },
   sortByKey(obj) {
     return Object.keys(obj).sort()
-        .reduce((acc, c) => { acc[c] = obj[c]; return acc }, {})
+      .reduce((acc, c) => { acc[c] = obj[c]; return acc; }, {});
   },
-}
+};

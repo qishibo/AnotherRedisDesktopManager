@@ -1,6 +1,6 @@
 export default {
   exec(vue, params) {
-    let client = vue.$util.get('client');
+    const client = vue.$util.get('client');
 
     if (!client) {
       alert('client is not yet');
@@ -10,7 +10,7 @@ export default {
     params = params.trim().replace(/\s+/g, ' ');
     params = params.split(' ');
 
-    let operation = params.shift();
+    const operation = params.shift();
 
     console.log(operation, params);
 
@@ -22,6 +22,6 @@ export default {
       return;
     }
 
-    return client[operation + 'Async'].apply(client, params);
-  }
+    return client[`${operation}Async`].apply(client, params);
+  },
 };

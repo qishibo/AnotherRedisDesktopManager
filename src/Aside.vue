@@ -56,13 +56,13 @@ export default {
         port: '',
         auth: '',
         name: '',
-      }
+      },
     };
   },
-  components: {Connections},
+  components: { Connections },
   methods: {
     addNewConnection() {
-      let connection = this.newConnection;
+      const connection = this.newConnection;
 
       !connection.host && (connection.host = '127.0.0.1');
       !connection.port && (connection.port = 6379);
@@ -79,6 +79,6 @@ export default {
       this.dialogFormVisible = false;
       this.$refs.connections.initConnections();
     },
-  }
+  },
 };
 </script>

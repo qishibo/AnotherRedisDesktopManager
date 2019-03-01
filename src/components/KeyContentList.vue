@@ -77,118 +77,118 @@
 </template>
 
 <script>
-  export default {
-    data() {
-      return {
-        dialogFormVisible: false,
-        editDialog: false,
-        listData: [], // {value: xxx}
-        newLineItem: {},
-        beforeEditItem: {},
-        editLineItem: {},
-      };
+export default {
+  data() {
+    return {
+      dialogFormVisible: false,
+      editDialog: false,
+      listData: [], // {value: xxx}
+      newLineItem: {},
+      beforeEditItem: {},
+      editLineItem: {},
+    };
+  },
+  props: ['redisKey'],
+  methods: {
+    initShow() {
+      const key = this.redisKey;
+      const client = this.$util.get('client');
+
+      if (!key) {
+        return;
+      }
+
+      client.lrangeAsync([key, 0, -1]).then((reply) => {
+        console.log(reply);
+
+        const listData = [];
+
+        for (const i of reply) {
+          listData.push({ value: i });
+        }
+
+        this.listData = listData;
+      });
     },
-    props: ['redisKey'],
-    methods: {
-      initShow() {
-        let key = this.redisKey;
-        let client = this.$util.get('client');
+    showEditDialog(row) {
+      this.editLineItem = row;
+      this.beforeEditItem = JSON.parse(JSON.stringify(row));
+      this.editDialog = true;
+    },
+    editLine() {
+      const key = this.redisKey;
+      const client = this.$util.get('client');
 
-        if (!key) {
-          return;
-        }
+      const before = this.beforeEditItem;
+      const after = this.editLineItem;
 
-        client.lrangeAsync([key, 0, -1]).then(reply => {
+      console.log('editing...', before, after);
+
+      client.lremAsync(key, 1, before.value).then((reply) => {
+        console.log('lrem...', reply);
+
+        client.rpushAsync(key, after.value).then((reply) => {
+          console.log('rpush...', reply);
+          this.initShow();
+        });
+      });
+
+      this.$message.success({
+        message: `${key} ${this.$t('message.modify_success')}`,
+        duration: 1000,
+      });
+
+      this.editDialog = false;
+    },
+    deleteLine(row) {
+      this.$confirm(this.$t('message.confirm_to_delete_row_data'), {
+        type: 'warning',
+      }).then(() => {
+        const key = this.redisKey;
+        const client = this.$util.get('client');
+
+        client.lremAsync(key, 1, row.value).then((reply) => {
           console.log(reply);
 
-          let listData = [];
-
-          for (var i of reply) {
-            listData.push({value: i});
-          }
-
-          this.listData = listData;
-        });
-      },
-      showEditDialog(row) {
-        this.editLineItem = row;
-        this.beforeEditItem = JSON.parse(JSON.stringify(row));
-        this.editDialog = true;
-      },
-      editLine() {
-        let key = this.redisKey;
-        let client = this.$util.get('client');
-
-        let before = this.beforeEditItem;
-        let after = this.editLineItem;
-
-        console.log('editing...', before, after);
-
-        client.lremAsync(key, 1, before.value).then(reply => {
-          console.log('lrem...', reply);
-
-          client.rpushAsync(key, after.value).then(reply => {
-            console.log('rpush...', reply);
-            this.initShow();
-          });
-        });
-
-        this.$message.success({
-          message: key + ' ' + this.$t('message.modify_success'),
-          duration: 1000,
-        });
-
-        this.editDialog = false;
-      },
-      deleteLine: function (row) {
-        this.$confirm(this.$t('message.confirm_to_delete_row_data'), {
-          type: 'warning'
-        }).then(() => {
-          let key = this.redisKey;
-          let client = this.$util.get('client');
-
-          client.lremAsync(key, 1, row.value).then(reply => {
-            console.log(reply);
-
-            if (reply === 1) {
-              this.$message.success({
-                message: this.$t('message.delete_success'),
-                duration: 1000,
-              });
-
-              this.initShow();
-            }
-          });
-        });
-      },
-      addLine() {
-        console.log('add line', this.newLineItem);
-
-        let key = this.redisKey;
-        let client = this.$util.get('client');
-
-        this.dialogFormVisible = false;
-
-        if (!this.newLineItem.value) {
-          return;
-        }
-
-        client.rpushAsync(key, this.newLineItem.value).then(reply => {
-          console.log(reply);
-
-          if (reply > 0) {
+          if (reply === 1) {
             this.$message.success({
-              message: this.$t('message.add_success'),
+              message: this.$t('message.delete_success'),
               duration: 1000,
             });
 
             this.initShow();
           }
         });
-      },
+      });
     },
-    mounted() {
-      this.initShow();
-    }
-  }
+    addLine() {
+      console.log('add line', this.newLineItem);
+
+      const key = this.redisKey;
+      const client = this.$util.get('client');
+
+      this.dialogFormVisible = false;
+
+      if (!this.newLineItem.value) {
+        return;
+      }
+
+      client.rpushAsync(key, this.newLineItem.value).then((reply) => {
+        console.log(reply);
+
+        if (reply > 0) {
+          this.$message.success({
+            message: this.$t('message.add_success'),
+            duration: 1000,
+          });
+
+          this.initShow();
+        }
+      });
+    },
+  },
+  mounted() {
+    this.initShow();
+  },
+};
 </script>

@@ -3,16 +3,16 @@ import Vue from 'vue';
 const eventHub = new Vue();
 
 export default {
-  $on (...event) {
+  $on(...event) {
     eventHub.$on(...event);
   },
-  $off (...event) {
+  $off(...event) {
     eventHub.$off(...event);
   },
-  $once (...event) {
+  $once(...event) {
     eventHub.$once(...event);
   },
-  $emit (...event) {
+  $emit(...event) {
     eventHub.$emit(...event);
-  }
+  },
 };

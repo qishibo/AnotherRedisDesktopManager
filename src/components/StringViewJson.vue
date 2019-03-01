@@ -16,26 +16,25 @@
 <script>
 import VueJsonPretty from 'vue-json-pretty';
 
-export default{
+export default {
   data() {
     return {
       maxDeep: 2,
       collapseAllDeep: 0,
       collapsed: true,
-      collapseText: 'expand_all'
+      collapseText: 'expand_all',
     };
   },
-  components: {VueJsonPretty},
+  components: { VueJsonPretty },
   props: ['content'],
   computed: {
     newContent() {
       try {
         return JSON.parse(this.content.content);
-      }
-      catch (e) {
+      } catch (e) {
         return this.$t('message.json_format_failed');
       }
-    }
+    },
   },
   methods: {
     toggleCollapse() {
@@ -43,7 +42,7 @@ export default{
       this.collapsed = !this.collapsed;
 
       this.collapseText = this.collapsed ? 'expand_all' : 'collapse_all';
-    }
-  }
+    },
+  },
 };
 </script>

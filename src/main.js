@@ -10,7 +10,7 @@ import util from './util';
 Vue.prototype.$bus = bus;
 Vue.prototype.$util = util;
 
-Vue.use(ElementUI, {size: "small"});
+Vue.use(ElementUI, { size: 'small' });
 Vue.config.productionTip = false;
 
 /* eslint-disable no-new */
@@ -18,5 +18,5 @@ new Vue({
   el: '#app',
   i18n,
   components: { App },
-  template: '<App/>'
+  template: '<App/>',
 });

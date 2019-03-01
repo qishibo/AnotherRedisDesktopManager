@@ -91,126 +91,124 @@
 </template>
 
 <script>
-  export default {
-    data() {
-      return {
-        dialogFormVisible: false,
-        editDialog: false,
-        zsetData: [], // {score: 111, member: xxx}
-        newLineItem: {},
-        beforeEditItem: {},
-        editLineItem: {},
-      };
-    },
-    props: ['redisKey'],
-    methods: {
-      initShow() {
-        let key = this.redisKey;
-        let client = this.$util.get('client');
+export default {
+  data() {
+    return {
+      dialogFormVisible: false,
+      editDialog: false,
+      zsetData: [], // {score: 111, member: xxx}
+      newLineItem: {},
+      beforeEditItem: {},
+      editLineItem: {},
+    };
+  },
+  props: ['redisKey'],
+  methods: {
+    initShow() {
+      const key = this.redisKey;
+      const client = this.$util.get('client');
 
-        if (!key) {
-          return;
+      if (!key) {
+        return;
+      }
+
+      client.zrangeAsync([key, 0, -1, 'WITHSCORES']).then((reply) => {
+        console.log(reply);
+
+        const zsetData = [];
+        const { length } = reply;
+
+        for (let i = 0; i < (length - 1); i++) {
+          if (!(i % 2)) {
+            zsetData.push({ member: reply[i], score: reply[i + 1] });
+          }
         }
 
-        client.zrangeAsync([key, 0, -1, 'WITHSCORES']).then(reply => {
+        this.zsetData = zsetData;
+      });
+    },
+    showEditDialog(row) {
+      this.editLineItem = row;
+      this.beforeEditItem = JSON.parse(JSON.stringify(row));
+      this.editDialog = true;
+    },
+    editLine() {
+      const key = this.redisKey;
+      const client = this.$util.get('client');
+
+      const before = this.beforeEditItem;
+      const after = this.editLineItem;
+
+      console.log('editing...', before, after);
+
+      client.zaddAsync(key, after.score, after.member).then((reply) => {
+        console.log('zadd...', reply);
+
+        // member changed
+        if (after.member !== before.member) {
+          client.zremAsync(key, before.member).then((reply) => {
+            console.log('member changed, zrem...', reply);
+            this.initShow();
+          });
+        } else {
+          this.initShow();
+        }
+      });
+
+      this.$message.success({
+        message: `${after.member} ${this.$t('message.modify_success')}`,
+        duration: 1000,
+      });
+
+      this.editDialog = false;
+    },
+    deleteLine(row) {
+      this.$confirm(this.$t('message.confirm_to_delete_row_data'), {
+        type: 'warning',
+      }).then(() => {
+        const key = this.redisKey;
+        const client = this.$util.get('client');
+
+        client.zremAsync(key, row.member).then((reply) => {
           console.log(reply);
 
-          let zsetData = [];
-          var length = reply.length;
-
-          for (var i = 0; i < (length - 1); i++) {
-            if (!(i % 2)) {
-              zsetData.push({member: reply[i], score: reply[i + 1]});
-            }
-          }
-
-          this.zsetData = zsetData;
-        });
-      },
-      showEditDialog(row) {
-        this.editLineItem = row;
-        this.beforeEditItem = JSON.parse(JSON.stringify(row));
-        this.editDialog = true;
-      },
-      editLine() {
-        let key = this.redisKey;
-        let client = this.$util.get('client');
-
-        let before = this.beforeEditItem;
-        let after = this.editLineItem;
-
-        console.log('editing...', before, after);
-
-        client.zaddAsync(key, after.score, after.member).then(reply => {
-          console.log('zadd...', reply);
-
-          // member changed
-          if (after.member !== before.member) {
-            client.zremAsync(key, before.member).then(reply => {
-              console.log('member changed, zrem...', reply);
-              this.initShow();
+          if (reply === 1) {
+            this.$message.success({
+              message: `${row.member} ${this.$t('message.delete_success')}`,
+              duration: 1000,
             });
-          }
 
-          else {
             this.initShow();
           }
         });
+      });
+    },
+    addLine() {
+      console.log('add line', this.newLineItem);
+
+      const key = this.redisKey;
+      const client = this.$util.get('client');
+
+      this.dialogFormVisible = false;
+
+      if (!this.newLineItem.member || !this.newLineItem.score) {
+        return;
+      }
+
+      client.zaddAsync(key, this.newLineItem.score, this.newLineItem.member).then((reply) => {
+        console.log(reply);
 
         this.$message.success({
-          message: after.member + ' ' + this.$t('message.modify_success'),
+          message: reply ? this.$t('message.add_success') : this.$t('message.modify_success'),
           duration: 1000,
         });
 
-        this.editDialog = false;
-      },
-      deleteLine: function (row) {
-        this.$confirm(this.$t('message.confirm_to_delete_row_data'), {
-          type: 'warning'
-        }).then(() => {
-          let key = this.redisKey;
-          let client = this.$util.get('client');
-
-          client.zremAsync(key, row.member).then(reply => {
-            console.log(reply);
-
-            if (reply === 1) {
-              this.$message.success({
-                message: row.member + ' ' + this.$t('message.delete_success'),
-                duration: 1000,
-              });
-
-              this.initShow();
-            }
-          });
-        });
-      },
-      addLine() {
-        console.log('add line', this.newLineItem);
-
-        let key = this.redisKey;
-        let client = this.$util.get('client');
-
-        this.dialogFormVisible = false;
-
-        if (!this.newLineItem.member || !this.newLineItem.score) {
-          return;
-        }
-
-        client.zaddAsync(key, this.newLineItem.score, this.newLineItem.member).then(reply => {
-          console.log(reply);
-
-          this.$message.success({
-            message: reply ? this.$t('message.add_success') : this.$t('message.modify_success'),
-            duration: 1000,
-          });
-
-          this.initShow();
-        });
-      },
+        this.initShow();
+      });
     },
-    mounted() {
-      this.initShow();
-    }
-  }
+  },
+  mounted() {
+    this.initShow();
+  },
+};
 </script>

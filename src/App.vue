@@ -30,8 +30,10 @@ import Tabs from '@/components/Tabs';
 
 export default {
   name: 'App',
-  components: {Header, Aside, Command, Tabs}
-}
+  components: {
+    Header, Aside, Command, Tabs,
+  },
+};
 
 </script>
 

@@ -76,31 +76,31 @@ export default {
     return {
       form: {
         name: '',
-        region: ''
+        region: '',
       },
       dialogFormVisible: false,
       selectedLang: 'en',
       langItems: [
-        {value: 'en', label: 'English'},
-        {value: 'cn', label: '简体中文'},
+        { value: 'en', label: 'English' },
+        { value: 'cn', label: '简体中文' },
       ],
       cliDialogVisible: false,
-      cliContent: {content: '', params: ''},
+      cliContent: { content: '', params: '' },
       inputSuggestionItems: new Set(),
       historyIndex: 0,
     };
   },
   methods: {
     inputSuggestion(input, cb) {
-      let suggestions = [];
-      for (var key of this.inputSuggestionItems) {
+      const suggestions = [];
+      for (const key of this.inputSuggestionItems) {
         if (key.indexOf(input) !== -1) {
-          suggestions.push({value: key});
+          suggestions.push({ value: key });
         }
       }
       cb(suggestions);
     },
-    showSettings: function () {
+    showSettings() {
       let settings = this.getSettings();
 
       if (!settings) {
@@ -111,11 +111,11 @@ export default {
 
       this.form = settings;
     },
-    getSettings () {
+    getSettings() {
       return localStorage.getItem('settings');
     },
     saveSettings() {
-      let settings = JSON.stringify(this.form);
+      const settings = JSON.stringify(this.form);
       console.log('saving settings...', settings);
 
       localStorage.setItem('settings', settings);
@@ -127,54 +127,48 @@ export default {
       this.$i18n.locale = this.selectedLang;
     },
     consoleTitle() {
-      let client = this.$util.get('client');
+      const client = this.$util.get('client');
 
       if (!client) {
         return 'Client Not Yet, Please Add A Connection First';
       }
 
-      let host = client.options.host;
-      let port = client.options.port;
-      let dbIndex = client.selected_db;
+      const { host } = client.options;
+      const { port } = client.options;
+      const dbIndex = client.selected_db;
 
-      let consoleName = host + ':' + port + " #db" + (dbIndex ? dbIndex : '0');
+      const consoleName = `${host}:${port} #db${dbIndex || '0'}`;
 
-      return this.$t('message.redis_console') + ' [' + consoleName + ']';
+      return `${this.$t('message.redis_console')} [${consoleName}]`;
     },
     consoleExec() {
-      let params = this.cliContent.params;
-      let promise = rawCommand.exec(this, params);
+      const { params } = this.cliContent;
+      const promise = rawCommand.exec(this, params);
 
-      this.cliContent.content += '> ' + params + "\n";
+      this.cliContent.content += `> ${params}\n`;
       this.cliContent.params = '';
       this.historyIndex = 0;
 
       if (!promise) {
-        this.cliContent.content += "Error!\n";
+        this.cliContent.content += 'Error!\n';
 
         this.$nextTick(() => {
           this.scrollToBottom();
         });
-      }
-
-      else {
+      } else {
         promise.then((reply) => {
-          let append  = '';
+          let append = '';
 
           if (reply === null) {
-            append = null + "\n";
-          }
+            append = `${null}\n`;
+          } else if (typeof reply === 'object') {
+            const isArray = !isNaN(reply.length);
 
-          else if (typeof reply === 'object') {
-            let isArray = !isNaN(reply.length);
-
-            for (var i in reply) {
-              append += (isArray ? '' : (i + "\n")) + reply[i] + "\n";
+            for (const i in reply) {
+              append += `${(isArray ? '' : (`${i}\n`)) + reply[i]}\n`;
             }
-          }
-
-          else {
-            append = reply + "\n";
+          } else {
+            append = `${reply}\n`;
           }
 
           this.cliContent.content += append;
@@ -192,7 +186,7 @@ export default {
         this.historyIndex = -this.inputSuggestionItems.size - 1;
       }
 
-      let stopIndex = this.inputSuggestionItems.size + this.historyIndex;
+      const stopIndex = this.inputSuggestionItems.size + this.historyIndex;
 
       if (stopIndex < 0) {
         this.cliContent.params = '';
@@ -201,7 +195,7 @@ export default {
 
       let counter = 0;
 
-      for (var i of this.inputSuggestionItems) {
+      for (const i of this.inputSuggestionItems) {
         if (counter++ == stopIndex) {
           this.cliContent.params = i;
         }
@@ -212,7 +206,7 @@ export default {
         this.historyIndex = 0;
       }
 
-      let stopIndex = this.inputSuggestionItems.size + this.historyIndex;
+      const stopIndex = this.inputSuggestionItems.size + this.historyIndex;
 
       if (stopIndex >= this.inputSuggestionItems.size) {
         this.cliContent.params = '';
@@ -221,14 +215,14 @@ export default {
 
       let counter = 0;
 
-      for (var i of this.inputSuggestionItems) {
+      for (const i of this.inputSuggestionItems) {
         if (counter++ == stopIndex) {
           this.cliContent.params = i;
         }
       }
     },
     scrollToBottom() {
-      let textarea = document.getElementById('cli-content');
+      const textarea = document.getElementById('cli-content');
       textarea.scrollTop = textarea.scrollHeight;
     },
     openConsole() {
@@ -240,14 +234,14 @@ export default {
         return true;
       }
 
-      let connections = storage.getConnections();
-      let connection = connections[0];
+      const connections = storage.getConnections();
+      const connection = connections[0];
 
       if (!connection) {
         return;
       }
 
-      let client = redisClient.createConnection(connection.host, connection.port, connection.auth);
+      const client = redisClient.createConnection(connection.host, connection.port, connection.auth);
 
       // set global client
       this.$util.set('client', client);
@@ -258,7 +252,7 @@ export default {
     this.showSettings();
 
     this.initDefaultConnection();
-  }
+  },
 };
 </script>
 

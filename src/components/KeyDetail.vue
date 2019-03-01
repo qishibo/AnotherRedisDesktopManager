@@ -34,7 +34,9 @@ export default {
       this.$refs.keyContent.initShow();
     });
   },
-  components: {KeyHeader, KeyContentString, KeyContentHash, KeyContentSet, KeyContentZset, KeyContentList, Status},
+  components: {
+    KeyHeader, KeyContentString, KeyContentHash, KeyContentSet, KeyContentZset, KeyContentList, Status,
+  },
   props: ['component', 'redisKey', 'keyType'],
 
   beforeDestroy() {

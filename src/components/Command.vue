@@ -9,30 +9,30 @@
 </template>
 
 <script>
-  export default{
-    data() {
-      return {
-        commands: [
-          {'time': new Date().toGMTString(), 'command': 'keys * 1 100', 'result': 'success'},
-          {'time': new Date().toGMTString(), 'command': 'keys * 1 100', 'result': 'success'},
-          {'time': new Date().toGMTString(), 'command': 'keys * 1 100', 'result': 'success'},
-          {'time': new Date().toGMTString(), 'command': 'keys * 1 100', 'result': 'success'},
-          {'time': new Date().toGMTString(), 'command': 'keys * 1 100', 'result': 'success'},
-          {'time': new Date().toGMTString(), 'command': 'keys * 1 100', 'result': 'success'},
-          {'time': new Date().toGMTString(), 'command': 'keys * 1 100', 'result': 'success'},
-          {'time': new Date().toGMTString(), 'command': 'keys * 1 100', 'result': 'success'},
-          {'time': new Date().toGMTString(), 'command': 'keys * 1 100', 'result': 'success'},
-          {'time': new Date().toGMTString(), 'command': 'keys * 1 100', 'result': 'success'},
-          {'time': new Date().toGMTString(), 'command': 'keys * 1 100', 'result': 'success'},
-          {'time': new Date().toGMTString(), 'command': 'keys * 1 100', 'result': 'success'},
-          {'time': new Date().toGMTString(), 'command': 'keys * 1 100', 'result': 'success'},
-          {'time': new Date().toGMTString(), 'command': 'keys * 1 100', 'result': 'success'},
-          {'time': new Date().toGMTString(), 'command': 'keys * 1 100', 'result': 'success'},
-          {'time': new Date().toGMTString(), 'command': 'keys * 1 100', 'result': 'success'},
-        ]
-      };
-    }
-  }
+export default {
+  data() {
+    return {
+      commands: [
+        { time: new Date().toGMTString(), command: 'keys * 1 100', result: 'success' },
+        { time: new Date().toGMTString(), command: 'keys * 1 100', result: 'success' },
+        { time: new Date().toGMTString(), command: 'keys * 1 100', result: 'success' },
+        { time: new Date().toGMTString(), command: 'keys * 1 100', result: 'success' },
+        { time: new Date().toGMTString(), command: 'keys * 1 100', result: 'success' },
+        { time: new Date().toGMTString(), command: 'keys * 1 100', result: 'success' },
+        { time: new Date().toGMTString(), command: 'keys * 1 100', result: 'success' },
+        { time: new Date().toGMTString(), command: 'keys * 1 100', result: 'success' },
+        { time: new Date().toGMTString(), command: 'keys * 1 100', result: 'success' },
+        { time: new Date().toGMTString(), command: 'keys * 1 100', result: 'success' },
+        { time: new Date().toGMTString(), command: 'keys * 1 100', result: 'success' },
+        { time: new Date().toGMTString(), command: 'keys * 1 100', result: 'success' },
+        { time: new Date().toGMTString(), command: 'keys * 1 100', result: 'success' },
+        { time: new Date().toGMTString(), command: 'keys * 1 100', result: 'success' },
+        { time: new Date().toGMTString(), command: 'keys * 1 100', result: 'success' },
+        { time: new Date().toGMTString(), command: 'keys * 1 100', result: 'success' },
+      ],
+    };
+  },
+};
 </script>
 
 <style>

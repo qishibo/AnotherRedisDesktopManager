@@ -13,35 +13,34 @@
 </template>
 
 <script>
-export default{
+export default {
   data() {
     return {};
   },
   props: ['content', 'redisKey'],
   methods: {
     execSave() {
-      let key = this.redisKey;
-      let content = this.content.content;
+      const key = this.redisKey;
+      const { content } = this.content;
 
-      console.log('setting ' + key + ' ' + content);
+      console.log(`setting ${key} ${content}`);
 
-      let client = this.$util.get('client');
+      const client = this.$util.get('client');
 
-      client.setAsync(key, content).then(reply => {
+      client.setAsync(key, content).then((reply) => {
         if (reply === 'OK') {
           this.$message.success({
-            message: key + ' ' + this.$t('message.modify_success'),
+            message: `${key} ${this.$t('message.modify_success')}`,
             duration: 1000,
           });
-        }
-        else {
+        } else {
           this.$message.error({
-            message: key + ' ' + $t('message.modify_failed'),
+            message: `${key} ${$t('message.modify_failed')}`,
             duration: 1000,
           });
         }
       });
-    }
-  }
+    },
+  },
 };
 </script>

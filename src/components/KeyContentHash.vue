@@ -93,120 +93,118 @@
 </template>
 
 <script>
-  export default {
-    data() {
-      return {
-        dialogFormVisible: false,
-        editDialog: false,
-        hashData: [], // {key: xxx, value: xxx}
-        newLineItem: {},
-        beforeEditItem: {},
-        editLineItem: {},
-      };
-    },
-    props: ['redisKey'],
-    methods: {
-      initShow() {
-        let key = this.redisKey;
-        let client = this.$util.get('client');
+export default {
+  data() {
+    return {
+      dialogFormVisible: false,
+      editDialog: false,
+      hashData: [], // {key: xxx, value: xxx}
+      newLineItem: {},
+      beforeEditItem: {},
+      editLineItem: {},
+    };
+  },
+  props: ['redisKey'],
+  methods: {
+    initShow() {
+      const key = this.redisKey;
+      const client = this.$util.get('client');
 
-        if (!key) {
-          return;
+      if (!key) {
+        return;
+      }
+
+      client.hgetallAsync(key).then((reply) => {
+        console.log(reply);
+        const hashData = [];
+
+        for (const i in reply) {
+          hashData.push({ key: i, value: reply[i] });
         }
 
-        client.hgetallAsync(key).then(reply => {
-          console.log(reply);
-          let hashData = [];
+        this.hashData = hashData;
+      });
+    },
+    showEditDialog(row) {
+      this.editLineItem = row;
+      this.beforeEditItem = JSON.parse(JSON.stringify(row));
+      this.editDialog = true;
+    },
+    editLine() {
+      const key = this.redisKey;
+      const client = this.$util.get('client');
 
-          for (var i in reply) {
-            hashData.push({key: i, value: reply[i]});
-          }
+      const before = this.beforeEditItem;
+      const after = this.editLineItem;
 
-          this.hashData = hashData;
-        });
-      },
-      showEditDialog(row) {
-        this.editLineItem = row;
-        this.beforeEditItem = JSON.parse(JSON.stringify(row));
-        this.editDialog = true;
-      },
-      editLine() {
-        let key = this.redisKey;
-        let client = this.$util.get('client');
+      console.log('editing...', before, after);
 
-        let before = this.beforeEditItem;
-        let after = this.editLineItem;
+      client.hsetAsync(key, after.key, after.value).then((reply) => {
+        console.log('hset...', reply);
 
-        console.log('editing...', before, after);
+        // key changed
+        if (before.key !== after.key) {
+          client.hdelAsync(key, before.key).then((reply) => {
+            console.log('key changed, hdel...', reply);
+            this.initShow();
+          });
+        } else {
+          this.initShow();
+        }
+      });
 
-        client.hsetAsync(key, after.key, after.value).then(reply => {
-          console.log('hset...', reply);
+      this.$message.success({
+        message: `${after.key} ${this.$t('message.modify_success')}`,
+        duration: 1000,
+      });
 
-          // key changed
-          if (before.key !== after.key) {
-            client.hdelAsync(key, before.key).then(reply => {
-              console.log('key changed, hdel...', reply);
-              this.initShow();
+      this.editDialog = false;
+    },
+    deleteLine(row) {
+      this.$confirm(this.$t('message.confirm_to_delete_row_data'), {
+        type: 'warning',
+      }).then(() => {
+        const key = this.redisKey;
+        const client = this.$util.get('client');
+
+        client.hdelAsync(key, row.key).then((reply) => {
+          if (reply === 1) {
+            this.$message.success({
+              message: `${row.key} ${this.$t('message.delete_success')}`,
+              duration: 1000,
             });
-          }
 
-          else {
             this.initShow();
           }
         });
+      });
+    },
+    addLine() {
+      console.log('add line', this.newLineItem);
+
+      const key = this.redisKey;
+      const client = this.$util.get('client');
+
+      this.dialogFormVisible = false;
+
+      if (!this.newLineItem.field) {
+        return;
+      }
+
+      client.hsetAsync(key, this.newLineItem.field, this.newLineItem.value).then((reply) => {
+        console.log(reply);
 
         this.$message.success({
-          message: after.key + ' ' + this.$t('message.modify_success'),
+          message: `${this.newLineItem.field} ${reply}` ? this.$t('message.add_success') : this.$t('message.modify_success'),
           duration: 1000,
         });
 
-        this.editDialog = false;
-      },
-      deleteLine(row) {
-        this.$confirm(this.$t('message.confirm_to_delete_row_data'), {
-          type: 'warning'
-        }).then(() => {
-          let key = this.redisKey;
-          let client = this.$util.get('client');
-
-          client.hdelAsync(key, row.key).then(reply => {
-            if (reply === 1) {
-              this.$message.success({
-                message: row.key + ' ' + this.$t('message.delete_success'),
-                duration: 1000,
-              });
-
-              this.initShow();
-            }
-          });
-        });
-      },
-      addLine() {
-        console.log('add line', this.newLineItem);
-
-        let key = this.redisKey;
-        let client = this.$util.get('client');
-
-        this.dialogFormVisible = false;
-
-        if (!this.newLineItem.field) {
-          return;
-        }
-
-        client.hsetAsync(key, this.newLineItem.field, this.newLineItem.value).then(reply => {
-          console.log(reply);
-
-          this.$message.success({
-            message: this.newLineItem.field + ' ' + reply ? this.$t('message.add_success') : this.$t('message.modify_success'),
-            duration: 1000,
-          });
-
-          this.initShow();
-        });
-      },
+        this.initShow();
+      });
     },
-    mounted() {
-      this.initShow();
-    }
-  }
+  },
+  mounted() {
+    this.initShow();
+  },
+};
 </script>
