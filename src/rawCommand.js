@@ -22,6 +22,6 @@ export default {
       return;
     }
 
-    return client[`${operation}Async`].apply(client, params);
+    return client[`${operation}Async`](...params);
   },
 };

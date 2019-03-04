@@ -222,7 +222,9 @@ export default {
       const connections = storage.getConnections(true);
 
       for (const i in connections) {
-        this.$refs.connectionMenu.close(`${i}`);
+        // get menu index
+        const index = `${this.getConnectionPoolKey(connections[i])}_${i}`;
+        this.$refs.connectionMenu.close(index);
       }
 
       this.connectionPool = {};
