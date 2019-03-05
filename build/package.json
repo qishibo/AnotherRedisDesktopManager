@@ -1,9 +1,9 @@
 {
-  "name": "node_redis",
+  "name": "Another Redis DeskTop Manager",
   "main": "http://localhost:9988",
   "window": {
-    "id": "node_redis",
-    "title": "node_redis",
+    "id": "Another Redis DeskTop Manager",
+    "title": "Another Redis DeskTop Manager",
     "toolbar": false,
     "frame": true,
     "position": "center",
