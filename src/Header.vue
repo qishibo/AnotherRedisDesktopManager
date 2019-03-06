@@ -26,24 +26,26 @@
       <el-button type="info" @click="cliDialogVisible = true" plain><i class="fa fa-terminal"></i></el-button>
     </el-tooltip>
 
-    <el-dialog width="90%" :title="consoleTitle()" @opened="openConsole" :visible.sync="cliDialogVisible">
+    <el-dialog class="cli-dailog" width="90%" :title="consoleTitle()" @opened="openConsole" :visible.sync="cliDialogVisible">
       <el-form @submit.native.prevent>
         <el-form-item>
-          <el-input id="cli-content" type="textarea" v-model="cliContent.content" :autosize="{ minRows: 8, maxRows: 8}" placeholder="console result" :disabled="true" class="cli-content-textarea"></el-input>
-        </el-form-item>
+          <el-input id="cli-content" type="textarea" v-model="cliContent.content" rows=18 :disabled="true" class="cli-content-textarea"></el-input>
 
-        <el-form-item>
           <el-autocomplete
             class="input-suggestion"
+            autocomplete="off"
             v-model="cliContent.params"
             :fetch-suggestions="inputSuggestion"
-            placeholder=" Such As [set some_key some_value], Click Enter To Submit"
+            placeholder=""
+            :select-when-unmatched="true"
             :trigger-on-focus="false"
             @keyup.enter.native="consoleExec"
             ref="cliParams"
-          ></el-autocomplete>
-          <!-- @keyup.enter.native="consoleExec" -->
-          <!-- @keyup.up.native="searchUp" -->
+          >
+            <!-- @keyup.up.native="searchUp" -->
+            <!-- @keyup.down.native="searchDown" -->
+          </el-autocomplete>
+
         </el-form-item>
       </el-form>
 
@@ -93,11 +95,18 @@ export default {
   methods: {
     inputSuggestion(input, cb) {
       const suggestions = [];
+
+      if (!this.cliContent.params) {
+        cb(suggestions)
+        return;
+      }
+
       for (const key of this.inputSuggestionItems) {
         if (key.indexOf(input) !== -1) {
           suggestions.push({ value: key });
         }
       }
+
       cb(suggestions);
     },
     showSettings() {
@@ -150,7 +159,7 @@ export default {
       this.historyIndex = 0;
 
       if (!promise) {
-        this.cliContent.content += 'Error!\n';
+        this.cliContent.content += '(error) ERR unknown command\n';
 
         this.$nextTick(() => {
           this.scrollToBottom();
@@ -228,13 +237,15 @@ export default {
     openConsole() {
       this.$refs.cliParams.focus();
       this.historyIndex = 0;
+
+      this.initCliContent();
     },
     initDefaultConnection() {
       if (this.$util.get('client')) {
         return true;
       }
 
-      const connections = storage.getConnections();
+      const connections = storage.getConnections(true);
       const connection = connections[0];
 
       if (!connection) {
@@ -246,22 +257,48 @@ export default {
       // set global client
       this.$util.set('client', client);
     },
+    initCliContent() {
+      const {options} = this.$util.get('client');
+
+      let content = `> ${options.host} connected!\n`;
+      this.cliContent.content += content;
+
+      this.$nextTick(() => {
+        this.scrollToBottom();
+      });
+    },
   },
   mounted() {
     this.selectedLang = localStorage.lang || this.selectedLang;
     this.showSettings();
 
     this.initDefaultConnection();
+    // this.initCliContent();
   },
 };
 </script>
 
 <style type="text/css">
+  .cli-dailog .el-dialog__body {
+    padding: 0 20px;
+  }
   .input-suggestion {
     width: 100%;
+    line-height: 34px !important;
   }
 
-  .cli-content-textarea textarea {
-    color: #7e8186 !important;
+  .input-suggestion input {
+    color: #babdc1 !important;
+    background: #263238;
+    border-top: 0px;
+    border-radius: 0 0 4px 4px;
+  }
+
+  #cli-content {
+    color: #babdc1;
+    background: #263238;
+    border-bottom: 0px;
+    border-radius: 4px 4px 0 0;
+    cursor: text;
   }
 </style>
