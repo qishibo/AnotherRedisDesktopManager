@@ -43,6 +43,7 @@ const cn = {
     close_to_edit_connection: '编辑前必须关闭连接，要继续么',
     ttl_delete: '设置TTL<=0将删除该key，是否确认？',
     max_page_reached: '已到达最大页码',
+    add_new_key: '新增Key',
   },
 };
 

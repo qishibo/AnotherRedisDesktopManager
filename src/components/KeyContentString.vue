@@ -19,7 +19,7 @@
 
     <!-- content show -->
     <div>
-      <component :is="selectedView" :content="$data" :redisKey='redisKey'></component>
+      <component :is="selectedView" :data="$data" :redisKey='redisKey'></component>
     </div>
 
   </div>
@@ -43,10 +43,14 @@ export default {
       content: '',
     };
   },
-  props: ['redisKey'],
+  props: ['redisKey', 'newKeyMode', 'newKeyParams'],
   components: { StringViewText, StringViewJson, StringViewPhpUnserialize },
   methods: {
     initShow() {
+      if (this.newKeyMode) {
+        return;
+      }
+
       const key = this.redisKey;
       const client = this.$util.get('client');
 

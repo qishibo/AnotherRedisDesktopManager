@@ -27,11 +27,11 @@ export default {
     };
   },
   components: { VueJsonPretty },
-  props: ['content'],
+  props: ['data'],
   computed: {
     newContent() {
       try {
-        return unserialize(this.content.content);
+        return unserialize(this.data.content);
       } catch (e) {
         return this.$t('message.php_unserialize_format_failed');
       }

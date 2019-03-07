@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- setting button -->
-    <el-button type="primary" icon="el-icon-setting" @click="settingDialog.visible = true" plain></el-button>
+    <!-- <el-button type="primary" icon="el-icon-setting" @click="settingDialog.visible = true" plain></el-button> -->
 
     <!-- setting dialog -->
     <Setting v-if="settingDialog.visible" :settingDialog="settingDialog"></Setting>

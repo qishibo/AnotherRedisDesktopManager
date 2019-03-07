@@ -11,10 +11,10 @@
           <i class="el-icon-delete" @click.stop.prevent="deleteConnection(item)"></i>
         </template>
 
-        <el-form :inline="true" class="demo-form-inline" size="mini">
+        <el-form :inline="true" class="connection-form" size="mini">
           <el-form-item>
             <!-- db index select -->
-            <el-select v-model="selectedDbIndex[getConnectionPoolKey(item)]" placeholder="DB" size="mini" @change="changeDb(getConnectionPoolKey(item))">
+            <el-select class="db-select" v-model="selectedDbIndex[getConnectionPoolKey(item)]" placeholder="DB" size="mini" @change="changeDb(getConnectionPoolKey(item))">
               <el-option
                 v-for="index in dbs"
                 :key="index"
@@ -22,10 +22,12 @@
                 :value="index">
               </el-option>
             </el-select>
+
+            <el-button class="new-key-btn" @click="showNewKeyDialog(getConnectionPoolKey(item))">{{ $t('message.add_new_key')}}</el-button>
           </el-form-item>
 
           <!-- search match -->
-          <el-form-item>
+          <el-form-item class="search-input">
             <el-input v-model="searchMatch[getConnectionPoolKey(item)]" @keyup.enter.native="changeMatchMode(getConnectionPoolKey(item))" placeholder="Enter To Search" suffix-icon="el-icon-search" size="mini"></el-input>
           </el-form-item>
 
@@ -82,6 +84,28 @@
       </div>
     </el-dialog>
 
+
+    <!-- new key dialog -->
+    <el-dialog :title="$t('message.add_new_key')" :visible.sync="newKeyDialog">
+      <el-form label-width="80px">
+        <el-form-item label="类型">
+          <el-select size="mini" v-model="selectedNewKeyType">
+              <el-option
+                v-for="(type, showType) in newKeyTypes"
+                :key="type"
+                :label="showType"
+                :value="type">
+              </el-option>
+            </el-select>
+        </el-form-item>
+      </el-form>
+
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="newKeyDialog = false">取 消</el-button>
+        <el-button type="primary" @click="addNewKey">确 定</el-button>
+      </div>
+    </el-dialog>
+
   </div>
 
 </template>
@@ -109,6 +133,9 @@ export default {
       beforeEditData: {},
       afterEditData: {},
       editConnectionDialog: false,
+      newKeyDialog: false,
+      selectedNewKeyType: 'string',
+      newKeyTypes: {String: 'string', Hash: 'hash', List: 'list', Set: 'set', Zset: 'zset'},
     };
   },
   created() {
@@ -418,6 +445,14 @@ export default {
 
       return promise;
     },
+    showNewKeyDialog(menuIndex) {
+      this.newKeyDialog = true;
+      this.setGlobalConnection(menuIndex);
+    },
+    addNewKey() {
+      this.$bus.$emit('addNewKey', this.selectedNewKeyType);
+      this.newKeyDialog = false;
+    },
   },
   mounted() {
     this.initConnections();
@@ -440,11 +475,15 @@ export default {
     overflow:hidden;
     text-overflow:ellipsis;
   }
-  .connection-menu .connection-db {
-    display: inline-block;
-    margin-left: 20px;
+  .connection-menu .db-select {
+    width: 105px;
+  }
+  .connection-menu .new-key-btn {
     width: 80px;
-    color: grey;
+  }
+  .connection-menu .search-input {
+    margin-top: -10px;;
+    margin-bottom: 15px;
   }
   .connection-menu .el-submenu__title {
     padding-left: 0px !important;

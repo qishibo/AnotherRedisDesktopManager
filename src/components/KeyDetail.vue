@@ -2,10 +2,10 @@
   <div>
     <el-container direction="vertical">
       <el-main>
-        <KeyHeader :redisKey="redisKey" :keyType="keyType"></KeyHeader>
+        <KeyHeader :redisKey="redisKey" :keyType="keyType" :newKeyParams = "newKeyParams"></KeyHeader>
       </el-main>
       <el-main >
-        <component ref="keyContent" :is="component" :redisKey="redisKey"></component>
+        <component ref="keyContent" :is="componentName" :redisKey="redisKey" :newKeyParams = "newKeyParams"></component>
       </el-main>
     </el-container>
   </div>
@@ -23,6 +23,7 @@ import Status from '@/components/Status';
 export default {
   data() {
     return {
+      newKeyParams: {keyTTL: ''},
     };
   },
   created() {
@@ -38,6 +39,36 @@ export default {
     KeyHeader, KeyContentString, KeyContentHash, KeyContentSet, KeyContentZset, KeyContentList, Status,
   },
   props: ['component', 'redisKey', 'keyType'],
+  computed: {
+    componentName() {
+      return this.getComponentNameByType(this.keyType);
+    },
+  },
+  methods: {
+    getComponentNameByType(keyType) {
+      let componentName = '';
+
+      switch (keyType) {
+        case 'string':
+          componentName = 'KeyContentString';
+          break;
+        case 'hash':
+          componentName = 'KeyContentHash';
+          break;
+        case 'zset':
+          componentName = 'KeyContentZset';
+          break;
+        case 'set':
+          componentName = 'KeyContentSet';
+          break;
+        case 'list':
+          componentName = 'KeyContentList';
+          break;
+      }
+
+      return componentName;
+    },
+  },
 
   beforeDestroy() {
     // this.$bus.$off('refreshKey');

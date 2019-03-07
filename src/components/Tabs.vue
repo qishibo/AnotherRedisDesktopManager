@@ -9,7 +9,7 @@
       :name="item.name"
     >
       <Status v-if="item.component_name === 'Status'"></Status>
-      <KeyDetail v-else :redisKey="item.redisKey" :keyType="item.keyType" :component="item.component_name"></KeyDetail>
+      <KeyDetail v-else :redisKey="item.redisKey" :keyType="item.keyType"></KeyDetail>
     </el-tab-pane>
   </el-tabs>
 
@@ -41,7 +41,8 @@ export default {
           });
           return;
         }
-        this.switchType(key, type);
+
+        this.newKeyTab(key, type);
       });
     });
 
@@ -75,6 +76,12 @@ export default {
       console.log('removing all tab...');
       this.tabs = [];
     });
+
+    // add new key
+    this.$bus.$on('addNewKey', (type) => {
+      console.log(`adding new key ${type}`);
+      this.newKeyTab('', type);
+    });
   },
   methods: {
     removeTab(removeName) {
@@ -95,7 +102,7 @@ export default {
       this.tabs = this.tabs.filter(tab => tab.name !== removeName);
     },
 
-    switchType(key, type) {
+    newKeyTab(key, type) {
       console.log(key, type);
 
       const newTabName = `${key} ${type}`;
@@ -111,24 +118,6 @@ export default {
       const newTabItem = {
         name: newTabName, title: newTabName, redisKey: key, keyType: type,
       };
-
-      switch (type) {
-        case 'string':
-          newTabItem.component_name = 'KeyContentString';
-          break;
-        case 'hash':
-          newTabItem.component_name = 'KeyContentHash';
-          break;
-        case 'zset':
-          newTabItem.component_name = 'KeyContentZset';
-          break;
-        case 'set':
-          newTabItem.component_name = 'KeyContentSet';
-          break;
-        case 'list':
-          newTabItem.component_name = 'KeyContentList';
-          break;
-      }
 
       tabs.push(newTabItem);
 

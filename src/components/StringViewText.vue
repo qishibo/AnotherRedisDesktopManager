@@ -2,7 +2,7 @@
   <el-form>
 
     <el-form-item>
-      <el-input type="textarea" size="small" :autosize="{ minRows: 4, maxRows: 8}" v-model="content.content"></el-input>
+      <el-input type="textarea" size="small" :autosize="{ minRows: 4, maxRows: 8}" v-model="data.content"></el-input>
     </el-form-item>
 
     <el-form-item>
@@ -17,11 +17,11 @@ export default {
   data() {
     return {};
   },
-  props: ['content', 'redisKey'],
+  props: ['data', 'redisKey'],
   methods: {
     execSave() {
       const key = this.redisKey;
-      const { content } = this.content;
+      const { content } = this.data;
 
       console.log(`setting ${key} ${content}`);
 

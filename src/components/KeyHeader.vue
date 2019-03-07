@@ -2,7 +2,7 @@
   <div>
     <el-form :inline="true">
       <el-form-item>
-        <el-input placeholder="key" v-model="myRedisKey" @keyup.enter.native="renameKey">
+        <el-input placeholder="" v-model="myRedisKey" @keyup.enter.native="renameKey">
           <i
             class="el-icon-check el-input__icon"
             slot="suffix"
@@ -15,7 +15,7 @@
       </el-form-item>
 
       <el-form-item>
-        <el-input placeholder="86400" v-model="keyTTL" @keyup.enter.native="ttlKey">
+        <el-input placeholder="" v-model="newKeyParams.keyTTL" @keyup.enter.native="ttlKey">
           <i
             class="el-icon-check el-input__icon"
             slot="suffix"
@@ -46,10 +46,10 @@ export default {
     return {
       myRedisKey: this.redisKey,
       myRedisKeyLast: this.redisKey,
-      keyTTL: -1,
+      keyTTL: '',
     };
   },
-  props: ['redisKey', 'keyType'],
+  props: ['redisKey', 'keyType', 'newKeyParams'],
   methods: {
     initShow() {
       const redisKey = this.myRedisKey;
@@ -61,7 +61,7 @@ export default {
 
       client.ttlAsync(redisKey).then((reply) => {
         console.log(redisKey, reply);
-        this.keyTTL = reply;
+        this.newKeyParams.keyTTL = reply;
       });
     },
     deleteKey() {
@@ -92,7 +92,7 @@ export default {
       });
     },
     refreshKey() {
-      console.log(`refreshing ${this.myRedisKey}`);
+      console.log(`refreshing ${this.myRedisKey}`, this.newKeyParams);
 
       this.$bus.$emit('refreshKey', this.myRedisKey);
       this.initShow();
@@ -122,7 +122,7 @@ export default {
     },
     ttlKey() {
       // ttl <= 0
-      if (this.keyTTL <= 0) {
+      if (this.newKeyParams.keyTTL <= 0) {
         this.$confirm(
           this.$t('message.ttl_delete', { key: this.myRedisKey }),
           { type: 'warning' },
@@ -134,11 +134,11 @@ export default {
       }
     },
     setTTL() {
-      console.log(`ttl key ${this.myRedisKey} ttl is ${this.keyTTL}`);
+      console.log(`ttl key ${this.myRedisKey} ttl is ${this.newKeyParams.keyTTL}`);
 
       const client = this.$util.get('client');
 
-      client.expireAsync(this.myRedisKey, this.keyTTL).then((reply) => {
+      client.expireAsync(this.myRedisKey, this.newKeyParams.keyTTL).then((reply) => {
         console.log(`expire result ${this.myRedisKey} ${this.keyTTL}`);
 
         if (reply) {
