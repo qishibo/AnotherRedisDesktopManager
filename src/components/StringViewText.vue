@@ -20,7 +20,7 @@ export default {
   props: ['data', 'redisKey'],
   methods: {
     execSave() {
-      const key = this.redisKey;
+      const key = this.data.newKeyParamsReference.keyName;
       const { content } = this.data;
 
       console.log(`setting ${key} ${content}`);
@@ -35,7 +35,7 @@ export default {
           });
         } else {
           this.$message.error({
-            message: `${key} ${$t('message.modify_failed')}`,
+            message: `${key} ${this.$t('message.modify_failed')}`,
             duration: 1000,
           });
         }

@@ -41,6 +41,7 @@ export default {
         { value: 'StringViewPhpUnserialize', text: 'View As PHPUnserialize' },
       ],
       content: '',
+      newKeyParamsReference: this.newKeyParams,
     };
   },
   props: ['redisKey', 'newKeyMode', 'newKeyParams'],

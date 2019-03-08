@@ -23,9 +23,10 @@ import Status from '@/components/Status';
 export default {
   data() {
     return {
-      newKeyParams: {keyTTL: ''},
+      newKeyParams: { keyTTL: '', keyName: this.redisKey },
     };
   },
+  props: ['redisKey', 'keyType'],
   created() {
     this.$bus.$on('refreshKey', (redisKey) => {
       if (!this.redisKey || !this.$refs.keyContent || (this.redisKey !== redisKey)) {
@@ -38,7 +39,6 @@ export default {
   components: {
     KeyHeader, KeyContentString, KeyContentHash, KeyContentSet, KeyContentZset, KeyContentList, Status,
   },
-  props: ['component', 'redisKey', 'keyType'],
   computed: {
     componentName() {
       return this.getComponentNameByType(this.keyType);
