@@ -55,6 +55,10 @@ export default {
       const key = this.redisKey;
       const client = this.$util.get('client');
 
+      if (!key) {
+        return;
+      }
+
       client.getAsync(key).then((reply) => {
         console.log(reply);
         this.content = reply;

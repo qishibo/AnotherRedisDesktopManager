@@ -22,6 +22,7 @@ export default {
     execSave() {
       const key = this.data.newKeyParamsReference.keyName;
       const { content } = this.data;
+      const ttl = this.data.newKeyParamsReference.keyTTL;
 
       console.log(`setting ${key} ${content}`);
 
@@ -29,10 +30,20 @@ export default {
 
       client.setAsync(key, content).then((reply) => {
         if (reply === 'OK') {
+          // if ttl is setted
+          if (ttl > 0) {
+            client.expireAsync(key, ttl).then((reply) => {
+              console.log(`set ttl to ${ttl}`, reply);
+            });
+          }
+
           this.$message.success({
             message: `${key} ${this.$t('message.modify_success')}`,
             duration: 1000,
           });
+
+          this.$bus.$emit('clickedKey', key);
+          this.$bus.$emit('refreshKeyList');
         } else {
           this.$message.error({
             message: `${key} ${this.$t('message.modify_failed')}`,

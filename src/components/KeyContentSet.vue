@@ -88,10 +88,10 @@ export default {
       editLineItem: {},
     };
   },
-  props: ['redisKey'],
+  props: ['redisKey', 'newKeyParams'],
   methods: {
     initShow() {
-      const key = this.redisKey;
+      const key = this.newKeyParams.keyName;
       const client = this.$util.get('client');
 
       if (!key) {
@@ -116,7 +116,7 @@ export default {
       this.editDialog = true;
     },
     editLine() {
-      const key = this.redisKey;
+      const key = this.newKeyParams.keyName;
       const client = this.$util.get('client');
 
       const before = this.beforeEditItem;
@@ -144,7 +144,7 @@ export default {
       this.$confirm(this.$t('message.confirm_to_delete_row_data'), {
         type: 'warning',
       }).then(() => {
-        const key = this.redisKey;
+        const key = this.newKeyParams.keyName;
         const client = this.$util.get('client');
 
         client.sremAsync(key, row.value).then((reply) => {
@@ -164,7 +164,8 @@ export default {
     addLine() {
       console.log('add line', this.newLineItem);
 
-      const key = this.redisKey;
+      const key = this.newKeyParams.keyName;
+      const ttl = this.newKeyParams.keyTTL;
       const client = this.$util.get('client');
 
       this.dialogFormVisible = false;
@@ -177,6 +178,12 @@ export default {
         console.log(reply);
 
         if (reply === 1) {
+          if (ttl > 0) {
+            client.expireAsync(key, ttl).then((reply) => {
+              console.log(`new list key set ttl ${ttl}`, reply);
+            });
+          }
+
           this.$message.success({
             message: this.$t('message.add_success'),
             duration: 1000,
@@ -188,6 +195,7 @@ export default {
           });
         }
 
+        this.$parent.$parent.$parent.refreshAfterAdd(key);
         this.initShow();
       });
     },

@@ -135,7 +135,9 @@ export default {
       editConnectionDialog: false,
       newKeyDialog: false,
       selectedNewKeyType: 'string',
-      newKeyTypes: {String: 'string', Hash: 'hash', List: 'list', Set: 'set', Zset: 'zset'},
+      newKeyTypes: {
+        String: 'string', Hash: 'hash', List: 'list', Set: 'set', Zset: 'zset',
+      },
     };
   },
   created() {
@@ -476,10 +478,10 @@ export default {
     text-overflow:ellipsis;
   }
   .connection-menu .db-select {
-    width: 105px;
+    width: 50%;
   }
   .connection-menu .new-key-btn {
-    width: 80px;
+    width: 48%;
   }
   .connection-menu .search-input {
     margin-top: -10px;;

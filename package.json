@@ -9,6 +9,7 @@
     "start": "npm run dev",
     "build": "node build/build.js",
     "nw": "node_modules/.bin/nw build",
+    "electron": "electron build/electron-main.js",
     "lint": "eslint --ext js,vue src --fix",
     "lint:init": "eslint --init"
   },

@@ -68,6 +68,12 @@ export default {
 
       return componentName;
     },
+    refreshAfterAdd(key) {
+      console.log('refreshing after add new key...', key);
+
+      this.$bus.$emit('clickedKey', key);
+      this.$bus.$emit('refreshKeyList');
+    },
   },
 
   beforeDestroy() {
