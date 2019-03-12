@@ -529,7 +529,7 @@ export default {
     width: 40px;
     height: 24px;
     padding: 5px;
-    font-size: 50%;
+    font-size: 12px;
     margin: 0 10px;
     text-align: center;
   }
