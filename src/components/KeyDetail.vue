@@ -2,7 +2,7 @@
   <div>
     <el-container direction="vertical">
       <el-main>
-        <KeyHeader :redisKey="redisKey" :keyType="keyType" :newKeyParams = "newKeyParams"></KeyHeader>
+        <KeyHeader ref="keyHeader" :redisKey="redisKey" :keyType="keyType" :newKeyParams = "newKeyParams"></KeyHeader>
       </el-main>
       <el-main >
         <component ref="keyContent" :is="componentName" :redisKey="redisKey" :newKeyParams = "newKeyParams"></component>
@@ -73,6 +73,14 @@ export default {
 
       this.$bus.$emit('clickedKey', key);
       this.$bus.$emit('refreshKeyList');
+    },
+    emptyKeyWhenAdding() {
+      this.$message.error({
+        message: this.$t('message.enter_new_key'),
+        duration: 2000,
+      });
+
+      this.$refs.keyHeader.$refs.keyNameInput.focus();
     },
   },
 

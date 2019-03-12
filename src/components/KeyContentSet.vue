@@ -170,6 +170,11 @@ export default {
 
       this.dialogFormVisible = false;
 
+      if (!key) {
+        this.$parent.$parent.$parent.emptyKeyWhenAdding();
+        return false;
+      }
+
       if (!this.newLineItem.value) {
         return;
       }

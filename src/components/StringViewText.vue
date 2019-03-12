@@ -24,6 +24,11 @@ export default {
       const { content } = this.data;
       const ttl = this.data.newKeyParamsReference.keyTTL;
 
+      if (!key) {
+        this.$parent.$parent.$parent.$parent.emptyKeyWhenAdding();
+        return false;
+      }
+
       console.log(`setting ${key} ${content}`);
 
       const client = this.$util.get('client');

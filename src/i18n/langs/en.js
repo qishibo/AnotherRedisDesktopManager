@@ -44,6 +44,7 @@ const en = {
     ttl_delete: 'Set TTL<=0 Will Delete The Key Directly',
     max_page_reached: 'Max Page Reached',
     add_new_key: 'New Key',
+    enter_new_key: 'Enter Your New Key Name First',
   },
 };
 

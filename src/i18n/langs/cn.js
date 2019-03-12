@@ -44,6 +44,7 @@ const cn = {
     ttl_delete: '设置TTL<=0将删除该key，是否确认？',
     max_page_reached: '已到达最大页码',
     add_new_key: '新增Key',
+    enter_new_key: '请先输入新的key名称',
   },
 };
 
