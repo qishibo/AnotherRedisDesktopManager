@@ -47,6 +47,7 @@ const cn = {
     enter_new_key: '请先输入新的key名称',
     key_type: '类型',
     save: '保存',
+    enter_to_search: '按下 Enter 键进行搜索',
   },
 };
 

@@ -28,14 +28,15 @@
 
           <!-- search match -->
           <el-form-item class="search-input">
-            <el-input v-model="searchMatch[getConnectionPoolKey(item)]" @keyup.enter.native="changeMatchMode(getConnectionPoolKey(item))" placeholder="Enter To Search" size="mini">
+            <el-input v-model="searchMatch[getConnectionPoolKey(item)]" @keyup.enter.native="changeMatchMode(getConnectionPoolKey(item))" :placeholder="$t('message.enter_to_search')" size="mini">
               <i slot="suffix" class="el-input__icon" :class="searchIcon" @click="changeMatchMode(getConnectionPoolKey(item))"></i>
             </el-input>
           </el-form-item>
         </el-form>
 
+        <!-- key list -->
         <ul class="key-list">
-          <li class="key-item" v-for="key of keyList[getConnectionPoolKey(item)]" @click="clickKey(key, getConnectionPoolKey(item))">{{key}}</li>
+          <li class="key-item" :title="key" v-for="key of keyList[getConnectionPoolKey(item)]" @click="clickKey(key, getConnectionPoolKey(item))">{{key}}</li>
         </ul>
 
         <!-- page -->
@@ -521,10 +522,13 @@ export default {
   }
   .connection-menu .key-list .key-item {
     white-space:nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
     cursor: pointer;
     color: #3c5765;
     font-size: 82%;
     line-height: 1.6;
+    margin-right: 3px;
   }
   .connection-menu .key-list .key-item:hover {
     color: #409EFF;

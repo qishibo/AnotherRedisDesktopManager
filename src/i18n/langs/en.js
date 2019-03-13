@@ -47,6 +47,7 @@ const en = {
     enter_new_key: 'Enter Your New Key Name First',
     key_type: 'Key Type',
     save: 'Save',
+    enter_to_search: 'Enter To Search',
   },
 };
 
