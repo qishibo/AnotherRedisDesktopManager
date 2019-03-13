@@ -28,7 +28,7 @@
 
           <!-- search match -->
           <el-form-item class="search-input">
-            <el-input v-model="searchMatch[getConnectionPoolKey(item)]" @keyup.enter.native="changeMatchMode(getConnectionPoolKey(item))" placeholder="Enter To Search" suffix-icon="el-icon-search" size="mini"></el-input>
+            <el-input v-model="searchMatch[getConnectionPoolKey(item)]" @keyup.enter.native="changeMatchMode(getConnectionPoolKey(item))" placeholder="Enter To Search" :suffix-icon="searchIcon" size="mini"></el-input>
           </el-form-item>
 
         </el-form>
@@ -79,16 +79,16 @@
       </el-form>
 
       <div slot="footer" class="dialog-footer">
-        <el-button @click="editConnectionDialog = false">取 消</el-button>
-        <el-button type="primary" @click="editConnection">确 定</el-button>
+        <el-button @click="editConnectionDialog = false">{{ $t('el.messagebox.cancel') }}</el-button>
+        <el-button type="primary" @click="editConnection">{{ $t('el.messagebox.confirm') }}</el-button>
       </div>
     </el-dialog>
 
 
     <!-- new key dialog -->
-    <el-dialog :title="$t('message.add_new_key')" :visible.sync="newKeyDialog">
-      <el-form label-width="80px">
-        <el-form-item label="类型">
+    <el-dialog :title="$t('message.add_new_key')" :visible.sync="newKeyDialog" width="320px">
+      <el-form>
+        <el-form-item :label="$t('message.key_type')">
           <el-select size="mini" v-model="selectedNewKeyType">
               <el-option
                 v-for="(type, showType) in newKeyTypes"
@@ -101,8 +101,8 @@
       </el-form>
 
       <div slot="footer" class="dialog-footer">
-        <el-button @click="newKeyDialog = false">取 消</el-button>
-        <el-button type="primary" @click="addNewKey">确 定</el-button>
+        <el-button @click="newKeyDialog = false">{{ $t('el.messagebox.cancel') }}</el-button>
+        <el-button type="primary" @click="addNewKey">{{ $t('el.messagebox.confirm') }}</el-button>
       </div>
     </el-dialog>
 
@@ -125,6 +125,7 @@ export default {
       openedStatus: {},
       selectedDbIndex: {},
       searchMatch: {},
+      searchIcon: 'el-icon-search',
       searchPageSize: 10000,
       keyList: [],
       scanCursorList: {},
@@ -416,6 +417,9 @@ export default {
       // let promise = client.scanAsync(cursor, 'MATCH', match, 'COUNT', this.keysPageSize).then();
       const pageSize = (match === '*') ? this.keysPageSize : this.searchPageSize;
 
+      // search loading
+      this.searchIcon = 'el-icon-loading';
+
       const promise = this.beginScanning(cursor, match, pageSize, (reply) => {
         if (reply[0] === '0') {
           this.$set(this.nextPageDisabled, menuIndex, true);
@@ -425,6 +429,9 @@ export default {
 
         pushToCursorList && this.scanCursorList[menuIndex].push(reply[0]);
         this.$set(this.keyList, menuIndex, reply[1]);
+
+        // search input recover
+        this.searchIcon = 'el-icon-search';
 
         console.log('new cursor list', this.scanCursorList);
       });

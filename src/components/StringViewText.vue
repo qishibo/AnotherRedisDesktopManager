@@ -6,7 +6,7 @@
     </el-form-item>
 
     <el-form-item>
-      <el-button type="primary" @click="execSave">Save</el-button>
+      <el-button type="primary" @click="execSave">{{ $t('message.save') }}</el-button>
     </el-form-item>
 
   </el-form>

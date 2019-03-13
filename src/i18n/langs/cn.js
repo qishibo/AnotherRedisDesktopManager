@@ -45,6 +45,8 @@ const cn = {
     max_page_reached: '已到达最大页码',
     add_new_key: '新增Key',
     enter_new_key: '请先输入新的key名称',
+    key_type: '类型',
+    save: '保存',
   },
 };
 

@@ -27,8 +27,8 @@
         </el-form>
 
         <div slot="footer" class="dialog-footer">
-          <el-button @click="dialogFormVisible = false">取 消</el-button>
-          <el-button type="primary" @click="addNewConnection">确 定</el-button>
+          <el-button @click="dialogFormVisible = false">{{ $t('el.messagebox.cancel') }}</el-button>
+          <el-button type="primary" @click="addNewConnection">{{ $t('el.messagebox.confirm') }}</el-button>
         </div>
       </el-dialog>
 

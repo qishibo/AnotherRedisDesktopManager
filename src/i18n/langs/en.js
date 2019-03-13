@@ -45,6 +45,8 @@ const en = {
     max_page_reached: 'Max Page Reached',
     add_new_key: 'New Key',
     enter_new_key: 'Enter Your New Key Name First',
+    key_type: 'Key Type',
+    save: 'Save',
   },
 };
 
