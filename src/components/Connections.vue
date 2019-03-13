@@ -28,9 +28,10 @@
 
           <!-- search match -->
           <el-form-item class="search-input">
-            <el-input v-model="searchMatch[getConnectionPoolKey(item)]" @keyup.enter.native="changeMatchMode(getConnectionPoolKey(item))" placeholder="Enter To Search" :suffix-icon="searchIcon" size="mini"></el-input>
+            <el-input v-model="searchMatch[getConnectionPoolKey(item)]" @keyup.enter.native="changeMatchMode(getConnectionPoolKey(item))" placeholder="Enter To Search" size="mini">
+              <i slot="suffix" class="el-input__icon" :class="searchIcon" @click="changeMatchMode(getConnectionPoolKey(item))"></i>
+            </el-input>
           </el-form-item>
-
         </el-form>
 
         <ul class="key-list">
