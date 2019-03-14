@@ -1,6 +1,6 @@
 {
   "name": "another-redis-manager",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "A faster, better and more stable redis desktop manager, compatible with Linux, windows, mac",
   "author": "qii404",
   "private": true,
@@ -8,11 +8,13 @@
     "dev": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
     "start": "npm run dev",
     "build": "node build/build.js",
-    "electron": "node_modules/.bin/electron .",
+    "electron": "node_modules/.bin/electron pack/electron",
     "lint": "eslint --ext js,vue src --fix",
-    "lint:init": "eslint --init"
+    "lint:init": "eslint --init",
+    "asar": "node_modules/.bin/asar pack dist dist/app.asar",
+    "pack:prepare": "npm run build; find dist -name '*.map'|xargs rm; cp pack/electron/* dist; sed -i \"s/const APP_ENV = 'dev'/const APP_ENV = 'production'/g\" dist/electron-main.js;",
+    "pack:linux": "node_modules/.bin/electron-builder --project=dist -c electron-builder.yml -l=AppImage"
   },
-  "main": "build/electron-main.js",
   "dependencies": {
     "axios": "^0.18.0",
     "bluebird": "^3.5.3",
@@ -26,6 +28,7 @@
     "vue-json-pretty": "^1.4.1"
   },
   "devDependencies": {
+    "asar": "^1.0.0",
     "autoprefixer": "^7.1.2",
     "babel-core": "^6.22.1",
     "babel-helper-vue-jsx-merge-props": "^2.0.3",
@@ -40,6 +43,7 @@
     "copy-webpack-plugin": "^4.0.1",
     "css-loader": "^0.28.0",
     "electron": "^4.0.8",
+    "electron-builder": "^20.39.0",
     "eslint": "^5.14.1",
     "eslint-config-airbnb-base": "^13.1.0",
     "eslint-plugin-import": "^2.16.0",

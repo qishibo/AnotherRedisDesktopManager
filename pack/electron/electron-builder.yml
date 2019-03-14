@@ -1,0 +1,4 @@
+directories:
+  output: dist-package
+  buildResources: build
+electronVersion: 4.1.0
