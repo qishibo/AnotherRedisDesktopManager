@@ -4,9 +4,9 @@
 
 Packaged apps(such as .exe .deb .dmg) will be available soon...
 
-If uou want to try it early, build it as follows
+If you want to try it early, build it as follows
 
-## Build Setup
+## Dev Build Setup
 
 ``` bash
 # clone code
@@ -17,23 +17,25 @@ cd AnotherRedisDesktopManager
 npm install
 
 # serve with hot reload at localhost:9988
-npm run dev
+npm start
 
 # after the last step is completed, open another tab, build up a nw client
 
 # Linux or Mac
-npm run nw
+npm run electron
 
 # Windows
-# you need to download nw.exe first
-path_to_nw.exe build
+# you need to download electron.exe first
+path_to_electron.exe .
 ```
 
 Enjoy!
 
-![redis status](https://ws1.sinaimg.cn/large/71405cably1g0s1uoa6qxj20w70mz79x.jpg)
+![redis status](https://ws1.sinaimg.cn/large/71405cably1g129wwutkij20vn0mbae6.jpg)
 
-![redis key detail](https://ws1.sinaimg.cn/large/71405cably1g0s1rv79v8j20wj0mwafh.jpg)
+![redis key detail](https://ws1.sinaimg.cn/large/71405cably1g129wwu51vj20vi0ma77n.jpg)
+
+![redis console](https://ws1.sinaimg.cn/large/71405cably1g129wwtdfjj20vn0mbq6d.jpg)
 
 ## License
 
