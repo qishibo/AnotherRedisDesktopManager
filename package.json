@@ -1,18 +1,18 @@
 {
-  "name": "redis-manager",
+  "name": "another-redis-manager",
   "version": "1.0.0",
-  "description": "redis desktop manager",
+  "description": "A faster, better and more stable redis desktop manager, compatible with Linux, windows, mac",
   "author": "qii404",
   "private": true,
   "scripts": {
     "dev": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
     "start": "npm run dev",
     "build": "node build/build.js",
-    "nw": "node_modules/.bin/nw build",
-    "electron": "electron build/electron-main.js",
+    "electron": "node_modules/.bin/electron .",
     "lint": "eslint --ext js,vue src --fix",
     "lint:init": "eslint --init"
   },
+  "main": "build/electron-main.js",
   "dependencies": {
     "axios": "^0.18.0",
     "bluebird": "^3.5.3",
@@ -39,6 +39,7 @@
     "chalk": "^2.0.1",
     "copy-webpack-plugin": "^4.0.1",
     "css-loader": "^0.28.0",
+    "electron": "^4.0.8",
     "eslint": "^5.14.1",
     "eslint-config-airbnb-base": "^13.1.0",
     "eslint-plugin-import": "^2.16.0",
@@ -48,7 +49,6 @@
     "friendly-errors-webpack-plugin": "^1.6.1",
     "html-webpack-plugin": "^2.30.1",
     "node-notifier": "^5.1.2",
-    "nw": "^0.36.3-sdk",
     "optimize-css-assets-webpack-plugin": "^3.2.0",
     "ora": "^1.2.0",
     "portfinder": "^1.0.13",
