@@ -1,8 +1,42 @@
 {
   "name": "another-redis-manager",
   "version": "1.1.0",
-  "description": "A faster, better and more stable redis desktop manager, compatible with Linux, windows, mac",
-  "author": "qii404",
+  "description": "A faster, better and more stable redis desktop manager.",
+  "author": "qii404.me",
   "private": true,
-  "main": "electron-main.js"
+  "main": "electron-main.js",
+  "build": {
+    "appId" : "me.qii404.another-redis-desktop-manager",
+    "productName": "Another Redis Dsektop Manager",
+    "copyright": "Copyright © 2019 qii404.me",
+    "asar": true,
+    "directories": {
+      "output": "build-apps",
+      "buildResources": "build"
+    },
+    "electronVersion": "4.1.0",
+    "files": [
+      "!static/js/*.map",
+      "!static/css/*.map"
+    ],
+    "win": {
+      "icon": "../build/logo.png",
+      "target": [
+        "nsis"
+      ]
+    },
+    "nsis": {
+      "allowToChangeInstallationDirectory": true,
+      "oneClick": false,
+      "menuCategory": true,
+      "allowElevation": false
+    },
+    "linux": {
+      "icon": "../build/logo.png",
+      "category": "Utility",
+      "target": [
+        "AppImage"
+      ]
+    }
+  }
 }

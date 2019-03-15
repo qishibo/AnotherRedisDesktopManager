@@ -12,8 +12,8 @@
     "lint": "eslint --ext js,vue src --fix",
     "lint:init": "eslint --init",
     "asar": "node_modules/.bin/asar pack dist dist/app.asar",
-    "pack:prepare": "npm run build; find dist -name '*.map'|xargs rm; cp pack/electron/* dist; sed -i \"s/const APP_ENV = 'dev'/const APP_ENV = 'production'/g\" dist/electron-main.js;",
-    "pack:linux": "node_modules/.bin/electron-builder --project=dist -c electron-builder.yml -l=AppImage"
+    "pack:prepare": "npm run build; cp pack/electron/* dist; sed -i \"s/const APP_ENV = 'dev'/const APP_ENV = 'production'/g\" dist/electron-main.js;",
+    "pack:linux": "node_modules/.bin/electron-builder --project=dist -l"
   },
   "dependencies": {
     "axios": "^0.18.0",

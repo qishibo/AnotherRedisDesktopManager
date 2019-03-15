@@ -2,7 +2,7 @@
 
 > A faster, better and more stable redis desktop manager, compatible with Linux, windows, mac. What's more, it won't crash when loading a large number of keys. Under building...
 
-Packaged apps(such as .exe .deb .dmg) can be downloaded from release page.
+Packaged apps(such as .exe .deb .dmg) can be downloaded from [release](https://github.com/qishibo/AnotherRedisDesktopManager/releases) page.
 
 You can also build it as follows
 
