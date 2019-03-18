@@ -37,6 +37,12 @@
       "target": [
         "AppImage"
       ]
+    },
+    "mac": {
+      "icon": "icons/icon.png",
+      "target": [
+        "dmg"
+      ]
     }
   }
 }
