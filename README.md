@@ -1,10 +1,19 @@
 # Another Redis DeskTop Manager
 
-> A faster, better and more stable redis desktop manager, compatible with Linux, windows, mac. What's more, it won't crash when loading a large number of keys. Under building...
+> A faster, better and more stable redis desktop manager, compatible with Linux, windows, mac. What's more, it won't crash when loading a large number of keys.
 
-Packaged apps(such as .exe .deb .dmg) can be downloaded from [release](https://github.com/qishibo/AnotherRedisDesktopManager/releases) page.
 
-You can also build it as follows
+## Windows
+
+Download latest `exe` package from [release](https://github.com/qishibo/AnotherRedisDesktopManager/releases) page, double click to install.
+
+## Linux
+
+Download latest `AppImage` package from [release](https://github.com/qishibo/AnotherRedisDesktopManager/releases) page, double click to run. Or `chmod +x xxx.AppImage`, then `./xxx.AppImage`.
+
+## Mac
+
+Download latest `dmg` package from [release](https://github.com/qishibo/AnotherRedisDesktopManager/releases) page, double click to install.
 
 ## Dev Build Setup
 
@@ -19,7 +28,7 @@ npm install
 # serve with hot reload at localhost:9988
 npm start
 
-# after the last step is completed, open another tab, build up a nw client
+# after the last step is completed, open another tab, build up a desktop client
 
 # Linux or Mac
 npm run electron

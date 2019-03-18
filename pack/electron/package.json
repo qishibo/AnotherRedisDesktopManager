@@ -12,7 +12,7 @@
     "asar": true,
     "directories": {
       "output": "build-apps",
-      "buildResources": "build"
+      "buildResources": "./"
     },
     "electronVersion": "4.1.0",
     "files": [
@@ -20,7 +20,7 @@
       "!static/css/*.map"
     ],
     "win": {
-      "icon": "../build/logo.png",
+      "icon": "icons/icon.png",
       "target": [
         "nsis"
       ]
@@ -32,7 +32,7 @@
       "allowElevation": false
     },
     "linux": {
-      "icon": "../build/logo.png",
+      "icon": "icons/",
       "category": "Utility",
       "target": [
         "AppImage"
