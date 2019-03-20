@@ -422,15 +422,22 @@ export default {
       // search loading
       this.searchIcon = 'el-icon-loading';
 
-      const promise = this.beginScanning(cursor, match, pageSize, (reply) => {
+      const promise = this.beginScanning(cursor, match, pageSize, (reply, tmpShow = false) => {
+        // refresh key list
+        this.$set(this.keyList, menuIndex, reply[1]);
+
+        if (tmpShow) {
+          return true;
+        }
+
+        pushToCursorList && this.scanCursorList[menuIndex].push(reply[0]);
+
         if (reply[0] === '0') {
           this.$set(this.nextPageDisabled, menuIndex, true);
         } else {
           this.$set(this.nextPageDisabled, menuIndex, false);
         }
 
-        pushToCursorList && this.scanCursorList[menuIndex].push(reply[0]);
-        this.$set(this.keyList, menuIndex, reply[1]);
 
         // search input recover
         this.searchIcon = 'el-icon-search';
@@ -440,15 +447,19 @@ export default {
 
       return promise;
     },
-    beginScanning(cursor, match, count, callback, recursive = true) {
+    beginScanning(cursor, match, count, callback, recursive = true, minLength = null, lastList = []) {
       const client = this.$util.get('client');
+      !minLength && (minLength = this.keysPageSize);
 
       const promise = client.scanAsync(cursor, 'MATCH', match, 'COUNT', count).then((reply) => {
         console.log(`cursor:${cursor} count: ${count} match:${match}`, 'scan result', reply);
 
-        // empty result
-        if (recursive && (reply[0] !== '0') && (reply[1].length === 0)) {
-          return this.beginScanning(reply[0], match, count, callback, recursive);
+        reply[1] = reply[1].concat(lastList);
+
+        // key list length smaller than minLength
+        if (recursive && (reply[0] !== '0') && (reply[1].length < minLength)) {
+          callback && callback(reply, true);
+          return this.beginScanning(reply[0], match, count, callback, recursive, minLength, reply[1]);
         }
 
         callback && callback(reply);
