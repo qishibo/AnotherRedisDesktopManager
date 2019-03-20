@@ -23,15 +23,25 @@ git clone https://github.com/qishibo/AnotherRedisDesktopManager.git
 
 # install dependencies
 cd AnotherRedisDesktopManager
+
 npm install
+# or use yarn
+# yarn install
+
+# if installing electron failed in China, use this command
+# ELECTRON_MIRROR="https://npm.taobao.org/mirrors/electron/" npm install
+# if yarn
+# ELECTRON_MIRROR="https://npm.taobao.org/mirrors/electron/" yarn install
 
 # serve with hot reload at localhost:9988
 npm start
+# yarn start
 
 # after the last step is completed, open another tab, build up a desktop client
 
 # Linux or Mac
 npm run electron
+# yarn run electron
 
 # Windows
 # you need to download electron.exe first
