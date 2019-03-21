@@ -48,6 +48,13 @@ const en = {
     key_type: 'Key Type',
     save: 'Save',
     enter_to_search: 'Enter To Search',
+    export_success: 'Export Success',
+    select_import_file: 'Select The File',
+    import_success: 'Import Success',
+    put_file_here: 'Drag File Here Or Click To Select',
+    config_connections: 'Connections',
+    import: 'Import',
+    export: 'Export',
   },
 };
 

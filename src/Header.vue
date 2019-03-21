@@ -1,10 +1,10 @@
 <template>
   <div>
     <!-- setting button -->
-    <!-- <el-button type="primary" icon="el-icon-setting" @click="settingDialog.visible = true" plain></el-button> -->
+    <el-button type="primary" icon="el-icon-setting" @click="settingDialog.visible = true" plain></el-button>
 
     <!-- setting dialog -->
-    <Setting v-if="settingDialog.visible" :settingDialog="settingDialog"></Setting>
+    <Setting :settingDialog="settingDialog"></Setting>
 
     <!-- cli button -->
     <el-tooltip effect="dark" :content="$t('message.redis_console')" placement="bottom">
@@ -12,7 +12,7 @@
     </el-tooltip>
 
     <!-- cli dialog -->
-    <CliConsole v-if="cliDialog.visible" :cliDialog="cliDialog"></CliConsole>
+    <CliConsole :cliDialog="cliDialog"></CliConsole>
 
     <!-- language select -->
     <el-select v-model="selectedLang" @change="changeLang" placeholder="Language">

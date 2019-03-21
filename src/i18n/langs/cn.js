@@ -48,6 +48,13 @@ const cn = {
     key_type: '类型',
     save: '保存',
     enter_to_search: '按下 Enter 键进行搜索',
+    export_success: '导出成功',
+    select_import_file: '选择配置文件',
+    import_success: '导入成功',
+    put_file_here: '将文件拖到此处，或点击选择',
+    config_connections: '连接配置',
+    import: '导入',
+    export: '导出',
   },
 };
 

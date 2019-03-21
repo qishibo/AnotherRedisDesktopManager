@@ -147,6 +147,9 @@ export default {
     this.$bus.$on('refreshKeyList', () => {
       this.refreshKeyList();
     });
+    this.$bus.$on('refreshConnections', () => {
+      this.initConnections();
+    });
   },
   methods: {
     openConnection(openedMenuKey) {
