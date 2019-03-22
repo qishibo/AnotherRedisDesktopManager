@@ -47,22 +47,22 @@ export default {
     });
 
     // open status tab
-    this.$bus.$on('openStatus', () => {
-      console.log('open status');
+    this.$bus.$on('openStatus', (tabName) => {
+      console.log('open status', tabName);
 
-      const client = this.$util.get('client');
+      // const client = this.$util.get('client');
 
-      const { host } = client.options;
-      const { port } = client.options;
-      const newTabName = `${host}:${port}`;
+      // const { host } = client.options;
+      // const { port } = client.options;
+      // const newTabName = `${host}:${port}`;
 
       this.tabs.push({
-        name: newTabName,
-        title: newTabName,
+        name: tabName,
+        title: tabName,
         component_name: 'Status',
       });
 
-      this.selectedTabName = newTabName;
+      this.selectedTabName = tabName;
     });
 
     // remove pre tab

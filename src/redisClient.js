@@ -12,12 +12,8 @@ export default {
       },
       menu_index: menuIndex,
     };
-    const client = redis.createClient(port, host, options);
 
-    client.on('error', (err) => {
-      alert(err);
-      return false;
-    });
+    const client = redis.createClient(port, host, options);
 
     return client;
   },

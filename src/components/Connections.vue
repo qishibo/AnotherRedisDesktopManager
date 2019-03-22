@@ -165,24 +165,43 @@ export default {
       }
 
       this.getDbIndex(menuIndex);
-      this.setGlobalConnection(menuIndex, connection);
+      const client = this.setGlobalConnection(menuIndex, connection);
 
-      // open status tab
-      if (!this.openedStatus[menuIndex]) {
-        this.$bus.$emit('openStatus');
-        this.openedStatus[menuIndex] = true;
+      // new connection, not ready
+      if (!client.ready) {
+        client.on('ready', () => {
+          // open status tab
+          if (!this.openedStatus[menuIndex]) {
+            this.$bus.$emit('openStatus', connection.showName);
+            this.openedStatus[menuIndex] = true;
+          }
+
+          this.refreshKeyList();
+        });
       }
 
-      this.refreshKeyList();
+      // connection is ready
+      else{
+        this.refreshKeyList();
+      }
     },
     setGlobalConnection(menuIndex, connection) {
-      if (!this.connectionPool[menuIndex]) {
-        const client = redisClient.createConnection(connection.host, connection.port, connection.auth, menuIndex);
+      let client = this.connectionPool[menuIndex];
+
+      if (!client || !client.ready) {
+        client = redisClient.createConnection(connection.host, connection.port, connection.auth, menuIndex);
+
+        client.on('error', (err) => {
+          alert(err);
+        });
+
         this.connectionPool[menuIndex] = client;
       }
 
       // set global client
-      this.$util.set('client', this.connectionPool[menuIndex]);
+      this.$util.set('client', client);
+
+      return client;
     },
     deleteConnection(connection) {
       console.log(connection);
