@@ -1,6 +1,6 @@
 {
   "name": "another-redis-manager",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "A faster, better and more stable redis desktop manager, compatible with Linux, windows, mac",
   "author": "qii404",
   "private": true,
@@ -11,7 +11,7 @@
     "electron": "node_modules/.bin/electron pack/electron",
     "lint": "eslint --ext js,vue src --fix",
     "lint:init": "eslint --init",
-    "asar": "node_modules/.bin/asar pack dist dist/app.asar",
+    "asar": "node_modules/.bin/asar pack dist dist/app.asar --unpack-dir \"{app.asar,build-apps,app.asar.unpacked}\"",
     "pack:prepare": "npm run build; cp -r pack/electron/* dist; sed -i \"s/const APP_ENV = 'dev'/const APP_ENV = 'production'/g\" dist/electron-main.js;",
     "pack:linux": "node_modules/.bin/electron-builder --project=dist -l"
   },
