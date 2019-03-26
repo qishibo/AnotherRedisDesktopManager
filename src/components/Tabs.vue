@@ -8,7 +8,7 @@
       :label="item.title"
       :name="item.name"
     >
-      <Status v-if="item.component_name === 'Status'"></Status>
+      <Status v-if="item.componentName === 'Status'"></Status>
       <KeyDetail v-else :redisKey="item.redisKey" :keyType="item.keyType"></KeyDetail>
     </el-tab-pane>
   </el-tabs>
@@ -30,7 +30,7 @@ export default {
   components: { Status, KeyDetail },
   created() {
     // key clicked
-    this.$bus.$on('clickedKey', (key) => {
+    this.$bus.$on('clickedKey', (key, newTab) => {
       console.log(`click key pass to tabs: ${key}`);
 
       this.$util.get('client').typeAsync(key).then((type) => {
@@ -42,7 +42,7 @@ export default {
           return;
         }
 
-        this.newKeyTab(key, type);
+        this.newKeyTab(key, type, newTab);
       });
     });
 
@@ -59,7 +59,7 @@ export default {
       this.tabs.push({
         name: tabName,
         title: tabName,
-        component_name: 'Status',
+        componentName: 'Status',
       });
 
       this.selectedTabName = tabName;
@@ -80,7 +80,7 @@ export default {
     // add new key
     this.$bus.$on('addNewKey', (type) => {
       console.log(`adding new key ${type}`);
-      this.newKeyTab('', type);
+      this.newKeyTab('', type, true);
     });
   },
   methods: {
@@ -102,26 +102,31 @@ export default {
       this.tabs = this.tabs.filter(tab => tab.name !== removeName);
     },
 
-    newKeyTab(key, type) {
-      console.log(key, type);
+    newKeyTab(key, type, newTab = false) {
+      console.log(key, type, newTab);
 
       const newTabName = `${key} ${type}`;
-      const tabs = [];
 
-      // keep status tabs and remove other tabs
-      for (const item of this.tabs) {
-        if (item.component_name === 'Status') {
-          tabs.push(item);
-        }
+      if (!newTab) {
+        this.tabs = this.tabs.filter((item) => {
+          return (item.componentName === 'Status') || item.keepTab;
+        });
       }
 
-      const newTabItem = {
-        name: newTabName, title: newTabName, redisKey: key, keyType: type,
-      };
+      let exists = false;
 
-      tabs.push(newTabItem);
+      this.tabs.map((item) => {
+        (item.title === newTabName) && (exists = true);
+      });
 
-      this.tabs = tabs;
+      if (!exists) {
+        const newTabItem = {
+          name: newTabName, title: newTabName, redisKey: key, keyType: type, keepTab: newTab
+        };
+
+        this.tabs.push(newTabItem);
+      }
+
       this.selectedTabName = newTabName;
     },
   },

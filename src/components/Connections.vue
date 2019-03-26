@@ -36,7 +36,13 @@
 
         <!-- key list -->
         <ul class="key-list">
-          <li class="key-item" :title="key" v-for="key of keyList[getConnectionPoolKey(item)]" @click="clickKey(key, getConnectionPoolKey(item))">{{key}}</li>
+          <!-- <RightClickMenu :items="rightMenus">
+            <li slot="content" class="key-item" :title="key" v-for="key of keyList[getConnectionPoolKey(item)]" @click="clickKey(key, getConnectionPoolKey(item))">{{key}}</li>
+          </RightClickMenu> -->
+
+          <RightClickMenu :items="rightMenus" :clickValue="{key: key, menuIndex: getConnectionPoolKey(item)}" :key="key" v-for="key of keyList[getConnectionPoolKey(item)]">
+            <li class="key-item" :title="key"  @click="clickKey(key, getConnectionPoolKey(item))">{{key}}</li>
+          </RightClickMenu>
         </ul>
 
         <!-- page -->
@@ -116,10 +122,27 @@
 import Vue from 'vue';
 import storage from '../storage.js';
 import redisClient from '../redisClient.js';
+import RightClickMenu from '@/components/RightClickMenu';
 
 export default {
   data() {
     return {
+      rightMenus: [
+        {
+          name: '打开',
+          click: (clickValue) => {
+            console.log('from callback....', clickValue);
+            this.clickKey(clickValue.key, clickValue.menuIndex);
+          },
+        },
+        {
+          name: '新窗口打开',
+          click: (clickValue) => {
+            console.log('from callback....', clickValue);
+            this.clickKey(clickValue.key, clickValue.menuIndex, true);
+          },
+        },
+      ],
       dbs: [...Array(16).keys()],
       connections: [],
       keysPageSize: 20,
@@ -143,6 +166,7 @@ export default {
       },
     };
   },
+  components: {RightClickMenu},
   created() {
     this.$bus.$on('refreshKeyList', () => {
       this.refreshKeyList();
@@ -152,6 +176,9 @@ export default {
     });
   },
   methods: {
+    rrr(e) {
+      console.log(e, 'rrr-------');
+    },
     openConnection(openedMenuKey) {
       // get connection config
       // openedMenuKey like 10.20.1.1336379_0
@@ -310,11 +337,11 @@ export default {
       this.$set(this.pageIndex, menuIndex, 1);
       this.scanCursorList[menuIndex] = [0];
     },
-    clickKey(key, menuIndex) {
+    clickKey(key, menuIndex, newTab = false) {
       console.log(`clicked key ${key}`, `dbIndex ${this.selectedDbIndex}`);
 
       this.setGlobalConnection(menuIndex);
-      this.$bus.$emit('clickedKey', key);
+      this.$bus.$emit('clickedKey', key, newTab);
     },
     pagePre(menuIndex) {
       let pageIndex = this.getPageIndex(menuIndex);
