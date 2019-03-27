@@ -129,14 +129,14 @@ export default {
     return {
       rightMenus: [
         {
-          name: '打开',
+          name: this.$t('message.open'),
           click: (clickValue) => {
             console.log('from callback....', clickValue);
             this.clickKey(clickValue.key, clickValue.menuIndex);
           },
         },
         {
-          name: '新窗口打开',
+          name: this.$t('message.open_new_tab'),
           click: (clickValue) => {
             console.log('from callback....', clickValue);
             this.clickKey(clickValue.key, clickValue.menuIndex, true);

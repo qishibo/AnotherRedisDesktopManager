@@ -55,6 +55,8 @@ const en = {
     config_connections: 'Connections',
     import: 'Import',
     export: 'Export',
+    open: 'Open',
+    open_new_tab: 'Open In New Tab',
   },
 };
 

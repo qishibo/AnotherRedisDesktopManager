@@ -106,25 +106,48 @@ export default {
       console.log(key, type, newTab);
 
       const newTabName = `${key} ${type}`;
+      const newTabItem = {
+        name: newTabName, title: newTabName, redisKey: key, keyType: type, keepTab: newTab
+      };
 
-      if (!newTab) {
-        this.tabs = this.tabs.filter((item) => {
-          return (item.componentName === 'Status') || item.keepTab;
-        });
+      // no tabs
+      if (this.tabs.length === 0) {
+        this.tabs.push(newTabItem);
+        this.selectedTabName = newTabName;
+        return;
       }
 
       let exists = false;
 
       this.tabs.map((item) => {
-        (item.title === newTabName) && (exists = true);
+        (item.name === newTabName) && (exists = true);
       });
 
-      if (!exists) {
-        const newTabItem = {
-          name: newTabName, title: newTabName, redisKey: key, keyType: type, keepTab: newTab
-        };
+      if (exists) {
+        this.selectedTabName = newTabName;
+        return;
+      }
 
+      // new tab append to tail
+      if (newTab) {
         this.tabs.push(newTabItem);
+      }
+
+      // open tab on selected tab, expect status tab
+      else {
+        let replaced = false;
+
+        this.tabs = this.tabs.map((item) => {
+          if ((item.name === this.selectedTabName) && (item.componentName !== 'Status')) {
+            replaced = true;
+            return newTabItem;
+          }
+
+          return item;
+        });
+
+        // pre tab is status tab, append to tail
+        !replaced && (this.tabs.push(newTabItem));
       }
 
       this.selectedTabName = newTabName;

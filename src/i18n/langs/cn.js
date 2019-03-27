@@ -55,6 +55,8 @@ const cn = {
     config_connections: '连接配置',
     import: '导入',
     export: '导出',
+    open: '打开',
+    open_new_tab: '新窗口打开',
   },
 };
 
