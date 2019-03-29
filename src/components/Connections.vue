@@ -454,6 +454,9 @@ export default {
         console.log(match, reply);
         this.$set(this.keyList, menuIndex, (reply === 1) ? [match] : []);
       });
+
+      this.$set(this.nextPageDisabled, menuIndex, true);
+      this.$set(this.preButtonDisable, menuIndex, true);
     },
     changeMatchMode(menuIndex) {
       this.resetDb(menuIndex);
