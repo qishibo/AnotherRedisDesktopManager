@@ -57,6 +57,7 @@ const en = {
     export: 'Export',
     open: 'Open',
     open_new_tab: 'Open In New Tab',
+    exact_search: 'Exact Search',
   },
 };
 

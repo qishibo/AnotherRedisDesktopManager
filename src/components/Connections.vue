@@ -13,33 +13,47 @@
 
         <el-form :inline="true" class="connection-form" size="mini">
           <el-form-item>
-            <!-- db index select -->
-            <el-select class="db-select" v-model="selectedDbIndex[getConnectionPoolKey(item)]" placeholder="DB" size="mini" @change="changeDb(getConnectionPoolKey(item))">
-              <el-option
-                v-for="index in dbs"
-                :key="index"
-                :label="'DB' + index"
-                :value="index">
-              </el-option>
-            </el-select>
+            <el-row :gutter="6">
+              <el-col :span="12">
+                <!-- db index select -->
+                <el-select class="db-select" v-model="selectedDbIndex[getConnectionPoolKey(item)]" placeholder="DB" size="mini" @change="changeDb(getConnectionPoolKey(item))">
+                  <el-option
+                    v-for="index in dbs"
+                    :key="index"
+                    :label="'DB' + index"
+                    :value="index">
+                  </el-option>
+                </el-select>
+              </el-col>
 
-            <el-button class="new-key-btn" @click="showNewKeyDialog(getConnectionPoolKey(item))">{{ $t('message.add_new_key')}}</el-button>
+              <el-col :span="12">
+                <!-- new key btn -->
+                <el-button class="new-key-btn" @click="showNewKeyDialog(getConnectionPoolKey(item))">{{ $t('message.add_new_key')}}</el-button>
+              </el-col>
+            </el-row>
           </el-form-item>
 
           <!-- search match -->
-          <el-form-item class="search-input">
-            <el-input v-model="searchMatch[getConnectionPoolKey(item)]" @keyup.enter.native="changeMatchMode(getConnectionPoolKey(item))" :placeholder="$t('message.enter_to_search')" size="mini">
-              <i slot="suffix" class="el-input__icon" :class="searchIcon" @click="changeMatchMode(getConnectionPoolKey(item))"></i>
-            </el-input>
+          <el-form-item class="search-item">
+            <el-row>
+              <el-col :span="24">
+                <el-input class="search-input" v-model="searchMatch[getConnectionPoolKey(item)]" @keyup.enter.native="changeMatchMode(getConnectionPoolKey(item))" :placeholder="$t('message.enter_to_search')" size="mini">
+                  <span slot="suffix" >
+                    <i class="el-input__icon search-icon" :class="searchIcon"  @click="changeMatchMode(getConnectionPoolKey(item))"></i>
+
+                    <el-tooltip effect="dark" :content="$t('message.exact_search')" placement="bottom">
+                      <el-checkbox v-model="searchExact[getConnectionPoolKey(item)]"></el-checkbox>
+                    </el-tooltip>
+                  </span>
+                </el-input>
+              </el-col>
+            </el-row>
+
           </el-form-item>
         </el-form>
 
         <!-- key list -->
         <ul class="key-list">
-          <!-- <RightClickMenu :items="rightMenus">
-            <li slot="content" class="key-item" :title="key" v-for="key of keyList[getConnectionPoolKey(item)]" @click="clickKey(key, getConnectionPoolKey(item))">{{key}}</li>
-          </RightClickMenu> -->
-
           <RightClickMenu :items="rightMenus" :clickValue="{key: key, menuIndex: getConnectionPoolKey(item)}" :key="key" v-for="key of keyList[getConnectionPoolKey(item)]">
             <li class="key-item" :title="key"  @click="clickKey(key, getConnectionPoolKey(item))">{{key}}</li>
           </RightClickMenu>
@@ -152,6 +166,7 @@ export default {
       searchMatch: {},
       searchIcon: 'el-icon-search',
       searchPageSize: 10000,
+      searchExact: {},
       keyList: [],
       scanCursorList: {},
       pageIndex: {},
@@ -430,10 +445,28 @@ export default {
       const pageIndex = this.getPageIndex(menuIndex);
       return pageIndex <= 1;
     },
+    exactMatch() {
+      const client = this.$util.get('client');
+      const menuIndex = client.options.menu_index;
+      const match = this.getMatchMode(menuIndex, false);
+
+      client.existsAsync(match).then((reply) => {
+        console.log(match, reply);
+        this.$set(this.keyList, menuIndex, (reply === 1) ? [match] : []);
+      });
+    },
     changeMatchMode(menuIndex) {
       this.resetDb(menuIndex);
       this.setGlobalConnection(menuIndex);
-      this.refreshKeyList();
+
+      // extract search
+      if (this.searchExact[menuIndex] === true) {
+        this.exactMatch();
+      }
+
+      else {
+        this.refreshKeyList();
+      }
     },
     getScanCursor(menuIndex) {
       if (this.scanCursorList[menuIndex] === undefined) {
@@ -445,7 +478,7 @@ export default {
 
       return cursorList[pageIndex - 1];
     },
-    getMatchMode(menuIndex) {
+    getMatchMode(menuIndex, fillAsterisk = true) {
       if (this.searchMatch[menuIndex] === undefined) {
         this.searchMatch[menuIndex] = '';
       }
@@ -453,7 +486,7 @@ export default {
       let match = this.searchMatch[menuIndex];
       match = match || '*';
 
-      if (!match.match(/\*/)) {
+      if (fillAsterisk && !match.match(/\*/)) {
         match = (`*${match}*`);
       }
 
@@ -547,14 +580,19 @@ export default {
     text-overflow:ellipsis;
   }
   .connection-menu .db-select {
-    width: 50%;
+    width: 100%;
   }
   .connection-menu .new-key-btn {
-    width: 48%;
+    width: 100%;
   }
-  .connection-menu .search-input {
-    margin-top: -10px;;
+  .connection-menu .search-item {
+    margin-top: -10px;
     margin-bottom: 15px;
+  }
+  .connection-menu .search-input .el-input__inner {
+    padding-right: 43px;
+    /*margin-top: -10px;;
+    margin-bottom: 15px;*/
   }
   .connection-menu .el-submenu__title {
     padding-left: 0px !important;
@@ -574,6 +612,16 @@ export default {
 
   .connection-menu .el-submenu.is-opened {
     /*background: #ECF5FF;*/
+  }
+
+  .connection-menu .search-item .search-icon {
+    font-size: 128%;
+    color: #a5a8ad;
+    cursor: pointer;
+  }
+  .connection-menu .search-item .el-checkbox__input {
+    /*line-height: 28px;*/
+    display: inline;
   }
 
   .connection-menu .key-list {
