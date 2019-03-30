@@ -19,38 +19,6 @@ Download latest `AppImage` package from [release](https://github.com/qishibo/Ano
 
 Download latest `dmg` package from [release](https://github.com/qishibo/AnotherRedisDesktopManager/releases) page, double click to install.
 
-## Dev Build Setup
-
-``` bash
-# clone code
-git clone https://github.com/qishibo/AnotherRedisDesktopManager.git
-
-# install dependencies
-cd AnotherRedisDesktopManager
-
-npm install
-# or use yarn
-# yarn install
-
-# if installing electron failed in China, use this command
-# ELECTRON_MIRROR="https://npm.taobao.org/mirrors/electron/" npm install
-# if yarn
-# ELECTRON_MIRROR="https://npm.taobao.org/mirrors/electron/" yarn install
-
-# serve with hot reload at localhost:9988
-npm start
-# yarn start
-
-# after the last step is completed, open another tab, build up a desktop client
-
-# Linux or Mac
-npm run electron
-# yarn run electron
-
-# Windows
-# you need to download electron.exe first
-path_to_electron.exe .
-```
 
 Enjoy!
 
@@ -59,6 +27,56 @@ Enjoy!
 ![redis key detail](https://ws1.sinaimg.cn/large/71405cably1g129wwu51vj20vi0ma77n.jpg)
 
 ![redis console](https://ws1.sinaimg.cn/large/71405cably1g129wwtdfjj20vn0mbq6d.jpg)
+
+
+## Dev Build Setup
+
+### Linux Or Mac
+
+```bash
+# clone code
+git clone https://github.com/qishibo/AnotherRedisDesktopManager.git
+cd AnotherRedisDesktopManager
+
+# install dependencies
+npm install
+
+# if download electron failed during installing, use this command
+# ELECTRON_MIRROR="https://npm.taobao.org/mirrors/electron/" npm install
+
+# serve with hot reload at localhost:9988
+npm start
+
+
+# after the previous step is completed, open another tab, build up a desktop client
+npm run electron
+```
+
+
+### Windows
+
+``` bash
+# install build tools for the first time, just execute once
+npm install -g windows-build-tools
+
+# clone code
+git clone https://github.com/qishibo/AnotherRedisDesktopManager.git
+cd AnotherRedisDesktopManager
+
+# install dependencies, 32-bit or 64-bit all use win32
+npm install --platform=win32
+
+# if download electron failed during installing, use this command
+# npm config set ELECTRON_MIRROR http://npm.taobao.org/mirrors/electron/
+# npm install --platform=win32
+
+# serve with hot reload at localhost:9988
+npm start
+
+
+# after the previous step is completed, open another tab, build up a desktop client
+npm run electron
+```
 
 ## License
 
