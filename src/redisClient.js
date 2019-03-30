@@ -11,6 +11,7 @@ export default {
         alert(options.error);
       },
       menu_index: menuIndex,
+      password: auth,
     };
 
     const client = redis.createClient(port, host, options);
