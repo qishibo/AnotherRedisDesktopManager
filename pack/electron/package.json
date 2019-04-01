@@ -7,7 +7,8 @@
   "main": "electron-main.js",
   "build": {
     "appId" : "me.qii404.another-redis-desktop-manager",
-    "productName": "Another Redis Dsektop Manager",
+    "productName": "Another.Redis.Dsektop.Manager",
+    "artifactName": "${productName}.${version}.${ext}",
     "copyright": "Copyright © 2019 qii404.me",
     "asar": true,
     "directories": {
