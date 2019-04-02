@@ -19,8 +19,13 @@ Download latest `AppImage` package from [release](https://github.com/qishibo/Ano
 
 Download latest `dmg` package from [release](https://github.com/qishibo/AnotherRedisDesktopManager/releases) page, double click to install.
 
+> If mac warning `Another Desktop Manager can't be opened because it is from an unidentified developer`, open `Settings->Security` and click `Open Anyway`
 
-Enjoy!
+![can't be opened because it is from an unidentified developer](https://ws1.sinaimg.cn/large/71405cably1g1o8ln36ksj20bp065jrv.jpg)
+
+![Settings->Security Open Anyway](https://ws1.sinaimg.cn/large/71405cably1g1o8lmzh4zj20ii0f1wfx.jpg)
+
+## Enjoy!
 
 ![redis status](https://ws1.sinaimg.cn/large/71405cably1g129wwutkij20vn0mbae6.jpg)
 
