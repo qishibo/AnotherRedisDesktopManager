@@ -12,6 +12,7 @@
               :label="item.text"
               :value="item.value">
             </el-option>
+            <span slot="prefix" class="fa fa-sitemap"></span>
           </el-select>
         </el-form-item>
       </el-form>

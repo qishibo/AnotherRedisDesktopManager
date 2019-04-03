@@ -4,8 +4,8 @@
     <el-form label-position="top" size="mini">
 
       <el-form-item :label="$t('message.config_connections')">
-        <el-button @click="exportConnection">{{ $t('message.export') }}</el-button>
-        <el-button @click="showImportDialog">{{ $t('message.import') }}</el-button>
+        <el-button icon="el-icon-upload2" @click="exportConnection">{{ $t('message.export') }}</el-button>
+        <el-button icon="el-icon-download" @click="showImportDialog">{{ $t('message.import') }}</el-button>
       </el-form-item>
 
       <el-dialog

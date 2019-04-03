@@ -3,7 +3,7 @@
       <el-row>
         <el-col>
           <div style="float: right;">
-            <el-tag type="info">{{ $t('message.auto_refresh') }}</el-tag>
+            <el-tag type="info" class="el-icon-refresh">{{ $t('message.auto_refresh') }}</el-tag>
             <el-tooltip class="item" effect="dark" :content="$t('message.auto_refresh_tip', {interval: refreshInterval / 1000})" placement="bottom">
               <el-switch v-model="autoRefresh" @change="refreshInit">
               </el-switch>
@@ -16,6 +16,7 @@
         <el-col :span="8">
           <el-card class="box-card">
             <div slot="header" class="clearfix">
+              <i class="fa fa-server"></i>
               <span>{{ $t('message.server') }}</span>
             </div>
             <p><el-tag type="info" size="big">{{ $t('message.redis_version') }}: <el-tag type="success">{{this.connectionStatus.redis_version}}</el-tag></el-tag></p>
@@ -26,6 +27,7 @@
         <el-col :span="8">
           <el-card class="box-card">
             <div slot="header" class="clearfix">
+              <i class="fa fa-microchip"></i>
               <span>{{ $t('message.memory') }}</span>
             </div>
             <p><el-tag type="info" size="big">{{ $t('message.used_memory') }}: <el-tag type="success">{{this.connectionStatus.used_memory_human}}</el-tag></el-tag></p>
@@ -36,6 +38,7 @@
         <el-col :span="8">
           <el-card class="box-card">
             <div slot="header" class="clearfix">
+              <i class="fa fa-thermometer-three-quarters"></i>
               <span>{{ $t('message.stats') }}</span>
             </div>
             <p><el-tag type="info" size="big">{{ $t('message.connected_clients') }}: <el-tag type="success">{{this.connectionStatus.connected_clients}}</el-tag></el-tag></p>
@@ -49,6 +52,7 @@
         <el-col>
           <el-card class="box-card">
             <div slot="header" class="clearfix">
+              <i class="fa fa-bar-chart"></i>
               <span>{{ $t('message.key_statistics') }}</span>
             </div>
 
@@ -92,6 +96,7 @@
         <el-col>
           <el-card class="box-card">
             <div slot="header" class="clearfix">
+              <i class="fa fa-info-circle"></i>
               <span>{{ $t('message.all_redis_info') }}</span>
             </div>
 

@@ -3,7 +3,7 @@
     <div>
 
       <!-- new connection button -->
-      <el-button type="info" @click="dialogFormVisible = true" icon="el-icon-plus">{{ $t('message.new_connection') }}</el-button>
+      <el-button class="aside-new-connection" type="info" @click="dialogFormVisible = true" icon="el-icon-circle-plus">{{ $t('message.new_connection') }}</el-button>
 
       <!-- new connection dialog -->
       <el-dialog :title="$t('message.new_connection')" :visible.sync="dialogFormVisible">
@@ -82,3 +82,9 @@ export default {
   },
 };
 </script>
+
+<style type="text/css">
+  .aside-new-connection {
+    width: 95%;
+  }
+</style>

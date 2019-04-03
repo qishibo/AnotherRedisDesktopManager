@@ -8,6 +8,7 @@
       :label="item.title"
       :name="item.name"
     >
+      <i slot="label" :class="(item.componentName === 'Status') ? 'el-icon-info' : 'fa fa-key'"> {{ item.title }}</i>
       <Status v-if="item.componentName === 'Status'"></Status>
       <KeyDetail v-else :redisKey="item.redisKey" :keyType="item.keyType"></KeyDetail>
     </el-tab-pane>

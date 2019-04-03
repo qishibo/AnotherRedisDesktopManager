@@ -2,7 +2,7 @@
   <el-form>
 
     <el-form-item>
-      <el-input type="textarea" size="small" :autosize="{ minRows: 4, maxRows: 8}" v-model="data.content"></el-input>
+      <el-input type="textarea" size="small" rows="12" v-model="data.content"></el-input>
     </el-form-item>
 
     <el-form-item>

@@ -6,9 +6,8 @@
         <!-- connection item -->
         <template slot="title">
           <span slot="title" :title="item.showName" class="connection-name">{{item.showName}}</span>
-          <!-- <i class="el-icon-search" @click.stop.prevent=""></i> -->
-          <i class="el-icon-edit-outline" @click.stop.prevent="showEditConnection(item, getConnectionPoolKey(item))"></i>
-          <i class="el-icon-delete" @click.stop.prevent="deleteConnection(item)"></i>
+          <i :title="$t('message.edit_connection')" class="el-icon-edit-outline" @click.stop.prevent="showEditConnection(item, getConnectionPoolKey(item))"></i>
+          <i :title="$t('message.del_connection')" class="el-icon-delete" @click.stop.prevent="deleteConnection(item)"></i>
         </template>
 
         <el-form :inline="true" class="connection-form" size="mini">
@@ -23,12 +22,13 @@
                     :label="'DB' + index"
                     :value="index">
                   </el-option>
+                  <!-- <span slot="prefix" class="fa fa-sitemap" style="font-size: 80%"></span> -->
                 </el-select>
               </el-col>
 
               <el-col :span="12">
                 <!-- new key btn -->
-                <el-button class="new-key-btn" @click="showNewKeyDialog(getConnectionPoolKey(item))">{{ $t('message.add_new_key')}}</el-button>
+                <el-button class="new-key-btn el-icon-plus" @click="showNewKeyDialog(getConnectionPoolKey(item))">{{ $t('message.add_new_key')}}</el-button>
               </el-col>
             </el-row>
           </el-form-item>
