@@ -27,11 +27,11 @@ Download latest `dmg` package from [release](https://github.com/qishibo/AnotherR
 
 ## Enjoy!
 
-![redis status](https://ws1.sinaimg.cn/large/71405cably1g129wwutkij20vn0mbae6.jpg)
+![redis status](https://ws1.sinaimg.cn/large/71405cably1g1pgxyaurdj20ux0lrwgy.jpg)
 
-![redis key detail](https://ws1.sinaimg.cn/large/71405cably1g129wwu51vj20vi0ma77n.jpg)
+![redis key detail](https://ws1.sinaimg.cn/large/71405cably1g1pgxya0t3j20uy0lpdhp.jpg)
 
-![redis console](https://ws1.sinaimg.cn/large/71405cably1g129wwtdfjj20vn0mbq6d.jpg)
+![redis console](https://ws1.sinaimg.cn/large/71405cably1g1pgxyc3otj20uv0lowg4.jpg)
 
 
 ## Dev Build Setup
