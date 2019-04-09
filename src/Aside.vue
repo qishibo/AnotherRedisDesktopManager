@@ -7,7 +7,7 @@
 
       <!-- new connection dialog -->
       <el-dialog :title="$t('message.new_connection')" :visible.sync="dialogFormVisible">
-        <el-form v-model="newConnection" :label-position="labelPosition" label-width="80px">
+        <el-form :label-position="labelPosition" label-width="80px">
           <el-form-item label="Host">
             <el-input v-model="newConnection.host" autocomplete="off" placeholder="127.0.0.1"></el-input>
           </el-form-item>
@@ -23,6 +23,28 @@
           <el-form-item label="Alias Name">
             <el-input v-model="newConnection.name" autocomplete="off"></el-input>
           </el-form-item>
+
+          <el-form-item label="">
+            <el-checkbox v-model="sshOptionsShow">SSH Tunnel</el-checkbox>
+          </el-form-item>
+
+          <el-form v-if="sshOptionsShow" v-show="sshOptionsShow" label-width="80px">
+            <el-form-item label="Host">
+              <el-input v-model="newConnection.sshOptions.host" autocomplete="off"></el-input>
+            </el-form-item>
+
+            <el-form-item label="Port">
+              <el-input v-model="newConnection.sshOptions.port" autocomplete="off"></el-input>
+            </el-form-item>
+
+            <el-form-item label="Username">
+              <el-input v-model="newConnection.sshOptions.username" autocomplete="off"></el-input>
+            </el-form-item>
+
+            <el-form-item label="Password">
+              <el-input v-model="newConnection.sshOptions.password" autocomplete="off"></el-input>
+            </el-form-item>
+          </el-form>
 
         </el-form>
 
@@ -50,22 +72,30 @@ export default {
   data() {
     return {
       dialogFormVisible: false,
-      labelPosition: 'top',
+      labelPosition: 'left',
       newConnection: {
         host: '',
         port: '',
         auth: '',
         name: '',
+        sshOptions: {
+          port: 22,
+        }
       },
+      sshOptionsShow: false,
     };
   },
   components: { Connections },
   methods: {
     addNewConnection() {
-      const connection = this.newConnection;
+      const connection = JSON.parse(JSON.stringify(this.newConnection));
 
       !connection.host && (connection.host = '127.0.0.1');
       !connection.port && (connection.port = 6379);
+
+      if (!this.sshOptionsShow || !connection.sshOptions.host) {
+        delete connection.sshOptions;
+      }
 
       if (storage.addConnection(connection) === false) {
         this.$message.error({

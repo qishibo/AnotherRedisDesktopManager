@@ -180,10 +180,18 @@ export default {
         return;
       }
 
-      const client = redisClient.createConnection(connection.host, connection.port, connection.auth);
+      if (connection.sshOptions) {
+        let sshPromise = redisClient.createSSHConnection(connection.sshOptions, connection.host, connection.port, connection.auth);
 
-      // set global client
-      this.$util.set('client', client);
+        sshPromise.then((client) => {
+          this.$util.set('client', client);
+        });
+      }
+
+      else {
+        let client = redisClient.createConnection(connection.host, connection.port, connection.auth);
+        this.$util.set('client', client);
+      }
     },
     initCliContent() {
       const { options } = this.$util.get('client');

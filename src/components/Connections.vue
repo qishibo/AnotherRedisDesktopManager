@@ -79,6 +79,7 @@
       </el-submenu>
     </el-menu>
 
+
     <!-- edit connection dialog -->
     <el-dialog :title="$t('message.edit_connection')" :visible.sync="editConnectionDialog">
       <el-form v-model="afterEditData" label-width="80px">
@@ -97,6 +98,28 @@
         <el-form-item label="Alias Name">
           <el-input v-model="afterEditData.name" autocomplete="off"></el-input>
         </el-form-item>
+
+        <el-form-item label="">
+          <el-checkbox v-model="sshOptionsShow">SSH Tunnel</el-checkbox>
+        </el-form-item>
+
+        <el-form v-if="sshOptionsShow" v-show="sshOptionsShow" label-width="80px">
+          <el-form-item label="Host">
+            <el-input v-model="afterEditData.sshOptions.host" autocomplete="off" placeholder=""></el-input>
+          </el-form-item>
+
+          <el-form-item label="Port">
+            <el-input v-model="afterEditData.sshOptions.port" autocomplete="off"></el-input>
+          </el-form-item>
+
+          <el-form-item label="Username">
+            <el-input v-model="afterEditData.sshOptions.username" autocomplete="off" placeholder=""></el-input>
+          </el-form-item>
+
+          <el-form-item label="Password">
+            <el-input v-model="afterEditData.sshOptions.password" autocomplete="off"></el-input>
+          </el-form-item>
+        </el-form>
 
       </el-form>
 
@@ -179,6 +202,7 @@ export default {
       newKeyTypes: {
         String: 'string', Hash: 'hash', List: 'list', Set: 'set', Zset: 'zset',
       },
+      sshOptionsShow: false,
     };
   },
   components: {RightClickMenu},
@@ -191,9 +215,6 @@ export default {
     });
   },
   methods: {
-    rrr(e) {
-      console.log(e, 'rrr-------');
-    },
     openConnection(openedMenuKey) {
       // get connection config
       // openedMenuKey like 10.20.1.1336379_0
@@ -202,13 +223,25 @@ export default {
       const connection = this.connections[connectionIndex];
 
       if (!connection) {
-        alert('open error');
-        return;
+        alert('open error'); return;
       }
 
       this.getDbIndex(menuIndex);
       const client = this.setGlobalConnection(menuIndex, connection);
 
+      // ssh tunnel promise client
+      if (typeof client.then === 'function') {
+        client.then((realClient) => {
+            this.afterOpenConnection(realClient, menuIndex, connection);
+        });
+      }
+
+      // normal client
+      else {
+        this.afterOpenConnection(client, menuIndex, connection);
+      }
+    },
+    afterOpenConnection(client, menuIndex, connection) {
       // new connection, not ready
       if (!client.ready) {
         client.on('ready', () => {
@@ -223,7 +256,7 @@ export default {
       }
 
       // connection is ready
-      else{
+      else {
         this.refreshKeyList();
       }
     },
@@ -231,13 +264,31 @@ export default {
       let client = this.connectionPool[menuIndex];
 
       if (!client || !client.ready) {
-        client = redisClient.createConnection(connection.host, connection.port, connection.auth, menuIndex);
+        // ssh tunnel
+        if (connection.sshOptions) {
+          let sshPromise = redisClient.createSSHConnection(connection.sshOptions, connection.host, connection.port, connection.auth, menuIndex);
 
-        client.on('error', (err) => {
-          alert(err);
-        });
+          sshPromise.then((client) => {
+            client.on('error', (err) => {
+              alert(err);
+            });
 
-        this.connectionPool[menuIndex] = client;
+            this.$util.set('client', client);
+            this.connectionPool[menuIndex] = client;
+          });
+
+          return sshPromise;
+        }
+
+        else {
+          client = redisClient.createConnection(connection.host, connection.port, connection.auth, menuIndex);
+
+          client.on('error', (err) => {
+            alert(err);
+          });
+
+          this.connectionPool[menuIndex] = client;
+        }
       }
 
       // set global client
@@ -269,30 +320,26 @@ export default {
         { type: 'warning' },
       ).then(() => {
         this.closeAllConnection(oldConnection, menuIndex);
-        // return;
 
         this.editConnectionDialog = true;
         this.beforeEditData = oldConnection;
+        this.sshOptionsShow = oldConnection.sshOptions ? true : false;
 
         this.afterEditData = JSON.parse(JSON.stringify(oldConnection));
+        !this.afterEditData.sshOptions && (this.afterEditData.sshOptions = {port: 22});
         delete this.afterEditData.showName;
       }).catch((_) => {});
     },
     editConnection() {
       console.log('edit connection', this.beforeEditData, this.afterEditData);
 
-      // not changed
-      if (
-        this.beforeEditData.host == this.afterEditData.host
-          && this.beforeEditData.port == this.afterEditData.port
-          && this.beforeEditData.name == this.afterEditData.name
-          && this.beforeEditData.auth == this.afterEditData.auth
-      ) {
-        this.editConnectionDialog = false;
-        return;
+      let afterEditData = JSON.parse(JSON.stringify(this.afterEditData));
+
+      if (!this.sshOptionsShow || !afterEditData.sshOptions.host) {
+        delete afterEditData.sshOptions;
       }
 
-      if (storage.editConnection(this.beforeEditData, this.afterEditData) !== false) {
+      if (storage.editConnection(this.beforeEditData, afterEditData) !== false) {
         this.editConnectionDialog = false;
         this.initConnections();
         return;
