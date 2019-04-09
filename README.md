@@ -34,6 +34,18 @@ Download latest `dmg` package from [release](https://github.com/qishibo/AnotherR
 ![redis console](https://ws1.sinaimg.cn/large/71405cably1g1pgxyc3otj20uv0lowg4.jpg)
 
 
+## Feature Log
+
+- 2019-04-09: SSH Tunnel Connection Support
+- 2019-04-01: Extract Search Support
+- 2019-02-22: Single Connection Support
+- 2019-01-08: Project Start
+
+## Support
+
+- [Site: qii404.me/](https://qii404.me/)
+- [SinaWeibo: @齐士博](https://weibo.com/shiboooo/)
+
 ## Dev Build Setup
 
 ### Linux Or Mac

@@ -20,7 +20,7 @@
             <el-input v-model="newConnection.auth" autocomplete="off"></el-input>
           </el-form-item>
 
-          <el-form-item label="Alias Name">
+          <el-form-item label="Name">
             <el-input v-model="newConnection.name" autocomplete="off"></el-input>
           </el-form-item>
 

@@ -95,7 +95,7 @@
           <el-input v-model="afterEditData.auth" autocomplete="off"></el-input>
         </el-form-item>
 
-        <el-form-item label="Alias Name">
+        <el-form-item label="Name">
           <el-input v-model="afterEditData.name" autocomplete="off"></el-input>
         </el-form-item>
 
