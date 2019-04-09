@@ -12,7 +12,7 @@
     "lint": "eslint --ext js,vue src --fix",
     "lint:init": "eslint --init",
     "asar": "node_modules/.bin/asar pack dist dist/app.asar --unpack-dir \"{app.asar,build-apps,app.asar.unpacked}\"",
-    "pack:prepare": "npm run build; cp -r pack/electron/* dist; sed -i \"\" \"s/const APP_ENV = 'dev'/const APP_ENV = 'production'/g\" dist/electron-main.js;",
+    "pack:prepare": "npm run build; cp -r pack/electron/* dist; sed -i \"s/const APP_ENV = 'dev'/const APP_ENV = 'production'/g\" dist/electron-main.js;",
     "pack:linux": "node_modules/.bin/electron-builder --project=dist -l",
     "pack:win": "docker run --rm -it --env ELECTRON_CACHE=\"/root/.cache/electron\" --env ELECTRON_BUILDER_CACHE=\"/root/.cache/electron-builder\" -v ${PWD}:/project -v ~/.cache/electron:/root/.cache/electron -v ~/.cache/electron-builder:/root/.cache/electron-builder electronuserland/builder:wine sh -c \"node_modules/.bin/electron-builder --project=dist -w\"",
     "pack:mac": "node_modules/.bin/electron-builder --project=dist -m"
