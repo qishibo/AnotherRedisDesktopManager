@@ -17,7 +17,7 @@
                 <!-- db index select -->
                 <el-select class="db-select" v-model="selectedDbIndex[getConnectionPoolKey(item)]" placeholder="DB" size="mini" @change="changeDb(getConnectionPoolKey(item))">
                   <el-option
-                    v-for="index in dbs"
+                    v-for="index in dbs[getConnectionPoolKey(item)]"
                     :key="index"
                     :label="'DB' + index"
                     :value="index">
@@ -180,7 +180,8 @@ export default {
           },
         },
       ],
-      dbs: [...Array(16).keys()],
+      // dbs: [...Array(16).keys()],
+      dbs: {},
       connections: [],
       keysPageSize: 20,
       connectionPool: {},
@@ -251,6 +252,7 @@ export default {
             this.openedStatus[menuIndex] = true;
           }
 
+          this.initDatabaseSelect(menuIndex);
           this.refreshKeyList();
         });
       }
@@ -259,6 +261,18 @@ export default {
       else {
         this.refreshKeyList();
       }
+    },
+    initDatabaseSelect(menuIndex) {
+      this.$util.get('client').configAsync('get', 'databases').then((reply) => {
+        console.log(reply);
+
+        if (reply[1]) {
+          this.$set(this.dbs, menuIndex, [...Array(parseInt(reply[1])).keys()]);
+        }
+        else {
+          this.$set(this.dbs, menuIndex, [...Array(16).keys()]);
+        }
+      });
     },
     setGlobalConnection(menuIndex, connection) {
       let client = this.connectionPool[menuIndex];
