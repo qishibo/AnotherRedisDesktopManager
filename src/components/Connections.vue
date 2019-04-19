@@ -183,7 +183,7 @@ export default {
       // dbs: [...Array(16).keys()],
       dbs: {},
       connections: [],
-      keysPageSize: 20,
+      keysPageSize: 50,
       connectionPool: {},
       openedStatus: {},
       selectedDbIndex: {},

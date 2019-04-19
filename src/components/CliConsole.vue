@@ -1,16 +1,16 @@
 <template>
-    <el-dialog class="cli-dailog" width="90%" :title="consoleTitle()" @opened="openConsole" :visible.sync="cliDialog.visible">
+    <el-dialog class="cli-dailog"  fullscreen="true" :title="consoleTitle()" @opened="openConsole" :visible.sync="cliDialog.visible">
       <el-form @submit.native.prevent>
 
         <el-form-item>
-          <el-input id="cli-content" type="textarea" v-model="cliContent.content" rows=18 :disabled="true" class="cli-content-textarea"></el-input>
+          <el-input id="cli-content" type="textarea" v-model="cliContent.content" rows='25' :disabled="true" class="cli-content-textarea"></el-input>
 
           <el-autocomplete
             class="input-suggestion"
             autocomplete="off"
             v-model="cliContent.params"
             :fetch-suggestions="inputSuggestion"
-            placeholder=""
+            :placeholder="$t('message.enter_to_exec')"
             :select-when-unmatched="true"
             :trigger-on-focus="false"
             @keyup.enter.native="consoleExec"
@@ -225,6 +225,10 @@ export default {
     background: #263238;
     border-top: 0px;
     border-radius: 0 0 4px 4px;
+  }
+
+  .input-suggestion input::-webkit-input-placeholder {
+    color: #8a8b8e;
   }
 
   #cli-content {

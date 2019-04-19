@@ -59,6 +59,7 @@ const cn = {
     open: '打开',
     open_new_tab: '新窗口打开',
     exact_search: '精确搜索',
+    enter_to_exec: '输入Redis命令后，按Enter键执行',
   },
 };
 
