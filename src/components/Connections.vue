@@ -478,7 +478,7 @@ export default {
 
       if (targetPage >= cursorListLength) {
         // to biggest page index
-        this.$set(this.pageIndex, menuIndex, cursorListLength - 1);
+        this.$set(this.pageIndex, menuIndex, (cursorListLength <= 1) ? 1 : (cursorListLength - 1));
         const recursiveResult = this.pageNextRecursive(menuIndex, targetPage);
 
         // last page
@@ -506,7 +506,7 @@ export default {
       const pageIndex = this.getPageIndex(menuIndex);
       return pageIndex <= 1;
     },
-    exactMatch() {
+    refreshKeyListExact() {
       const client = this.$util.get('client');
       const menuIndex = client.options.menu_index;
       const match = this.getMatchMode(menuIndex, false);
@@ -523,14 +523,7 @@ export default {
       this.resetDb(menuIndex);
       this.setGlobalConnection(menuIndex);
 
-      // extract search
-      if (this.searchExact[menuIndex] === true) {
-        this.exactMatch();
-      }
-
-      else {
-        this.refreshKeyList();
-      }
+      this.refreshKeyList();
     },
     getScanCursor(menuIndex) {
       if (this.scanCursorList[menuIndex] === undefined) {
@@ -559,6 +552,12 @@ export default {
     refreshKeyList(pushToCursorList = true) {
       const client = this.$util.get('client');
       const menuIndex = client.options.menu_index;
+
+      // extract search
+      if (this.searchExact[menuIndex] === true) {
+        this.refreshKeyListExact();
+        return true;
+      }
 
       const cursor = this.getScanCursor(menuIndex);
       const match = this.getMatchMode(menuIndex);
