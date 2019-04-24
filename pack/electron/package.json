@@ -5,6 +5,15 @@
   "author": "qii404.me",
   "private": true,
   "main": "electron-main.js",
+  "dependencies": {
+    "electron-updater": "^4.0.6"
+  },
+  "publish": [{
+    "provider": "github",
+    "owner": "qishibo",
+    "repo": "TestForRelease-AnotherRedisDesktopManager"
+  }],
+  "repository": "github:qishibo/TestForRelease-AnotherRedisDesktopManager",
   "build": {
     "appId" : "me.qii404.another-redis-desktop-manager",
     "productName": "Another.Redis.Dsektop.Manager",
