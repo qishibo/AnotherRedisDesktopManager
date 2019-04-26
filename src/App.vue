@@ -46,6 +46,7 @@ body {
   padding: 8px;
   margin: 0;
   box-sizing: border-box;
+  /*font: caption;*/
 }
 .wrap-container {
   height: 100%;

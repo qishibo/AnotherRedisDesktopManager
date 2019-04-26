@@ -1,6 +1,5 @@
 // Modules to control application life and create native browser window
 const { app, BrowserWindow, Menu } = require('electron');
-const { autoUpdater } = require("electron-updater");
 
 const APP_ENV = 'dev';
 
@@ -13,7 +12,7 @@ function createWindow() {
   mainWindow = new BrowserWindow({
     width: 1100,
     height: 728,
-    icon: 'icons/icon.png',
+    icon: `${__dirname}/icons/icon.png`,
     autoHideMenuBar: true,
     webPreferences: {
       nodeIntegration: true,
@@ -45,6 +44,12 @@ function createWindow() {
 }
 
 function checkUpdate() {
+  if (APP_ENV !== 'production') {
+    return true;
+  }
+
+  const { autoUpdater } = require("electron-updater");
+
   // auto update
   autoUpdater.on('checking-for-update', () => {
     console.log('Checking for update...');

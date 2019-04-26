@@ -15,7 +15,7 @@
   }],
   "repository": "github:qishibo/TestForRelease-AnotherRedisDesktopManager",
   "build": {
-    "appId" : "me.qii404.another-redis-desktop-manager",
+    "appId": "me.qii404.another-redis-desktop-manager",
     "productName": "Another.Redis.Dsektop.Manager",
     "artifactName": "${productName}.${version}.${ext}",
     "copyright": "Copyright © 2019 qii404.me",
