@@ -60,6 +60,8 @@ const cn = {
     open_new_tab: '新窗口打开',
     exact_search: '精确搜索',
     enter_to_exec: '输入Redis命令后，按Enter键执行',
+    pre_version: '当前版本',
+    manual_update: '手动更新',
   },
 };
 

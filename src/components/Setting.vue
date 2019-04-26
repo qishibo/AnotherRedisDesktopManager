@@ -8,6 +8,11 @@
         <el-button icon="el-icon-download" @click="showImportDialog">{{ $t('message.import') }}</el-button>
       </el-form-item>
 
+      <el-form-item :label="$t('message.pre_version')">
+        <el-tag type="info">{{ appVersion }}</el-tag>
+        <small><a style="color: grey" href="https://github.com/qishibo/AnotherRedisDesktopManager/releases" target="blank">{{ $t('message.manual_update') }}</a></small>
+      </el-form-item>
+
       <el-dialog
         width="400px"
         :title="$t('message.select_import_file')"
@@ -49,6 +54,8 @@ export default {
       form: {},
       importConnectionVisible: false,
       connectionFileContent: '',
+      appVersion: (new URL(window.location.href)).searchParams.get('version'),
+      electronVersion: process.versions.electron,
     };
   },
   props: ['settingDialog'],

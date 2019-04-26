@@ -60,6 +60,8 @@ const en = {
     open_new_tab: 'Open In New Tab',
     exact_search: 'Exact Search',
     enter_to_exec: 'Press Enter To Execute Redis Commands',
+    pre_version: 'Version',
+    manual_update: 'Manual Update',
   },
 };
 

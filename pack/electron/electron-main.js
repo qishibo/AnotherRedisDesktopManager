@@ -12,7 +12,7 @@ function createWindow() {
   mainWindow = new BrowserWindow({
     width: 1100,
     height: 728,
-    icon: 'icons/icon.png',
+    icon: `${__dirname}/icons/icon.png`,
     autoHideMenuBar: true,
     webPreferences: {
       nodeIntegration: true,
@@ -21,9 +21,10 @@ function createWindow() {
 
   // and load the index.html of the app.
   if (APP_ENV === 'production') {
-    mainWindow.loadFile('index.html');
+    // mainWindow.loadFile('index.html');
+    mainWindow.loadURL(`file://${__dirname}/index.html?version=${app.getVersion()}`);
   } else {
-    mainWindow.loadURL('http://localhost:9988/');
+    mainWindow.loadURL(`http://localhost:9988/?version=${app.getVersion()}`);
   }
 
   // Open the DevTools.
@@ -42,10 +43,51 @@ function createWindow() {
   // contents.findInPage('133');
 }
 
+function checkUpdate() {
+  if (APP_ENV !== 'production') {
+    return true;
+  }
+
+  const { autoUpdater } = require("electron-updater");
+
+  // auto update
+  autoUpdater.on('checking-for-update', () => {
+    console.log('Checking for update...');
+  });
+
+  autoUpdater.on('update-available', (info) => {
+    console.log('Update available...', info);
+  });
+
+  autoUpdater.on('update-not-available', (info) => {
+    console.log('Update not available...', info);
+  });
+
+  autoUpdater.on('error', (err) => {
+    console.log('Error in auto-updater... Download manual, please... ' + err);
+  });
+
+  autoUpdater.on('download-progress', (progressObj) => {
+    let log_message = `Downloading...${progressObj.bytesPerSecond}, ${progressObj.percent}%, ${progressObj.transferred}/${progressObj.total}`;
+    console.log(log_message);
+  });
+
+  autoUpdater.on('update-downloaded', (info) => {
+    console.log('Update downloaded...');
+    // autoUpdater.quitAndInstall();
+  });
+
+  autoUpdater.checkForUpdates();
+}
+
+
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 app.on('ready', createWindow);
+
+// check update
+app.on('ready', checkUpdate);
 
 // Quit when all windows are closed.
 app.on('window-all-closed', () => {

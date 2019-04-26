@@ -22,7 +22,7 @@ module.exports = {
       ? config.build.assetsPublicPath
       : config.dev.assetsPublicPath
   },
-  target: 'node-webkit',
+  target: 'electron-renderer',
   resolve: {
     extensions: ['.js', '.vue', '.json'],
     alias: {
