@@ -74,7 +74,7 @@ export default {
 
           if (reply === 1) {
             this.$message.success({
-              message: this.redisKeyLast + this.$t('message.delete_success'),
+              message: `${this.redisKeyLast} ${this.$t('message.delete_success')}`,
               duration: 1000,
             });
 
@@ -82,7 +82,7 @@ export default {
             this.refreshKeyList();
           } else {
             this.$message.error({
-              message: this.redisKeyLast + this.$t('message.delete_failed'),
+              message: `${this.redisKeyLast} ${this.$t('message.delete_failed')}`,
               duration: 1000,
             });
           }
