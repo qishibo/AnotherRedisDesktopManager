@@ -69,7 +69,7 @@ function checkUpdate() {
 
   autoUpdater.on('update-downloaded', (info) => {
     console.log('Update downloaded...');
-    autoUpdater.quitAndInstall();
+    // autoUpdater.quitAndInstall();
   });
 
   autoUpdater.checkForUpdates();
