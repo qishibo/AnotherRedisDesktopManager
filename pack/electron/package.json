@@ -1,6 +1,6 @@
 {
   "name": "another-redis-manager",
-  "version": "1.1.4",
+  "version": "1.1.5",
   "description": "A faster, better and more stable redis desktop manager.",
   "author": "qii404.me",
   "private": true,
@@ -11,9 +11,9 @@
   "publish": [{
     "provider": "github",
     "owner": "qishibo",
-    "repo": "TestForRelease-AnotherRedisDesktopManager"
+    "repo": "AnotherRedisDesktopManager"
   }],
-  "repository": "github:qishibo/TestForRelease-AnotherRedisDesktopManager",
+  "repository": "github:qishibo/AnotherRedisDesktopManager",
   "build": {
     "appId": "me.qii404.another-redis-desktop-manager",
     "productName": "Another.Redis.Dsektop.Manager",
