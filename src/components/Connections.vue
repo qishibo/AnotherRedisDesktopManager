@@ -224,7 +224,7 @@ export default {
       const connection = this.connections[connectionIndex];
 
       if (!connection) {
-        alert('open error'); return;
+        alert('Connection Config Get Failed'); return;
       }
 
       this.getDbIndex(menuIndex);
@@ -284,7 +284,7 @@ export default {
 
           sshPromise.then((client) => {
             client.on('error', (err) => {
-              alert(err);
+              alert('SSH Redis Client On Error: ' + err);
             });
 
             this.$util.set('client', client);
@@ -298,7 +298,7 @@ export default {
           client = redisClient.createConnection(connection.host, connection.port, connection.auth, menuIndex);
 
           client.on('error', (err) => {
-            alert(err);
+            alert('Redis Client On Error: ' + err);
           });
 
           this.connectionPool[menuIndex] = client;

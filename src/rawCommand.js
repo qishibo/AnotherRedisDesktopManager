@@ -3,7 +3,7 @@ export default {
     const client = vue.$util.get('client');
 
     if (!client) {
-      alert('client is not yet');
+      alert('Redis Client Is Not Yet');
       return;
     }
 

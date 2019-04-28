@@ -13,13 +13,13 @@ Download latest `exe` package from [release](https://github.com/qishibo/AnotherR
 
 ## Linux
 
-Download latest `AppImage` package from [release](https://github.com/qishibo/AnotherRedisDesktopManager/releases) page, double click to run. Or `chmod +x xxx.AppImage`, then `./xxx.AppImage`.
+Download latest `AppImage` package from [release](https://github.com/qishibo/AnotherRedisDesktopManager/releases) page, double click to run. Or `./xxx.AppImage`.
 
 ## Mac
 
 Download latest `dmg` package from [release](https://github.com/qishibo/AnotherRedisDesktopManager/releases) page, double click to install.
 
-> If mac warning `Another Desktop Manager can't be opened because it is from an unidentified developer`, open `Settings->Security` and click `Open Anyway`
+> If **Mac** warning `Another Desktop Manager can't be opened because it is from an unidentified developer`. Open `Settings->Security` and click **`Open Anyway`**
 
 ![can't be opened because it is from an unidentified developer](https://ws1.sinaimg.cn/large/71405cably1g1o8ln36ksj20bp065jrv.jpg)
 
@@ -31,20 +31,17 @@ Download latest `dmg` package from [release](https://github.com/qishibo/AnotherR
 
 ![redis key detail](https://ws1.sinaimg.cn/large/71405cably1g1pgxya0t3j20uy0lpdhp.jpg)
 
-![redis console](https://ws1.sinaimg.cn/large/71405cably1g1pgxyc3otj20uv0lowg4.jpg)
+![redis console](https://ws1.sinaimg.cn/large/71405cably1g2j83iw587j20v00lq0u7.jpg)
 
 
 ## Feature Log
 
+- 2019-04-26: Auto Updater
 - 2019-04-09: SSH Tunnel Connection Support
 - 2019-04-01: Extract Search Support
 - 2019-02-22: Single Connection Support
 - 2019-01-08: Project Start
 
-## Support
-
-- [Site: qii404.me/](https://qii404.me/)
-- [SinaWeibo: @齐士博](https://weibo.com/shiboooo/)
 
 ## Dev Build Setup
 
@@ -98,4 +95,9 @@ npm run electron
 ## License
 
 [MIT](LICENSE)
+
+
+## Support
+
+[qii404.me](https://qii404.me/)  [@shiboooo](https://weibo.com/shiboooo/)
 

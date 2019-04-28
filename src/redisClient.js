@@ -8,8 +8,7 @@ export default {
   createConnection(host, port, auth, menuIndex = 0) {
     const options = {
       retry_strategy(options) {
-        console.log(options);
-        alert(options.error);
+        console.log('retrying...', options);
       },
       menu_index: menuIndex,
       password: auth,
@@ -23,8 +22,7 @@ export default {
   createSSHConnection(sshOptions, host, port, auth, menuIndex = 0) {
     const options = {
       retry_strategy(options) {
-        console.log(options);
-        alert(options.error);
+        console.log('ssh connection retrying...', options);
       },
       menu_index: menuIndex,
       password: auth,
@@ -47,7 +45,7 @@ export default {
         console.log('ssh tunnel listening in', listenAddress);
 
         server.on('error', (error) => {
-          alert(error.message);
+          alert('SSH Connection Error: ' + error.message);
           reject(error);
         });
 
