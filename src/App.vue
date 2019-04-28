@@ -13,12 +13,10 @@
         <!-- <router-view/> -->
         <Tabs></Tabs>
       </el-main>
-
-      <!-- <el-main>
-        <Command></Command>
-      </el-main> -->
-
     </el-container>
+
+    <ScrollToTop dom=".el-main"></ScrollToTop>
+
   </el-container>
 </template>
 
@@ -27,11 +25,12 @@ import Header from './Header';
 import Aside from './Aside';
 import Command from '@/components/Command';
 import Tabs from '@/components/Tabs';
+import ScrollToTop from '@/components/ScrollToTop';
 
 export default {
   name: 'App',
   components: {
-    Header, Aside, Command, Tabs,
+    Header, Aside, Command, Tabs, ScrollToTop,
   },
 };
 
