@@ -48,14 +48,7 @@
     </div>
 
     <!-- content table -->
-    <el-table
-      stripe
-      :data="hashData"
-      style="width: 100%"
-      size="small"
-      border
-      min-height=300
-      >
+    <PaginationTable :data="hashData">
       <el-table-column
         type="index"
         label="ID"
@@ -88,11 +81,14 @@
         </template>
       </el-table-column>
 
-    </el-table>
+    </PaginationTable>
+
   </div>
 </template>
 
 <script>
+import PaginationTable from '@/components/PaginationTable';
+
 export default {
   data() {
     return {
@@ -104,6 +100,7 @@ export default {
       editLineItem: {},
     };
   },
+  components: {PaginationTable},
   props: ['redisKey', 'newKeyParams'],
   methods: {
     initShow() {
