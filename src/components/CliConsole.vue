@@ -1,5 +1,5 @@
 <template>
-    <el-dialog class="cli-dailog"  fullscreen="true" :title="consoleTitle()" @opened="openConsole" :visible.sync="cliDialog.visible">
+    <el-dialog class="cli-dailog" fullscreen :title="consoleTitle()" @opened="openConsole" :visible.sync="cliDialog.visible">
       <el-form @submit.native.prevent>
 
         <el-form-item>
