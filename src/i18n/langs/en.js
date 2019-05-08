@@ -62,6 +62,7 @@ const en = {
     enter_to_exec: 'Press Enter To Execute Redis Commands',
     pre_version: 'Version',
     manual_update: 'Manual Update',
+    retry_too_many_times: 'Too Many Attempts To Reconnect. Please Check The Server Status',
   },
 };
 

@@ -7,9 +7,8 @@ bluebird.promisifyAll(redis);
 export default {
   createConnection(host, port, auth, menuIndex = 0) {
     const options = {
-      retry_strategy(options) {
-        console.log('retrying...', options);
-      },
+      retry_strategy: (options) => {return this.retryStragety(options)},
+      // no_ready_check: true,
       menu_index: menuIndex,
       password: auth,
     };
@@ -21,9 +20,8 @@ export default {
 
   createSSHConnection(sshOptions, host, port, auth, menuIndex = 0) {
     const options = {
-      retry_strategy(options) {
-        console.log('ssh connection retrying...', options);
-      },
+      retry_strategy: (options) => {return this.retryStragety(options)},
+      // no_ready_check: true,
       menu_index: menuIndex,
       password: auth,
     };
@@ -61,5 +59,18 @@ export default {
     });
 
     return sshPromise;
+  },
+
+  retryStragety(options) {
+    console.log('retrying...', options);
+    const maxRetryTimes = 3;
+
+    if (options.times_connected > maxRetryTimes || options.attempt > maxRetryTimes) {
+      alert('Too Many Attempts To Reconnect. Please Check The Server Status!');
+      return false;
+    }
+
+    // reconnect after
+    return Math.max(options.attempt * 200, 1000);
   },
 };

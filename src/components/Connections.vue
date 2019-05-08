@@ -277,14 +277,20 @@ export default {
     setGlobalConnection(menuIndex, connection) {
       let client = this.connectionPool[menuIndex];
 
-      if (!client || !client.ready) {
+      if (!client) {
         // ssh tunnel
         if (connection.sshOptions) {
           let sshPromise = redisClient.createSSHConnection(connection.sshOptions, connection.host, connection.port, connection.auth, menuIndex);
 
           sshPromise.then((client) => {
             client.on('error', (err) => {
-              alert('SSH Redis Client On Error: ' + err);
+              this.$message.error({
+                message: 'SSH Redis Client On Error: ' + err,
+                duration: 3000,
+              });
+
+              this.connectionPool[menuIndex] = null;
+              this.closeAllConnection();
             });
 
             this.$util.set('client', client);
@@ -298,7 +304,13 @@ export default {
           client = redisClient.createConnection(connection.host, connection.port, connection.auth, menuIndex);
 
           client.on('error', (err) => {
-            alert('Redis Client On Error: ' + err);
+            this.$message.error({
+              message: 'Redis Client On Error: ' + err,
+              duration: 3000,
+            });
+
+            this.connectionPool[menuIndex] = null;
+            this.closeAllConnection();
           });
 
           this.connectionPool[menuIndex] = client;

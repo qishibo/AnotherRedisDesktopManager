@@ -62,6 +62,7 @@ const cn = {
     enter_to_exec: '输入Redis命令后，按Enter键执行',
     pre_version: '当前版本',
     manual_update: '手动更新',
+    retry_too_many_times: '尝试重连次数过多，请检查Server状态',
   },
 };
 
