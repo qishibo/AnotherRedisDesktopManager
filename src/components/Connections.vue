@@ -289,7 +289,6 @@ export default {
                 duration: 3000,
               });
 
-              this.connectionPool[menuIndex] = null;
               this.closeAllConnection();
             });
 
@@ -309,7 +308,6 @@ export default {
               duration: 3000,
             });
 
-            this.connectionPool[menuIndex] = null;
             this.closeAllConnection();
           });
 
@@ -394,6 +392,13 @@ export default {
         // get menu index
         const index = `${this.getConnectionPoolKey(connections[i])}_${i}`;
         this.$refs.connectionMenu.close(index);
+      }
+
+      // close all connections in pool
+      for (const link in this.connectionPool) {
+        if (this.connectionPool[link].quit) {
+          this.connectionPool[link].quit();
+        }
       }
 
       this.connectionPool = {};

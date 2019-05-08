@@ -8,7 +8,7 @@ export default {
   createConnection(host, port, auth, menuIndex = 0) {
     const options = {
       retry_strategy: (options) => {return this.retryStragety(options, {host: host, port: port})},
-      // no_ready_check: true,
+      no_ready_check: true,
       menu_index: menuIndex,
       password: auth,
     };
@@ -21,7 +21,7 @@ export default {
   createSSHConnection(sshOptions, host, port, auth, menuIndex = 0) {
     const options = {
       retry_strategy: (options) => {return this.retryStragety(options, {host: host, port: port})},
-      // no_ready_check: true,
+      no_ready_check: true,
       menu_index: menuIndex,
       password: auth,
     };
