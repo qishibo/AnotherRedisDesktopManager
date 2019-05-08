@@ -586,7 +586,7 @@ export default {
 
       const promise = this.beginScanning(cursor, match, pageSize, (reply, tmpShow = false) => {
         // refresh key list
-        this.$set(this.keyList, menuIndex, reply[1]);
+        this.$set(this.keyList, menuIndex, reply[1] ? reply[1].sort() : []);
 
         if (tmpShow) {
           return true;
