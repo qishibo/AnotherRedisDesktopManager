@@ -1,5 +1,5 @@
 <template>
-    <el-dialog class="cli-dailog" fullscreen :title="consoleTitle()" @opened="openConsole" :visible.sync="cliDialog.visible">
+    <el-dialog class="cli-dailog" fullscreen :title="consoleTitle()" @opened="openConsole" @close="closeConsole" :visible.sync="cliDialog.visible">
       <el-form @submit.native.prevent>
 
         <el-form-item>
@@ -167,6 +167,9 @@ export default {
       this.historyIndex = 0;
 
       this.initCliContent();
+    },
+    closeConsole() {
+      this.$bus.$emit('closeConsole');
     },
     initDefaultConnection() {
       if (this.$util.get('client')) {

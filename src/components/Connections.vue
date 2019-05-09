@@ -204,6 +204,7 @@ export default {
         String: 'string', Hash: 'hash', List: 'list', Set: 'set', Zset: 'zset',
       },
       sshOptionsShow: false,
+      latestMenuIndex: null,
     };
   },
   components: {RightClickMenu},
@@ -213,6 +214,9 @@ export default {
     });
     this.$bus.$on('refreshConnections', () => {
       this.initConnections();
+    });
+    this.$bus.$on('closeConsole', () => {
+      this.closeConsole();
     });
   },
   methods: {
@@ -276,6 +280,7 @@ export default {
     },
     setGlobalConnection(menuIndex, connection) {
       let client = this.connectionPool[menuIndex];
+      this.latestMenuIndex = menuIndex;
 
       if (!client) {
         // ssh tunnel
@@ -636,6 +641,30 @@ export default {
     addNewKey() {
       this.$bus.$emit('addNewKey', this.selectedNewKeyType);
       this.newKeyDialog = false;
+    },
+    closeConsole() {
+      console.log('close console...');
+      const client = this.$util.get('client');
+
+      if (!client) {
+        return true;
+      }
+
+      this.changeDbTo(this.latestMenuIndex, client.selected_db);
+    },
+    changeDbTo(menuIndex, dbIndex) {
+
+      if (!menuIndex || isNaN(dbIndex)) {
+        return true;
+      }
+
+      // db not change
+      if (this.getDbIndex(menuIndex) == dbIndex) {
+        return true;
+      }
+
+      this.$set(this.selectedDbIndex, menuIndex, parseInt(dbIndex));
+      this.changeDb(menuIndex);
     },
   },
   mounted() {
