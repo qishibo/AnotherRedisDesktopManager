@@ -63,6 +63,7 @@ const cn = {
     pre_version: '当前版本',
     manual_update: '手动更新',
     retry_too_many_times: '尝试重连次数过多，请检查Server状态',
+    key_to_search: '输入关键字搜索',
   },
 };
 

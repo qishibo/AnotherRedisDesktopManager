@@ -63,6 +63,7 @@ const en = {
     pre_version: 'Version',
     manual_update: 'Manual Update',
     retry_too_many_times: 'Too Many Attempts To Reconnect. Please Check The Server Status',
+    key_to_search: 'Keyword Search',
   },
 };
 

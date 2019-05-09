@@ -89,3 +89,11 @@ export default {
   },
 };
 </script>
+
+<style type="text/css">
+  .key-detail-filter-value {
+    width: 60%;
+    height: 24px;
+    padding: 0 5px;
+  }
+</style>

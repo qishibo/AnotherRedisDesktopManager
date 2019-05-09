@@ -12,8 +12,8 @@
 
     <el-pagination
       class="pagenation-table-page-container"
-      v-if="data.length > pageSize"
-      :total="data.length"
+      v-if="dataAfterFilter.length > pageSize"
+      :total="dataAfterFilter.length"
       :page-size="pageSize"
       :current-page.sync="pageIndex"
       layout="prev, pager, next"
@@ -31,11 +31,21 @@ export default {
       pageIndex: 1,
     };
   },
-  props: ['data'],
+  props: ['data', 'filterKey', 'filterValue'],
   computed: {
     pagedData() {
       const start = (this.pageIndex - 1) * this.pageSize;
-      return this.data.slice(start, start + this.pageSize);
+      return this.dataAfterFilter.slice(start, start + this.pageSize);
+    },
+    dataAfterFilter() {
+      const filterKey = this.filterKey;
+      const filterValue = this.filterValue;
+
+      if (!filterValue || !filterKey) {
+        return this.data;
+      }
+
+      return this.data.filter(line => line[filterKey].toLowerCase().includes(filterValue.toLowerCase()));
     },
   },
 };

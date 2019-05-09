@@ -65,7 +65,7 @@ export default {
     console.log('retrying...', options, connection);
     const maxRetryTimes = 3;
 
-    if (options.times_connected > maxRetryTimes || options.attempt > maxRetryTimes) {
+    if (options.attempt > maxRetryTimes) {
       alert(`${connection.host}:${connection.port}\nToo Many Attempts To Reconnect. Please Check The Server Status!`);
       return false;
     }

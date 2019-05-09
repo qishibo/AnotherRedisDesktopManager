@@ -40,7 +40,7 @@
     </div>
 
     <!-- content table -->
-    <PaginationTable :data="setData">
+    <PaginationTable :data="setData" :filterValue="filterValue" filterKey="value">
       <el-table-column
         type="index"
         label="ID"
@@ -59,6 +59,13 @@
       <el-table-column
         label="Operation"
         >
+        <template slot="header" slot-scope="scope">
+          <input
+            class="el-input__inner key-detail-filter-value"
+            v-model="filterValue"
+            :placeholder="$t('message.key_to_search')"
+            />
+        </template>
         <template slot-scope="scope">
           <el-button type="text" @click="showEditDialog(scope.row)" icon="el-icon-edit" circle></el-button>
           <el-button type="text" @click="deleteLine(scope.row)" icon="el-icon-delete" circle></el-button>
@@ -75,6 +82,7 @@ import PaginationTable from '@/components/PaginationTable';
 export default {
   data() {
     return {
+      filterValue: '',
       dialogFormVisible: false,
       editDialog: false,
       setData: [], // {value: xxx}
