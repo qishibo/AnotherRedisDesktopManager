@@ -41,6 +41,10 @@ export default {
       const filterKey = this.filterKey;
       const filterValue = this.filterValue;
 
+      this.$nextTick(() => {
+        this.pageIndex = 1;
+      });
+
       if (!filterValue || !filterKey) {
         return this.data;
       }
