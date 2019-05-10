@@ -5,7 +5,7 @@ import tunnelssh from 'tunnel-ssh';
 bluebird.promisifyAll(redis);
 
 export default {
-  createConnection(host, port, auth, menuIndex = 0) {
+  createConnection(host, port, auth, menuIndex = null) {
     const options = {
       retry_strategy: (options) => {return this.retryStragety(options, {host: host, port: port})},
       no_ready_check: true,
@@ -18,7 +18,7 @@ export default {
     return client;
   },
 
-  createSSHConnection(sshOptions, host, port, auth, menuIndex = 0) {
+  createSSHConnection(sshOptions, host, port, auth, menuIndex = null) {
     const options = {
       retry_strategy: (options) => {return this.retryStragety(options, {host: host, port: port})},
       no_ready_check: true,

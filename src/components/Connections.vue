@@ -1,12 +1,12 @@
 <template>
   <div>
     <el-menu ref="connectionMenu" @open="openConnection" class="connection-menu" active-text-color="#ffd04b">
-      <el-submenu v-for="(item, index) of connections" :key="item.showName" :index="getConnectionPoolKey(item) + '_' + index">
+      <el-submenu v-for="(item, index) of connections" :key="item.menuIndex" :index="item.menuIndex">
 
         <!-- connection item -->
         <template slot="title">
-          <span slot="title" :title="item.showName" class="connection-name">{{item.showName}}</span>
-          <i :title="$t('message.edit_connection')" class="el-icon-edit-outline" @click.stop.prevent="showEditConnection(item, getConnectionPoolKey(item))"></i>
+          <span slot="title" :title="item.menuIndex" class="connection-name">{{item.menuIndex}}</span>
+          <i :title="$t('message.edit_connection')" class="el-icon-edit-outline" @click.stop.prevent="showEditConnection(item, item.menuIndex)"></i>
           <i :title="$t('message.del_connection')" class="el-icon-delete" @click.stop.prevent="deleteConnection(item)"></i>
         </template>
 
@@ -15,9 +15,9 @@
             <el-row :gutter="6">
               <el-col :span="12">
                 <!-- db index select -->
-                <el-select class="db-select" v-model="selectedDbIndex[getConnectionPoolKey(item)]" placeholder="DB" size="mini" @change="changeDb(getConnectionPoolKey(item))">
+                <el-select class="db-select" v-model="selectedDbIndex[item.menuIndex]" placeholder="DB" size="mini" @change="changeDb(item.menuIndex)">
                   <el-option
-                    v-for="index in dbs[getConnectionPoolKey(item)]"
+                    v-for="index in dbs[item.menuIndex]"
                     :key="index"
                     :label="'DB' + index"
                     :value="index">
@@ -28,7 +28,7 @@
 
               <el-col :span="12">
                 <!-- new key btn -->
-                <el-button class="new-key-btn el-icon-plus" @click="showNewKeyDialog(getConnectionPoolKey(item))">{{ $t('message.add_new_key')}}</el-button>
+                <el-button class="new-key-btn el-icon-plus" @click="showNewKeyDialog(item.menuIndex)">{{ $t('message.add_new_key')}}</el-button>
               </el-col>
             </el-row>
           </el-form-item>
@@ -37,12 +37,12 @@
           <el-form-item class="search-item">
             <el-row>
               <el-col :span="24">
-                <el-input class="search-input" v-model="searchMatch[getConnectionPoolKey(item)]" @keyup.enter.native="changeMatchMode(getConnectionPoolKey(item))" :placeholder="$t('message.enter_to_search')" size="mini">
+                <el-input class="search-input" v-model="searchMatch[item.menuIndex]" @keyup.enter.native="changeMatchMode(item.menuIndex)" :placeholder="$t('message.enter_to_search')" size="mini">
                   <span slot="suffix" >
-                    <i class="el-input__icon search-icon" :class="searchIcon"  @click="changeMatchMode(getConnectionPoolKey(item))"></i>
+                    <i class="el-input__icon search-icon" :class="searchIcon"  @click="changeMatchMode(item.menuIndex)"></i>
 
                     <el-tooltip effect="dark" :content="$t('message.exact_search')" placement="bottom">
-                      <el-checkbox v-model="searchExact[getConnectionPoolKey(item)]"></el-checkbox>
+                      <el-checkbox v-model="searchExact[item.menuIndex]"></el-checkbox>
                     </el-tooltip>
                   </span>
                 </el-input>
@@ -54,26 +54,26 @@
 
         <!-- key list -->
         <ul class="key-list">
-          <RightClickMenu :items="rightMenus" :clickValue="{key: key, menuIndex: getConnectionPoolKey(item)}" :key="key" v-for="key of keyList[getConnectionPoolKey(item)]">
-            <li class="key-item" :title="key"  @click="clickKey(key, getConnectionPoolKey(item))">{{key}}</li>
+          <RightClickMenu :items="rightMenus" :clickValue="{key: key, menuIndex: item.menuIndex}" :key="key" v-for="key of keyList[item.menuIndex]">
+            <li class="key-item" :title="key"  @click="clickKey(key, item.menuIndex)">{{key}}</li>
           </RightClickMenu>
         </ul>
 
         <!-- page -->
         <div class="pagenation">
-          <el-button ref="pagePreButton" type="text" @click="pagePre(getConnectionPoolKey(item))" :disabled="preButtonDisable(getConnectionPoolKey(item))" size="mini" icon="el-icon-arrow-left"></el-button>
+          <el-button ref="pagePreButton" type="text" @click="pagePre(item.menuIndex)" :disabled="preButtonDisable(item.menuIndex)" size="mini" icon="el-icon-arrow-left"></el-button>
           <input
-            :value="getPageIndex(getConnectionPoolKey(item))"
-            :ref="'pageIndexInput' + getConnectionPoolKey(item)"
+            :value="getPageIndex(item.menuIndex)"
+            :ref="'pageIndexInput' + item.menuIndex"
             @click="$event.target.select()"
-            @keyup.enter="jumpToPage(getConnectionPoolKey(item), $event.target.value)"
+            @keyup.enter="jumpToPage(item.menuIndex, $event.target.value)"
             class="page-jumper el-input__inner"
             type="number"
             min="1"
             step="1"
           >
           </input>
-          <el-button ref="pageNextButton" type="text" @click="pageNext(getConnectionPoolKey(item))" :disabled="nextPageDisabled[getConnectionPoolKey(item)]" size="mini" icon="el-icon-arrow-right"></el-button>
+          <el-button ref="pageNextButton" type="text" @click="pageNext(item.menuIndex)" :disabled="nextPageDisabled[item.menuIndex]" size="mini" icon="el-icon-arrow-right"></el-button>
         </div>
 
       </el-submenu>
@@ -204,7 +204,6 @@ export default {
         String: 'string', Hash: 'hash', List: 'list', Set: 'set', Zset: 'zset',
       },
       sshOptionsShow: false,
-      latestMenuIndex: null,
     };
   },
   components: {RightClickMenu},
@@ -220,12 +219,9 @@ export default {
     });
   },
   methods: {
-    openConnection(openedMenuKey) {
+    openConnection(menuIndex) {
       // get connection config
-      // openedMenuKey like 10.20.1.1336379_0
-      const menuIndex = openedMenuKey.split('_')[0];
-      const connectionIndex = openedMenuKey.split('_')[1];
-      const connection = this.connections[connectionIndex];
+      const connection = this.connections[menuIndex];
 
       if (!connection) {
         alert('Connection Config Get Failed'); return;
@@ -252,7 +248,7 @@ export default {
         client.on('ready', () => {
           // open status tab
           if (!this.openedStatus[menuIndex]) {
-            this.$bus.$emit('openStatus', connection.showName);
+            this.$bus.$emit('openStatus', connection.menuIndex);
             this.openedStatus[menuIndex] = true;
           }
 
@@ -280,7 +276,6 @@ export default {
     },
     setGlobalConnection(menuIndex, connection) {
       let client = this.connectionPool[menuIndex];
-      this.latestMenuIndex = menuIndex;
 
       if (!client) {
         // ssh tunnel
@@ -356,7 +351,7 @@ export default {
 
         this.afterEditData = JSON.parse(JSON.stringify(oldConnection));
         !this.afterEditData.sshOptions && (this.afterEditData.sshOptions = {port: 22});
-        delete this.afterEditData.showName;
+        delete this.afterEditData.menuIndex;
       }).catch((_) => {});
     },
     editConnection() {
@@ -381,37 +376,33 @@ export default {
     },
     initConnections() {
       const connections = storage.getConnections(true);
+      const slovedConnections = {};
 
       for (const item of connections) {
-        item.showName = item.name || `${item.host}@${item.port}`;
+        item.menuIndex = this.initMenuIndex(item);
+        slovedConnections[item.menuIndex] = item;
       }
 
-      this.connections = connections;
+      this.connections = slovedConnections;
     },
     closeAllConnection() {
       console.log('closing all...');
 
-      const connections = storage.getConnections(true);
-
-      for (const i in connections) {
-        // get menu index
-        const index = `${this.getConnectionPoolKey(connections[i])}_${i}`;
-        this.$refs.connectionMenu.close(index);
+      for (const menuIndex in this.connections) {
+        this.$refs.connectionMenu.close(menuIndex);
       }
 
       // close all connections in pool
       for (const link in this.connectionPool) {
-        if (this.connectionPool[link].quit) {
-          this.connectionPool[link].quit();
-        }
+        this.connectionPool[link].quit && this.connectionPool[link].quit();
       }
 
       this.connectionPool = {};
       this.openedStatus = {};
       this.$bus.$emit('removeAllTab');
     },
-    getConnectionPoolKey(connection) {
-      return connection.host + connection.port + connection.name;
+    initMenuIndex(connection) {
+      return connection.name || `${connection.host}@${connection.port}`;
     },
     changeDb(menuIndex) {
       this.resetDb(menuIndex);
@@ -646,11 +637,11 @@ export default {
       console.log('close console...');
       const client = this.$util.get('client');
 
-      if (!client) {
+      if (!client || !client.options || !client.options.menu_index) {
         return true;
       }
 
-      this.changeDbTo(this.latestMenuIndex, client.selected_db);
+      this.changeDbTo(client.options.menu_index, client.selected_db);
     },
     changeDbTo(menuIndex, dbIndex) {
 
