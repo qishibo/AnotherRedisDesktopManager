@@ -6,6 +6,7 @@ import App from './App';
 import i18n from './i18n/i18n';
 import bus from './bus';
 import util from './util';
+import baiduAnalysis from './baiduAnalysis';
 
 Vue.prototype.$bus = bus;
 Vue.prototype.$util = util;
@@ -20,3 +21,5 @@ new Vue({
   components: { App },
   template: '<App/>',
 });
+
+baiduAnalysis('/another-redis-desktop-manager');

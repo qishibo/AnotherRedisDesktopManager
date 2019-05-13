@@ -1,7 +1,10 @@
 // Modules to control application life and create native browser window
 const { app, BrowserWindow, Menu } = require('electron');
+const baiduAnalysis = require('./baiduAnalysis');
 
 const APP_ENV = 'dev';
+
+baiduAnalysis(app, '276872fd363b232716929643921f90b5', 'https://qii404.me/another-redis-desktop-manager/');
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
