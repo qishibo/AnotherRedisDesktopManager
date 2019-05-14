@@ -36,6 +36,7 @@ Download latest `dmg` package from [release](https://github.com/qishibo/AnotherR
 
 ## Feature Log
 
+- 2019-05-09: Search Support In Hash List Set Zset
 - 2019-04-26: Auto Updater
 - 2019-04-09: SSH Tunnel Connection Support
 - 2019-04-01: Extract Search Support
