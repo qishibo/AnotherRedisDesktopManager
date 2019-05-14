@@ -209,6 +209,20 @@ export default {
   components: {RightClickMenu},
   created() {
     this.$bus.$on('refreshKeyList', () => {
+      const client = this.$util.get('client');
+
+      if (!client) {
+        return;
+      }
+
+      const menuIndex = client.options.menu_index;
+      const match = this.getMatchMode(menuIndex);
+
+      // if in search mode, do not refresh list, because it may be slow.
+      if (match !== '*') {
+        return;
+      }
+
       this.refreshKeyList();
     });
     this.$bus.$on('refreshConnections', () => {

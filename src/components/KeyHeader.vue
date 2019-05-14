@@ -117,6 +117,7 @@ export default {
 
           this.redisKeyLast = this.newKeyParams.keyName;
           this.refreshKeyList();
+          this.$bus.$emit('clickedKey', this.newKeyParams.keyName);
         }
       });
     },
