@@ -4,7 +4,7 @@
   <el-tabs v-model="selectedTabName" type="card" closable @tab-remove="removeTab">
     <el-tab-pane
       v-for="(item) in tabs"
-      :key="item.title"
+      :key="item.name"
       :label="item.title"
       :name="item.name"
     >
@@ -106,11 +106,12 @@ export default {
     newKeyTab(key, type, newTab = false) {
       console.log(key, type, newTab);
 
-      const client     = this.$util.get('client');
-      const newTabName = `${key} | ${client.options.menu_index} | DB${client.selected_db ? client.selected_db : 0}`;
+      const client      = this.$util.get('client');
+      const newShowName = `${key} | ${client.options.menu_index} | DB${client.selected_db ? client.selected_db : 0}`;
+      const newTabName  = `${key}|${client.options.menu_index}|DB${client.selected_db ? client.selected_db : 0}`;
 
       const newTabItem = {
-        name: newTabName, title: newTabName, redisKey: key, keyType: type, keepTab: newTab
+        name: newTabName, title: newShowName, redisKey: key, keyType: type, keepTab: newTab
       };
 
       // no tabs
