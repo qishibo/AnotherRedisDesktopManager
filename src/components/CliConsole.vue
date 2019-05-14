@@ -92,31 +92,41 @@ export default {
         this.$nextTick(() => {
           this.scrollToBottom();
         });
-      } else {
-        promise.then((reply) => {
-          let append = '';
 
-          if (reply === null) {
-            append = `${null}\n`;
-          } else if (typeof reply === 'object') {
-            const isArray = !isNaN(reply.length);
-
-            for (const i in reply) {
-              append += `${(isArray ? '' : (`${i}\n`)) + reply[i]}\n`;
-            }
-          } else {
-            append = `${reply}\n`;
-          }
-
-          this.cliContent.content += append;
-          this.inputSuggestionItems.delete(params);
-          this.inputSuggestionItems.add(params);
-
-          this.$nextTick(() => {
-            this.scrollToBottom();
-          });
-        });
+        return;
       }
+
+      promise.then((reply) => {
+        let append = '';
+
+        if (reply === null) {
+          append = `${null}\n`;
+        }
+        else if (typeof reply === 'object') {
+          const isArray = !isNaN(reply.length);
+
+          for (const i in reply) {
+            append += `${(isArray ? '' : (`${i}\n`)) + reply[i]}\n`;
+          }
+        }
+        else {
+          append = `${reply}\n`;
+        }
+
+        this.cliContent.content += append;
+        this.inputSuggestionItems.delete(params);
+        this.inputSuggestionItems.add(params);
+
+        this.$nextTick(() => {
+          this.scrollToBottom();
+        });
+      }).catch((err) => {
+        this.cliContent.content += `${err.message}\n`;
+
+        this.$nextTick(() => {
+          this.scrollToBottom();
+        });
+      });
     },
     searchUp() {
       if (--this.historyIndex < (-this.inputSuggestionItems.size - 1)) {

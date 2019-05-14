@@ -286,6 +286,10 @@ export default {
         else {
           this.$set(this.dbs, menuIndex, [...Array(16).keys()]);
         }
+      }).catch((err) => {
+        // config command may be renamed
+        console.log(`get config databases failed, ${err.message}`);
+        this.$set(this.dbs, menuIndex, [...Array(16).keys()]);
       });
     },
     setGlobalConnection(menuIndex, connection) {
