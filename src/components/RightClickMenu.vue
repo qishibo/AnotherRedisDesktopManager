@@ -15,6 +15,7 @@
       data() {
         return {
           themes: {light: 'light', dark: 'dark'},
+          triggerEvent: null,
         };
       },
       props: ['items', 'clickValue', 'theme'],
@@ -26,15 +27,17 @@
       },
       methods: {
         show($event) {
+          this.triggerEvent = $event;
           this.showMenus($event.clientX, $event.clientY);
           document.addEventListener("click",this.removeMenus);
         },
         clickItem($event, item) {
           if (item.click) {
-            item.click(this.clickValue, $event);
+            item.click(this.clickValue, this.triggerEvent, $event);
           }
 
           this.removeMenus();
+          this.triggerEvent = null;
         },
         removeMenus() {
           document.removeEventListener("click",this.removeMenus);
