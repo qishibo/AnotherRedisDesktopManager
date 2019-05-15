@@ -55,7 +55,7 @@
         <!-- key list -->
         <ul class="key-list">
           <RightClickMenu :items="rightMenus" :clickValue="{key: key, menuIndex: item.menuIndex}" :key="key" v-for="key of keyList[item.menuIndex]">
-            <li class="key-item" :title="key"  @click="clickKey(key, item.menuIndex)">{{key}}</li>
+            <li class="key-item" :title="key"  @click="clickKey(key, item.menuIndex, false, $event)">{{key}}</li>
           </RightClickMenu>
         </ul>
 
@@ -167,16 +167,16 @@ export default {
       rightMenus: [
         {
           name: this.$t('message.open'),
-          click: (clickValue) => {
+          click: (clickValue, event) => {
             console.log('from callback....', clickValue);
-            this.clickKey(clickValue.key, clickValue.menuIndex);
+            this.clickKey(clickValue.key, clickValue.menuIndex, false, event);
           },
         },
         {
           name: this.$t('message.open_new_tab'),
-          click: (clickValue) => {
+          click: (clickValue, event) => {
             console.log('from callback....', clickValue);
-            this.clickKey(clickValue.key, clickValue.menuIndex, true);
+            this.clickKey(clickValue.key, clickValue.menuIndex, true, event);
           },
         },
       ],
@@ -444,11 +444,23 @@ export default {
       this.$set(this.pageIndex, menuIndex, 1);
       this.scanCursorList[menuIndex] = [0];
     },
-    clickKey(key, menuIndex, newTab = false) {
+    clickKey(key, menuIndex, newTab = false, event = null) {
       console.log(`clicked key ${key}`, `dbIndex ${this.selectedDbIndex}`);
+
+      // highlight clicked key
+      this.hightKey(event);
 
       this.setGlobalConnection(menuIndex);
       this.$bus.$emit('clickedKey', key, newTab);
+    },
+    hightKey(event) {
+      for (const ele of document.querySelectorAll('.key-select')) {
+        ele.classList.remove("key-select");
+      }
+
+      if (event) {
+        event.target.classList.add('key-select');
+      }
     },
     pagePre(menuIndex) {
       let pageIndex = this.getPageIndex(menuIndex);
@@ -744,7 +756,7 @@ export default {
 
   .connection-menu .key-list {
     list-style-type: none;
-    padding-left: 10px;
+    padding-left: 0;
   }
   .connection-menu .key-list .key-item {
     white-space:nowrap;
@@ -755,9 +767,17 @@ export default {
     font-size: 82%;
     line-height: 1.6;
     margin-right: 3px;
+    padding-left: 6px;
   }
   .connection-menu .key-list .key-item:hover {
-    color: #409EFF;
+    color: #3c3d3e;
+    background: #e7ebec;
+  }
+  .connection-menu .key-list .key-item.key-select {
+    color: #3292f5;
+    background: #e7ebec;
+    box-sizing: border-box;
+    border-left: 2px solid #68acf3;
   }
 
   .pagenation {
