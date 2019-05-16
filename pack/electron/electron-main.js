@@ -1,7 +1,10 @@
 // Modules to control application life and create native browser window
 const { app, BrowserWindow, Menu } = require('electron');
+const updateCheck = require('./update');
 
 const APP_ENV = 'dev';
+
+updateCheck();
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -43,51 +46,10 @@ function createWindow() {
   // contents.findInPage('133');
 }
 
-function checkUpdate() {
-  if (APP_ENV !== 'production') {
-    return true;
-  }
-
-  const { autoUpdater } = require("electron-updater");
-
-  // auto update
-  autoUpdater.on('checking-for-update', () => {
-    console.log('Checking for update...');
-  });
-
-  autoUpdater.on('update-available', (info) => {
-    console.log('Update available...', info);
-  });
-
-  autoUpdater.on('update-not-available', (info) => {
-    console.log('Update not available...', info);
-  });
-
-  autoUpdater.on('error', (err) => {
-    console.log('Error in auto-updater... Download manual, please... ' + err);
-  });
-
-  autoUpdater.on('download-progress', (progressObj) => {
-    let log_message = `Downloading...${progressObj.bytesPerSecond}, ${progressObj.percent}%, ${progressObj.transferred}/${progressObj.total}`;
-    console.log(log_message);
-  });
-
-  autoUpdater.on('update-downloaded', (info) => {
-    console.log('Update downloaded...');
-    // autoUpdater.quitAndInstall();
-  });
-
-  autoUpdater.checkForUpdates();
-}
-
-
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 app.on('ready', createWindow);
-
-// check update
-app.on('ready', checkUpdate);
 
 // Quit when all windows are closed.
 app.on('window-all-closed', () => {

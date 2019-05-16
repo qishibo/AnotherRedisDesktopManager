@@ -20,3 +20,5 @@ new Vue({
   components: { App },
   template: '<App/>',
 });
+
+// todo: auto update check on app start

@@ -10,6 +10,7 @@
 
       <el-form-item :label="$t('message.pre_version')">
         <el-tag type="info">{{ appVersion }}</el-tag>
+        <small><a style="color: grey" href="###" @click="checkUpdate">{{ $t('message.check_update') }}</a></small>
         <small><a style="color: grey" href="https://github.com/qishibo/AnotherRedisDesktopManager/releases" target="blank">{{ $t('message.manual_update') }}</a></small>
       </el-form-item>
 
@@ -38,6 +39,9 @@
 
     </el-form>
 
+    <!-- download progress -->
+    <el-progress v-if="downloadShow" :percentage="downloadProgress"></el-progress>
+
     <div slot="footer" class="dialog-footer">
       <el-button @click="settingDialog.visible = false">{{ $t('el.messagebox.cancel') }}</el-button>
       <el-button type="primary" @click="saveSettings">{{ $t('el.messagebox.confirm') }}</el-button>
@@ -47,6 +51,7 @@
 
 <script type="text/javascript">
 import storage from '@/storage.js';
+import updateCheck from '@/update.js';
 
 export default {
   data() {
@@ -56,6 +61,8 @@ export default {
       connectionFileContent: '',
       appVersion: (new URL(window.location.href)).searchParams.get('version'),
       electronVersion: process.versions.electron,
+      downloadShow: false,
+      downloadProgress: 0,
     };
   },
   props: ['settingDialog'],
@@ -131,6 +138,14 @@ export default {
 
       aTag.click();
       URL.revokeObjectURL(blob);
+    },
+    checkUpdate() {
+      this.$notify({
+        title: this.$t('message.update_checking'),
+        duration: 0
+      });
+
+      updateCheck(this);
     },
   },
   mounted() {
