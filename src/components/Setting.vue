@@ -39,8 +39,10 @@
 
     </el-form>
 
-    <!-- download progress -->
-    <el-progress v-if="downloadShow" :percentage="downloadProgress"></el-progress>
+    <!-- update check -->
+    <keep-alive>
+      <updateCheck></updateCheck>
+    </keep-alive>
 
     <div slot="footer" class="dialog-footer">
       <el-button @click="settingDialog.visible = false">{{ $t('el.messagebox.cancel') }}</el-button>
@@ -51,7 +53,7 @@
 
 <script type="text/javascript">
 import storage from '@/storage.js';
-import updateCheck from '@/update.js';
+import updateCheck from '@/components/UpdateCheck';
 
 export default {
   data() {
@@ -66,6 +68,7 @@ export default {
     };
   },
   props: ['settingDialog'],
+  components: {updateCheck},
   methods: {
     showSettings() {
       let settings = this.getSettings();
@@ -140,12 +143,7 @@ export default {
       URL.revokeObjectURL(blob);
     },
     checkUpdate() {
-      this.$notify({
-        title: this.$t('message.update_checking'),
-        duration: 0
-      });
-
-      updateCheck(this);
+      this.$bus.$emit('update-check');
     },
   },
   mounted() {
