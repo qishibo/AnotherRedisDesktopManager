@@ -10,13 +10,10 @@ export default {
       updateChecking: false,
       downloadProcessShow: false,
       downloadPercent: 0,
-      manualCheck: true,
     };
   },
   created() {
-    this.$bus.$on('update-check', (manualCheck = true) => {
-      this.manualCheck = manualCheck;
-
+    this.$bus.$on('update-check', () => {
       // mac dose not support auto update now
       if (process.platform === 'darwin') {
         // this.$notify.closeAll();
@@ -24,7 +21,7 @@ export default {
         //   title: this.$t('message.mac_not_support_auto_update'),
         //   duration: 3000
         // });
-        console.log('mac.....');
+        console.log('mac updating.....');
         // return;
       };
 
@@ -79,11 +76,15 @@ export default {
       ipcRenderer.on('update-error', (event, arg) => {
         console.log('update-error', arg);
 
-        this.$notify.closeAll();
+        // this.$notify.closeAll();
         this.resetDownloadProcess();
+        const message = (arg.code === 'ERR_UPDATER_ZIP_FILE_NOT_FOUND') ?
+          this.$t('message.mac_not_support_auto_update') :
+          (this.$t('message.update_error') + ': ' + arg.code);
+
         const a = this.$notify.error({
-          title: this.$t('message.update_error') + ': ' + arg.code,
-          duration: 3000
+          title: message,
+          duration: 0
         });
       });
 
