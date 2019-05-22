@@ -1,10 +1,11 @@
 // Modules to control application life and create native browser window
 const { app, BrowserWindow, Menu } = require('electron');
-const updateCheck = require('./update');
 
-const APP_ENV = 'dev';
+global.APP_ENV = 'dev';
 
-updateCheck();
+if (APP_ENV === 'production') {
+  require('./update')();
+}
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
