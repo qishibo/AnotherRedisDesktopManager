@@ -10,6 +10,7 @@
 
       <el-form-item :label="$t('message.pre_version')">
         <el-tag type="info">{{ appVersion }}</el-tag>
+        <!-- <small><a style="color: grey" href="###" @click="checkUpdate">{{ $t('message.check_update') }}</a></small> -->
         <small><a style="color: grey" href="https://github.com/qishibo/AnotherRedisDesktopManager/releases" target="blank">{{ $t('message.manual_update') }}</a></small>
       </el-form-item>
 
@@ -56,6 +57,8 @@ export default {
       connectionFileContent: '',
       appVersion: (new URL(window.location.href)).searchParams.get('version'),
       electronVersion: process.versions.electron,
+      downloadShow: false,
+      downloadProgress: 0,
     };
   },
   props: ['settingDialog'],
@@ -131,6 +134,9 @@ export default {
 
       aTag.click();
       URL.revokeObjectURL(blob);
+    },
+    checkUpdate() {
+      this.$bus.$emit('update-check');
     },
   },
   mounted() {
