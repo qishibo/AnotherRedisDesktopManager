@@ -19,13 +19,13 @@ export default {
 
       // mac dose not support auto update now
       if (process.platform === 'darwin') {
-        this.$notify.closeAll();
-        this.$notify.error({
-          title: this.$t('message.mac_not_support_auto_update'),
-          duration: 3000
-        });
-
-        return;
+        // this.$notify.closeAll();
+        // this.$notify.error({
+        //   title: this.$t('message.mac_not_support_auto_update'),
+        //   duration: 3000
+        // });
+        console.log('mac.....');
+        // return;
       };
 
       // update checking running...
@@ -36,10 +36,10 @@ export default {
 
       this.updateChecking = true;
       this.$notify.closeAll();
-      this.$notify({
-        title: this.$t('message.update_checking'),
-        duration: 0
-      });
+      // this.$notify({
+      //   title: this.$t('message.update_checking'),
+      //   duration: 0
+      // });
 
       ipcRenderer.send('update-check');
     });
@@ -63,24 +63,6 @@ export default {
           message: arg.releaseNotes.replace(/(\<a)/ig, '$1 target="blank"'),
           duration: 0
         });
-
-        if (!this.downloadProcessShow) {
-          const h = this.$createElement;
-
-          setTimeout(() => {
-            this.$notify({
-              message: h('el-progress', {
-                props: {
-                  percentage: this.downloadPercent,
-                },
-              }),
-              duration: 0,
-              customClass: 'download-progress-container',
-            });
-          }, 10);
-
-          this.downloadProcessShow = true;
-        };
       });
 
       ipcRenderer.on('update-not-available', (event, arg) => {
@@ -88,10 +70,10 @@ export default {
 
         this.$notify.closeAll();
         this.resetDownloadProcess();
-        this.$notify.success({
-          title: this.$t('message.update_not_available') + ' ' + arg.version,
-          duration: 3000
-        });
+        // this.$notify.success({
+        //   title: this.$t('message.update_not_available') + ' ' + arg.version,
+        //   duration: 3000
+        // });
       });
 
       ipcRenderer.on('update-error', (event, arg) => {
@@ -100,15 +82,30 @@ export default {
         this.$notify.closeAll();
         this.resetDownloadProcess();
         const a = this.$notify.error({
-          title: this.$t('message.update_error') + ': ' + arg.cause.code,
+          title: this.$t('message.update_error') + ': ' + arg.code,
           duration: 3000
         });
-
-        console.log(a.title);
       });
 
       ipcRenderer.on('download-progress', (event, arg) => {
         console.log('download-progress', arg);
+
+        if (!this.downloadProcessShow) {
+          const h = this.$createElement;
+
+          this.$notify({
+            message: h('el-progress', {
+              props: {
+                percentage: this.downloadPercent,
+              },
+            }),
+            duration: 0,
+            customClass: 'download-progress-container',
+          });
+
+          this.downloadProcessShow = true;
+        };
+
         this.downloadPercent = Math.floor(arg.percent);
       });
 

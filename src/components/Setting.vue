@@ -10,7 +10,7 @@
 
       <el-form-item :label="$t('message.pre_version')">
         <el-tag type="info">{{ appVersion }}</el-tag>
-        <small><a style="color: grey" href="###" @click="checkUpdate">{{ $t('message.check_update') }}</a></small>
+        <!-- <small><a style="color: grey" href="###" @click="checkUpdate">{{ $t('message.check_update') }}</a></small> -->
         <small><a style="color: grey" href="https://github.com/qishibo/AnotherRedisDesktopManager/releases" target="blank">{{ $t('message.manual_update') }}</a></small>
       </el-form-item>
 
@@ -40,9 +40,9 @@
     </el-form>
 
     <!-- update check -->
-    <keep-alive>
+<!--     <keep-alive>
       <updateCheck></updateCheck>
-    </keep-alive>
+    </keep-alive> -->
 
     <div slot="footer" class="dialog-footer">
       <el-button @click="settingDialog.visible = false">{{ $t('el.messagebox.cancel') }}</el-button>
