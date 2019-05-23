@@ -706,7 +706,7 @@ export default {
   }
   .connection-menu .connection-name {
     display: inline-block;
-    width: 115px;
+    width: 125px;
     word-break:keep-all;
     white-space:nowrap;
     overflow:hidden;
