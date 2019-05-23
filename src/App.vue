@@ -1,7 +1,7 @@
 <template>
   <el-container class="wrap-container">
 
-    <el-aside width="200px" class="aside-connection" >
+    <el-aside width="220px" class="aside-connection" >
       <Aside></Aside>
     </el-aside>
 
