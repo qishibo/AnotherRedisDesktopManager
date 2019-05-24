@@ -5,11 +5,11 @@
 
         <!-- connection item -->
         <template slot="title">
-          <span slot="title" :title="item.menuIndex" class="connection-name">{{item.menuIndex}}</span>
-          <span class="connection-opt-icons">
+          <div class="connection-opt-icons">
             <i :title="$t('message.edit_connection')" class="el-icon-edit-outline" @click.stop.prevent="showEditConnection(item, item.menuIndex)"></i>
             <i :title="$t('message.del_connection')" class="el-icon-delete" @click.stop.prevent="deleteConnection(item)"></i>
-          </span>
+          </div>
+          <div slot="title" :title="item.menuIndex" class="connection-name">{{item.menuIndex}}</div>
         </template>
 
         <el-form class="connection-form" size="mini">
@@ -705,16 +705,16 @@ export default {
     padding-right: 6px;
   }
   .connection-menu .connection-name {
-    display: inline-block;
-    width: 125px;
+    margin-right: 65px;
     word-break:keep-all;
     white-space:nowrap;
     overflow:hidden;
     text-overflow:ellipsis;
   }
   .connection-menu .connection-opt-icons {
-    position: absolute;
-    right: 30px;
+    width: 30px;
+    float: right;
+    margin-right: 28px;
   }
   .connection-menu .db-select {
     width: 100%;
