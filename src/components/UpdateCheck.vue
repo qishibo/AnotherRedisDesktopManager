@@ -113,7 +113,7 @@ export default {
       ipcRenderer.on('update-downloaded', (event, arg) => {
         console.log('update-downloaded', arg);
 
-        // this.$notify.closeAll();
+        this.$notify.closeAll();
         this.resetDownloadProcess();
         this.$notify.success({
           title: this.$t('message.update_downloaded'),
