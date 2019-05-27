@@ -1,18 +1,10 @@
 <template>
   <el-container class="wrap-container">
-    <VueDraggableResizable
-      :w="220"
-      :draggable="false"
-      :minWidth="200"
-      :maxWidth="400"
-      :handles="['mr']"
-      :preventDeactivation="true"
-      className="aside-resize-container"
-      >
-      <el-aside width="100%" class="aside-connection" >
-        <Aside></Aside>
-      </el-aside>
-    </VueDraggableResizable>
+
+    <el-aside class="aside-connection" :style="{position: 'relative', width: sideWidth + 'px'}">
+      <Aside></Aside>
+      <div id="drag-resize-pointer"></div>
+    </el-aside>
 
     <el-container>
       <el-header class="main-header">
@@ -37,15 +29,51 @@ import Command from '@/components/Command';
 import Tabs from '@/components/Tabs';
 import ScrollToTop from '@/components/ScrollToTop';
 import UpdateCheck from '@/components/UpdateCheck';
-import VueDraggableResizable from 'vue-draggable-resizable';
 
 export default {
   name: 'App',
-  components: {Header, Aside, Command, Tabs, ScrollToTop, UpdateCheck, VueDraggableResizable},
+  data() {
+    return {
+      sideWidth: 250,
+    };
+  },
+  components: {Header, Aside, Command, Tabs, ScrollToTop, UpdateCheck},
+  methods: {
+    bindSideBarDrag() {
+      const that = this;
+      const aside = document.querySelector('.aside-connection');
+      const dragPointer = document.getElementById('drag-resize-pointer');
+
+      function mousemove(e)
+      {
+        const mouseX = e.x;
+
+        if ((mouseX > 200) && (mouseX < 400)) {
+          const fixWidth = aside.offsetWidth - aside.clientWidth + 3;
+          that.sideWidth = mouseX + fixWidth;
+        }
+      }
+
+      function mouseup(e)
+      {
+        document.documentElement.removeEventListener('mousemove', mousemove);
+        document.documentElement.removeEventListener('mouseup', mouseup);
+      }
+
+      dragPointer.addEventListener('mousedown', (e) => {
+        e.preventDefault();
+
+        document.documentElement.addEventListener('mousemove', mousemove);
+        document.documentElement.addEventListener('mouseup', mouseup);
+      });
+    },
+  },
   mounted() {
     setTimeout(() => {
       this.$bus.$emit('update-check');
     }, 2000);
+
+    this.bindSideBarDrag();
   },
 };
 
@@ -75,18 +103,15 @@ body {
   height: 100%;
 }
 
-.aside-resize-container {
-  position: relative !important;
-  height: 100% !important;
-}
-.aside-resize-container .handle-mr {
+#drag-resize-pointer {
   position: absolute;
-  right: -18px;
-  width: 10px;
+  right: 2px;
+  top: 0;
   height: 100%;
+  width: 10px;
   cursor: col-resize;
 }
-.handle-mr::after {
+#drag-resize-pointer::after {
   content: "";
   display: inline-block;
   width: 2px;

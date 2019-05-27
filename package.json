@@ -27,7 +27,6 @@
     "redis": "^2.8.0",
     "tunnel-ssh": "^4.1.4",
     "vue": "^2.5.2",
-    "vue-draggable-resizable": "^2.0.0-rc1",
     "vue-i18n": "^8.7.0",
     "vue-json-pretty": "^1.4.1"
   },
