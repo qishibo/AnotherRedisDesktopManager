@@ -5,14 +5,12 @@
 
         <!-- connection item -->
         <template slot="title">
-          <div class="connection-opt-icons">
-            <i :title="$t('message.edit_connection')" class="el-icon-edit-outline" @click.stop.prevent="showEditConnection(item, item.menuIndex)"></i>
-            <i :title="$t('message.del_connection')" class="el-icon-delete" @click.stop.prevent="deleteConnection(item)"></i>
-          </div>
-          <div slot="title" :title="item.menuIndex" class="connection-name">{{item.menuIndex}}</div>
+          <span slot="title" :title="item.menuIndex" class="connection-name">{{item.menuIndex}}</span>
+          <i :title="$t('message.edit_connection')" class="el-icon-edit-outline" @click.stop.prevent="showEditConnection(item, item.menuIndex)"></i>
+          <i :title="$t('message.del_connection')" class="el-icon-delete" @click.stop.prevent="deleteConnection(item)"></i>
         </template>
 
-        <el-form class="connection-form" size="mini">
+        <el-form :inline="true" class="connection-form" size="mini">
           <el-form-item>
             <el-row :gutter="6">
               <el-col :span="12">
@@ -702,19 +700,14 @@ export default {
   }
   .connection-menu {
     margin-top: 10px;
-    padding-right: 6px;
   }
   .connection-menu .connection-name {
-    margin-right: 65px;
+    display: inline-block;
+    width: 115px;
     word-break:keep-all;
     white-space:nowrap;
     overflow:hidden;
     text-overflow:ellipsis;
-  }
-  .connection-menu .connection-opt-icons {
-    width: 30px;
-    float: right;
-    margin-right: 28px;
   }
   .connection-menu .db-select {
     width: 100%;
@@ -751,10 +744,6 @@ export default {
     /*background: #ECF5FF;*/
   }
 
-  .connection-menu .connection-form {
-    /*padding-right: 8px;*/
-  }
-
   .connection-menu .search-item .search-icon {
     font-size: 128%;
     color: #a5a8ad;
@@ -777,7 +766,7 @@ export default {
     color: #3c5765;
     font-size: 82%;
     line-height: 1.6;
-    /*margin-right: 3px;*/
+    margin-right: 3px;
     padding-left: 6px;
   }
   .connection-menu .key-list .key-item:hover {
@@ -789,7 +778,6 @@ export default {
     background: #e7ebec;
     box-sizing: border-box;
     border-left: 2px solid #68acf3;
-    padding-left: 4px;
   }
 
   .pagenation {
