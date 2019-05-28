@@ -3,7 +3,9 @@
 
     <el-aside class="aside-connection" :style="{position: 'relative', width: sideWidth + 'px'}">
       <Aside></Aside>
-      <div id="drag-resize-pointer"></div>
+      <div id="drag-resize-container">
+        <div id="drag-resize-pointer"></div>
+      </div>
     </el-aside>
 
     <el-container>
@@ -49,7 +51,7 @@ export default {
         const mouseX = e.x;
 
         if ((mouseX > 200) && (mouseX < 400)) {
-          const fixWidth = aside.offsetWidth - aside.clientWidth + 3;
+          const fixWidth = aside.offsetWidth - aside.clientWidth + 1;
           that.sideWidth = mouseX + fixWidth;
         }
       }
@@ -103,10 +105,15 @@ body {
   height: 100%;
 }
 
-#drag-resize-pointer {
+#drag-resize-container {
   position: absolute;
-  right: 2px;
-  top: 0;
+  /*height: 100%;*/
+  width: 10px;
+  right: 0px;
+  top: 0px;
+}
+#drag-resize-pointer {
+  position: fixed;
   height: 100%;
   width: 10px;
   cursor: col-resize;
