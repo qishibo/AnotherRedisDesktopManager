@@ -55,7 +55,8 @@ export default {
 
         this.$notify.closeAll();
         this.$notify({
-          title: this.$t('message.update_available') + ', ' + this.$t('message.update_downloading'),
+          // title: this.$t('message.update_available') + ', ' + this.$t('message.update_downloading'),
+          title: `${this.$t('message.update_available')}: ${arg.version}, ${this.$t('message.update_downloading')}`,
           dangerouslyUseHTMLString: true,
           message: arg.releaseNotes.replace(/(\<a)/ig, '$1 target="blank"'),
           duration: 0
