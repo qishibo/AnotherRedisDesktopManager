@@ -210,7 +210,7 @@ export default {
   },
   components: {RightClickMenu},
   created() {
-    this.$bus.$on('refreshKeyList', () => {
+    this.$bus.$on('refreshKeyList', (key) => {
       const client = this.$util.get('client');
 
       if (!client) {
@@ -222,6 +222,7 @@ export default {
 
       // if in search mode, do not refresh list, because it may be slow.
       if (match !== '*') {
+        key && this.removeKeyFromKeyList(menuIndex, key);
         return;
       }
 
@@ -563,6 +564,17 @@ export default {
 
       this.$set(this.nextPageDisabled, menuIndex, true);
       this.$set(this.preButtonDisable, menuIndex, true);
+    },
+    removeKeyFromKeyList(menuIndex, key) {
+      if (!menuIndex || !key || !this.keyList[menuIndex]) {
+        return false;
+      }
+
+      const index = this.keyList[menuIndex].indexOf(key);
+
+      if (index > -1) {
+        this.keyList[menuIndex].splice(index, 1);
+      }
     },
     changeMatchMode(menuIndex) {
       this.resetDb(menuIndex);

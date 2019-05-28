@@ -79,7 +79,7 @@ export default {
             });
 
             this.$bus.$emit('removePreTab');
-            this.refreshKeyList();
+            this.refreshKeyList(this.redisKeyLast);
           } else {
             this.$message.error({
               message: `${this.redisKeyLast} ${this.$t('message.delete_failed')}`,
@@ -152,8 +152,8 @@ export default {
         }
       });
     },
-    refreshKeyList() {
-      this.$bus.$emit('refreshKeyList');
+    refreshKeyList(key) {
+      this.$bus.$emit('refreshKeyList', key);
     },
   },
   mounted() {
