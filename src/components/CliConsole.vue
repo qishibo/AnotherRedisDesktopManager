@@ -5,7 +5,7 @@
         <el-form-item>
           <el-input id="cli-content" type="textarea" v-model="cliContent.content" rows='25' :disabled="true" class="cli-content-textarea"></el-input>
 
-<!--           <el-autocomplete
+          <el-autocomplete
             class="input-suggestion"
             autocomplete="off"
             v-model="cliContent.params"
@@ -13,12 +13,15 @@
             :placeholder="$t('message.enter_to_exec')"
             :select-when-unmatched="true"
             :trigger-on-focus="false"
+            popper-class="cli-console-suggestion"
             @keyup.enter.native="consoleExec"
             ref="cliParams"
+            @keyup.up.native="searchUp"
+            @keyup.down.native="searchDown"
           >
-          </el-autocomplete> -->
+          </el-autocomplete>
 
-          <el-input
+ <!--          <el-input
             class="input-suggestion"
             autocomplete="off"
             v-model="cliContent.params"
@@ -28,7 +31,7 @@
             @keyup.up.native="searchUp"
             @keyup.down.native="searchDown"
           >
-          </el-input>
+          </el-input> -->
         </el-form-item>
 
       </el-form>
@@ -59,18 +62,18 @@ export default {
 
   methods: {
     inputSuggestion(input, cb) {
-      const suggestions = [];
-
       if (!this.cliContent.params) {
-        cb(suggestions);
+        cb([]);
         return;
       }
 
-      for (const key of this.inputSuggestionItems) {
-        if (key.indexOf(input) !== -1) {
-          suggestions.push({ value: key });
-        }
-      }
+      const items = this.inputSuggestionItems.filter(function (item) {
+        return item.indexOf(input) !== -1;
+      });
+
+      const suggestions = [...new Set(items)].map(function (item) {
+        return {value: item};
+      });
 
       cb(suggestions);
     },
@@ -154,6 +157,10 @@ export default {
       this.historyIndex = items.length;
     },
     searchUp() {
+      if (this.suggesttionShowing()) {
+        return;
+      }
+
       (--this.historyIndex < 0) && (this.historyIndex = 0);
 
       if (!this.inputSuggestionItems[this.historyIndex]) {
@@ -164,6 +171,10 @@ export default {
       this.cliContent.params = this.inputSuggestionItems[this.historyIndex];
     },
     searchDown() {
+      if (this.suggesttionShowing()) {
+        return;
+      }
+
       if (++this.historyIndex > this.inputSuggestionItems.length) {
         this.historyIndex = this.inputSuggestionItems.length;
       }
@@ -174,6 +185,15 @@ export default {
       }
 
       this.cliContent.params = this.inputSuggestionItems[this.historyIndex];
+    },
+    suggesttionShowing() {
+      const ele = document.querySelector('.cli-console-suggestion');
+
+      if (ele && ele.style.display != 'none') {
+        return true;
+      }
+
+      return false;
     },
     scrollToBottom() {
       const textarea = document.getElementById('cli-content');
