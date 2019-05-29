@@ -59,7 +59,7 @@ const en = {
     open: 'Open',
     open_new_tab: 'Open In New Tab',
     exact_search: 'Exact Search',
-    enter_to_exec: 'Press Enter To Execute Redis Commands',
+    enter_to_exec: 'Press Enter To Exec Commands, Up and Down To Switch History',
     pre_version: 'Version',
     manual_update: 'Manual Download',
     retry_too_many_times: 'Too Many Attempts To Reconnect. Please Check The Server Status',

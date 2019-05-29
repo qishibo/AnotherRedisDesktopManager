@@ -5,7 +5,7 @@
         <el-form-item>
           <el-input id="cli-content" type="textarea" v-model="cliContent.content" rows='25' :disabled="true" class="cli-content-textarea"></el-input>
 
-          <el-autocomplete
+<!--           <el-autocomplete
             class="input-suggestion"
             autocomplete="off"
             v-model="cliContent.params"
@@ -16,9 +16,19 @@
             @keyup.enter.native="consoleExec"
             ref="cliParams"
           >
-            <!-- @keyup.up.native="searchUp" -->
-            <!-- @keyup.down.native="searchDown" -->
-          </el-autocomplete>
+          </el-autocomplete> -->
+
+          <el-input
+            class="input-suggestion"
+            autocomplete="off"
+            v-model="cliContent.params"
+            :placeholder="$t('message.enter_to_exec')"
+            @keyup.enter.native="consoleExec"
+            ref="cliParams"
+            @keyup.up.native="searchUp"
+            @keyup.down.native="searchDown"
+          >
+          </el-input>
         </el-form-item>
 
       </el-form>
@@ -39,7 +49,8 @@ export default {
   data() {
     return {
       cliContent: { content: '', params: '' },
-      inputSuggestionItems: new Set(),
+      // inputSuggestionItems: new Set(),
+      inputSuggestionItems: [],
       historyIndex: 0,
     };
   },
@@ -84,7 +95,9 @@ export default {
 
       this.cliContent.content += `> ${params}\n`;
       this.cliContent.params = '';
-      this.historyIndex = 0;
+
+      // append to history command
+      this.appendToHistory(params);
 
       if (!promise) {
         this.cliContent.content += '(error) ERR unknown command\n';
@@ -114,8 +127,6 @@ export default {
         }
 
         this.cliContent.content += append;
-        this.inputSuggestionItems.delete(params);
-        this.inputSuggestionItems.add(params);
 
         this.$nextTick(() => {
           this.scrollToBottom();
@@ -128,45 +139,41 @@ export default {
         });
       });
     },
-    searchUp() {
-      if (--this.historyIndex < (-this.inputSuggestionItems.size - 1)) {
-        this.historyIndex = -this.inputSuggestionItems.size - 1;
+    appendToHistory(params) {
+      if (!params || !params.length) {
+        return;
       }
 
-      const stopIndex = this.inputSuggestionItems.size + this.historyIndex;
+      const items = this.inputSuggestionItems;
 
-      if (stopIndex < 0) {
+      if (items[items.length - 1] !== params) {
+        items.push(params);
+      }
+
+      this.inputSuggestionItems = items;
+      this.historyIndex = items.length;
+    },
+    searchUp() {
+      (--this.historyIndex < 0) && (this.historyIndex = 0);
+
+      if (!this.inputSuggestionItems[this.historyIndex]) {
         this.cliContent.params = '';
         return;
       }
 
-      let counter = 0;
-
-      for (const i of this.inputSuggestionItems) {
-        if (counter++ == stopIndex) {
-          this.cliContent.params = i;
-        }
-      }
+      this.cliContent.params = this.inputSuggestionItems[this.historyIndex];
     },
     searchDown() {
-      if (++this.historyIndex > 0) {
-        this.historyIndex = 0;
+      if (++this.historyIndex > this.inputSuggestionItems.length) {
+        this.historyIndex = this.inputSuggestionItems.length;
       }
 
-      const stopIndex = this.inputSuggestionItems.size + this.historyIndex;
-
-      if (stopIndex >= this.inputSuggestionItems.size) {
+      if (!this.inputSuggestionItems[this.historyIndex]) {
         this.cliContent.params = '';
         return;
       }
 
-      let counter = 0;
-
-      for (const i of this.inputSuggestionItems) {
-        if (counter++ == stopIndex) {
-          this.cliContent.params = i;
-        }
-      }
+      this.cliContent.params = this.inputSuggestionItems[this.historyIndex];
     },
     scrollToBottom() {
       const textarea = document.getElementById('cli-content');
