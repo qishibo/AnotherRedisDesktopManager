@@ -61,8 +61,14 @@ export default {
       }
 
       client.getAsync(key).then((reply) => {
-        console.log(reply);
-        this.content = reply;
+        // character not visible
+        if (!this.$util.isVisible(reply)) {
+          this.content = this.$util.toUTF8(reply);
+        }
+
+        else {
+          this.content = reply;
+        }
       });
     },
   },

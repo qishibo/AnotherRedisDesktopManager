@@ -6,4 +6,16 @@ export default {
   set(name, value) {
     this.data[name] = value;
   },
+  isVisible(string) {
+    let ele = document.createElement('p');
+    ele.innerHTML = string;
+
+    const equal = (ele.innerHTML === string);
+    ele = null;
+
+    return equal;
+  },
+  toUTF8(string) {
+    return encodeURI(string).replace(/%/g, '\\x').toLowerCase();
+  },
 };
