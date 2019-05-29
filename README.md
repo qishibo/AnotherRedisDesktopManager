@@ -21,17 +21,17 @@ Download latest `dmg` package from [release](https://github.com/qishibo/AnotherR
 
 > If **Mac** warning `Another Desktop Manager can't be opened because it is from an unidentified developer`. Open `Settings->Security` and click **`Open Anyway`**
 
-![can't be opened because it is from an unidentified developer](https://ws1.sinaimg.cn/large/71405cably1g1o8ln36ksj20bp065jrv.jpg)
+![can't be opened because it is from an unidentified developer](https://sinaimg.qii404.me/large/71405cably1g1o8ln36ksj20bp065jrv.jpg)
 
-![Settings->Security Open Anyway](https://ws1.sinaimg.cn/large/71405cably1g1o8lmzh4zj20ii0f1wfx.jpg)
+![Settings->Security Open Anyway](https://sinaimg.qii404.me/large/71405cably1g1o8lmzh4zj20ii0f1wfx.jpg)
 
 ## Enjoy!
 
-![redis status](https://ws1.sinaimg.cn/large/71405cably1g1pgxyaurdj20ux0lrwgy.jpg)
+![redis status](https://sinaimg.qii404.me/large/71405cably1g1pgxyaurdj20ux0lrwgy.jpg)
 
-![redis key detail](https://ws1.sinaimg.cn/large/71405cably1g1pgxya0t3j20uy0lpdhp.jpg)
+![redis key detail](https://sinaimg.qii404.me/large/71405cably1g1pgxya0t3j20uy0lpdhp.jpg)
 
-![redis console](https://ws1.sinaimg.cn/large/71405cably1g2j83iw587j20v00lq0u7.jpg)
+![redis console](https://sinaimg.qii404.me/large/71405cably1g2j83iw587j20v00lq0u7.jpg)
 
 
 ## Feature Log
