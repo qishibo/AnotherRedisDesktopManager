@@ -722,6 +722,8 @@ export default {
     white-space:nowrap;
     overflow:hidden;
     text-overflow:ellipsis;
+    font-weight: bold;
+    font-size: 103%;
   }
   .connection-menu .connection-opt-icons {
     width: 30px;

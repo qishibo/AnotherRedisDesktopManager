@@ -20,7 +20,7 @@
               <span>{{ $t('message.server') }}</span>
             </div>
             <p><el-tag type="info" size="big">{{ $t('message.redis_version') }}: <el-tag type="success">{{this.connectionStatus.redis_version}}</el-tag></el-tag></p>
-            <p><el-tag type="info" size="big">OS: <el-tag type="success">{{this.connectionStatus.os}}</el-tag></el-tag></p>
+            <p><el-tag type="info" size="big">OS: <el-tag :title="connectionStatus.os" type="success">{{this.connectionStatus.os}}</el-tag></el-tag></p>
             <p><el-tag type="info" size="big">{{ $t('message.process_id') }}: <el-tag type="success">{{this.connectionStatus.process_id}}</el-tag></el-tag></p>
           </el-card>
         </el-col>
