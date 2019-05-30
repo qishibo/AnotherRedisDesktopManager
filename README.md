@@ -5,19 +5,20 @@
 [![MIT](https://img.shields.io/badge/license-MIT-000000.svg)](LICENSE)
 [![Release Page](https://img.shields.io/badge/Download-Release-blue.svg)](https://github.com/qishibo/AnotherRedisDesktopManager/releases)
 [![Version](https://img.shields.io/github/release/qishibo/AnotherRedisDeskTopManager.svg?label=Release)](https://github.com/qishibo/AnotherRedisDesktopManager/releases)
-[![shiboooo](https://img.shields.io/badge/Weibo-@%E9%BD%90%E5%A3%AB%E5%8D%9A-D64943.svg)](https://weibo.com/shiboooo/)
+[![shiboooo](https://img.shields.io/badge/Weibo-@%E9%BD%90%E5%A3%AB%E5%8D%9A-D64943.svg)](https://weibo.com/shiboooo?is_hot=1)
+
 
 ## Windows
 
-Download latest `exe` package from [release](https://github.com/qishibo/AnotherRedisDesktopManager/releases) page, double click to install.
+Download latest `exe` package from [release](https://github.com/qishibo/AnotherRedisDesktopManager/releases) [or [gitee](https://gitee.com/qishibo/AnotherRedisDesktopManager/releases) in China], double click to install.
 
 ## Linux
 
-Download latest `AppImage` package from [release](https://github.com/qishibo/AnotherRedisDesktopManager/releases) page, double click to run. Or `./xxx.AppImage`.
+Download latest `AppImage` package from [release](https://github.com/qishibo/AnotherRedisDesktopManager/releases) [or [gitee](https://gitee.com/qishibo/AnotherRedisDesktopManager/releases) in China], double click to run. Or `./xxx.AppImage`.
 
 ## Mac
 
-Download latest `dmg` package from [release](https://github.com/qishibo/AnotherRedisDesktopManager/releases) page, double click to install.
+Download latest `dmg` package from [release](https://github.com/qishibo/AnotherRedisDesktopManager/releases) [or [gitee](https://gitee.com/qishibo/AnotherRedisDesktopManager/releases) in China], double click to install.
 
 > If **Mac** warning `Another Desktop Manager can't be opened because it is from an unidentified developer`. Open `Settings->Security` and click **`Open Anyway`**
 
@@ -27,15 +28,16 @@ Download latest `dmg` package from [release](https://github.com/qishibo/AnotherR
 
 ## Enjoy!
 
-![redis status](https://sinaimg.qii404.me/large/71405cably1g1pgxyaurdj20ux0lrwgy.jpg)
+![redis status](https://sinaimg.qii404.me/large/71405cably1g3j24mfcorj20uy0lmq5v.jpg)
 
-![redis key detail](https://sinaimg.qii404.me/large/71405cably1g1pgxya0t3j20uy0lpdhp.jpg)
+![redis key hash](https://sinaimg.qii404.me/large/71405cably1g3j24mfao9j20uw0lntbd.jpg)
 
-![redis console](https://sinaimg.qii404.me/large/71405cably1g2j83iw587j20v00lq0u7.jpg)
+![redis console](https://sinaimg.qii404.me/large/71405cably1g3j24mf3qjj20ux0lmdha.jpg)
 
 
 ## Feature Log
 
+- 2019-05-28: Key List Resizable
 - 2019-05-09: Search Support In Hash List Set Zset
 - 2019-04-26: Auto Updater
 - 2019-04-09: SSH Tunnel Connection Support
@@ -100,5 +102,5 @@ npm run electron
 
 ## Support
 
-[qii404.me](https://qii404.me/)  [@shiboooo](https://weibo.com/shiboooo/)
+[qii404.me](https://qii404.me/)  [@shiboooo](https://weibo.com/shiboooo?is_hot=1)
 
