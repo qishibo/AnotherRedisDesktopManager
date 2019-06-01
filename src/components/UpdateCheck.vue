@@ -77,6 +77,11 @@ export default {
       ipcRenderer.on('update-error', (event, arg) => {
         console.log('update-error', arg);
 
+        // due to net problems
+        if (!arg.code) {
+          return;
+        }
+
         // this.$notify.closeAll();
         this.resetDownloadProcess();
         const message = (arg.code === 'ERR_UPDATER_ZIP_FILE_NOT_FOUND') ?
