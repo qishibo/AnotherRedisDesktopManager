@@ -591,7 +591,14 @@ export default {
       this.resetDb(menuIndex);
       this.setGlobalConnection(menuIndex);
 
-      this.refreshKeyList();
+      let promise = this.refreshKeyList();
+
+      promise.then(() => {
+        this.$message.success({
+          message: this.$t('message.refresh_success'),
+          duration: 1000,
+        });
+      });
     },
     getScanCursor(menuIndex) {
       if (this.scanCursorList[menuIndex] === undefined) {
