@@ -6,6 +6,7 @@
         <!-- connection item -->
         <template slot="title">
           <div class="connection-opt-icons">
+            <i :title="$t('message.refresh_connection')" class="el-icon-refresh" @click.stop.prevent="refreshConnection(item.menuIndex)"></i>
             <i :title="$t('message.edit_connection')" class="el-icon-edit-outline" @click.stop.prevent="showEditConnection(item, item.menuIndex)"></i>
             <i :title="$t('message.del_connection')" class="el-icon-delete" @click.stop.prevent="deleteConnection(item)"></i>
           </div>
@@ -340,6 +341,16 @@ export default {
       this.$util.set('client', client);
 
       return client;
+    },
+    refreshConnection(menuIndex) {
+      let client = this.connectionPool[menuIndex];
+
+      if (!client) {
+        return;
+      }
+
+      this.setGlobalConnection(menuIndex);
+      this.changeMatchMode(menuIndex);
     },
     deleteConnection(connection) {
       console.log(connection);
@@ -717,7 +728,8 @@ export default {
     padding-right: 6px;
   }
   .connection-menu .connection-name {
-    margin-right: 65px;
+    /*margin-right: 65px;*/
+    padding-right: 6px;
     word-break:keep-all;
     white-space:nowrap;
     overflow:hidden;
@@ -726,7 +738,7 @@ export default {
     font-size: 103%;
   }
   .connection-menu .connection-opt-icons {
-    width: 30px;
+    /*width: 30px;*/
     float: right;
     margin-right: 28px;
   }

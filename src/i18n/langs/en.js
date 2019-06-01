@@ -1,6 +1,7 @@
 const en = {
   message: {
     new_connection: 'New Connection',
+    refresh_connection: 'Refresh',
     edit_connection: 'Edit Connection',
     del_connection: 'Delete Connection',
     add_new_line: 'Add New Line',
