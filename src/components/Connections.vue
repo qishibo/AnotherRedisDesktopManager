@@ -6,6 +6,7 @@
         <!-- connection item -->
         <template slot="title">
           <div class="connection-opt-icons">
+            <i :title="$t('message.refresh_connection')" class="el-icon-refresh" @click.stop.prevent="refreshConnection(item.menuIndex)"></i>
             <i :title="$t('message.edit_connection')" class="el-icon-edit-outline" @click.stop.prevent="showEditConnection(item, item.menuIndex)"></i>
             <i :title="$t('message.del_connection')" class="el-icon-delete" @click.stop.prevent="deleteConnection(item)"></i>
           </div>
@@ -341,6 +342,16 @@ export default {
 
       return client;
     },
+    refreshConnection(menuIndex) {
+      let client = this.connectionPool[menuIndex];
+
+      if (!client) {
+        return;
+      }
+
+      this.setGlobalConnection(menuIndex);
+      this.changeMatchMode(menuIndex);
+    },
     deleteConnection(connection) {
       console.log(connection);
 
@@ -580,7 +591,14 @@ export default {
       this.resetDb(menuIndex);
       this.setGlobalConnection(menuIndex);
 
-      this.refreshKeyList();
+      let promise = this.refreshKeyList();
+
+      promise.then(() => {
+        this.$message.success({
+          message: this.$t('message.refresh_success'),
+          duration: 1000,
+        });
+      });
     },
     getScanCursor(menuIndex) {
       if (this.scanCursorList[menuIndex] === undefined) {
@@ -717,14 +735,17 @@ export default {
     padding-right: 6px;
   }
   .connection-menu .connection-name {
-    margin-right: 65px;
+    /*margin-right: 65px;*/
+    padding-right: 6px;
     word-break:keep-all;
     white-space:nowrap;
     overflow:hidden;
     text-overflow:ellipsis;
+    font-weight: bold;
+    font-size: 103%;
   }
   .connection-menu .connection-opt-icons {
-    width: 30px;
+    /*width: 30px;*/
     float: right;
     margin-right: 28px;
   }

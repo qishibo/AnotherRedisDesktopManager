@@ -18,7 +18,6 @@
     "pack:mac": "node_modules/.bin/electron-builder --project=dist -m -p never"
   },
   "dependencies": {
-    "axios": "^0.18.0",
     "bluebird": "^3.5.3",
     "element-ui": "^2.4.11",
     "font-awesome": "^4.7.0",

@@ -69,6 +69,18 @@ export default {
         document.documentElement.addEventListener('mouseup', mouseup);
       });
     },
+    openHrefInBrowser() {
+      const shell = require('electron').shell;
+
+      document.addEventListener('click', function (event) {
+        const ele = event.target;
+
+        if (ele && (ele.nodeName.toLowerCase() === 'a') && ele.href.startsWith('http')) {
+          event.preventDefault();
+          shell.openExternal(ele.href);
+        }
+      });
+    },
   },
   mounted() {
     setTimeout(() => {
@@ -76,6 +88,7 @@ export default {
     }, 2000);
 
     this.bindSideBarDrag();
+    this.openHrefInBrowser();
   },
 };
 

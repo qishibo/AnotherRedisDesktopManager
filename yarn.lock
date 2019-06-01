@@ -321,9 +321,9 @@ asn1.js@^4.0.0:
     inherits "^2.0.1"
     minimalistic-assert "^1.0.0"
 
-asn1@~0.2.3:
+asn1@~0.2.0, asn1@~0.2.3:
   version "0.2.4"
-  resolved "http://registry.npm.taobao.org/asn1/download/asn1-0.2.4.tgz#8d2475dfab553bb33e77b54e59e880bb8ce23136"
+  resolved "https://registry.npm.taobao.org/asn1/download/asn1-0.2.4.tgz#8d2475dfab553bb33e77b54e59e880bb8ce23136"
   integrity sha1-jSR136tVO7M+d7VOWeiAu4ziMTY=
   dependencies:
     safer-buffer "~2.1.0"
@@ -427,14 +427,6 @@ aws4@^1.8.0:
   version "1.8.0"
   resolved "http://registry.npm.taobao.org/aws4/download/aws4-1.8.0.tgz#f0e003d9ca9e7f59c7a508945d7b2ef9a04a542f"
   integrity sha1-8OAD2cqef1nHpQiUXXsu+aBKVC8=
-
-axios@^0.18.0:
-  version "0.18.0"
-  resolved "http://registry.npm.taobao.org/axios/download/axios-0.18.0.tgz?cache=0&other_urls=http%3A%2F%2Fregistry.npm.taobao.org%2Faxios%2Fdownload%2Faxios-0.18.0.tgz#32d53e4851efdc0a11993b6cd000789d70c05102"
-  integrity sha1-MtU+SFHv3AoRmTts0AB4nXDAUQI=
-  dependencies:
-    follow-redirects "^1.3.0"
-    is-buffer "^1.1.5"
 
 babel-code-frame@^6.26.0:
   version "6.26.0"
@@ -3328,7 +3320,7 @@ flush-write-stream@^1.0.0:
     inherits "^2.0.3"
     readable-stream "^2.3.6"
 
-follow-redirects@^1.0.0, follow-redirects@^1.3.0:
+follow-redirects@^1.0.0:
   version "1.7.0"
   resolved "http://registry.npm.taobao.org/follow-redirects/download/follow-redirects-1.7.0.tgz#489ebc198dc0e7f64167bd23b03c4c19b5784c76"
   integrity sha1-SJ68GY3A5/ZBZ70jsDxMGbV4THY=
@@ -4696,6 +4688,11 @@ lodash.camelcase@^4.3.0:
   version "4.3.0"
   resolved "http://registry.npm.taobao.org/lodash.camelcase/download/lodash.camelcase-4.3.0.tgz#b28aa6288a2b9fc651035c7711f65ab6190331a6"
   integrity sha1-soqmKIorn8ZRA1x3EfZathkDMaY=
+
+lodash.defaults@^4.1.0:
+  version "4.2.0"
+  resolved "https://registry.npm.taobao.org/lodash.defaults/download/lodash.defaults-4.2.0.tgz#d09178716ffea4dde9e5fb7b37f6f0802274580c"
+  integrity sha1-0JF4cW/+pN3p5ft7N/bwgCJ0WAw=
 
 lodash.memoize@^4.1.2:
   version "4.1.2"
@@ -7165,6 +7162,22 @@ sprintf-js@~1.0.2:
   resolved "http://registry.npm.taobao.org/sprintf-js/download/sprintf-js-1.0.3.tgz#04e6926f662895354f3dd015203633b857297e2c"
   integrity sha1-BOaSb2YolTVPPdAVIDYzuFcpfiw=
 
+ssh2-streams@~0.1.15:
+  version "0.1.20"
+  resolved "https://registry.npm.taobao.org/ssh2-streams/download/ssh2-streams-0.1.20.tgz#51118d154555df5469ee1f67e0cf1e7e8a2c0e3a"
+  integrity sha1-URGNFUVV31Rp7h9n4M8efoosDjo=
+  dependencies:
+    asn1 "~0.2.0"
+    semver "^5.1.0"
+    streamsearch "~0.1.2"
+
+ssh2@0.5.4:
+  version "0.5.4"
+  resolved "https://registry.npm.taobao.org/ssh2/download/ssh2-0.5.4.tgz#1bf6b6b28c96eaef267f4d6c46a5a2517a599e27"
+  integrity sha1-G/a2soyW6u8mf01sRqWiUXpZnic=
+  dependencies:
+    ssh2-streams "~0.1.15"
+
 sshpk@^1.7.0:
   version "1.16.1"
   resolved "http://registry.npm.taobao.org/sshpk/download/sshpk-1.16.1.tgz#fb661c0bef29b39db40769ee39fa70093d6f6877"
@@ -7246,6 +7259,11 @@ stream-shift@^1.0.0:
   version "1.0.0"
   resolved "http://registry.npm.taobao.org/stream-shift/download/stream-shift-1.0.0.tgz#d5c752825e5367e786f78e18e445ea223a155952"
   integrity sha1-1cdSgl5TZ+eG944Y5EXqIjoVWVI=
+
+streamsearch@~0.1.2:
+  version "0.1.2"
+  resolved "https://registry.npm.taobao.org/streamsearch/download/streamsearch-0.1.2.tgz#808b9d0e56fc273d809ba57338e929919a1a9f1a"
+  integrity sha1-gIudDlb8Jz2Am6VzOOkpkZoanxo=
 
 strict-uri-encode@^1.0.0:
   version "1.1.0"
@@ -7601,6 +7619,15 @@ tunnel-agent@^0.6.0:
   integrity sha1-J6XeoGs2sEoKmWZ3SykIaPD8QP0=
   dependencies:
     safe-buffer "^5.0.1"
+
+tunnel-ssh@^4.1.4:
+  version "4.1.4"
+  resolved "https://registry.npm.taobao.org/tunnel-ssh/download/tunnel-ssh-4.1.4.tgz#b301f7733c73dcea1616466b9c87b607f4958b45"
+  integrity sha1-swH3czxz3OoWFkZrnIe2B/SVi0U=
+  dependencies:
+    debug "2.6.9"
+    lodash.defaults "^4.1.0"
+    ssh2 "0.5.4"
 
 tweetnacl@^0.14.3, tweetnacl@~0.14.0:
   version "0.14.5"

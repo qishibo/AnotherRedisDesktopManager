@@ -1,6 +1,7 @@
 const cn = {
   message: {
     new_connection: '新建连接',
+    refresh_connection: '刷新',
     edit_connection: '编辑连接',
     del_connection: '删除连接',
     add_new_line: '添加新行',
@@ -26,6 +27,7 @@ const cn = {
     add_success: '添加成功',
     add_failed: '添加失败',
     value_exists: '值已存在',
+    refresh_success: '刷新成功',
     click_enter_to_rename: '点击或者按Enter键来重命名',
     click_enter_to_ttl: '点击或者按Enter键来修改过期时间',
     confirm_to_delete_key: '确认删除 {key} ?',
@@ -59,7 +61,7 @@ const cn = {
     open: '打开',
     open_new_tab: '新窗口打开',
     exact_search: '精确搜索',
-    enter_to_exec: '输入Redis命令后，按Enter键执行',
+    enter_to_exec: '输入Redis命令后，按Enter键执行，上下键切换历史',
     pre_version: '当前版本',
     manual_update: '手动下载',
     retry_too_many_times: '尝试重连次数过多，请检查Server状态',
