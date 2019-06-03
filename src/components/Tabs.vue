@@ -8,7 +8,7 @@
       :label="item.title"
       :name="item.name"
     >
-      <i slot="label" :class="(item.componentName === 'Status') ? 'el-icon-info' : 'fa fa-key'"> {{ item.title }}</i>
+      <i slot="label" :title="item.name" :class="(item.componentName === 'Status') ? 'el-icon-info' : 'fa fa-key'"> {{ item.title }}</i>
       <Status v-if="item.componentName === 'Status'"></Status>
       <KeyDetail v-else :redisKey="item.redisKey" :keyType="item.keyType"></KeyDetail>
     </el-tab-pane>
@@ -106,9 +106,11 @@ export default {
     newKeyTab(key, type, newTab = false) {
       console.log(key, type, newTab);
 
+      const cutString = this.$util.cutString;
+
       const client      = this.$util.get('client');
-      const newShowName = `${key} | ${client.options.menu_index} | DB${client.selected_db ? client.selected_db : 0}`;
-      const newTabName  = `${key}|${client.options.menu_index}|DB${client.selected_db ? client.selected_db : 0}`;
+      const newShowName = `${cutString(key)} | ${cutString(client.options.menu_index)} | DB${client.selected_db ? client.selected_db : 0}`;
+      const newTabName  = `${key} | ${client.options.menu_index} | DB${client.selected_db ? client.selected_db : 0}`;
 
       const newTabItem = {
         name: newTabName, title: newShowName, redisKey: key, keyType: type, keepTab: newTab

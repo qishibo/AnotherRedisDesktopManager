@@ -18,4 +18,11 @@ export default {
   toUTF8(string) {
     return encodeURI(string).replace(/%/g, '\\x').toLowerCase();
   },
+  cutString(string, maxLength = 20) {
+    if (string.length <= maxLength) {
+      return string;
+    }
+
+    return string.substr(0, maxLength) + '...';
+  },
 };
