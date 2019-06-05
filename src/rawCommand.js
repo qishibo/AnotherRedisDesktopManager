@@ -7,10 +7,12 @@ export default {
       return;
     }
 
-    params = params.trim().replace(/\s+/g, ' ');
-    params = params.split(' ');
-
+    params = params.trim().match(/(?:[^\s"]+|"[^"]*")+/g);
     const operation = params.shift();
+
+    params = params.map((val) => {
+      return val.replace(/^"|"$/g, '');
+    });
 
     console.log(operation, params);
 
