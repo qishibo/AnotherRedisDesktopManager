@@ -7,6 +7,8 @@ bluebird.promisifyAll(redis);
 export default {
   createConnection(host, port, auth, menuIndex = null) {
     const options = {
+      connect_timeout: 2000,
+      // max_attempts: 3,
       retry_strategy: (options) => {return this.retryStragety(options, {host: host, port: port})},
       no_ready_check: true,
       menu_index: menuIndex,
@@ -65,7 +67,7 @@ export default {
     console.log('retrying...', options, connection);
     const maxRetryTimes = 3;
 
-    if (options.attempt > maxRetryTimes) {
+    if (options.attempt >= maxRetryTimes) {
       alert(`${connection.host}:${connection.port}\nToo Many Attempts To Reconnect. Please Check The Server Status!`);
       return false;
     }
