@@ -733,6 +733,7 @@ export default {
   .connection-menu {
     margin-top: 10px;
     padding-right: 6px;
+    border-right: 0;
   }
   .connection-menu .connection-name {
     /*margin-right: 65px;*/
