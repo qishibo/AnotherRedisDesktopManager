@@ -1,3 +1,5 @@
+const splitargs = require('splitargs');
+
 export default {
   exec(vue, params) {
     const client = vue.$util.get('client');
@@ -7,12 +9,8 @@ export default {
       return;
     }
 
-    params = params.trim().match(/(?:[^\s"]+|"[^"]*")+/g);
+    params = splitargs(params);
     const operation = params.shift();
-
-    params = params.map((val) => {
-      return val.replace(/^"|"$/g, '');
-    });
 
     console.log(operation, params);
 
