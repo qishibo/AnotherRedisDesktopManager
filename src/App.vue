@@ -124,6 +124,10 @@ body {
   height: 100%;
 }
 
+.el-message-box .el-message-box__message {
+  word-break: break-all;
+}
+
 #drag-resize-container {
   position: absolute;
   /*height: 100%;*/

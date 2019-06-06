@@ -738,10 +738,10 @@ export default {
   .connection-menu .connection-name {
     /*margin-right: 65px;*/
     padding-right: 6px;
-    word-break:keep-all;
-    white-space:nowrap;
-    overflow:hidden;
-    text-overflow:ellipsis;
+    word-break: keep-all;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
     font-weight: bold;
     font-size: 103%;
   }
