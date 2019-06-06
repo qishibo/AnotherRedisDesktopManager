@@ -6,9 +6,9 @@
         <!-- connection item -->
         <template slot="title">
           <div class="connection-opt-icons">
-            <i :title="$t('message.refresh_connection')" class="el-icon-refresh" @click.stop.prevent="refreshConnection(item.menuIndex)"></i>
-            <i :title="$t('message.edit_connection')" class="el-icon-edit-outline" @click.stop.prevent="showEditConnection(item, item.menuIndex)"></i>
-            <i :title="$t('message.del_connection')" class="el-icon-delete" @click.stop.prevent="deleteConnection(item)"></i>
+            <i :title="$t('message.refresh_connection')" class="connection-right-icon el-icon-refresh" @click.stop.prevent="refreshConnection(item.menuIndex)"></i>
+            <i :title="$t('message.edit_connection')" class="connection-right-icon el-icon-edit-outline" @click.stop.prevent="showEditConnection(item, item.menuIndex)"></i>
+            <i :title="$t('message.del_connection')" class="connection-right-icon el-icon-delete" @click.stop.prevent="deleteConnection(item)"></i>
           </div>
           <div slot="title" :title="item.menuIndex" class="connection-name">{{item.menuIndex}}</div>
         </template>
@@ -749,6 +749,19 @@ export default {
     /*width: 30px;*/
     float: right;
     margin-right: 28px;
+  }
+  .connection-menu .connection-right-icon {
+    display: inline-block;
+    font-size: 14px;
+    /*font-weight: bold;*/
+    padding: 3px;
+    margin-right: -4px;
+    transition: background 0.2s;
+  }
+  .connection-menu .connection-right-icon:hover {
+    /*color: #85878a;*/
+    background: #dcdee0;
+    border-radius: 3px;
   }
   .connection-menu .db-select {
     width: 100%;
