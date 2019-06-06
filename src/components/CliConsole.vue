@@ -94,13 +94,24 @@ export default {
     },
     consoleExec() {
       const { params } = this.cliContent;
-      const promise = rawCommand.exec(this, params);
 
-      this.cliContent.content += `> ${params}\n`;
       this.cliContent.params = '';
+      this.cliContent.content += `> ${params}\n`;
 
       // append to history command
       this.appendToHistory(params);
+
+      if (params == 'exit' || params == 'quit') {
+        this.cliDialog.visible = false;
+        return;
+      }
+
+      if (params == 'clear') {
+        this.cliContent.content = '';
+        return;
+      }
+
+      const promise = rawCommand.exec(this, params);
 
       if (!promise) {
         this.cliContent.content += '(error) ERR unknown command\n';
@@ -113,23 +124,7 @@ export default {
       }
 
       promise.then((reply) => {
-        let append = '';
-
-        if (reply === null) {
-          append = `${null}\n`;
-        }
-        else if (typeof reply === 'object') {
-          const isArray = !isNaN(reply.length);
-
-          for (const i in reply) {
-            append += `${(isArray ? '' : (`${i}\n`)) + reply[i]}\n`;
-          }
-        }
-        else {
-          append = `${reply}\n`;
-        }
-
-        this.cliContent.content += append;
+        this.cliContent.content += this.resolveResult(reply);
 
         this.$nextTick(() => {
           this.scrollToBottom();
@@ -155,6 +150,25 @@ export default {
 
       this.inputSuggestionItems = items;
       this.historyIndex = items.length;
+    },
+    resolveResult(result) {
+      let append = '';
+
+      if (result === null) {
+        append = `${null}\n`;
+      }
+      else if (typeof result === 'object') {
+        const isArray = !isNaN(result.length);
+
+        for (const i in result) {
+          append += `${(isArray ? '' : (`${i}\n`)) + result[i]}\n`;
+        }
+      }
+      else {
+        append = `${result}\n`;
+      }
+
+      return append;
     },
     searchUp() {
       if (this.suggesttionShowing()) {
