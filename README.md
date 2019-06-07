@@ -2,10 +2,12 @@
 
 > A faster, better and more stable redis desktop manager, compatible with Linux, windows, mac. What's more, it won't crash when loading a large number of keys.
 
-[![MIT](https://img.shields.io/badge/license-MIT-000000.svg)](LICENSE)
+ [![MIT](https://img.shields.io/badge/license-MIT-000000.svg)](LICENSE)
 [![Release Page](https://img.shields.io/badge/Download-Release-blue.svg)](https://github.com/qishibo/AnotherRedisDesktopManager/releases)
 [![Version](https://img.shields.io/github/release/qishibo/AnotherRedisDeskTopManager.svg?label=Release)](https://github.com/qishibo/AnotherRedisDesktopManager/releases)
 [![shiboooo](https://img.shields.io/badge/Weibo-@%E9%BD%90%E5%A3%AB%E5%8D%9A-D64943.svg)](https://weibo.com/shiboooo?is_hot=1)
+[![Backers on Open Collective](https://opencollective.com/AnotherRedisDesktopManager/backers/badge.svg)](#backers) 
+[![Sponsors on Open Collective](https://opencollective.com/AnotherRedisDesktopManager/sponsors/badge.svg)](#sponsors)
 
 
 ## Windows
@@ -94,6 +96,36 @@ npm start
 # after the previous step is completed, open another tab, build up a desktop client
 npm run electron
 ```
+
+## Contributors
+
+This project exists thanks to all the people who contribute. 
+<a href="https://github.com/qishibo/AnotherRedisDesktopManager/graphs/contributors"><img src="https://opencollective.com/AnotherRedisDesktopManager/contributors.svg?width=890&button=false" /></a>
+
+
+## Backers
+
+Thank you to all our backers! 🙏 [[Become a backer](https://opencollective.com/AnotherRedisDesktopManager#backer)]
+
+<a href="https://opencollective.com/AnotherRedisDesktopManager#backers" target="_blank"><img src="https://opencollective.com/AnotherRedisDesktopManager/backers.svg?width=890"></a>
+
+
+## Sponsors
+
+Support this project by becoming a sponsor. Your logo will show up here with a link to your website. [[Become a sponsor](https://opencollective.com/AnotherRedisDesktopManager#sponsor)]
+
+<a href="https://opencollective.com/AnotherRedisDesktopManager/sponsor/0/website" target="_blank"><img src="https://opencollective.com/AnotherRedisDesktopManager/sponsor/0/avatar.svg"></a>
+<a href="https://opencollective.com/AnotherRedisDesktopManager/sponsor/1/website" target="_blank"><img src="https://opencollective.com/AnotherRedisDesktopManager/sponsor/1/avatar.svg"></a>
+<a href="https://opencollective.com/AnotherRedisDesktopManager/sponsor/2/website" target="_blank"><img src="https://opencollective.com/AnotherRedisDesktopManager/sponsor/2/avatar.svg"></a>
+<a href="https://opencollective.com/AnotherRedisDesktopManager/sponsor/3/website" target="_blank"><img src="https://opencollective.com/AnotherRedisDesktopManager/sponsor/3/avatar.svg"></a>
+<a href="https://opencollective.com/AnotherRedisDesktopManager/sponsor/4/website" target="_blank"><img src="https://opencollective.com/AnotherRedisDesktopManager/sponsor/4/avatar.svg"></a>
+<a href="https://opencollective.com/AnotherRedisDesktopManager/sponsor/5/website" target="_blank"><img src="https://opencollective.com/AnotherRedisDesktopManager/sponsor/5/avatar.svg"></a>
+<a href="https://opencollective.com/AnotherRedisDesktopManager/sponsor/6/website" target="_blank"><img src="https://opencollective.com/AnotherRedisDesktopManager/sponsor/6/avatar.svg"></a>
+<a href="https://opencollective.com/AnotherRedisDesktopManager/sponsor/7/website" target="_blank"><img src="https://opencollective.com/AnotherRedisDesktopManager/sponsor/7/avatar.svg"></a>
+<a href="https://opencollective.com/AnotherRedisDesktopManager/sponsor/8/website" target="_blank"><img src="https://opencollective.com/AnotherRedisDesktopManager/sponsor/8/avatar.svg"></a>
+<a href="https://opencollective.com/AnotherRedisDesktopManager/sponsor/9/website" target="_blank"><img src="https://opencollective.com/AnotherRedisDesktopManager/sponsor/9/avatar.svg"></a>
+
+
 
 ## License
 
