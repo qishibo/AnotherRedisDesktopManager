@@ -110,6 +110,7 @@ export default {
             customClass: 'download-progress-container',
           });
 
+          this.downloadPercent = 0;
           this.downloadProcessShow = true;
         };
 
@@ -120,6 +121,7 @@ export default {
         console.log('update-downloaded', arg);
 
         // this.$notify.closeAll();
+        this.downloadPercent = 100;
         this.resetDownloadProcess();
         this.$notify.success({
           title: this.$t('message.update_downloaded'),
@@ -129,7 +131,6 @@ export default {
     },
     resetDownloadProcess() {
       this.updateChecking = false;
-      this.downloadPercent = 0;
       this.downloadProcessShow = false;
     },
   },
