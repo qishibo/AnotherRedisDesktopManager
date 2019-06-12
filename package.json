@@ -9,13 +9,15 @@
     "start": "npm run dev",
     "build": "node build/build.js",
     "electron": "node_modules/.bin/electron pack/electron",
+    "postinstall": "npm run rebuild",
     "lint": "eslint --ext js,vue src --fix",
     "lint:init": "eslint --init",
     "asar": "node_modules/.bin/asar pack dist dist/app.asar --unpack-dir \"{app.asar,build-apps,app.asar.unpacked}\"",
     "pack:prepare": "npm run build; cp -r pack/electron/* dist; sed -i.bak \"s/APP_ENV = 'dev'/APP_ENV = 'production'/g\" dist/electron-main.js; rm dist/*.bak",
     "pack:linux": "node_modules/.bin/electron-builder --project=dist -l -p never",
     "pack:win": "docker run --rm -it --env GH_TOKEN=$GH_TOKEN --env ELECTRON_CACHE=\"/root/.cache/electron\" --env ELECTRON_BUILDER_CACHE=\"/root/.cache/electron-builder\" -v ${PWD}:/project -v ~/.cache/electron:/root/.cache/electron -v ~/.cache/electron-builder:/root/.cache/electron-builder electronuserland/builder:wine sh -c \"node_modules/.bin/electron-builder --project=dist -w -p never\"",
-    "pack:mac": "node_modules/.bin/electron-builder --project=dist -m -p never"
+    "pack:mac": "node_modules/.bin/electron-builder --project=dist -m -p never",
+    "rebuild": "node_modules/.bin/electron-rebuild -w font-manager -t 'dev'"
   },
   "dependencies": {
     "bluebird": "^3.5.3",
@@ -47,14 +49,17 @@
     "css-loader": "^0.28.0",
     "electron": "^4.0.8",
     "electron-builder": "^20.39.0",
+    "electron-rebuild": "^1.8.5",
     "eslint": "^5.14.1",
     "eslint-config-airbnb-base": "^13.1.0",
     "eslint-plugin-import": "^2.16.0",
     "eslint-plugin-vue": "^5.2.2",
     "extract-text-webpack-plugin": "^3.0.0",
     "file-loader": "^1.1.4",
+    "font-manager": "^0.3.0",
     "friendly-errors-webpack-plugin": "^1.6.1",
     "html-webpack-plugin": "^2.30.1",
+    "js-yaml": ">=3.13.1",
     "node-notifier": "^5.1.2",
     "optimize-css-assets-webpack-plugin": "^3.2.0",
     "ora": "^1.2.0",
@@ -73,8 +78,7 @@
     "webpack": "^3.6.0",
     "webpack-bundle-analyzer": "^2.9.0",
     "webpack-dev-server": "^2.9.1",
-    "webpack-merge": "^4.1.0",
-    "js-yaml": ">=3.13.1"
+    "webpack-merge": "^4.1.0"
   },
   "engines": {
     "node": ">= 6.0.0",

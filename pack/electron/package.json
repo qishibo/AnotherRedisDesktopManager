@@ -6,7 +6,8 @@
   "private": true,
   "main": "electron-main.js",
   "dependencies": {
-    "electron-updater": "^4.0.6"
+    "electron-updater": "^4.0.6",
+    "font-manager": "^0.3.0"
   },
   "publish": [{
     "provider": "github",

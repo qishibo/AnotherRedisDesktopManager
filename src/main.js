@@ -6,9 +6,11 @@ import App from './App';
 import i18n from './i18n/i18n';
 import bus from './bus';
 import util from './util';
+import storage from './storage';
 
 Vue.prototype.$bus = bus;
 Vue.prototype.$util = util;
+Vue.prototype.$storage = storage;
 
 Vue.use(ElementUI, { size: 'small' });
 Vue.config.productionTip = false;
