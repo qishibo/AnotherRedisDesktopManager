@@ -9,6 +9,10 @@
       </el-form-item>
 
       <el-form-item :label="$t('message.font_family')">
+        <span slot="label">
+          {{ $t('message.font_family') }}
+          <i v-if="loadingFonts" class="el-icon-loading"></i>
+        </span>
         <el-select v-model="form.fontFamily" @visible-change="getAllFonts" allow-create default-first-option filterable multiple >
           <el-option
             v-for="(font, index) in allFonts"
@@ -74,6 +78,7 @@ export default {
       downloadShow: false,
       downloadProgress: 0,
       allFonts: [],
+      loadingFonts: false,
     };
   },
   props: ['settingDialog'],
@@ -167,10 +172,12 @@ export default {
         fonts.unshift('Default Initial');
 
         this.allFonts = [...new Set(fonts)];
+        this.loadingFonts = false;
       });
     },
     getAllFonts() {
       if (this.allFonts.length === 0) {
+        this.loadingFonts = true;
         ipcRenderer.send('get-all-fonts');
       }
     },
