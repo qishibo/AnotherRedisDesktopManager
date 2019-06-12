@@ -1,6 +1,5 @@
 // Modules to control application life and create native browser window
 const { app, BrowserWindow, Menu } = require('electron');
-const fontManager = require('./font-manager');
 
 global.APP_ENV = 'dev';
 
