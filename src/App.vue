@@ -118,7 +118,7 @@ body {
   /*font: caption;*/
 }
 
-input, textarea, .vjs__tree {
+button, input, textarea, .vjs__tree {
   font-family: inherit;
 }
 

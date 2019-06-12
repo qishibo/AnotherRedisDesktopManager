@@ -31,7 +31,10 @@
 
               <el-col :span="12">
                 <!-- new key btn -->
-                <el-button class="new-key-btn el-icon-plus" @click="showNewKeyDialog(item.menuIndex)">{{ $t('message.add_new_key')}}</el-button>
+                <el-button class="new-key-btn" @click="showNewKeyDialog(item.menuIndex)">
+                  <i class="el-icon-plus"></i>
+                  {{ $t('message.add_new_key')}}
+                </el-button>
               </el-col>
             </el-row>
           </el-form-item>
