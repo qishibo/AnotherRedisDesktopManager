@@ -90,7 +90,7 @@ export default {
     },
     initFont() {
       const fontFamily = this.$storage.getSetting('fontFamily');
-      fontFamily && (this.fontFamily = fontFamily);
+      fontFamily && (this.fontFamily = fontFamily.join(','));
     }
   },
   mounted() {
@@ -116,6 +116,10 @@ body {
   margin: 0;
   box-sizing: border-box;
   /*font: caption;*/
+}
+
+input, textarea, .vjs__tree {
+  font-family: inherit;
 }
 
 .wrap-container {

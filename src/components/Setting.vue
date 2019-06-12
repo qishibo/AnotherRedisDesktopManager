@@ -9,7 +9,7 @@
       </el-form-item>
 
       <el-form-item :label="$t('message.font_family')">
-        <el-select filterable v-model="form.fontFamily" @visible-change="getAllFonts">
+        <el-select v-model="form.fontFamily" @visible-change="getAllFonts" allow-create default-first-option filterable multiple >
           <el-option
             v-for="(font, index) in allFonts"
             :key="index"

@@ -18,7 +18,7 @@
             <el-row :gutter="6">
               <el-col :span="12">
                 <!-- db index select -->
-                <el-select class="db-select" v-model="selectedDbIndex[item.menuIndex]" placeholder="DB" size="mini" @change="changeDb(item.menuIndex)" filterable>
+                <el-select class="db-select" v-model="selectedDbIndex[item.menuIndex]" placeholder="DB" size="mini" @change="changeDb(item.menuIndex)" filterable default-first-option>
                   <el-option
                     v-for="index in dbs[item.menuIndex]"
                     :key="index"
