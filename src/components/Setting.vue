@@ -8,6 +8,19 @@
         <el-button icon="el-icon-download" @click="showImportDialog">{{ $t('message.import') }}</el-button>
       </el-form-item>
 
+      <el-form-item :label="$t('message.font_family')">
+        <el-select filterable v-model="form.fontFamily" @visible-change="getAllFonts">
+          <el-option
+            v-for="(font, index) in allFonts"
+            :key="index"
+            :label="font"
+            :value="font"
+            :style="{'font-family': font}"
+            >
+          </el-option>
+        </el-select>
+      </el-form-item>
+
       <el-form-item :label="$t('message.pre_version')">
         <el-tag type="info">{{ appVersion }}</el-tag>
         <!-- <small><a style="color: grey" href="###" @click="checkUpdate">{{ $t('message.check_update') }}</a></small> -->
@@ -48,17 +61,19 @@
 
 <script type="text/javascript">
 import storage from '@/storage.js';
+import { ipcRenderer } from 'electron';
 
 export default {
   data() {
     return {
-      form: {},
+      form: {fontFamily: ''},
       importConnectionVisible: false,
       connectionFileContent: '',
       appVersion: (new URL(window.location.href)).searchParams.get('version'),
       electronVersion: process.versions.electron,
       downloadShow: false,
       downloadProgress: 0,
+      allFonts: [],
     };
   },
   props: ['settingDialog'],
@@ -84,6 +99,7 @@ export default {
       localStorage.setItem('settings', settings);
 
       this.settingDialog.visible = false;
+      this.$bus.$emit('changeFont');
     },
     showImportDialog() {
       this.importConnectionVisible = true;
@@ -138,9 +154,30 @@ export default {
     checkUpdate() {
       this.$bus.$emit('update-check');
     },
+    bindGetAllFonts() {
+      console.log('binding get all fonts...');
+
+      ipcRenderer.on('send-all-fonts', (event, arg) => {
+        console.log('get-all-fonts...', arg);
+
+        const fonts = arg.map((line) => {
+          return line.family;
+        });
+
+        fonts.unshift('Default Initial');
+
+        this.allFonts = [...new Set(fonts)];
+      });
+    },
+    getAllFonts() {
+      if (this.allFonts.length === 0) {
+        ipcRenderer.send('get-all-fonts');
+      }
+    },
   },
   mounted() {
     this.showSettings();
+    this.bindGetAllFonts();
   },
 };
 </script>
