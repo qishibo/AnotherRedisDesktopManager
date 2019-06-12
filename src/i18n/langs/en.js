@@ -75,6 +75,7 @@ const en = {
     update_download_progress: 'Download Progress',
     update_downloaded: 'Update Download Completed, Restart Your App Please',
     mac_not_support_auto_update: 'Mac Does Not Support Automatic Update, Please Manually Download And Reinstall',
+    font_family: 'Font Family',
   },
 };
 
