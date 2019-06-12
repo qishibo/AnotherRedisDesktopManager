@@ -75,7 +75,6 @@ const cn = {
     update_download_progress: '下载进度',
     update_downloaded: '更新下载完成，重启客户端生效',
     mac_not_support_auto_update: 'Mac暂时不支持自动更新，请手动下载后重新安装',
-    font_family: '字体选择',
   },
 };
 

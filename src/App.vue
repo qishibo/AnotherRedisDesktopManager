@@ -1,5 +1,5 @@
 <template>
-  <el-container class="wrap-container" :style="{'font-family': fontFamily}">
+  <el-container class="wrap-container">
 
     <div class="aside-drag-container" :style="{width: sideWidth + 'px'}">
       <el-aside class="aside-connection">
@@ -39,13 +39,7 @@ export default {
   data() {
     return {
       sideWidth: 250,
-      fontFamily: 'Default Initial',
     };
-  },
-  created() {
-    this.$bus.$on('changeFont', () => {
-      this.initFont();
-    });
   },
   components: {Header, Aside, Command, Tabs, ScrollToTop, UpdateCheck},
   methods: {
@@ -88,17 +82,12 @@ export default {
         }
       });
     },
-    initFont() {
-      const fontFamily = this.$storage.getSetting('fontFamily');
-      fontFamily && (this.fontFamily = fontFamily);
-    }
   },
   mounted() {
     setTimeout(() => {
       this.$bus.$emit('update-check');
     }, 2000);
 
-    this.initFont();
     this.bindSideBarDrag();
     this.openHrefInBrowser();
   },
@@ -117,13 +106,11 @@ body {
   box-sizing: border-box;
   /*font: caption;*/
 }
-
 .wrap-container {
   height: 100%;
 }
 .aside-drag-container {
   position: relative;
-  user-select: none;
 }
 .aside-connection {
   height: 100%;

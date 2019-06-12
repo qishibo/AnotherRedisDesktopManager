@@ -1,11 +1,4 @@
 export default {
-  getSetting(key) {
-    let settings = localStorage.getItem('settings');
-    settings = settings ? JSON.parse(settings) : {};
-
-    return key ? settings[key] : settings;
-  },
-
   addConnection(connection) {
     const connections = this.getConnections();
     const key = this.getConnectionKey(connection);
