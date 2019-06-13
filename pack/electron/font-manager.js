@@ -10,6 +10,6 @@ ipcMain.on('get-all-fonts', (event, arg) => {
   }
   catch (e) {
     console.log('main.js get fonts failed...', e);
-    event.sender.send('send-all-fonts', {family: "Default Initial"});
+    event.sender.send('send-all-fonts', [{family: "Default Initial"}]);
   }
 });

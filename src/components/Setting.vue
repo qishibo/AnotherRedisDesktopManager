@@ -11,6 +11,16 @@
       <el-form-item :label="$t('message.font_family')">
         <span slot="label">
           {{ $t('message.font_family') }}
+          <el-popover
+            placement="top-start"
+            :title="$t('message.font_faq_title')"
+            width="200"
+            trigger="hover"
+            >
+            <i slot="reference" class="el-icon-question"></i>
+            <p v-html="$t('message.font_faq')"></p>
+            <a href="###" @click="$util.openHrefExternal($event, 'https://developer.mozilla.org/docs/Web/CSS/font-family')">font-family</a>
+          </el-popover>
           <i v-if="loadingFonts" class="el-icon-loading"></i>
         </span>
         <el-select v-model="form.fontFamily" @visible-change="getAllFonts" allow-create default-first-option filterable multiple >
