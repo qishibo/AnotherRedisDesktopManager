@@ -25,4 +25,8 @@ export default {
 
     return string.substr(0, maxLength) + '...';
   },
+  openHrefExternal(e, href) {
+    e.preventDefault();
+    require('electron').shell.openExternal(href);
+  },
 };

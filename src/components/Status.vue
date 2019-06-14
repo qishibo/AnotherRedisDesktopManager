@@ -3,7 +3,10 @@
       <el-row>
         <el-col>
           <div style="float: right;">
-            <el-tag type="info" class="el-icon-refresh">{{ $t('message.auto_refresh') }}</el-tag>
+            <el-tag type="info">
+              <i class="el-icon-refresh"></i>
+              {{ $t('message.auto_refresh') }}
+            </el-tag>
             <el-tooltip class="item" effect="dark" :content="$t('message.auto_refresh_tip', {interval: refreshInterval / 1000})" placement="bottom">
               <el-switch v-model="autoRefresh" @change="refreshInit">
               </el-switch>
