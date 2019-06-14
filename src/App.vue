@@ -119,7 +119,7 @@ body {
 }
 
 button, input, textarea, .vjs__tree {
-  font-family: inherit;
+  font-family: inherit !important;
 }
 
 .wrap-container {
