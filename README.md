@@ -37,6 +37,7 @@ Download latest `dmg` package from [release](https://github.com/qishibo/AnotherR
 
 ## Feature Log
 
+- 2019-06-14: Custom Font-Family Support
 - 2019-05-28: Key List Resizable
 - 2019-05-09: Search Support In Hash List Set Zset
 - 2019-04-26: Auto Updater
