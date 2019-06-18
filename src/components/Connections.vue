@@ -434,6 +434,13 @@ export default {
 
       this.connectionPool = {};
       this.openedStatus = {};
+      this.selectedDbIndex = {};
+      this.searchMatch = {};
+      this.searchExact = {};
+      this.scanCursorList = {};
+      this.pageIndex = {};
+      this.nextPageDisabled = {};
+
       this.$bus.$emit('removeAllTab');
     },
     initMenuIndex(connection) {
