@@ -257,10 +257,16 @@ export default {
         this.scrollToBottom();
       });
     },
+    keyUpFocus() {
+      this.$refs.cliParams.focus();
+    },
   },
-
   mounted() {
     this.initDefaultConnection();
+    document.body.addEventListener('keyup', this.keyUpFocus);
+  },
+  destroyed() {
+    document.body.removeEventListener('keyup', this.keyUpFocus);
   },
 };
 </script>
