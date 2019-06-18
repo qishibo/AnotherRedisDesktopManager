@@ -103,31 +103,34 @@ export default {
           this.$notify({
             message: h('el-progress', {
               props: {
-                percentage: this.downloadPercent,
+                percentage: 0,
               },
+              ref: 'downloadProgressBar',
             }),
             duration: 0,
             customClass: 'download-progress-container',
           });
 
-          this.downloadPercent = 0;
           this.downloadProcessShow = true;
         };
 
-        this.downloadPercent = Math.floor(arg.percent);
+        this.setProgressBar(Math.floor(arg.percent));
       });
 
       ipcRenderer.on('update-downloaded', (event, arg) => {
         console.log('update-downloaded', arg);
 
         // this.$notify.closeAll();
-        this.downloadPercent = 100;
+        this.setProgressBar(100);
         this.resetDownloadProcess();
         this.$notify.success({
           title: this.$t('message.update_downloaded'),
           duration: 0
         });
       });
+    },
+    setProgressBar(percent) {
+      this.downloadProcessShow && this.$set(this.$refs.downloadProgressBar, 'percentage', percent);
     },
     resetDownloadProcess() {
       this.updateChecking = false;
