@@ -2,7 +2,7 @@
 const { app, BrowserWindow, Menu } = require('electron');
 const fontManager = require('./font-manager');
 
-global.APP_ENV = 'dev';
+global.APP_ENV = (process.env.NODE_ENV === 'dev') ? 'dev' : 'production';
 
 if (APP_ENV === 'production') {
   require('./update')();
