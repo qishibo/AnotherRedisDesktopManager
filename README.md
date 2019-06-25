@@ -1,3 +1,5 @@
+<img src="https://electronjs.org/app-img/anotherredisdesktopmanager/anotherredisdesktopmanager-icon-128.png">
+
 # Another Redis DeskTop Manager
 
 > A faster, better and more stable redis desktop manager, compatible with Linux, windows, mac. What's more, it won't crash when loading a large number of keys.
