@@ -270,11 +270,13 @@ export default {
       }
     },
     initCliContent() {
-      const { options } = this.$util.get('client');
+      const client = this.$util.get('client');
 
-      const content = `> ${options.host} connected!\n`;
-      this.cliContent.content += content;
+      if (!client || !client.options) {
+        return;
+      }
 
+      this.cliContent.content += `> ${client.options.host} connected!\n`;
       this.scrollToBottom();
     },
     keyUpFocus() {
