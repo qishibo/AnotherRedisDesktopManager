@@ -59,6 +59,7 @@ const en = {
     import: 'Import',
     export: 'Export',
     open: 'Open',
+    close: 'Close',
     open_new_tab: 'Open In New Tab',
     exact_search: 'Exact Search',
     enter_to_exec: 'Press Enter To Exec Commands, Up and Down To Switch History',
