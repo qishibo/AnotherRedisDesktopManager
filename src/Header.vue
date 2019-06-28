@@ -12,7 +12,7 @@
     </el-tooltip>
 
     <!-- cli dialog -->
-    <CliConsole v-if=cliDialog.visible :cliDialog="cliDialog"></CliConsole>
+    <CliConsole :cliDialog="cliDialog"></CliConsole>
 
     <!-- language select -->
     <el-select v-model="selectedLang" @change="changeLang" placeholder="Language">

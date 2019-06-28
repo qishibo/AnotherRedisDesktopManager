@@ -1,8 +1,8 @@
 const splitargs = require('splitargs');
 
 export default {
-  exec(vue, params) {
-    const client = vue.$util.get('client');
+  exec(client, params) {
+    // const client = vue.$util.get('client');
 
     if (!client) {
       alert('Redis Client Is Not Yet');
