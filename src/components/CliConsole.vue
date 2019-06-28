@@ -180,7 +180,7 @@ export default {
         const isArray = !isNaN(result.length);
 
         for (const i in result) {
-          if (typeof result === 'object') {
+          if (typeof result[i] === 'object') {
             append += this.resolveResult(result[i]);
           }
 
