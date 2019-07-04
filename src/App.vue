@@ -58,7 +58,7 @@ export default {
         const mouseX = e.x;
         const dragSideWidth = mouseX - 19;
 
-        if ((dragSideWidth > 200) && (dragSideWidth < 400)) {
+        if ((dragSideWidth > 200) && (dragSideWidth < 500)) {
           that.sideWidth = dragSideWidth;
         }
       }
@@ -120,6 +120,24 @@ body {
 
 button, input, textarea, .vjs__tree {
   font-family: inherit !important;
+}
+
+::-webkit-scrollbar {
+  width: 9px;
+}
+::-webkit-scrollbar-track {
+  background: #eaeaea;
+  border-radius: 4px;
+}
+/*::-webkit-scrollbar-track:hover {
+  background: #eaeaea;
+}*/
+::-webkit-scrollbar-thumb {
+  border-radius: 8px;
+  background: #C1C1C1;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
 }
 
 .wrap-container {
