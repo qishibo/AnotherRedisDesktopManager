@@ -4,7 +4,7 @@
       <el-form-item>
         <el-input ref="keyNameInput" placeholder="" v-model="newKeyParams.keyName" @keyup.enter.native="renameKey" placeholder="KeyName">
           <i
-            class="el-icon-check el-input__icon"
+            class="el-icon-check el-input__icon cursor-pointer"
             slot="suffix"
             :title="$t('message.click_enter_to_rename')"
             @click="renameKey"
@@ -17,7 +17,7 @@
       <el-form-item>
         <el-input placeholder="" v-model="newKeyParams.keyTTL" @keyup.enter.native="ttlKey">
           <i
-            class="el-icon-check el-input__icon"
+            class="el-icon-check el-input__icon cursor-pointer"
             slot="suffix"
             :title="$t('message.click_enter_to_ttl')"
             @click="ttlKey"

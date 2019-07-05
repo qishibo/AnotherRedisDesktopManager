@@ -158,6 +158,9 @@ button, input, textarea, .vjs__tree {
 .height100 {
   height: 100%;
 }
+.cursor-pointer {
+  cursor: pointer;
+}
 
 .el-message-box .el-message-box__message {
   word-break: break-all;
