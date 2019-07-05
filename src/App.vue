@@ -90,7 +90,7 @@ export default {
     },
     initFont() {
       const fontFamily = this.$storage.getSetting('fontFamily');
-      fontFamily && (this.fontFamily = fontFamily.join(','));
+      this.fontFamily = fontFamily.map((line) => {return `"${line}"`}).join(',');
     }
   },
   mounted() {

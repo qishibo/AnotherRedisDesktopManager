@@ -179,6 +179,7 @@ export default {
           return line.family;
         });
 
+        fonts.sort();
         fonts.unshift('Default Initial');
 
         this.allFonts = [...new Set(fonts)];
