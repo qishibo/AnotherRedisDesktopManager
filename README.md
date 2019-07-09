@@ -33,6 +33,7 @@ Download latest `dmg` package from [release](https://github.com/qishibo/AnotherR
 ## Enjoy!
 
 ![redis status](https://imgup.qii404.me/blog/5d11c50031d9c.jpg)
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fqishibo%2FAnotherRedisDesktopManager.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Fqishibo%2FAnotherRedisDesktopManager?ref=badge_shield)
 
 ![redis key hash](https://imgup.qii404.me/blog/5d11c501bdb52.jpg)
 
@@ -105,7 +106,9 @@ npm run electron
 [MIT](LICENSE)
 
 
+
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fqishibo%2FAnotherRedisDesktopManager.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2Fqishibo%2FAnotherRedisDesktopManager?ref=badge_large)
+
 ## Support
 
 [qii404.me](https://qii404.me/)  [@shiboooo](https://weibo.com/shiboooo?is_hot=1)
-
