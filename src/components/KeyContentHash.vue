@@ -44,7 +44,12 @@
           <el-button type="primary" @click="editLine">{{ $t('el.messagebox.confirm') }}</el-button>
         </div>
       </el-dialog>
-
+      <!-- json dialog -->
+      <el-dialog title="JSON查看器" :visible.sync="viewJSONDialog">
+        <StringView    
+          :data="viewJsonObj">
+        </StringView>
+      </el-dialog>
     </div>
 
     <!-- content table -->
@@ -75,7 +80,7 @@
       <el-table-column
         label="Operation"
         >
-        <template slot="header" slot-scope="scope">
+        <template slot="header">
           <input
             class="el-input__inner key-detail-filter-value"
             v-model="filterValue"
@@ -83,6 +88,7 @@
             />
         </template>
         <template slot-scope="scope">
+          <el-button type="text" @click="viewJSON(scope.row)" icon="el-icon-info" circle></el-button>
           <el-button type="text" @click="showEditDialog(scope.row)" icon="el-icon-edit" circle></el-button>
           <el-button type="text" @click="deleteLine(scope.row)" icon="el-icon-delete" circle></el-button>
         </template>
@@ -95,20 +101,22 @@
 
 <script>
 import PaginationTable from '@/components/PaginationTable';
-
+import StringView from '@/components/StringView';
 export default {
   data() {
     return {
       filterValue: '',
       dialogFormVisible: false,
       editDialog: false,
+      viewJSONDialog: false,
       hashData: [], // {key: xxx, value: xxx}
       newLineItem: {},
       beforeEditItem: {},
       editLineItem: {},
+      viewJsonObj: {}
     };
   },
-  components: {PaginationTable},
+  components: {PaginationTable, StringView},
   props: ['redisKey', 'newKeyParams'],
   methods: {
     initShow() {
@@ -129,6 +137,10 @@ export default {
 
         this.hashData = hashData;
       });
+    },
+    viewJSON(row) {
+      this.viewJsonObj = row.value;
+      this.viewJSONDialog = true;
     },
     showEditDialog(row) {
       this.editLineItem = row;

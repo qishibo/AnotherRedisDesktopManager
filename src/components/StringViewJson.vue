@@ -4,7 +4,6 @@
       <el-button class="collapse-btn" type="text" @click="toggleCollapse">{{ $t('message.' + collapseText) }}</el-button>
     </div>
     <vue-json-pretty
-        :path="'res'"
         :data="newContent"
         :deep="maxDeep"
         :showLength=true
