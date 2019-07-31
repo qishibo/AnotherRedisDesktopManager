@@ -69,6 +69,15 @@ export default {
       this.selectedTabName = tabName;
     });
 
+    //remote call remove tab
+    this.$bus.$on('removeTab', (key, client) => {
+      if (!client) {
+        return;
+      }
+      const tabName = this.buildTabName(key, client);
+      this.removeTab(tabName);
+    })
+
     // remove pre tab
     this.$bus.$on('removePreTab', () => {
       console.log('removing pre tab...');
@@ -105,7 +114,9 @@ export default {
       nextSelectTab && (this.selectedTabName = nextSelectTab.name);
       this.tabs = this.tabs.filter(tab => tab.name !== removeName);
     },
-
+    buildTabName(key, client) {
+      return `${key} | ${client.options.menu_index} | DB${client.selected_db ? client.selected_db : 0}`;
+    },
     newKeyTab(key, type, newTab = false) {
       console.log(key, type, newTab);
 
@@ -113,7 +124,7 @@ export default {
 
       const client      = this.$util.get('client');
       const newShowName = `${cutString(key)} | ${cutString(client.options.menu_index)} | DB${client.selected_db ? client.selected_db : 0}`;
-      const newTabName  = `${key} | ${client.options.menu_index} | DB${client.selected_db ? client.selected_db : 0}`;
+      const newTabName  = this.buildTabName(key, client);
 
       const newTabItem = {
         name: newTabName, title: newShowName, redisKey: key, keyType: type, keepTab: newTab

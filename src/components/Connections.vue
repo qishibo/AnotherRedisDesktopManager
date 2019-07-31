@@ -77,8 +77,7 @@
             type="number"
             min="1"
             step="1"
-          >
-          </input>
+          />
           <el-button ref="pageNextButton" type="text" @click="pageNext(item.menuIndex)" :disabled="nextPageDisabled[item.menuIndex]" size="mini" icon="el-icon-arrow-right"></el-button>
         </div>
 
@@ -185,6 +184,12 @@ export default {
             this.clickKey(clickValue.key, clickValue.menuIndex, true, event);
           },
         },
+        {
+          name: this.$t('message.delete_key'),
+          click: (clickValue, event) => {
+            this.deleteKey(clickValue.key, clickValue.menuIndex, event);
+          }
+        }
       ],
       // dbs: [...Array(16).keys()],
       dbs: {},
@@ -476,6 +481,33 @@ export default {
 
       this.setGlobalConnection(menuIndex);
       this.$bus.$emit('clickedKey', key, newTab);
+    },
+    deleteKey(key, menuIndex, event) {
+      console.log(key, menuIndex, event);
+      this.$confirm(
+        this.$t('message.confirm_to_delete_key', {key: key}),
+        { type: 'warning' },
+      ).then(() => {
+        const client = this.setGlobalConnection(menuIndex);
+        var that = this;
+        client.del(key, function(err, length){
+          if (err) {
+            that.$message.error({
+              message: that.$t('message.delete_failed'),
+              duration: 1000,
+            });
+          } else {
+            that.$message.success({
+              message: that.$t('message.delete_success'),
+              duration: 1000,
+            });
+            that.$bus.$emit('refreshKeyList');
+            that.$bus.$emit('removeTab', key, client);
+          }
+        });
+      }).catch(() => {
+        console.debug('取消删除key');
+      });
     },
     hightKey(event) {
       for (const ele of document.querySelectorAll('.key-select')) {

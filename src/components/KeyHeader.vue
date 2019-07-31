@@ -2,7 +2,7 @@
   <div>
     <el-form :inline="true">
       <el-form-item>
-        <el-input ref="keyNameInput" placeholder="" v-model="newKeyParams.keyName" @keyup.enter.native="renameKey" placeholder="KeyName">
+        <el-input ref="keyNameInput" v-model="newKeyParams.keyName" @keyup.enter.native="renameKey" placeholder="KeyName">
           <i
             class="el-icon-check el-input__icon cursor-pointer"
             slot="suffix"

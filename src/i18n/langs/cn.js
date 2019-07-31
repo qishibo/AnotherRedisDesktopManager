@@ -61,6 +61,7 @@ const cn = {
     open: '打开',
     close: '关闭',
     open_new_tab: '新窗口打开',
+    delete_key: '删除Key',
     exact_search: '精确搜索',
     enter_to_exec: '输入Redis命令后，按Enter键执行，上下键切换历史',
     pre_version: '当前版本',

@@ -61,6 +61,7 @@ const tw = {
     open: '打開',
     close: '關閉',
     open_new_tab: '以新視窗打開',
+    delete_key: '删除Key',
     exact_search: '精確搜尋',
     enter_to_exec: '輸入 Redis 指令後，按 Enter 鍵執行，上下鍵切換歷史',
     pre_version: '目前版本',
