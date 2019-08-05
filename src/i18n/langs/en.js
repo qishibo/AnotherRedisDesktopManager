@@ -82,6 +82,7 @@ const en = {
     font_faq: "1. Multiple fonts can be set<br>\
     2. Font selection is orderly. It is suggested to choose English font first and then font in your language<br>\
     3. When the system font list cannot be loaded in some exceptional cases, you can enter the installed font name manually.",
+    value_viewer_title: 'Value Viewer',
   },
 };
 

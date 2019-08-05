@@ -43,7 +43,7 @@
         </div>
       </el-dialog>
       <!-- json dialog -->
-      <el-dialog title="JSON查看器" :visible.sync="viewJSONDialog">
+      <el-dialog :title="$t('message.value_viewer_title')" :visible.sync="viewJSONDialog">
         <StringView    
           :data="viewJsonObj">
         </StringView>
