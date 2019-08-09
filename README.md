@@ -75,6 +75,16 @@ npm start
 npm run electron
 ```
 
+If linux errors like this:
+
+```bash
+# if error like this
+../src/FontManagerLinux.cc:1:35: fatal error: fontconfig/fontconfig.h: No such file or directory
+
+# then try this
+sudo apt install libfontconfig1-dev
+```
+
 
 ### Windows
 
