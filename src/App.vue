@@ -89,7 +89,10 @@ export default {
       });
     },
     initFont() {
-      const fontFamily = this.$storage.getSetting('fontFamily');
+      let fontFamily = this.$storage.getSetting('fontFamily');
+
+      !fontFamily && (fontFamily = [this.fontFamily]);
+
       this.fontFamily = fontFamily.map((line) => {return `"${line}"`}).join(',');
     }
   },
