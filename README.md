@@ -24,8 +24,7 @@ Download latest `AppImage` package from [release](https://github.com/qishibo/Ano
 ## Mac
 
 Download latest `dmg` package from [release](https://github.com/qishibo/AnotherRedisDesktopManager/releases) [or [gitee](https://gitee.com/qishibo/AnotherRedisDesktopManager/releases) in China], double click to install.
-
-Or: `brew tap qishibo/taps` then `brew cask install ardm`
+<br/>Or: `brew tap qishibo/taps` then `brew cask install ardm`
 
 > If **Mac** warning `Another Desktop Manager can't be opened because it is from an unidentified developer`. Open `Settings->Security` and click **`Open Anyway`**
 
