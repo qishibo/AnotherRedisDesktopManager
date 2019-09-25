@@ -1,4 +1,4 @@
-<img align="right" width="110" src="https://imgup.qii404.me/ardm_icon.png">
+<img align="right" width="110" src="https://ftp.bmp.ovh/imgs/2019/09/6be6ffd8b70fbb50.png">
 
 # Another Redis DeskTop Manager
 
@@ -28,17 +28,17 @@ Download latest `dmg` package from [release](https://github.com/qishibo/AnotherR
 
 > If **Mac** warning `Another Desktop Manager can't be opened because it is from an unidentified developer`. Open `Settings->Security` and click **`Open Anyway`**
 
-![can't be opened because it is from an unidentified developer](https://imgup.qii404.me/mac-warning.png)
+![can't be opened because it is from an unidentified developer](https://ftp.bmp.ovh/imgs/2019/09/ff0cc9593a6cdb53.png)
 
-![Settings->Security Open Anyway](https://imgup.qii404.me/blog/5d11c4feeaf6f.jpg)
+![Settings->Security Open Anyway](https://ftp.bmp.ovh/imgs/2019/09/9d3a71a834cb67db.jpg)
 
 ## Enjoy!
 
-![redis status](https://imgup.qii404.me/blog/5d11c50031d9c.jpg)
+![redis status](https://ftp.bmp.ovh/imgs/2019/09/dd3687029aaaa7f3.jpg)
 
-![redis key hash](https://imgup.qii404.me/blog/5d11c501bdb52.jpg)
+![redis key hash](https://ftp.bmp.ovh/imgs/2019/09/a2fbaa8d4e16ed58.jpg)
 
-![redis console](https://imgup.qii404.me/blog/5d11c503cf26b.jpg)
+![redis console](https://ftp.bmp.ovh/imgs/2019/09/4aa26ec4b0df9ec2.jpg)
 
 
 ## Feature Log
