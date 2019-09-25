@@ -8,7 +8,7 @@
 
 [![MIT](https://img.shields.io/badge/license-MIT-000000.svg)](LICENSE)
 [![Download](https://img.shields.io/github/release/qishibo/AnotherRedisDeskTopManager.svg?label=Download)](https://github.com/qishibo/AnotherRedisDesktopManager/releases)
-[![Download Analysis](https://img.shields.io/badge/Download-Analysis-blue.svg)](https://qii404.me/github-release-statistics/?repo=/qishibo/AnotherRedisDesktopManager/)
+[![Download Analysis](https://img.shields.io/badge/Download-Analysis-blue.svg)](http://qii404.me/github-release-statistics/?repo=/qishibo/AnotherRedisDesktopManager/)
 [![shiboooo](https://img.shields.io/badge/Weibo-@shiboooo-D64943.svg)](https://weibo.com/shiboooo?is_hot=1)
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fqishibo%2FAnotherRedisDesktopManager.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fqishibo%2FAnotherRedisDesktopManager?ref=badge_shield)
 
@@ -119,5 +119,5 @@ npm run electron
 
 ## Support
 
-[qii404.me](https://qii404.me/)  [@shiboooo](https://weibo.com/shiboooo?is_hot=1)  [Download Analysis](https://qii404.me/github-release-statistics/?repo=/qishibo/AnotherRedisDesktopManager/)
+[qii404.me](http://qii404.me/)  [@shiboooo](https://weibo.com/shiboooo?is_hot=1)  [Download Analysis](http://qii404.me/github-release-statistics/?repo=/qishibo/AnotherRedisDesktopManager/)
 
