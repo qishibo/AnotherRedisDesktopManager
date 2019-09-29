@@ -58,12 +58,15 @@
           </el-form-item>
         </el-form>
 
+        <!-- 连接下的库的 key tree 列表 --> 
+        <el-tree :data="treeKeys(keyList[item.menuIndex])" :props="treeProps" @node-click="treeClickhandle(arguments,item.menuIndex)"></el-tree>
+
         <!-- key list -->
-        <ul class="key-list">
+        <!-- <ul class="key-list">
           <RightClickMenu :items="rightMenus" :clickValue="{key: key, menuIndex: item.menuIndex}" :key="key" v-for="key of keyList[item.menuIndex]">
             <li class="key-item" :title="key"  @click="clickKey(key, item.menuIndex, false, $event)">{{key}}</li>
           </RightClickMenu>
-        </ul>
+        </ul> -->
 
         <!-- page -->
         <div class="pagenation">
@@ -189,7 +192,7 @@ export default {
       // dbs: [...Array(16).keys()],
       dbs: {},
       connections: [],
-      keysPageSize: 50,
+      keysPageSize: 1000, // 默认一页 1000 条
       connectionPool: {},
       openedStatus: {},
       selectedDbIndex: {},
@@ -210,6 +213,18 @@ export default {
         String: 'string', Hash: 'hash', List: 'list', Set: 'set', Zset: 'zset',
       },
       sshOptionsShow: false,
+      // tree keys 数据
+      treeKeys(list){
+        if(list != undefined){
+          return this.$util.redisKeysTree(list)
+        }
+         return []
+      },
+      // keys tree 参数
+      treeProps: {
+        children: 'children',
+        label: 'label'
+      }
     };
   },
   components: {RightClickMenu},
@@ -468,6 +483,16 @@ export default {
       this.$set(this.pageIndex, menuIndex, 1);
       this.scanCursorList[menuIndex] = [0];
     },
+    /**
+     * keys tree 点击
+     */
+    treeClickhandle(args, selectedConDb) {
+      // redis == true 代表具体的 key, 需获取 key 值
+      if(args[0].redis == true){
+        this.setGlobalConnection(selectedConDb);
+        this.$bus.$emit('clickedKey', args[0].label, false);
+      }
+    },
     clickKey(key, menuIndex, newTab = false, event = null) {
       console.log(`clicked key ${key}`, `dbIndex ${this.selectedDbIndex}`);
 
@@ -610,6 +635,9 @@ export default {
         });
       });
     },
+    /**
+     * 获取 Redis 命令 "SCAN cursor [MATCH pattern] [COUNT count]" 的 "cursor"
+     */
     getScanCursor(menuIndex) {
       if (this.scanCursorList[menuIndex] === undefined) {
         this.scanCursorList[menuIndex] = [0];
@@ -620,6 +648,9 @@ export default {
 
       return cursorList[pageIndex - 1];
     },
+    /**
+     * 获取 redis 命令 "SCAN cursor [MATCH pattern] [COUNT count]" 的 "MATCH pattern"
+     */
     getMatchMode(menuIndex, fillAsterisk = true) {
       if (this.searchMatch[menuIndex] === undefined) {
         this.searchMatch[menuIndex] = '';
@@ -634,6 +665,9 @@ export default {
 
       return match;
     },
+    /**
+     * 刷新页面 redis key 列表
+     */
     refreshKeyList(pushToCursorList = true) {
       const client = this.$util.get('client');
       const menuIndex = client.options.menu_index;
@@ -655,7 +689,7 @@ export default {
       const promise = this.beginScanning(cursor, match, pageSize, (reply, tmpShow = false) => {
         // refresh key list
         this.$set(this.keyList, menuIndex, reply[1] ? reply[1].sort() : []);
-
+      
         if (tmpShow) {
           return true;
         }
@@ -668,7 +702,6 @@ export default {
           this.$set(this.nextPageDisabled, menuIndex, false);
         }
 
-
         // search input recover
         this.searchIcon = 'el-icon-search';
 
@@ -677,6 +710,9 @@ export default {
 
       return promise;
     },
+    /**
+     * 执行 redis SCAN 命令
+     */
     beginScanning(cursor, match, count, callback, recursive = true, minLength = null, lastList = []) {
       const client = this.$util.get('client');
       !minLength && (minLength = this.keysPageSize);
