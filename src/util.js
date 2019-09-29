@@ -35,46 +35,112 @@ export default {
    * @param {*} input 
    * @param {*} split 
    */
-  keysToTree(keys) {
-    function toTreeData(tree, path = '', init = true) {
-      // 当前迭代的节点路径
-      let currentIteratePath = path
-
+  redisKeysTree(keys) {
+    /**
+     * 转成object
+      {
+        "a": {
+          "b": {
+            "d": {}
+          },
+          "c": {}
+        }
+      } 
+     */
+    function toTreeData(tree) {
       return Object.keys(tree).map(function (label) {
         var o = { label: label, redis: false };
 
-        if (init) {
-          path = label
-          currentIteratePath = path
-        } else if (Object.keys(tree).length > 1) {
-          currentIteratePath = path + ':' + label
-        } else {
-          path = path + ':' + label
-          currentIteratePath = path
-        }
-
         if (Object.keys(tree[label]).length > 0) {
-          o.children = toTreeData(tree[label], path, false);
+          o.children = toTreeData(tree[label]);
         } else {
-          o.label = currentIteratePath
+          o.label = label
           o.redis = true
         }
 
         return o;
       });
     }
-    // array 转换成 tree object
-    var tree = {};
-    keys.forEach(function (key) {
-      var currentNode = tree;
-      key.split(':').forEach(function (segment) {
-        if (currentNode[segment] === undefined) {
-          currentNode[segment] = {};
+    /**
+     * object 转成 tree
+      [
+        {
+          "label": "a",
+          "redis": false,
+          "children": [
+            {
+              "label": "b",
+              "redis": false,
+              "children": [
+                {
+                  "label": "d"",
+                  "redis": true
+                }
+              ]
+            },
+            {
+              "label": "c",
+              "redis": true
+            }
+          ]
         }
-        currentNode = currentNode[segment];
+      ]
+     */
+    function keysToTree(keys) {
+      // array 转换成 tree object
+      var tree = {};
+      keys.forEach(function (key) {
+        var currentNode = tree;
+        key.split(':').forEach(function (segment) {
+          if (currentNode[segment] === undefined) {
+            currentNode[segment] = {};
+          }
+          currentNode = currentNode[segment];
+        });
       });
-    });
 
-    return toTreeData(tree)
+      return toTreeData(tree)
+    }
+
+    /**
+     * 格式化 tree 最后节点
+      [
+        {
+          "label": "a",
+          "redis": false,
+          "children": [
+            {
+              "label": "b",
+              "redis": false,
+              "children": [
+                {
+                  "label": "a:b:d"",
+                  "redis": true
+                }
+              ]
+            },
+            {
+              "label": "a:c",
+              "redis": true
+            }
+          ]
+        }
+      ]
+     */
+    function formatTree(tree, stack = []) {
+      if (!tree) return
+      for (let data of tree) {
+        stack.push(data.label)
+        if (data.children && data.children.length) {
+          formatTree(data.children, stack)
+        } else {
+          data.label = stack.join(':')
+        }
+        stack.pop(data.label)
+      }
+      return tree
+    }
+
+    return formatTree(keysToTree(keys))
   }
 };

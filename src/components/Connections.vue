@@ -216,7 +216,7 @@ export default {
       // tree keys 数据
       treeKeys(list){
         if(list != undefined){
-          return this.$util.keysToTree(list)
+          return this.$util.redisKeysTree(list)
         }
          return []
       },
