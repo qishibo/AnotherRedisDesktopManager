@@ -1,6 +1,8 @@
 // Modules to control application life and create native browser window
 const { app, BrowserWindow, Menu } = require('electron');
 const fontManager = require('./font-manager');
+const winState = require('./win-state');
+
 
 global.APP_ENV = (process.env.NODE_ENV === 'dev') ? 'dev' : 'production';
 
@@ -13,16 +15,23 @@ if (APP_ENV === 'production') {
 let mainWindow;
 
 function createWindow() {
+  // get last win stage
+  const lastWinStage = winState.getLastState();
+
   // Create the browser window.
   mainWindow = new BrowserWindow({
-    width: 1100,
-    height: 728,
+    x: !isNaN(lastWinStage.x) ? lastWinStage.x : null,
+    y: !isNaN(lastWinStage.y) ? lastWinStage.y : null,
+    width: lastWinStage.width ? lastWinStage.width : 1100,
+    height: lastWinStage.height ? lastWinStage.height : 728,
     icon: `${__dirname}/icons/icon.png`,
     autoHideMenuBar: true,
     webPreferences: {
       nodeIntegration: true,
     },
   });
+
+  winState.watchClose(mainWindow);
 
   // and load the index.html of the app.
   if (APP_ENV === 'production') {

@@ -1,4 +1,4 @@
-<img align="right" width="110" src="https://imgup.qii404.me/ardm_icon.png">
+<img align="right" width="110" src="https://ftp.bmp.ovh/imgs/2019/09/6be6ffd8b70fbb50.png">
 
 # Another Redis DeskTop Manager
 
@@ -7,9 +7,9 @@
 > 🚀🚀🚀 A faster, better and more stable redis desktop manager, compatible with Linux, windows, mac. What's more, it won't crash when loading a large number of keys.
 
 [![MIT](https://img.shields.io/badge/license-MIT-000000.svg)](LICENSE)
-[![Release Page](https://img.shields.io/badge/Download-Release-blue.svg)](https://github.com/qishibo/AnotherRedisDesktopManager/releases)
-[![Version](https://img.shields.io/github/release/qishibo/AnotherRedisDeskTopManager.svg?label=Release)](https://github.com/qishibo/AnotherRedisDesktopManager/releases)
-[![shiboooo](https://img.shields.io/badge/Weibo-@%E9%BD%90%E5%A3%AB%E5%8D%9A-D64943.svg)](https://weibo.com/shiboooo?is_hot=1)
+[![Download](https://img.shields.io/github/release/qishibo/AnotherRedisDeskTopManager.svg?label=Download)](https://github.com/qishibo/AnotherRedisDesktopManager/releases)
+[![Download Analysis](https://img.shields.io/badge/Download-Analysis-blue.svg)](http://qii404.me/github-release-statistics/?repo=/qishibo/AnotherRedisDesktopManager/)
+[![shiboooo](https://img.shields.io/badge/Weibo-@shiboooo-D64943.svg)](https://weibo.com/shiboooo?is_hot=1)
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fqishibo%2FAnotherRedisDesktopManager.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fqishibo%2FAnotherRedisDesktopManager?ref=badge_shield)
 
 
@@ -24,20 +24,21 @@ Download latest `AppImage` package from [release](https://github.com/qishibo/Ano
 ## Mac
 
 Download latest `dmg` package from [release](https://github.com/qishibo/AnotherRedisDesktopManager/releases) [or [gitee](https://gitee.com/qishibo/AnotherRedisDesktopManager/releases) in China], double click to install.
+<br/>Or by **brew**: `brew cask install another-redis-desktop-manager`
 
 > If **Mac** warning `Another Desktop Manager can't be opened because it is from an unidentified developer`. Open `Settings->Security` and click **`Open Anyway`**
 
-![can't be opened because it is from an unidentified developer](https://imgup.qii404.me/mac-warning.png)
+![can't be opened because it is from an unidentified developer](https://ftp.bmp.ovh/imgs/2019/09/ff0cc9593a6cdb53.png)
 
-![Settings->Security Open Anyway](https://imgup.qii404.me/blog/5d11c4feeaf6f.jpg)
+![Settings->Security Open Anyway](https://ftp.bmp.ovh/imgs/2019/09/9d3a71a834cb67db.jpg)
 
 ## Enjoy!
 
-![redis status](https://imgup.qii404.me/blog/5d11c50031d9c.jpg)
+![redis status](https://ftp.bmp.ovh/imgs/2019/09/dd3687029aaaa7f3.jpg)
 
-![redis key hash](https://imgup.qii404.me/blog/5d11c501bdb52.jpg)
+![redis key hash](https://ftp.bmp.ovh/imgs/2019/09/a2fbaa8d4e16ed58.jpg)
 
-![redis console](https://imgup.qii404.me/blog/5d11c503cf26b.jpg)
+![redis console](https://ftp.bmp.ovh/imgs/2019/09/4aa26ec4b0df9ec2.jpg)
 
 
 ## Feature Log
@@ -75,6 +76,16 @@ npm start
 npm run electron
 ```
 
+If linux errors like this:
+
+```bash
+# if error like this
+../src/FontManagerLinux.cc:1:35: fatal error: fontconfig/fontconfig.h: No such file or directory
+
+# then try this
+sudo apt install libfontconfig1-dev
+```
+
 
 ### Windows
 
@@ -108,5 +119,5 @@ npm run electron
 
 ## Support
 
-[qii404.me](https://qii404.me/)  [@shiboooo](https://weibo.com/shiboooo?is_hot=1)
+[qii404.me](http://qii404.me/)  [@shiboooo](https://weibo.com/shiboooo?is_hot=1)  [Download Analysis](http://qii404.me/github-release-statistics/?repo=/qishibo/AnotherRedisDesktopManager/)
 
