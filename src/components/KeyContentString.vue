@@ -9,7 +9,7 @@
             <el-option
               v-for="item in views"
               :key="item.value"
-              :label="item.text"
+              :label="$t(item.text)"
               :value="item.value">
             </el-option>
             <span slot="prefix" class="fa fa-sitemap"></span>
@@ -37,9 +37,9 @@ export default {
     return {
       selectedView: 'StringViewText',
       views: [
-        { value: 'StringViewText', text: 'View As Text' },
-        { value: 'StringViewJson', text: 'View As Json' },
-        { value: 'StringViewPhpUnserialize', text: 'View As PHPUnserialize' },
+        { value: 'StringViewText', text: 'message.view_as_text' },
+        { value: 'StringViewJson', text: 'message.view_as_json' },
+        { value: 'StringViewPhpUnserialize', text: 'message.view_as_phpunserialize' },
       ],
       content: '',
       newKeyParamsReference: this.newKeyParams,

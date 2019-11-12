@@ -81,6 +81,9 @@ const en = {
     font_faq: "1. Multiple fonts can be set<br>\
     2. Font selection is orderly. It is suggested to choose English font first and then font in your language<br>\
     3. When the system font list cannot be loaded in some exceptional cases, you can enter the installed font name manually.",
+    view_as_text: 'View As Text',
+    view_as_json: 'View As Json',
+    view_as_phpunserialize: 'View As PHPUnserialize',
   },
 };
 

@@ -80,6 +80,9 @@ const tw = {
     font_faq_title: '字體設定說明',
     font_faq: '1. 可以設定多個字體<br>2. 字體選擇是有分先後順序的，建議首先選擇英文字體，然後再選擇中文字體<br>\
     3. 某些異常情況無法載入系統字體列表時，可以手動輸入已安裝的字體名稱',
+    view_as_text: '文字',
+    view_as_json: 'JSON',
+    view_as_phpunserialize: 'PHP 反序列化',
   },
 };
 
