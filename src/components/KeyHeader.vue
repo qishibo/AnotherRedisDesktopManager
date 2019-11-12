@@ -166,7 +166,6 @@ export default {
   .key-detail-type {
     text-transform: capitalize;
     text-align: center;
-    width: 28px;
     display: inline-block;
   }
 </style>
