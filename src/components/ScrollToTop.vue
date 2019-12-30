@@ -7,68 +7,62 @@
 </template>
 
 <script type="text/javascript">
-  export default {
-    data() {
-      return {
-        toTopShow: false,
-        scrollTop: 0,
-        realDom: null,
-        minShowHeight: 500,
-      };
+export default {
+  data() {
+    return {
+      toTopShow: false,
+      scrollTop: 0,
+      realDom: null,
+      minShowHeight: 500,
+    };
+  },
+  props: ['dom'],
+  methods: {
+    handleScroll() {
+      this.scrollTop = this.realDom.scrollTop;
+      this.toTopShow = (this.scrollTop > this.minShowHeight);
     },
-    props: ['dom'],
-    methods: {
-      handleScroll() {
-        this.scrollTop = this.realDom.scrollTop;
-        this.toTopShow = (this.scrollTop > this.minShowHeight) ? true : false;
-      },
-      scrollToTop() {
-        let timer = null;
-        let _this = this;
+    scrollToTop() {
+      let timer = null;
+      const _this = this;
 
-        cancelAnimationFrame(timer);
+      cancelAnimationFrame(timer);
 
-        timer = requestAnimationFrame(function fn() {
-          const nowTop = _this.realDom.scrollTop;
+      timer = requestAnimationFrame(function fn() {
+        const nowTop = _this.realDom.scrollTop;
 
-          if (nowTop > 5000) {
-            _this.realDom.scrollTop -= 1000;
-            timer = requestAnimationFrame(fn);
-          }
-          else if (nowTop > 1000 && nowTop <= 5000) {
-            _this.realDom.scrollTop -= 500;
-            timer = requestAnimationFrame(fn);
-          }
-          else if (nowTop > 200 && nowTop <= 1000) {
-            _this.realDom.scrollTop -= 100;
-            timer = requestAnimationFrame(fn);
-          }
-          else if (nowTop > 50 && nowTop <= 200) {
-            _this.realDom.scrollTop -= 10;
-            timer = requestAnimationFrame(fn);
-          }
-          else if (nowTop > 0 && nowTop <= 50) {
-            _this.realDom.scrollTop -= 5;
-            timer = requestAnimationFrame(fn);
-          }
-
-          else {
-            cancelAnimationFrame(timer);
-            _this.toTopShow = false;
-          }
-        });
-      }
-    },
-    mounted() {
-      this.$nextTick(function () {
-        this.realDom = document.querySelector(this.dom);
-        this.realDom.addEventListener('scroll', this.handleScroll, true);
+        if (nowTop > 5000) {
+          _this.realDom.scrollTop -= 1000;
+          timer = requestAnimationFrame(fn);
+        } else if (nowTop > 1000 && nowTop <= 5000) {
+          _this.realDom.scrollTop -= 500;
+          timer = requestAnimationFrame(fn);
+        } else if (nowTop > 200 && nowTop <= 1000) {
+          _this.realDom.scrollTop -= 100;
+          timer = requestAnimationFrame(fn);
+        } else if (nowTop > 50 && nowTop <= 200) {
+          _this.realDom.scrollTop -= 10;
+          timer = requestAnimationFrame(fn);
+        } else if (nowTop > 0 && nowTop <= 50) {
+          _this.realDom.scrollTop -= 5;
+          timer = requestAnimationFrame(fn);
+        } else {
+          cancelAnimationFrame(timer);
+          _this.toTopShow = false;
+        }
       });
     },
-    destroyed() {
-      this.realDom.removeEventListener('scroll', this.handleScroll, true);
-    }
-  };
+  },
+  mounted() {
+    this.$nextTick(function () {
+      this.realDom = document.querySelector(this.dom);
+      this.realDom.addEventListener('scroll', this.handleScroll, true);
+    });
+  },
+  destroyed() {
+    this.realDom.removeEventListener('scroll', this.handleScroll, true);
+  },
+};
 </script>
 
 <style type="text/css">

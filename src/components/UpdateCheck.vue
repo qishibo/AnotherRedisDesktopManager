@@ -23,7 +23,7 @@ export default {
         // });
         console.log('mac updating.....');
         // return;
-      };
+      }
 
       // update checking running...
       if (this.updateChecking) {
@@ -59,7 +59,7 @@ export default {
           title: `${this.$t('message.update_available')}: ${arg.version}, ${this.$t('message.update_downloading')}`,
           dangerouslyUseHTMLString: true,
           message: arg.releaseNotes.replace(/(\<a)/ig, '$1 target="blank"'),
-          duration: 0
+          duration: 0,
         });
       });
 
@@ -84,13 +84,13 @@ export default {
 
         // this.$notify.closeAll();
         this.resetDownloadProcess();
-        const message = (arg.code === 'ERR_UPDATER_ZIP_FILE_NOT_FOUND') ?
-          this.$t('message.mac_not_support_auto_update') :
-          (this.$t('message.update_error') + ': ' + arg.code);
+        const message = (arg.code === 'ERR_UPDATER_ZIP_FILE_NOT_FOUND')
+          ? this.$t('message.mac_not_support_auto_update')
+          : (`${this.$t('message.update_error')}: ${arg.code}`);
 
         const a = this.$notify.error({
           title: message,
-          duration: 0
+          duration: 0,
         });
       });
 
@@ -112,7 +112,7 @@ export default {
           });
 
           this.downloadProcessShow = true;
-        };
+        }
 
         this.setProgressBar(Math.floor(arg.percent));
       });
@@ -125,7 +125,7 @@ export default {
         this.resetDownloadProcess();
         this.$notify.success({
           title: this.$t('message.update_downloaded'),
-          duration: 0
+          duration: 0,
         });
       });
     },

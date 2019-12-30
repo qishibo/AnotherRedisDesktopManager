@@ -11,60 +11,60 @@
 </template>
 
 <script type="text/javascript">
-    export default {
-      data() {
-        return {
-          themes: {light: 'light', dark: 'dark'},
-          triggerEvent: null,
-        };
-      },
-      props: ['items', 'clickValue', 'theme'],
-      computed: {
-        themeClass() {
-          const themeClass = this.themes[this.theme];
-          return themeClass ? themeClass : 'light';
-        },
-      },
-      methods: {
-        show($event) {
-          this.triggerEvent = $event;
-          this.showMenus($event.clientX, $event.clientY);
-          document.addEventListener("click",this.removeMenus);
-        },
-        clickItem($event, item) {
-          if (item.click) {
-            item.click(this.clickValue, this.triggerEvent, $event);
-          }
-
-          this.removeMenus();
-          this.triggerEvent = null;
-        },
-        removeMenus() {
-          document.removeEventListener("click",this.removeMenus);
-          this.hideAllMenus();
-        },
-        showMenus(x, y) {
-          this.hideAllMenus();
-
-          const menu = this.$refs.menu;
-
-          menu.style.left = x + 'px';
-          menu.style.top = (y - 5) + 'px';
-          menu.style.display = 'block';
-        },
-        hideAllMenus() {
-          let menus = document.querySelectorAll('.qii404-vue-right-menu');
-
-          if (menus.length === 0) {
-            return;
-          }
-
-          for (const menu of menus) {
-            menu.style.display='none';
-          }
-        },
-      },
+export default {
+  data() {
+    return {
+      themes: { light: 'light', dark: 'dark' },
+      triggerEvent: null,
     };
+  },
+  props: ['items', 'clickValue', 'theme'],
+  computed: {
+    themeClass() {
+      const themeClass = this.themes[this.theme];
+      return themeClass || 'light';
+    },
+  },
+  methods: {
+    show($event) {
+      this.triggerEvent = $event;
+      this.showMenus($event.clientX, $event.clientY);
+      document.addEventListener('click', this.removeMenus);
+    },
+    clickItem($event, item) {
+      if (item.click) {
+        item.click(this.clickValue, this.triggerEvent, $event);
+      }
+
+      this.removeMenus();
+      this.triggerEvent = null;
+    },
+    removeMenus() {
+      document.removeEventListener('click', this.removeMenus);
+      this.hideAllMenus();
+    },
+    showMenus(x, y) {
+      this.hideAllMenus();
+
+      const { menu } = this.$refs;
+
+      menu.style.left = `${x}px`;
+      menu.style.top = `${y - 5}px`;
+      menu.style.display = 'block';
+    },
+    hideAllMenus() {
+      const menus = document.querySelectorAll('.qii404-vue-right-menu');
+
+      if (menus.length === 0) {
+        return;
+      }
+
+      for (const menu of menus) {
+        menu.style.display = 'none';
+      }
+    },
+  },
+};
 </script>
 
 <style type="text/css">

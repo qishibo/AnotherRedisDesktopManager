@@ -106,7 +106,7 @@ export default {
     };
   },
   props: ['redisKey', 'newKeyParams'],
-  components: {PaginationTable},
+  components: { PaginationTable },
   methods: {
     initShow() {
       const key = this.newKeyParams.keyName;

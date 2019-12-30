@@ -109,14 +109,14 @@ export default {
     newKeyTab(key, type, newTab = false) {
       console.log(key, type, newTab);
 
-      const cutString = this.$util.cutString;
+      const { cutString } = this.$util;
 
-      const client      = this.$util.get('client');
+      const client = this.$util.get('client');
       const newShowName = `${cutString(key)} | ${cutString(client.options.menu_index)} | DB${client.selected_db ? client.selected_db : 0}`;
-      const newTabName  = `${key} | ${client.options.menu_index} | DB${client.selected_db ? client.selected_db : 0}`;
+      const newTabName = `${key} | ${client.options.menu_index} | DB${client.selected_db ? client.selected_db : 0}`;
 
       const newTabItem = {
-        name: newTabName, title: newShowName, redisKey: key, keyType: type, keepTab: newTab
+        name: newTabName, title: newShowName, redisKey: key, keyType: type, keepTab: newTab,
       };
 
       // no tabs

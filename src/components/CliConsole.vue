@@ -68,13 +68,9 @@ export default {
         return;
       }
 
-      const items = this.inputSuggestionItems.filter(function (item) {
-        return item.indexOf(input) !== -1;
-      });
+      const items = this.inputSuggestionItems.filter(item => item.indexOf(input) !== -1);
 
-      const suggestions = [...new Set(items)].map(function (item) {
-        return {value: item};
-      });
+      const suggestions = [...new Set(items)].map(item => ({ value: item }));
 
       cb(suggestions);
     },
@@ -115,7 +111,7 @@ export default {
 
       if (params === 'multi') {
         this.multiClient = this.$util.get('client').multi();
-        this.cliContent.content += "OK\n";
+        this.cliContent.content += 'OK\n';
 
         this.scrollToBottom();
 
@@ -136,7 +132,7 @@ export default {
       }
 
       if (this.multiClient && (params !== 'exec')) {
-        this.cliContent.content += "QUEUED\n";
+        this.cliContent.content += 'QUEUED\n';
         this.scrollToBottom();
 
         return;
@@ -175,21 +171,17 @@ export default {
 
       if (result === null) {
         append = `${null}\n`;
-      }
-      else if (typeof result === 'object') {
+      } else if (typeof result === 'object') {
         const isArray = !isNaN(result.length);
 
         for (const i in result) {
           if (typeof result[i] === 'object') {
             append += this.resolveResult(result[i]);
-          }
-
-          else {
+          } else {
             append += `${(isArray ? '' : (`${i}\n`)) + result[i]}\n`;
           }
         }
-      }
-      else {
+      } else {
         append = `${result}\n`;
       }
 
@@ -257,15 +249,13 @@ export default {
       }
 
       if (connection.sshOptions) {
-        let sshPromise = redisClient.createSSHConnection(connection.sshOptions, connection.host, connection.port, connection.auth);
+        const sshPromise = redisClient.createSSHConnection(connection.sshOptions, connection.host, connection.port, connection.auth);
 
         sshPromise.then((client) => {
           this.$util.set('client', client);
         });
-      }
-
-      else {
-        let client = redisClient.createConnection(connection.host, connection.port, connection.auth);
+      } else {
+        const client = redisClient.createConnection(connection.host, connection.port, connection.auth);
         this.$util.set('client', client);
       }
     },

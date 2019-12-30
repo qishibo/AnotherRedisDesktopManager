@@ -82,7 +82,7 @@ export default {
         name: '',
         sshOptions: {
           port: 22,
-        }
+        },
       },
       sshOptionsShow: false,
     };

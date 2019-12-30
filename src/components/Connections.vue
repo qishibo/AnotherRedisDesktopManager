@@ -212,7 +212,7 @@ export default {
       sshOptionsShow: false,
     };
   },
-  components: {RightClickMenu},
+  components: { RightClickMenu },
   created() {
     this.$bus.$on('refreshKeyList', (key) => {
       const client = this.$util.get('client');
@@ -254,7 +254,7 @@ export default {
       // ssh tunnel promise client
       if (typeof client.then === 'function') {
         client.then((realClient) => {
-            this.afterOpenConnection(realClient, menuIndex, connection);
+          this.afterOpenConnection(realClient, menuIndex, connection);
         });
       }
 
@@ -289,8 +289,7 @@ export default {
 
         if (reply[1]) {
           this.$set(this.dbs, menuIndex, [...Array(parseInt(reply[1])).keys()]);
-        }
-        else {
+        } else {
           this.$set(this.dbs, menuIndex, [...Array(16).keys()]);
         }
       }).catch((err) => {
@@ -305,12 +304,12 @@ export default {
       if (!client) {
         // ssh tunnel
         if (connection.sshOptions) {
-          let sshPromise = redisClient.createSSHConnection(connection.sshOptions, connection.host, connection.port, connection.auth, menuIndex);
+          const sshPromise = redisClient.createSSHConnection(connection.sshOptions, connection.host, connection.port, connection.auth, menuIndex);
 
           sshPromise.then((client) => {
             client.on('error', (err) => {
               this.$message.error({
-                message: 'SSH Redis Client On Error: ' + err,
+                message: `SSH Redis Client On Error: ${err}`,
                 duration: 3000,
               });
 
@@ -324,20 +323,19 @@ export default {
           return sshPromise;
         }
 
-        else {
-          client = redisClient.createConnection(connection.host, connection.port, connection.auth, menuIndex);
 
-          client.on('error', (err) => {
-            this.$message.error({
-              message: 'Redis Client On Error: ' + err,
-              duration: 3000,
-            });
+        client = redisClient.createConnection(connection.host, connection.port, connection.auth, menuIndex);
 
-            this.closeAllConnection();
+        client.on('error', (err) => {
+          this.$message.error({
+            message: `Redis Client On Error: ${err}`,
+            duration: 3000,
           });
 
-          this.connectionPool[menuIndex] = client;
-        }
+          this.closeAllConnection();
+        });
+
+        this.connectionPool[menuIndex] = client;
       }
 
       // set global client
@@ -346,7 +344,7 @@ export default {
       return client;
     },
     refreshConnection(menuIndex) {
-      let client = this.connectionPool[menuIndex];
+      const client = this.connectionPool[menuIndex];
 
       if (!client) {
         return;
@@ -382,17 +380,17 @@ export default {
 
         this.editConnectionDialog = true;
         this.beforeEditData = oldConnection;
-        this.sshOptionsShow = oldConnection.sshOptions ? true : false;
+        this.sshOptionsShow = !!oldConnection.sshOptions;
 
         this.afterEditData = JSON.parse(JSON.stringify(oldConnection));
-        !this.afterEditData.sshOptions && (this.afterEditData.sshOptions = {port: 22});
+        !this.afterEditData.sshOptions && (this.afterEditData.sshOptions = { port: 22 });
         delete this.afterEditData.menuIndex;
       }).catch((_) => {});
     },
     editConnection() {
       console.log('edit connection', this.beforeEditData, this.afterEditData);
 
-      let afterEditData = JSON.parse(JSON.stringify(this.afterEditData));
+      const afterEditData = JSON.parse(JSON.stringify(this.afterEditData));
 
       if (!this.sshOptionsShow || !afterEditData.sshOptions.host) {
         delete afterEditData.sshOptions;
@@ -479,7 +477,7 @@ export default {
     },
     hightKey(event) {
       for (const ele of document.querySelectorAll('.key-select')) {
-        ele.classList.remove("key-select");
+        ele.classList.remove('key-select');
       }
 
       if (event) {
@@ -601,7 +599,7 @@ export default {
       this.resetDb(menuIndex);
       this.setGlobalConnection(menuIndex);
 
-      let promise = this.refreshKeyList();
+      const promise = this.refreshKeyList();
 
       promise.then(() => {
         this.$message.success({
@@ -716,7 +714,6 @@ export default {
       this.changeDbTo(client.options.menu_index, client.selected_db);
     },
     changeDbTo(menuIndex, dbIndex) {
-
       if (!menuIndex || isNaN(dbIndex)) {
         return true;
       }

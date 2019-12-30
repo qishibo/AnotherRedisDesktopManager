@@ -108,7 +108,7 @@ export default {
       editLineItem: {},
     };
   },
-  components: {PaginationTable},
+  components: { PaginationTable },
   props: ['redisKey', 'newKeyParams'],
   methods: {
     initShow() {

@@ -23,7 +23,7 @@ export default {
       return string;
     }
 
-    return string.substr(0, maxLength) + '...';
+    return `${string.substr(0, maxLength)}...`;
   },
   openHrefExternal(e, href) {
     e.preventDefault();

@@ -47,14 +47,15 @@ export default {
       this.initFont();
     });
   },
-  components: {Header, Aside, Command, Tabs, ScrollToTop, UpdateCheck},
+  components: {
+    Header, Aside, Command, Tabs, ScrollToTop, UpdateCheck,
+  },
   methods: {
     bindSideBarDrag() {
       const that = this;
       const dragPointer = document.getElementById('drag-resize-pointer');
 
-      function mousemove(e)
-      {
+      function mousemove(e) {
         const mouseX = e.x;
         const dragSideWidth = mouseX - 19;
 
@@ -63,8 +64,7 @@ export default {
         }
       }
 
-      function mouseup(e)
-      {
+      function mouseup(e) {
         document.documentElement.removeEventListener('mousemove', mousemove);
         document.documentElement.removeEventListener('mouseup', mouseup);
       }
@@ -77,9 +77,9 @@ export default {
       });
     },
     openHrefInBrowser() {
-      const shell = require('electron').shell;
+      const { shell } = require('electron');
 
-      document.addEventListener('click', function (event) {
+      document.addEventListener('click', (event) => {
         const ele = event.target;
 
         if (ele && (ele.nodeName.toLowerCase() === 'a') && ele.href.startsWith('http')) {
@@ -93,8 +93,8 @@ export default {
 
       !fontFamily && (fontFamily = [this.fontFamily]);
 
-      this.fontFamily = fontFamily.map((line) => {return `"${line}"`}).join(',');
-    }
+      this.fontFamily = fontFamily.map(line => `"${line}"`).join(',');
+    },
   },
   mounted() {
     setTimeout(() => {

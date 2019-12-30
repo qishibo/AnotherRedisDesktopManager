@@ -80,7 +80,7 @@ import { ipcRenderer } from 'electron';
 export default {
   data() {
     return {
-      form: {fontFamily: ''},
+      form: { fontFamily: '' },
       importConnectionVisible: false,
       connectionFileContent: '',
       appVersion: (new URL(window.location.href)).searchParams.get('version'),
@@ -175,9 +175,7 @@ export default {
       ipcRenderer.on('send-all-fonts', (event, arg) => {
         console.log('get-all-fonts...', arg);
 
-        const fonts = arg.map((line) => {
-          return line.family;
-        });
+        const fonts = arg.map(line => line.family);
 
         fonts.sort();
         fonts.unshift('Default Initial');

@@ -64,9 +64,7 @@ export default {
         // character not visible
         if (!this.$util.isVisible(reply)) {
           this.content = this.$util.toUTF8(reply);
-        }
-
-        else {
+        } else {
           this.content = reply;
         }
       });

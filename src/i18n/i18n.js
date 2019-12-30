@@ -5,10 +5,12 @@ import locale from 'element-ui/lib/locale';
 import enLocale from 'element-ui/lib/locale/lang/en';
 import zhLocale from 'element-ui/lib/locale/lang/zh-CN';
 import zhTwLocale from 'element-ui/lib/locale/lang/zh-TW';
+import koLocale from 'element-ui/lib/locale/lang/ko';
 
 import en from './langs/en';
 import cn from './langs/cn';
 import tw from './langs/tw';
+import ko from './langs/ko';
 
 Vue.use(VueI18n);
 
@@ -24,6 +26,10 @@ const messages = {
   tw: {
     ...tw,
     ...zhTwLocale,
+  },
+  ko: {
+    ...ko,
+    ...koLocale,
   },
 };
 
