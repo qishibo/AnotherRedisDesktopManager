@@ -40,6 +40,7 @@ export default {
         { value: 'en', label: 'English' },
         { value: 'cn', label: '简体中文' },
         { value: 'tw', label: '繁體中文（臺灣）' },
+        { value: 'ko', label: '한국어' },
       ],
       cliDialog: { visible: false },
       settingDialog: { visible: false },
