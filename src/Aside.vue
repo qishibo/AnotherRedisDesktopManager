@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <div>
+  <div id="1">
+    <div id="2">
 
       <!-- new connection button -->
       <div class="aside-new-connection-container">

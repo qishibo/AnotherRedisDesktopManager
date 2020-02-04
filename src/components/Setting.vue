@@ -3,11 +3,13 @@
   <el-dialog :title="$t('message.settings')" :visible.sync="settingDialog.visible">
     <el-form label-position="top" size="mini">
 
+      <!-- connections -->
       <el-form-item :label="$t('message.config_connections')">
         <el-button icon="el-icon-upload2" @click="exportConnection">{{ $t('message.export') }}</el-button>
         <el-button icon="el-icon-download" @click="showImportDialog">{{ $t('message.import') }}</el-button>
       </el-form-item>
 
+      <!-- font-family -->
       <el-form-item :label="$t('message.font_family')">
         <span slot="label">
           {{ $t('message.font_family') }}
@@ -15,32 +17,39 @@
             placement="top-start"
             :title="$t('message.font_faq_title')"
             width="200"
-            trigger="hover"
-            >
+            trigger="hover">
             <i slot="reference" class="el-icon-question"></i>
             <p v-html="$t('message.font_faq')"></p>
             <a href="###" @click="$util.openHrefExternal($event, 'https://developer.mozilla.org/docs/Web/CSS/font-family')">font-family</a>
           </el-popover>
           <i v-if="loadingFonts" class="el-icon-loading"></i>
         </span>
+
+        <!-- font-family select -->
         <el-select v-model="form.fontFamily" @visible-change="getAllFonts" allow-create default-first-option filterable multiple >
           <el-option
             v-for="(font, index) in allFonts"
             :key="index"
             :label="font"
-            :value="font"
-            :style="{'font-family': font}"
-            >
+            :value="font">
+            <!-- for better performance, do not display font-family -->
+            <!-- :style="{'font-family': font}"> -->
           </el-option>
         </el-select>
       </el-form-item>
 
+      <!-- current version -->
       <el-form-item :label="$t('message.pre_version')">
         <el-tag type="info">{{ appVersion }}</el-tag>
-        <!-- <small><a style="color: grey" href="###" @click="checkUpdate">{{ $t('message.check_update') }}</a></small> -->
-        <small><a style="color: grey" href="https://github.com/qishibo/AnotherRedisDesktopManager/releases" target="blank">{{ $t('message.manual_update') }}</a></small>
+        <small>
+          <a style="color: grey" href="###" @click.stop.prevent="checkUpdate">{{ $t('message.check_update') }}</a>
+        </small>
+        <small>
+          <a style="color: grey" href="https://github.com/qishibo/AnotherRedisDesktopManager/releases" target="blank">{{ $t('message.manual_update') }}</a>
+        </small>
       </el-form-item>
 
+      <!-- import file dialog -->
       <el-dialog
         width="400px"
         :title="$t('message.select_import_file')"
@@ -63,7 +72,6 @@
           <el-button @click="importConnnection">{{ $t('el.messagebox.confirm') }}</el-button>
         </div>
       </el-dialog>
-
     </el-form>
 
     <div slot="footer" class="dialog-footer">
@@ -84,9 +92,7 @@ export default {
       importConnectionVisible: false,
       connectionFileContent: '',
       appVersion: (new URL(window.location.href)).searchParams.get('version'),
-      electronVersion: process.versions.electron,
-      downloadShow: false,
-      downloadProgress: 0,
+      // electronVersion: process.versions.electron,
       allFonts: [],
       loadingFonts: false,
     };
@@ -109,8 +115,6 @@ export default {
     },
     saveSettings() {
       const settings = JSON.stringify(this.form);
-      console.log('saving settings...', settings);
-
       localStorage.setItem('settings', settings);
 
       this.settingDialog.visible = false;
@@ -167,14 +171,15 @@ export default {
       URL.revokeObjectURL(blob);
     },
     checkUpdate() {
+      this.$message.info({
+        message: `${this.$t('message.update_checking')}`,
+        duration: 1500,
+      });
+
       this.$bus.$emit('update-check');
     },
     bindGetAllFonts() {
-      console.log('binding get all fonts...');
-
       ipcRenderer.on('send-all-fonts', (event, arg) => {
-        console.log('get-all-fonts...', arg);
-
         const fonts = arg.map((line) => {
           return line.family;
         });

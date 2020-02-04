@@ -14,29 +14,13 @@ export default {
   },
   created() {
     this.$bus.$on('update-check', () => {
-      // mac dose not support auto update now
-      if (process.platform === 'darwin') {
-        // this.$notify.closeAll();
-        // this.$notify.error({
-        //   title: this.$t('message.mac_not_support_auto_update'),
-        //   duration: 3000
-        // });
-        console.log('mac updating.....');
-        // return;
-      };
-
       // update checking running...
       if (this.updateChecking) {
-        console.log('already checking running...');
         return;
       }
 
       this.updateChecking = true;
       this.$notify.closeAll();
-      // this.$notify({
-      //   title: this.$t('message.update_checking'),
-      //   duration: 0
-      // });
 
       ipcRenderer.send('update-check');
     });
@@ -51,11 +35,8 @@ export default {
       ipcRenderer.binded = true;
 
       ipcRenderer.on('update-available', (event, arg) => {
-        console.log('update-available', arg);
-
         this.$notify.closeAll();
         this.$notify({
-          // title: this.$t('message.update_available') + ', ' + this.$t('message.update_downloading'),
           title: `${this.$t('message.update_available')}: ${arg.version}, ${this.$t('message.update_downloading')}`,
           dangerouslyUseHTMLString: true,
           message: arg.releaseNotes.replace(/(\<a)/ig, '$1 target="blank"'),
@@ -64,19 +45,11 @@ export default {
       });
 
       ipcRenderer.on('update-not-available', (event, arg) => {
-        console.log('update-not-available', arg);
-
         this.$notify.closeAll();
         this.resetDownloadProcess();
-        // this.$notify.success({
-        //   title: this.$t('message.update_not_available') + ' ' + arg.version,
-        //   duration: 3000
-        // });
       });
 
       ipcRenderer.on('update-error', (event, arg) => {
-        console.log('update-error', arg);
-
         // due to net problems
         if (!arg.code) {
           return;
@@ -95,8 +68,6 @@ export default {
       });
 
       ipcRenderer.on('download-progress', (event, arg) => {
-        console.log('download-progress', arg);
-
         if (!this.downloadProcessShow) {
           const h = this.$createElement;
 
@@ -118,8 +89,6 @@ export default {
       });
 
       ipcRenderer.on('update-downloaded', (event, arg) => {
-        console.log('update-downloaded', arg);
-
         // this.$notify.closeAll();
         this.setProgressBar(100);
         this.resetDownloadProcess();

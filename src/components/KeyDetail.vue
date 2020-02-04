@@ -1,12 +1,11 @@
 <template>
   <div>
-    <el-container direction="vertical">
-      <el-main>
-        <KeyHeader ref="keyHeader" :redisKey="redisKey" :keyType="keyType" :newKeyParams = "newKeyParams"></KeyHeader>
-      </el-main>
-      <el-main >
-        <component ref="keyContent" :is="componentName" :redisKey="redisKey" :newKeyParams = "newKeyParams"></component>
-      </el-main>
+    <el-container direction="vertical" class="key-tab-container">
+      <!-- key info -->
+      <KeyHeader ref="keyHeader" :redisKey="redisKey" :keyType="keyType" :syncKeyParams = "syncKeyParams" class="key-header-info"></KeyHeader>
+
+      <!-- key content -->
+      <component ref="keyContent" :is="componentName" :redisKey="redisKey" :syncKeyParams = "syncKeyParams" class="key-content-container"></component>
     </el-container>
   </div>
 </template>
@@ -18,12 +17,11 @@ import KeyContentHash from '@/components/KeyContentHash';
 import KeyContentSet from '@/components/KeyContentSet';
 import KeyContentZset from '@/components/KeyContentZset';
 import KeyContentList from '@/components/KeyContentList';
-import Status from '@/components/Status';
 
 export default {
   data() {
     return {
-      newKeyParams: { keyTTL: '', keyName: this.redisKey },
+      syncKeyParams: { keyTTL: '', keyName: this.redisKey },
     };
   },
   props: ['redisKey', 'keyType'],
@@ -37,7 +35,7 @@ export default {
     });
   },
   components: {
-    KeyHeader, KeyContentString, KeyContentHash, KeyContentSet, KeyContentZset, KeyContentList, Status,
+    KeyHeader, KeyContentString, KeyContentHash, KeyContentSet, KeyContentZset, KeyContentList
   },
   computed: {
     componentName() {
@@ -46,31 +44,17 @@ export default {
   },
   methods: {
     getComponentNameByType(keyType) {
-      let componentName = '';
+      const map = {
+        'string': 'KeyContentString',
+        'hash': 'KeyContentHash',
+        'zset': 'KeyContentZset',
+        'set': 'KeyContentSet',
+        'list': 'KeyContentList',
+      };
 
-      switch (keyType) {
-        case 'string':
-          componentName = 'KeyContentString';
-          break;
-        case 'hash':
-          componentName = 'KeyContentHash';
-          break;
-        case 'zset':
-          componentName = 'KeyContentZset';
-          break;
-        case 'set':
-          componentName = 'KeyContentSet';
-          break;
-        case 'list':
-          componentName = 'KeyContentList';
-          break;
-      }
-
-      return componentName;
+      return map[keyType];
     },
     refreshAfterAdd(key) {
-      console.log('refreshing after add new key...', key);
-
       this.$bus.$emit('clickedKey', key);
       this.$bus.$emit('refreshKeyList');
     },
@@ -83,14 +67,19 @@ export default {
       this.$refs.keyHeader.$refs.keyNameInput.focus();
     },
   },
-
-  beforeDestroy() {
-    // this.$bus.$off('refreshKey');
-  },
 };
 </script>
 
 <style type="text/css">
+  .key-tab-container {
+    padding-left: 5px;
+  }
+  .key-header-info {
+    margin-top: 15px;
+  }
+  .key-content-container {
+    margin-top: 15px;
+  }
   .key-detail-filter-value {
     width: 60%;
     height: 24px;

@@ -1,7 +1,6 @@
 <template>
   <div>
     <div>
-
       <!-- add button -->
       <el-form :inline="true" size="small">
         <el-form-item>
@@ -70,9 +69,7 @@
         >
       </el-table-column>
 
-      <el-table-column
-        label="Operation"
-        >
+      <el-table-column label="Operation">
         <template slot="header" slot-scope="scope">
           <input
             class="el-input__inner key-detail-filter-value"
@@ -85,7 +82,6 @@
           <el-button type="text" @click="deleteLine(scope.row)" icon="el-icon-delete" circle></el-button>
         </template>
       </el-table-column>
-
     </PaginationTable>
   </div>
 </template>
@@ -105,27 +101,22 @@ export default {
       editLineItem: {},
     };
   },
-  props: ['redisKey', 'newKeyParams'],
+  props: ['redisKey', 'syncKeyParams'],
   components: {PaginationTable},
   methods: {
     initShow() {
-      const key = this.newKeyParams.keyName;
-      const client = this.$util.get('client');
+      const key = this.syncKeyParams.keyName;
 
       if (!key) {
         return;
       }
 
-      client.zrangeAsync([key, 0, -1, 'WITHSCORES']).then((reply) => {
-        console.log(reply);
-
+      this.$util.get('client').zrangeAsync([key, 0, -1, 'WITHSCORES']).then((reply) => {
         const zsetData = [];
         const { length } = reply;
 
-        for (let i = 0; i < (length - 1); i++) {
-          if (!(i % 2)) {
-            zsetData.push({ member: reply[i], score: reply[i + 1] });
-          }
+        for (var i = 0; i < length; i+=2) {
+          zsetData.push({ member: reply[i], score: reply[i + 1] });
         }
 
         this.zsetData = zsetData;
@@ -137,21 +128,16 @@ export default {
       this.editDialog = true;
     },
     editLine() {
-      const key = this.newKeyParams.keyName;
+      const key = this.syncKeyParams.keyName;
       const client = this.$util.get('client');
 
       const before = this.beforeEditItem;
       const after = this.editLineItem;
 
-      console.log('editing...', before, after);
-
       client.zaddAsync(key, after.score, after.member).then((reply) => {
-        console.log('zadd...', reply);
-
         // member changed
         if (after.member !== before.member) {
           client.zremAsync(key, before.member).then((reply) => {
-            console.log('member changed, zrem...', reply);
             this.initShow();
           });
         } else {
@@ -170,12 +156,9 @@ export default {
       this.$confirm(this.$t('message.confirm_to_delete_row_data'), {
         type: 'warning',
       }).then(() => {
-        const key = this.newKeyParams.keyName;
-        const client = this.$util.get('client');
+        const key = this.syncKeyParams.keyName;
 
-        client.zremAsync(key, row.member).then((reply) => {
-          console.log(reply);
-
+        this.$util.get('client').zremAsync(key, row.member).then((reply) => {
           if (reply === 1) {
             this.$message.success({
               message: `${row.member} ${this.$t('message.delete_success')}`,
@@ -188,16 +171,14 @@ export default {
       });
     },
     addLine() {
-      console.log('add line', this.newLineItem);
-
-      const key = this.newKeyParams.keyName;
-      const ttl = this.newKeyParams.keyTTL;
+      const key = this.syncKeyParams.keyName;
+      const ttl = this.syncKeyParams.keyTTL;
       const client = this.$util.get('client');
 
       this.dialogFormVisible = false;
 
       if (!key) {
-        this.$parent.$parent.$parent.emptyKeyWhenAdding();
+        this.$parent.$parent.emptyKeyWhenAdding();
         return false;
       }
 
@@ -206,12 +187,8 @@ export default {
       }
 
       client.zaddAsync(key, this.newLineItem.score, this.newLineItem.member).then((reply) => {
-        console.log(reply);
-
         if (ttl > 0) {
-          client.expireAsync(key, ttl).then((reply) => {
-            console.log(`new list key set ttl ${ttl}`, reply);
-          });
+          client.expireAsync(key, ttl).then((reply) => {});
         }
 
         this.$message.success({
@@ -219,8 +196,8 @@ export default {
           duration: 1000,
         });
 
-        this.$parent.$parent.$parent.refreshAfterAdd(key);
-        this.initShow();
+        // if in new key mode, exec refreshAfterAdd
+        this.redisKey ? this.initShow() : this.$parent.$parent.refreshAfterAdd(key);
       });
     },
   },

@@ -26,11 +26,11 @@ export default {
     };
   },
   components: { VueJsonPretty },
-  props: ['data'],
+  // props: ['data'],
   computed: {
     newContent() {
       try {
-        return JSON.parse(this.data.content);
+        return JSON.parse(this.$parent.$data.content);
       } catch (e) {
         return this.$t('message.json_format_failed');
       }

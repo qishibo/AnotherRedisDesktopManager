@@ -1,21 +1,28 @@
 <template>
   <el-container class="wrap-container" :style="{'font-family': fontFamily}">
 
+    <!-- left aside draggable container -->
     <div class="aside-drag-container" :style="{width: sideWidth + 'px'}">
+      <!-- connections -->
       <el-aside class="aside-connection">
         <Aside></Aside>
       </el-aside>
+
+      <!-- drag area -->
       <div id="drag-resize-container">
         <div id="drag-resize-pointer"></div>
       </div>
     </div>
 
+    <!-- right main container -->
     <el-container>
+      <!-- top setting header -->
       <el-header class="main-header">
         <Header></Header>
       </el-header>
+
+      <!-- tab container -->
       <el-main>
-        <!-- <router-view/> -->
         <Tabs></Tabs>
       </el-main>
     </el-container>
@@ -29,7 +36,6 @@
 <script>
 import Header from './Header';
 import Aside from './Aside';
-import Command from '@/components/Command';
 import Tabs from '@/components/Tabs';
 import ScrollToTop from '@/components/ScrollToTop';
 import UpdateCheck from '@/components/UpdateCheck';
@@ -47,7 +53,7 @@ export default {
       this.initFont();
     });
   },
-  components: {Header, Aside, Command, Tabs, ScrollToTop, UpdateCheck},
+  components: {Header, Aside, Tabs, ScrollToTop, UpdateCheck},
   methods: {
     bindSideBarDrag() {
       const that = this;
@@ -90,7 +96,6 @@ export default {
     },
     initFont() {
       let fontFamily = this.$storage.getSetting('fontFamily');
-
       !fontFamily && (fontFamily = [this.fontFamily]);
 
       this.fontFamily = fontFamily.map((line) => {return `"${line}"`}).join(',');
@@ -132,15 +137,15 @@ button, input, textarea, .vjs__tree {
   background: #eaeaea;
   border-radius: 4px;
 }
-/*::-webkit-scrollbar-track:hover {
-  background: #eaeaea;
-}*/
+::-webkit-scrollbar-track:hover {
+  background: #e0e0dd;
+}
 ::-webkit-scrollbar-thumb {
   border-radius: 8px;
-  background: #C1C1C1;
+  background: #c1c1c1;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #555;
+  background: #7d7d7d;
 }
 
 .wrap-container {

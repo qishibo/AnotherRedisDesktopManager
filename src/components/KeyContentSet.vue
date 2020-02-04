@@ -1,7 +1,6 @@
 <template>
   <div>
     <div>
-
       <!-- add button -->
       <el-form :inline="true" size="small">
         <el-form-item>
@@ -52,13 +51,10 @@
         resizable
         sortable
         show-overflow-tooltip
-        label="Value"
-        >
+        label="Value">
       </el-table-column>
 
-      <el-table-column
-        label="Operation"
-        >
+      <el-table-column label="Operation">
         <template slot="header" slot-scope="scope">
           <input
             class="el-input__inner key-detail-filter-value"
@@ -71,7 +67,6 @@
           <el-button type="text" @click="deleteLine(scope.row)" icon="el-icon-delete" circle></el-button>
         </template>
       </el-table-column>
-
     </PaginationTable>
   </div>
 </template>
@@ -91,20 +86,17 @@ export default {
       editLineItem: {},
     };
   },
-  props: ['redisKey', 'newKeyParams'],
+  props: ['redisKey', 'syncKeyParams'],
   components: {PaginationTable},
   methods: {
     initShow() {
-      const key = this.newKeyParams.keyName;
-      const client = this.$util.get('client');
+      const key = this.syncKeyParams.keyName;
 
       if (!key) {
         return;
       }
 
-      client.smembersAsync(key).then((reply) => {
-        console.log(reply);
-
+      this.$util.get('client').smembersAsync(key).then((reply) => {
         const setData = [];
 
         for (const i of reply) {
@@ -120,19 +112,14 @@ export default {
       this.editDialog = true;
     },
     editLine() {
-      const key = this.newKeyParams.keyName;
+      const key = this.syncKeyParams.keyName;
       const client = this.$util.get('client');
 
       const before = this.beforeEditItem;
       const after = this.editLineItem;
 
-      console.log('editing...', before, after);
-
       client.sremAsync(key, before.value).then((reply) => {
-        console.log('srem...', reply);
-
         client.saddAsync(key, after.value).then((reply) => {
-          console.log('sadd...', reply);
           this.initShow();
         });
       });
@@ -148,12 +135,9 @@ export default {
       this.$confirm(this.$t('message.confirm_to_delete_row_data'), {
         type: 'warning',
       }).then(() => {
-        const key = this.newKeyParams.keyName;
-        const client = this.$util.get('client');
+        const key = this.syncKeyParams.keyName;
 
-        client.sremAsync(key, row.value).then((reply) => {
-          console.log(reply);
-
+        this.$util.get('client').sremAsync(key, row.value).then((reply) => {
           if (reply === 1) {
             this.$message.success({
               message: this.$t('message.delete_success'),
@@ -166,16 +150,14 @@ export default {
       });
     },
     addLine() {
-      console.log('add line', this.newLineItem);
-
-      const key = this.newKeyParams.keyName;
-      const ttl = this.newKeyParams.keyTTL;
+      const key = this.syncKeyParams.keyName;
+      const ttl = this.syncKeyParams.keyTTL;
       const client = this.$util.get('client');
 
       this.dialogFormVisible = false;
 
       if (!key) {
-        this.$parent.$parent.$parent.emptyKeyWhenAdding();
+        this.$parent.$parent.emptyKeyWhenAdding();
         return false;
       }
 
@@ -184,28 +166,25 @@ export default {
       }
 
       client.saddAsync(key, this.newLineItem.value).then((reply) => {
-        console.log(reply);
-
         if (reply === 1) {
           if (ttl > 0) {
-            client.expireAsync(key, ttl).then((reply) => {
-              console.log(`new list key set ttl ${ttl}`, reply);
-            });
+            client.expireAsync(key, ttl).then((reply) => {});
           }
 
           this.$message.success({
             message: this.$t('message.add_success'),
             duration: 1000,
           });
-        } else if (reply === 0) {
+        }
+        else if (reply === 0) {
           this.$message.error({
             message: this.$t('message.value_exists'),
             duration: 1000,
           });
         }
 
-        this.$parent.$parent.$parent.refreshAfterAdd(key);
-        this.initShow();
+        // if in new key mode, exec refreshAfterAdd
+        this.redisKey ? this.initShow() : this.$parent.$parent.refreshAfterAdd(key);
       });
     },
   },
