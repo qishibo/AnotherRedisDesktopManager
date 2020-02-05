@@ -1,7 +1,6 @@
 <template>
     <el-dialog class="cli-dailog" fullscreen :title="consoleTitle()" @opened="openConsole" @close="closeConsole" :visible.sync="cliDialog.visible">
       <el-form @submit.native.prevent>
-
         <el-form-item>
           <el-input id="cli-content" type="textarea" v-model="cliContent.content" rows='25' :disabled="true" class="cli-content-textarea"></el-input>
 
@@ -17,23 +16,10 @@
             @keyup.enter.native="consoleExec"
             ref="cliParams"
             @keyup.up.native="searchUp"
-            @keyup.down.native="searchDown"
-          >
+            @keyup.down.native="searchDown">
           </el-autocomplete>
 
- <!--          <el-input
-            class="input-suggestion"
-            autocomplete="off"
-            v-model="cliContent.params"
-            :placeholder="$t('message.enter_to_exec')"
-            @keyup.enter.native="consoleExec"
-            ref="cliParams"
-            @keyup.up.native="searchUp"
-            @keyup.down.native="searchDown"
-          >
-          </el-input> -->
         </el-form-item>
-
       </el-form>
 
       <div slot="footer" class="dialog-footer">
@@ -52,7 +38,6 @@ export default {
   data() {
     return {
       cliContent: { content: '', params: '' },
-      // inputSuggestionItems: new Set(),
       inputSuggestionItems: [],
       historyIndex: 0,
       multiClient: null,
@@ -113,6 +98,7 @@ export default {
         return;
       }
 
+      // multi-exec mode
       if (params === 'multi') {
         this.multiClient = this.$util.get('client').multi();
         this.cliContent.content += "OK\n";
@@ -279,16 +265,6 @@ export default {
       this.cliContent.content += `> ${client.options.host} connected!\n`;
       this.scrollToBottom();
     },
-    keyUpFocus() {
-      this.$refs.cliParams && this.$refs.cliParams.focus();
-    },
-  },
-  mounted() {
-    // this.initDefaultConnection();
-    // document.body.addEventListener('keyup', this.keyUpFocus);
-  },
-  destroyed() {
-    // document.body.removeEventListener('keyup', this.keyUpFocus);
   },
 };
 </script>

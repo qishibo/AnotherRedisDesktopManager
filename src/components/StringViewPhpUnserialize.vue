@@ -31,7 +31,7 @@ export default {
   computed: {
     newContent() {
       try {
-        return unserialize(this.data.content);
+        return unserialize(this.$parent.$data.content);
       } catch (e) {
         return this.$t('message.php_unserialize_format_failed');
       }

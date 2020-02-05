@@ -1,7 +1,6 @@
 <template>
   <div>
     <div>
-
       <!-- add button -->
       <el-form :inline="true" size="small">
         <el-form-item>
@@ -36,7 +35,6 @@
           <el-button type="primary" @click="editLine">{{ $t('el.messagebox.confirm') }}</el-button>
         </div>
       </el-dialog>
-
     </div>
 
     <!-- content table -->
@@ -52,13 +50,10 @@
         resizable
         sortable
         show-overflow-tooltip
-        label="Value"
-        >
+        label="Value">
       </el-table-column>
 
-      <el-table-column
-        label="Operation"
-        >
+      <el-table-column label="Operation">
         <template slot="header" slot-scope="scope">
           <input
             class="el-input__inner key-detail-filter-value"
@@ -71,7 +66,6 @@
           <el-button type="text" @click="deleteLine(scope.row)" icon="el-icon-delete" circle></el-button>
         </template>
       </el-table-column>
-
     </PaginationTable>
   </div>
 </template>
@@ -91,20 +85,17 @@ export default {
       editLineItem: {},
     };
   },
-  props: ['redisKey', 'newKeyParams'],
+  props: ['redisKey', 'syncKeyParams'],
   components: {PaginationTable},
   methods: {
     initShow() {
-      const key = this.newKeyParams.keyName;
-      const client = this.$util.get('client');
+      const key = this.syncKeyParams.keyName;
 
       if (!key) {
         return;
       }
 
-      client.lrangeAsync([key, 0, -1]).then((reply) => {
-        console.log(reply);
-
+      this.$util.get('client').lrangeAsync([key, 0, -1]).then((reply) => {
         const listData = [];
 
         for (const i of reply) {
@@ -120,19 +111,14 @@ export default {
       this.editDialog = true;
     },
     editLine() {
-      const key = this.newKeyParams.keyName;
+      const key = this.syncKeyParams.keyName;
       const client = this.$util.get('client');
 
       const before = this.beforeEditItem;
       const after = this.editLineItem;
 
-      console.log('editing...', before, after);
-
       client.lremAsync(key, 1, before.value).then((reply) => {
-        console.log('lrem...', reply);
-
         client.rpushAsync(key, after.value).then((reply) => {
-          console.log('rpush...', reply);
           this.initShow();
         });
       });
@@ -148,12 +134,9 @@ export default {
       this.$confirm(this.$t('message.confirm_to_delete_row_data'), {
         type: 'warning',
       }).then(() => {
-        const key = this.newKeyParams.keyName;
-        const client = this.$util.get('client');
+        const key = this.syncKeyParams.keyName;
 
-        client.lremAsync(key, 1, row.value).then((reply) => {
-          console.log(reply);
-
+        this.$util.get('client').lremAsync(key, 1, row.value).then((reply) => {
           if (reply === 1) {
             this.$message.success({
               message: this.$t('message.delete_success'),
@@ -166,16 +149,14 @@ export default {
       });
     },
     addLine() {
-      console.log('add line', this.newLineItem);
-
-      const key = this.newKeyParams.keyName;
-      const ttl = this.newKeyParams.keyTTL;
+      const key = this.syncKeyParams.keyName;
+      const ttl = this.syncKeyParams.keyTTL;
       const client = this.$util.get('client');
 
       this.dialogFormVisible = false;
 
       if (!key) {
-        this.$parent.$parent.$parent.emptyKeyWhenAdding();
+        this.$parent.$parent.emptyKeyWhenAdding();
         return false;
       }
 
@@ -184,13 +165,10 @@ export default {
       }
 
       client.rpushAsync(key, this.newLineItem.value).then((reply) => {
-        console.log(reply);
-
+        // reply return list length if success
         if (reply > 0) {
           if (ttl > 0) {
-            client.expireAsync(key, ttl).then((reply) => {
-              console.log(`new list key set ttl ${ttl}`, reply);
-            });
+            client.expireAsync(key, ttl).then((reply) => {});
           }
 
           this.$message.success({
@@ -198,9 +176,8 @@ export default {
             duration: 1000,
           });
 
-          this.$parent.$parent.$parent.refreshAfterAdd(key);
-
-          this.initShow();
+          // if in new key mode, exec refreshAfterAdd
+          this.redisKey ? this.initShow() : this.$parent.$parent.refreshAfterAdd(key);
         }
       });
     },
