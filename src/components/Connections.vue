@@ -13,6 +13,15 @@
           <div slot="title" :title="item.menuIndex" class="connection-name">{{item.menuIndex}}</div>
         </template>
 
+        <!-- edit connection dialog -->
+        <NewConnectionDialog
+          editMode='true'
+          :connection='item'
+          @editConnectionFinished="editConnectionFinished"
+          :ref="'editConnectionDialog'+item.menuIndex">
+        </NewConnectionDialog>
+
+        <!-- operate item -->
         <el-form class="connection-form" size="mini">
           <el-form-item>
             <el-row :gutter="6">
@@ -85,57 +94,6 @@
       </el-submenu>
     </el-menu>
 
-
-    <!-- edit connection dialog -->
-    <el-dialog :title="$t('message.edit_connection')" :visible.sync="editConnectionDialog">
-      <el-form v-model="afterEditData" label-width="80px">
-        <el-form-item label="Host">
-          <el-input v-model="afterEditData.host" autocomplete="off" placeholder="127.0.0.1"></el-input>
-        </el-form-item>
-
-        <el-form-item label="Port">
-          <el-input v-model="afterEditData.port" autocomplete="off" placeholder="6379"></el-input>
-        </el-form-item>
-
-        <el-form-item label="Auth">
-          <el-input v-model="afterEditData.auth" autocomplete="off"></el-input>
-        </el-form-item>
-
-        <el-form-item label="Name">
-          <el-input v-model="afterEditData.name" autocomplete="off"></el-input>
-        </el-form-item>
-
-        <el-form-item label="">
-          <el-checkbox v-model="sshOptionsShow">SSH Tunnel</el-checkbox>
-        </el-form-item>
-
-        <el-form v-if="sshOptionsShow" v-show="sshOptionsShow" label-width="80px">
-          <el-form-item label="Host">
-            <el-input v-model="afterEditData.sshOptions.host" autocomplete="off" placeholder=""></el-input>
-          </el-form-item>
-
-          <el-form-item label="Port">
-            <el-input v-model="afterEditData.sshOptions.port" autocomplete="off"></el-input>
-          </el-form-item>
-
-          <el-form-item label="Username">
-            <el-input v-model="afterEditData.sshOptions.username" autocomplete="off" placeholder=""></el-input>
-          </el-form-item>
-
-          <el-form-item label="Password">
-            <el-input v-model="afterEditData.sshOptions.password" autocomplete="off"></el-input>
-          </el-form-item>
-        </el-form>
-
-      </el-form>
-
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="editConnectionDialog = false">{{ $t('el.messagebox.cancel') }}</el-button>
-        <el-button type="primary" @click="editConnection">{{ $t('el.messagebox.confirm') }}</el-button>
-      </div>
-    </el-dialog>
-
-
     <!-- new key dialog -->
     <el-dialog :title="$t('message.add_new_key')" :visible.sync="newKeyDialog" width="320px">
       <el-form>
@@ -166,6 +124,7 @@ import Vue from 'vue';
 import storage from '../storage.js';
 import redisClient from '../redisClient.js';
 import RightClickMenu from '@/components/RightClickMenu';
+import NewConnectionDialog from '@/components/NewConnectionDialog';
 
 export default {
   data() {
@@ -212,7 +171,7 @@ export default {
       sshOptionsShow: false,
     };
   },
-  components: {RightClickMenu},
+  components: {RightClickMenu, NewConnectionDialog},
   created() {
     this.$bus.$on('refreshKeyList', (key) => {
       const client = this.$util.get('client');
@@ -356,8 +315,6 @@ export default {
       this.changeMatchMode(menuIndex);
     },
     deleteConnection(connection) {
-      console.log(connection);
-
       this.$confirm(
         this.$t('message.confirm_to_delete_connection'),
         { type: 'warning' },
@@ -369,45 +326,19 @@ export default {
           message: this.$t('message.delete_success'),
           duration: 1000,
         });
-      }).catch(() => {
-        //
-      });
+      }).catch(() => {});
     },
     showEditConnection(oldConnection, menuIndex) {
       this.$confirm(
         this.$t('message.close_to_edit_connection'),
         { type: 'warning' },
       ).then(() => {
-        this.closeAllConnection(oldConnection, menuIndex);
-
-        this.editConnectionDialog = true;
-        this.beforeEditData = oldConnection;
-        this.sshOptionsShow = oldConnection.sshOptions ? true : false;
-
-        this.afterEditData = JSON.parse(JSON.stringify(oldConnection));
-        !this.afterEditData.sshOptions && (this.afterEditData.sshOptions = {port: 22});
-        delete this.afterEditData.menuIndex;
-      }).catch((_) => {});
+        this.closeAllConnection();
+        this.$refs[`editConnectionDialog${menuIndex}`][0].dialogVisible = true;
+      }).catch(() => {});
     },
-    editConnection() {
-      console.log('edit connection', this.beforeEditData, this.afterEditData);
-
-      let afterEditData = JSON.parse(JSON.stringify(this.afterEditData));
-
-      if (!this.sshOptionsShow || !afterEditData.sshOptions.host) {
-        delete afterEditData.sshOptions;
-      }
-
-      if (storage.editConnection(this.beforeEditData, afterEditData) !== false) {
-        this.editConnectionDialog = false;
-        this.initConnections();
-        return;
-      }
-
-      this.$message.error({
-        message: this.$t('message.modify_failed'),
-        duration: 1000,
-      });
+    editConnectionFinished() {
+      this.initConnections();
     },
     initConnections() {
       const connections = storage.getConnections(true);
