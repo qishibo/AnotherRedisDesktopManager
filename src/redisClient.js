@@ -5,13 +5,13 @@ import tunnelssh from 'tunnel-ssh';
 bluebird.promisifyAll(redis);
 
 export default {
-  createConnection(host, port, auth, menuIndex = null) {
+  createConnection(host, port, auth, connectionName = null) {
     const options = {
       connect_timeout: 2000,
       // max_attempts: 3,
       retry_strategy: (options) => {return this.retryStragety(options, {host: host, port: port})},
       no_ready_check: true,
-      menu_index: menuIndex,
+      connection_name: connectionName,
       password: auth,
     };
 
@@ -20,11 +20,11 @@ export default {
     return client;
   },
 
-  createSSHConnection(sshOptions, host, port, auth, menuIndex = null) {
+  createSSHConnection(sshOptions, host, port, auth, connectionName = null) {
     const options = {
       retry_strategy: (options) => {return this.retryStragety(options, {host: host, port: port})},
       no_ready_check: true,
-      menu_index: menuIndex,
+      connection_name: connectionName,
       password: auth,
     };
 
@@ -42,7 +42,6 @@ export default {
     const sshPromise = new bluebird((resolve, reject) => {
       tunnelssh(config, function (error, server) {
         const listenAddress = server.address();
-        console.log('ssh tunnel listening in', listenAddress);
 
         server.on('error', (error) => {
           alert('SSH Connection Error: ' + error.message);
@@ -64,7 +63,6 @@ export default {
   },
 
   retryStragety(options, connection) {
-    console.log('retrying...', options, connection);
     const maxRetryTimes = 3;
 
     if (options.attempt >= maxRetryTimes) {

@@ -36,9 +36,7 @@
       <el-form-item>
         <el-button type="success" @click="refreshKey" icon="el-icon-refresh" circle></el-button>
       </el-form-item>
-
     </el-form>
-
   </div>
 </template>
 
@@ -49,10 +47,10 @@ export default {
       redisKeyLast: this.redisKey,
     };
   },
-  props: ['redisKey', 'keyType', 'syncKeyParams'],
+  props: ['client', 'redisKey', 'keyType', 'syncKeyParams'],
   methods: {
     initShow() {
-      const client = this.$util.get('client');
+      const client = this.client;
       const redisKeyLast = this.redisKeyLast;
 
       if (!redisKeyLast) {
@@ -70,7 +68,7 @@ export default {
         this.$t('message.confirm_to_delete_key', { key: this.redisKeyLast }),
         { type: 'warning' },
       ).then(() => {
-        this.$util.get('client').delAsync(this.redisKeyLast).then((reply) => {
+        this.client.delAsync(this.redisKeyLast).then((reply) => {
           if (reply === 1) {
             this.$message.success({
               message: `${this.redisKeyLast} ${this.$t('message.delete_success')}`,
@@ -79,7 +77,8 @@ export default {
 
             this.$bus.$emit('removePreTab');
             this.refreshKeyList(this.redisKeyLast);
-          } else {
+          }
+          else {
             this.$message.error({
               message: `${this.redisKeyLast} ${this.$t('message.delete_failed')}`,
               duration: 1000,
@@ -90,14 +89,14 @@ export default {
     },
     refreshKey() {
       this.initShow();
-      this.$bus.$emit('refreshKey', this.redisKeyLast);
+      this.$emit('refreshContent');
     },
     renameKey() {
       if (this.redisKeyLast === this.syncKeyParams.keyName) {
         return;
       }
 
-      this.$util.get('client').renameAsync(this.redisKeyLast, this.syncKeyParams.keyName).then((reply) => {
+      this.client.renameAsync(this.redisKeyLast, this.syncKeyParams.keyName).then((reply) => {
         if (reply === 'OK') {
           this.$message.success({
             message: `${this.redisKeyLast} rename to ${this.syncKeyParams.keyName} ${this.$t('message.modify_success')}`,
@@ -106,7 +105,7 @@ export default {
 
           this.redisKeyLast = this.syncKeyParams.keyName;
           this.refreshKeyList();
-          this.$bus.$emit('clickedKey', this.syncKeyParams.keyName);
+          this.$bus.$emit('clickedKey', this.client, this.syncKeyParams.keyName);
         }
       });
     },
@@ -119,12 +118,13 @@ export default {
         ).then(() => {
           this.setTTL(true);
         }).catch(() => {});
-      } else {
+      }
+      else {
         this.setTTL();
       }
     },
     setTTL(removePreTab = false) {
-      this.$util.get('client').expireAsync(this.redisKeyLast, this.syncKeyParams.keyTTL).then((reply) => {
+      this.client.expireAsync(this.redisKeyLast, this.syncKeyParams.keyTTL).then((reply) => {
         if (reply) {
           this.$message.success({
             message: `${this.redisKeyLast} expire ${this.syncKeyParams.keyTTL} ${this.$t('message.modify_success')}`,
@@ -137,7 +137,7 @@ export default {
       });
     },
     refreshKeyList(key) {
-      this.$bus.$emit('refreshKeyList', key);
+      this.$bus.$emit('refreshKeyList', this.client, key);
     },
   },
   mounted() {

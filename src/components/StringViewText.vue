@@ -31,7 +31,7 @@ export default {
         return false;
       }
 
-      const client = this.$util.get('client');
+      const client = this.$parent.$props.client;
 
       client.setAsync(key, content).then((reply) => {
         if (reply === 'OK') {

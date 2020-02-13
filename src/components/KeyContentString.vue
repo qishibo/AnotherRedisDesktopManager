@@ -39,7 +39,7 @@ export default {
       content: '',
     };
   },
-  props: ['redisKey', 'syncKeyParams'],
+  props: ['client', 'redisKey', 'syncKeyParams'],
   components: { StringViewText, StringViewJson, StringViewPhpUnserialize },
   methods: {
     initShow() {
@@ -49,7 +49,7 @@ export default {
         return;
       }
 
-      this.$util.get('client').getAsync(key).then((reply) => {
+      this.client.getAsync(key).then((reply) => {
         // character not visible
         if (!this.$util.isVisible(reply)) {
           this.content = this.$util.toUTF8(reply);

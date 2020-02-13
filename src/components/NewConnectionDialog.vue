@@ -3,19 +3,19 @@
     <!-- redis connection form -->
     <el-form :label-position="labelPosition" label-width="80px">
       <el-form-item label="Host">
-        <el-input v-model="config.host" autocomplete="off" placeholder="127.0.0.1"></el-input>
+        <el-input v-model="connection.host" autocomplete="off" placeholder="127.0.0.1"></el-input>
       </el-form-item>
 
       <el-form-item label="Port">
-        <el-input v-model="config.port" autocomplete="off" placeholder="6379"></el-input>
+        <el-input v-model="connection.port" autocomplete="off" placeholder="6379"></el-input>
       </el-form-item>
 
       <el-form-item label="Auth">
-        <el-input v-model="config.auth" autocomplete="off"></el-input>
+        <el-input v-model="connection.auth" autocomplete="off"></el-input>
       </el-form-item>
 
       <el-form-item label="Name">
-        <el-input v-model="config.name" autocomplete="off"></el-input>
+        <el-input v-model="connection.name" autocomplete="off"></el-input>
       </el-form-item>
 
       <el-form-item label="">
@@ -25,19 +25,19 @@
       <!-- ssh connection form -->
       <el-form v-if="sshOptionsShow" v-show="sshOptionsShow" label-width="80px">
         <el-form-item label="Host">
-          <el-input v-model="config.sshOptions.host" autocomplete="off"></el-input>
+          <el-input v-model="connection.sshOptions.host" autocomplete="off"></el-input>
         </el-form-item>
 
         <el-form-item label="Port">
-          <el-input v-model="config.sshOptions.port" autocomplete="off"></el-input>
+          <el-input v-model="connection.sshOptions.port" autocomplete="off"></el-input>
         </el-form-item>
 
         <el-form-item label="Username">
-          <el-input v-model="config.sshOptions.username" autocomplete="off"></el-input>
+          <el-input v-model="connection.sshOptions.username" autocomplete="off"></el-input>
         </el-form-item>
 
         <el-form-item label="Password">
-          <el-input v-model="config.sshOptions.password" autocomplete="off"></el-input>
+          <el-input v-model="connection.sshOptions.password" autocomplete="off"></el-input>
         </el-form-item>
       </el-form>
     </el-form>
@@ -58,7 +58,7 @@ export default {
       dialogVisible: false,
       labelPosition: 'left',
       oldKey: '',
-      config: {
+      connection: {
         host: '',
         port: '',
         auth: '',
@@ -73,7 +73,7 @@ export default {
       sshOptionsShow: false,
     }
   },
-  props: ['connection', 'editMode'],
+  props: ['config', 'editMode'],
   computed: {
     dialogTitle() {
       return this.editMode ? this.$t('message.edit_connection') :
@@ -82,7 +82,7 @@ export default {
   },
   methods: {
     editConnection() {
-      const config = JSON.parse(JSON.stringify(this.config));
+      const config = JSON.parse(JSON.stringify(this.connection));
 
       !config.host && (config.host = '127.0.0.1');
       !config.port && (config.port = 6379);
@@ -99,14 +99,14 @@ export default {
   },
   mounted() {
     if (this.editMode) {
-      this.config = JSON.parse(JSON.stringify(this.connection));
-      this.oldKey = storage.getConnectionKey(this.connection);
+      this.connection = JSON.parse(JSON.stringify(this.config));
+      this.oldKey = storage.getConnectionKey(this.config);
 
-      this.sshOptionsShow = !!this.config.sshOptions;
-      !this.config.sshOptions && (this.config.sshOptions = {port: 22});
+      this.sshOptionsShow = !!this.connection.sshOptions;
+      !this.connection.sshOptions && (this.connection.sshOptions = {port: 22});
     }
 
-    delete this.config.menuIndex;
+    delete this.connection.connectionName;
   },
 }
 </script>

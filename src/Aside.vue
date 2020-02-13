@@ -20,8 +20,7 @@
   </div>
 </template>
 
-<script>
-import storage from '@/storage';
+<script type="text/javascript">
 import Connections from '@/components/Connections';
 import NewConnectionDialog from '@/components/NewConnectionDialog';
 
