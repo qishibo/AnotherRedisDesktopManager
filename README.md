@@ -9,7 +9,7 @@
 [![MIT](https://img.shields.io/badge/license-MIT-000000.svg)](LICENSE)
 [![Download](https://img.shields.io/github/release/qishibo/AnotherRedisDeskTopManager.svg?label=Download)](https://github.com/qishibo/AnotherRedisDesktopManager/releases)
 [![Download Analysis](https://img.shields.io/badge/Download-Analysis-blue.svg)](http://qii404.me/github-release-statistics/?repo=/qishibo/AnotherRedisDesktopManager/)
-[![shiboooo](https://img.shields.io/badge/Weibo-@shiboooo-D64943.svg)](https://weibo.com/shiboooo?is_hot=1)
+[![shiboooo](https://img.shields.io/badge/Weibo-@shiboooo-red.svg)](https://weibo.com/shiboooo?is_hot=1)
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fqishibo%2FAnotherRedisDesktopManager.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fqishibo%2FAnotherRedisDesktopManager?ref=badge_shield)
 
 
@@ -43,6 +43,7 @@ Download latest `dmg` package from [release](https://github.com/qishibo/AnotherR
 
 ## Feature Log
 
+- 2020-02-13: Open Cli Console In Tabs
 - 2019-06-14: Custom Font-Family Support
 - 2019-05-28: Key List Resizable
 - 2019-05-09: Search Support In Hash List Set Zset
@@ -110,6 +111,21 @@ npm start
 
 # after the previous step is completed, open another tab, build up a desktop client
 npm run electron
+```
+
+### Build Package
+
+```bash
+# prepare before package
+npm run pack:prepare
+
+# build package on respective platforms
+# on windows
+npm run pack:win
+# on mac
+npm run pack:mac
+# on linux
+npm run pack:linux
 ```
 
 ## License

@@ -68,6 +68,13 @@ export default {
 </script>
 
 <style type="text/css">
+  /*el-sub-menu connection name style*/
+  .connection-menu .el-submenu__title {
+    padding-left: 0px !important;
+    padding-right: 0px;
+    font-size: 13px !important;
+  }
+
   .connection-menu .connection-name {
     /*margin-right: 65px;*/
     padding-right: 6px;
