@@ -74,19 +74,9 @@ export default {
 </script>
 
 <style type="text/css">
-  body {
-    /*margin-left: 0;*/
-  }
   .connection-menu {
     margin-top: 10px;
     padding-right: 6px;
     border-right: 0;
-  }
-
-  /*el-sub-menu connection name style*/
-  .connection-menu .el-submenu__title {
-    padding-left: 0px !important;
-    padding-right: 0px;
-    font-size: 13px !important;
   }
 </style>
