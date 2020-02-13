@@ -101,7 +101,7 @@ export default {
       editLineItem: {},
     };
   },
-  props: ['redisKey', 'syncKeyParams'],
+  props: ['client', 'redisKey', 'syncKeyParams'],
   components: {PaginationTable},
   methods: {
     initShow() {
@@ -111,7 +111,7 @@ export default {
         return;
       }
 
-      this.$util.get('client').zrangeAsync([key, 0, -1, 'WITHSCORES']).then((reply) => {
+      this.client.zrangeAsync([key, 0, -1, 'WITHSCORES']).then((reply) => {
         const zsetData = [];
         const { length } = reply;
 
@@ -129,7 +129,7 @@ export default {
     },
     editLine() {
       const key = this.syncKeyParams.keyName;
-      const client = this.$util.get('client');
+      const client = this.client;
 
       const before = this.beforeEditItem;
       const after = this.editLineItem;
@@ -158,7 +158,7 @@ export default {
       }).then(() => {
         const key = this.syncKeyParams.keyName;
 
-        this.$util.get('client').zremAsync(key, row.member).then((reply) => {
+        this.client.zremAsync(key, row.member).then((reply) => {
           if (reply === 1) {
             this.$message.success({
               message: `${row.member} ${this.$t('message.delete_success')}`,
@@ -173,7 +173,7 @@ export default {
     addLine() {
       const key = this.syncKeyParams.keyName;
       const ttl = this.syncKeyParams.keyTTL;
-      const client = this.$util.get('client');
+      const client = this.client;
 
       this.dialogFormVisible = false;
 

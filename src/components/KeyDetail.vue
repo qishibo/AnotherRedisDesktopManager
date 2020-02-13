@@ -2,10 +2,10 @@
   <div>
     <el-container direction="vertical" class="key-tab-container">
       <!-- key info -->
-      <KeyHeader ref="keyHeader" :redisKey="redisKey" :keyType="keyType" :syncKeyParams = "syncKeyParams" class="key-header-info"></KeyHeader>
+      <KeyHeader ref="keyHeader" :client='client' :redisKey="redisKey" :keyType="keyType" :syncKeyParams = "syncKeyParams" @refreshContent='refreshContent' class="key-header-info"></KeyHeader>
 
       <!-- key content -->
-      <component ref="keyContent" :is="componentName" :redisKey="redisKey" :syncKeyParams = "syncKeyParams" class="key-content-container"></component>
+      <component ref="keyContent" :is="componentName" :client='client' :redisKey="redisKey" :syncKeyParams = "syncKeyParams" class="key-content-container"></component>
     </el-container>
   </div>
 </template>
@@ -24,16 +24,7 @@ export default {
       syncKeyParams: { keyTTL: '', keyName: this.redisKey },
     };
   },
-  props: ['redisKey', 'keyType'],
-  created() {
-    this.$bus.$on('refreshKey', (redisKey) => {
-      if (!this.redisKey || !this.$refs.keyContent || (this.redisKey !== redisKey)) {
-        return;
-      }
-
-      this.$refs.keyContent.initShow();
-    });
-  },
+  props: ['client', 'redisKey', 'keyType'],
   components: {
     KeyHeader, KeyContentString, KeyContentHash, KeyContentSet, KeyContentZset, KeyContentList
   },
@@ -45,18 +36,21 @@ export default {
   methods: {
     getComponentNameByType(keyType) {
       const map = {
-        'string': 'KeyContentString',
-        'hash': 'KeyContentHash',
-        'zset': 'KeyContentZset',
-        'set': 'KeyContentSet',
-        'list': 'KeyContentList',
+        string: 'KeyContentString',
+        hash  : 'KeyContentHash',
+        zset  : 'KeyContentZset',
+        set   : 'KeyContentSet',
+        list  : 'KeyContentList',
       };
 
       return map[keyType];
     },
+    refreshContent() {
+      this.$refs.keyContent.initShow();
+    },
     refreshAfterAdd(key) {
-      this.$bus.$emit('clickedKey', key);
-      this.$bus.$emit('refreshKeyList');
+      this.$bus.$emit('clickedKey', this.client, key);
+      this.$bus.$emit('refreshKeyList', this.client);
     },
     emptyKeyWhenAdding() {
       this.$message.error({

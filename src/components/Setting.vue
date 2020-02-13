@@ -107,7 +107,6 @@ export default {
       }
 
       settings = JSON.parse(settings);
-
       this.form = settings;
     },
     getSettings() {
@@ -137,7 +136,6 @@ export default {
       }
 
       config = JSON.parse(config);
-
       // remove all connections first
       storage.setConnections({});
 
@@ -146,7 +144,6 @@ export default {
       }
 
       this.$bus.$emit('refreshConnections');
-
       this.$message.success({
         message: this.$t('message.import_success'),
         duration: 1000,
@@ -155,9 +152,7 @@ export default {
     exportConnection() {
       let connections = storage.getConnections(true);
       connections = btoa(JSON.stringify(connections));
-
       this.createAndDownloadFile('connections.ano', connections);
-
       this.settingDialog.visible = false;
     },
     createAndDownloadFile(fileName, content) {

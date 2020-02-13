@@ -85,7 +85,7 @@ export default {
       editLineItem: {},
     };
   },
-  props: ['redisKey', 'syncKeyParams'],
+  props: ['client', 'redisKey', 'syncKeyParams'],
   components: {PaginationTable},
   methods: {
     initShow() {
@@ -95,7 +95,7 @@ export default {
         return;
       }
 
-      this.$util.get('client').lrangeAsync([key, 0, -1]).then((reply) => {
+      this.client.lrangeAsync([key, 0, -1]).then((reply) => {
         const listData = [];
 
         for (const i of reply) {
@@ -112,7 +112,7 @@ export default {
     },
     editLine() {
       const key = this.syncKeyParams.keyName;
-      const client = this.$util.get('client');
+      const client = this.client;
 
       const before = this.beforeEditItem;
       const after = this.editLineItem;
@@ -136,7 +136,7 @@ export default {
       }).then(() => {
         const key = this.syncKeyParams.keyName;
 
-        this.$util.get('client').lremAsync(key, 1, row.value).then((reply) => {
+        this.client.lremAsync(key, 1, row.value).then((reply) => {
           if (reply === 1) {
             this.$message.success({
               message: this.$t('message.delete_success'),
@@ -151,7 +151,7 @@ export default {
     addLine() {
       const key = this.syncKeyParams.keyName;
       const ttl = this.syncKeyParams.keyTTL;
-      const client = this.$util.get('client');
+      const client = this.client;
 
       this.dialogFormVisible = false;
 

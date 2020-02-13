@@ -9,7 +9,6 @@ export default {
     return {
       updateChecking: false,
       downloadProcessShow: false,
-      downloadPercent: 0,
     };
   },
   created() {

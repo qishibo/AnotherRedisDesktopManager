@@ -104,7 +104,7 @@ export default {
     };
   },
   components: {PaginationTable},
-  props: ['redisKey', 'syncKeyParams'],
+  props: ['client', 'redisKey', 'syncKeyParams'],
   methods: {
     initShow() {
       const key = this.syncKeyParams.keyName;
@@ -113,7 +113,7 @@ export default {
         return;
       }
 
-      this.$util.get('client').hgetallAsync(key).then((reply) => {
+      this.client.hgetallAsync(key).then((reply) => {
         const hashData = [];
 
         for (const i in reply) {
@@ -130,7 +130,7 @@ export default {
     },
     editLine() {
       const key = this.syncKeyParams.keyName;
-      const client = this.$util.get('client');
+      const client = this.client;
 
       const before = this.beforeEditItem;
       const after = this.editLineItem;
@@ -159,7 +159,7 @@ export default {
       }).then(() => {
         const key = this.syncKeyParams.keyName;
 
-        this.$util.get('client').hdelAsync(key, row.key).then((reply) => {
+        this.client.hdelAsync(key, row.key).then((reply) => {
           if (reply === 1) {
             this.$message.success({
               message: `${row.key} ${this.$t('message.delete_success')}`,
@@ -174,7 +174,7 @@ export default {
     addLine() {
       const key = this.syncKeyParams.keyName;
       const ttl = this.syncKeyParams.keyTTL;
-      const client = this.$util.get('client');
+      const client = this.client;
 
       this.dialogFormVisible = false;
 

@@ -1,6 +1,5 @@
 <template>
   <el-container class="wrap-container" :style="{'font-family': fontFamily}">
-
     <!-- left aside draggable container -->
     <div class="aside-drag-container" :style="{width: sideWidth + 'px'}">
       <!-- connections -->
@@ -29,13 +28,12 @@
 
     <ScrollToTop dom=".el-main"></ScrollToTop>
     <UpdateCheck></UpdateCheck>
-
   </el-container>
 </template>
 
 <script>
-import Header from './Header';
-import Aside from './Aside';
+import Header from '@/Header';
+import Aside from '@/Aside';
 import Tabs from '@/components/Tabs';
 import ScrollToTop from '@/components/ScrollToTop';
 import UpdateCheck from '@/components/UpdateCheck';
@@ -111,7 +109,6 @@ export default {
     this.openHrefInBrowser();
   },
 };
-
 </script>
 
 <style type="text/css">

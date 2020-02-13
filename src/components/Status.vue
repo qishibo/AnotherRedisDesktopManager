@@ -184,6 +184,7 @@ export default {
       statusConnection: null,
     };
   },
+  props: ['client'],
   computed: {
     DBKeys() {
       const dbs = [];
@@ -215,13 +216,8 @@ export default {
     },
   },
   methods: {
-    initConnection() {
-      this.statusConnection = this.$util.get('client');
-    },
     initShow() {
-      const client = this.statusConnection;
-
-      client.infoAsync().then((reply) => {
+      this.client.infoAsync().then((reply) => {
         this.connectionStatus = this.initStatus(reply);
       });
     },
@@ -258,7 +254,6 @@ export default {
         if (i.startsWith('#') || !i) continue;
 
         const kv = i.split(':');
-
         lines[kv[0]] = kv[1];
       }
 
@@ -266,7 +261,6 @@ export default {
     },
   },
   mounted() {
-    this.initConnection();
     this.initShow();
     this.refreshInit();
   },
