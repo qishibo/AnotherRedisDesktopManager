@@ -1,4 +1,4 @@
-<img align="right" width="110" src="https://ftp.bmp.ovh/imgs/2019/09/6be6ffd8b70fbb50.png">
+<img align="right" width="110" src="https://imgup.qii404.xyz/ardm_icon.png">
 
 # Another Redis DeskTop Manager
 
@@ -8,7 +8,7 @@
 
 [![MIT](https://img.shields.io/badge/license-MIT-000000.svg)](LICENSE)
 [![Download](https://img.shields.io/github/release/qishibo/AnotherRedisDeskTopManager.svg?label=Download)](https://github.com/qishibo/AnotherRedisDesktopManager/releases)
-[![Download Analysis](https://img.shields.io/badge/Download-Analysis-blue.svg)](http://qii404.me/github-release-statistics/?repo=/qishibo/AnotherRedisDesktopManager/)
+[![Download Analysis](https://img.shields.io/badge/Download-Analysis-blue.svg)](https://qii404.me/github-release-statistics/?repo=/qishibo/AnotherRedisDesktopManager/)
 [![shiboooo](https://img.shields.io/badge/Weibo-@shiboooo-red.svg)](https://weibo.com/shiboooo?is_hot=1)
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fqishibo%2FAnotherRedisDesktopManager.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fqishibo%2FAnotherRedisDesktopManager?ref=badge_shield)
 
@@ -28,17 +28,17 @@ Download latest `dmg` package from [release](https://github.com/qishibo/AnotherR
 
 > If **Mac** warning `Another Desktop Manager can't be opened because it is from an unidentified developer`. Open `Settings->Security` and click **`Open Anyway`**
 
-![can't be opened because it is from an unidentified developer](https://ftp.bmp.ovh/imgs/2019/09/ff0cc9593a6cdb53.png)
+![can't be opened because it is from an unidentified developer](https://imgup.qii404.xyz/mac-warning.png)
 
-![Settings->Security Open Anyway](https://ftp.bmp.ovh/imgs/2019/09/9d3a71a834cb67db.jpg)
+![Settings->Security Open Anyway](https://imgup.qii404.xyz/blog/5d11c4feeaf6f.jpg)
 
 ## Enjoy!
 
-![redis status](https://ftp.bmp.ovh/imgs/2019/09/dd3687029aaaa7f3.jpg)
+![redis status](https://imgup.qii404.xyz/blog/5d11c50031d9c.jpg)
 
-![redis key hash](https://ftp.bmp.ovh/imgs/2019/09/a2fbaa8d4e16ed58.jpg)
+![redis key hash](https://imgup.qii404.xyz/blog/5d11c501bdb52.jpg)
 
-![redis console](https://ftp.bmp.ovh/imgs/2019/09/4aa26ec4b0df9ec2.jpg)
+![redis console](https://imgup.qii404.xyz/blog/5d11c503cf26b.jpg)
 
 
 ## Feature Log
@@ -135,5 +135,5 @@ npm run pack:linux
 
 ## Support
 
-[qii404.me](http://qii404.me/)  [@shiboooo](https://weibo.com/shiboooo?is_hot=1)  [Download Analysis](http://qii404.me/github-release-statistics/?repo=/qishibo/AnotherRedisDesktopManager/)
+[qii404.me](https://qii404.me/)  [@shiboooo](https://weibo.com/shiboooo?is_hot=1)  [Download Analysis](https://qii404.me/github-release-statistics/?repo=/qishibo/AnotherRedisDesktopManager/)
 
