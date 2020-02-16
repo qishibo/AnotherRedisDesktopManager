@@ -80,6 +80,9 @@ const tw = {
     font_faq_title: '字體設定說明',
     font_faq: '1. 可以設定多個字體<br>2. 字體選擇是有分先後順序的，建議首先選擇英文字體，然後再選擇中文字體<br>\
     3. 某些異常情況無法載入系統字體列表時，可以手動輸入已安裝的字體名稱',
+    private_key_faq: '目前支持RSA格式私鑰，即以<pre>-----BEGIN RSA PRIVATE KEY-----</pre>開頭，\
+    以<pre>-----BEGIN OPENSSH PRIVATE KEY-----</pre>開頭的，需要執行\
+    <pre>ssh-keygen -p -m pem -f ~/.ssh/id_rsa</pre>進行格式轉換後再使用，該操作不會影響以前的私鑰登陸'
   },
 };
 

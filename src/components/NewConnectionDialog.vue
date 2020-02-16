@@ -39,6 +39,14 @@
         <el-form-item label="Password">
           <el-input v-model="connection.sshOptions.password" autocomplete="off"></el-input>
         </el-form-item>
+
+        <el-form-item label="PrivateKey">
+          <el-tooltip effect="dark">
+            <div slot="content" v-html="$t('message.private_key_faq')"></div>
+            <el-input v-if='connection.sshOptions.privatekey' v-model='connection.sshOptions.privatekey' clearable autocomplete="off" ></el-input>
+            <el-input v-else id='private-key-path' type='file' @change='changePrivateKey'></el-input>
+          </el-tooltip>
+        </el-form-item>
       </el-form>
     </el-form>
 
@@ -68,6 +76,7 @@ export default {
           port: 22,
           username: '',
           password: '',
+          privatekey: '',
         }
       },
       sshOptionsShow: false,
@@ -96,14 +105,19 @@ export default {
       this.dialogVisible = false;
       this.$emit('editConnectionFinished');
     },
+    changePrivateKey() {
+      const path = document.getElementById('private-key-path').files[0].path;
+      this.$set(this.connection.sshOptions, 'privatekey', path);
+    }
   },
   mounted() {
     if (this.editMode) {
+      const sshOptionsNew = this.connection.sshOptions;
       this.connection = JSON.parse(JSON.stringify(this.config));
       this.oldKey = storage.getConnectionKey(this.config);
 
       this.sshOptionsShow = !!this.connection.sshOptions;
-      !this.connection.sshOptions && (this.connection.sshOptions = {port: 22});
+      !this.connection.sshOptions && (this.connection.sshOptions = sshOptionsNew);
     }
 
     delete this.connection.connectionName;

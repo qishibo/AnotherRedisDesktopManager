@@ -33,29 +33,30 @@ export default {
       password: sshOptions.password,
       host: sshOptions.host,
       port: sshOptions.port,
+      readyTimeout: 2000,
       dstHost: host,
       dstPort: port,
       localHost: '127.0.0.1',
       localPort: null,
+      privateKey: sshOptions.privatekey ?
+                  require('fs').readFileSync(sshOptions.privatekey) : '',
     };
 
     const sshPromise = new bluebird((resolve, reject) => {
-      tunnelssh(config, function (error, server) {
-        const listenAddress = server.address();
-
-        server.on('error', (error) => {
-          alert('SSH Connection Error: ' + error.message);
-          reject(error);
-        });
-
-        const client = redis.createClient(listenAddress.port, listenAddress.address, options);
-
+      var server = tunnelssh(config, function (error, server) {
         if (error) {
           reject(error);
         }
         else {
+          const listenAddress = server.address();
+          const client = redis.createClient(listenAddress.port, listenAddress.address, options);
           resolve(client);
         }
+      });
+
+      server.on('error', (error) => {
+        alert('SSH Connection Error: ' + error.message);
+        reject(error);
       });
     });
 
