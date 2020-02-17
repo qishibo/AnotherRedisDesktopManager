@@ -171,7 +171,7 @@ export default {
         duration: 1500,
       });
 
-      this.$bus.$emit('update-check');
+      this.$bus.$emit('update-check', true);
     },
     bindGetAllFonts() {
       ipcRenderer.on('send-all-fonts', (event, arg) => {

@@ -7,12 +7,15 @@ import { ipcRenderer } from 'electron';
 export default {
   data() {
     return {
+      manual: false,
       updateChecking: false,
       downloadProcessShow: false,
     };
   },
   created() {
-    this.$bus.$on('update-check', () => {
+    this.$bus.$on('update-check', (manual = false) => {
+      this.manual = manual;
+
       // update checking running...
       if (this.updateChecking) {
         return;
@@ -46,6 +49,12 @@ export default {
       ipcRenderer.on('update-not-available', (event, arg) => {
         this.$notify.closeAll();
         this.resetDownloadProcess();
+
+        // latest version
+        this.manual && this.$notify.success({
+          title: this.$t('message.update_not_available'),
+          duration: 2000
+        });
       });
 
       ipcRenderer.on('update-error', (event, arg) => {
@@ -60,7 +69,7 @@ export default {
           this.$t('message.mac_not_support_auto_update') :
           (this.$t('message.update_error') + ': ' + arg.code);
 
-        const a = this.$notify.error({
+        this.$notify.error({
           title: message,
           duration: 0
         });
