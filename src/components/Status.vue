@@ -271,4 +271,7 @@ export default {
   .el-row.status-card {
     margin-top: 20px;
   }
+  .status-card .el-tag--success {
+    color: #43b50b;
+  }
 </style>

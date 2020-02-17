@@ -175,7 +175,7 @@ export default {
     overflow: hidden;
     text-overflow: ellipsis;
     cursor: pointer;
-    color: #3c5765;
+    color: #292f31;
     font-size: 82%;
     line-height: 1.6;
     /*margin-right: 3px;*/
@@ -186,7 +186,7 @@ export default {
     background: #e7ebec;
   }
   .connection-menu .key-list .key-item.key-select {
-    color: #3292f5;
+    color: #0b7ff7;
     background: #e7ebec;
     box-sizing: border-box;
     border-left: 2px solid #68acf3;
