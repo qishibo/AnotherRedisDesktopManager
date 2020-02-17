@@ -34,11 +34,11 @@ Download latest `dmg` package from [release](https://github.com/qishibo/AnotherR
 
 ## Enjoy!
 
-![redis status](https://imgup.qii404.xyz/blog/5d11c50031d9c.jpg)
+![redis status](https://imgup.qii404.xyz/github/j4j4jhk52g253.JPG)
 
-![redis key hash](https://imgup.qii404.xyz/blog/5d11c501bdb52.jpg)
+![redis key hash](https://imgup.qii404.xyz/github/5k2kj5634h3.JPG)
 
-![redis console](https://imgup.qii404.xyz/blog/5d11c503cf26b.jpg)
+![redis console](https://imgup.qii404.xyz/github/4j52g5g2h45.JPG)
 
 
 ## Feature Log
