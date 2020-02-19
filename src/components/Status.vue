@@ -27,21 +27,24 @@
           <span>{{ $t('message.server') }}</span>
         </div>
 
-        <p>
-          <el-tag type="info" size="big">{{ $t('message.redis_version') }}:
-            <el-tag type="success">{{this.connectionStatus.redis_version}}</el-tag>
+        <p class="server-status-tag-p">
+          <el-tag class='server-status-container' type="info" size="big">
+            {{ $t('message.redis_version') }}:
+            <span class="server-status-text">{{this.connectionStatus.redis_version}}</span>
           </el-tag>
         </p>
 
-        <p>
-          <el-tag type="info" size="big">OS:
-            <el-tag :title="connectionStatus.os" type="success">{{this.connectionStatus.os}}</el-tag>
+        <p class="server-status-tag-p">
+          <el-tag class='server-status-container' type="info" size="big">
+            OS:
+            <span class="server-status-text" :title="connectionStatus.os">{{this.connectionStatus.os}}</span>
           </el-tag>
         </p>
 
-        <p>
-          <el-tag type="info" size="big">{{ $t('message.process_id') }}:
-            <el-tag type="success">{{this.connectionStatus.process_id}}</el-tag>
+        <p class="server-status-tag-p">
+          <el-tag class='server-status-container' type="info" size="big">
+            {{ $t('message.process_id') }}:
+            <span class="server-status-text">{{this.connectionStatus.process_id}}</span>
           </el-tag>
         </p>
       </el-card>
@@ -55,21 +58,24 @@
           <span>{{ $t('message.memory') }}</span>
         </div>
 
-        <p>
-          <el-tag type="info" size="big">{{ $t('message.used_memory') }}:
-            <el-tag type="success">{{this.connectionStatus.used_memory_human}}</el-tag>
+        <p class="server-status-tag-p">
+          <el-tag class='server-status-container' type="info" size="big">
+            {{ $t('message.used_memory') }}:
+            <span class="server-status-text">{{this.connectionStatus.used_memory_human}}</span>
           </el-tag>
         </p>
 
-        <p>
-          <el-tag type="info" size="big">{{ $t('message.used_memory_peak') }}:
-            <el-tag type="success"> {{this.connectionStatus.used_memory_peak_human}}</el-tag>
+        <p class="server-status-tag-p">
+          <el-tag class='server-status-container' type="info" size="big">
+            {{ $t('message.used_memory_peak') }}:
+            <span class="server-status-text">{{this.connectionStatus.used_memory_peak_human}}</span>
           </el-tag>
         </p>
 
-        <p>
-          <el-tag type="info" size="big">{{ $t('message.used_memory_lua') }}:
-            <el-tag type="success">{{Math.round(this.connectionStatus.used_memory_lua / 1024)}}K</el-tag>
+        <p class="server-status-tag-p">
+          <el-tag class='server-status-container' type="info" size="big">
+            {{ $t('message.used_memory_lua') }}:
+            <span class="server-status-text">{{Math.round(this.connectionStatus.used_memory_lua / 1024)}}K</span>
           </el-tag>
         </p>
       </el-card>
@@ -83,21 +89,24 @@
           <span>{{ $t('message.stats') }}</span>
         </div>
 
-        <p>
-          <el-tag type="info" size="big">{{ $t('message.connected_clients') }}:
-            <el-tag type="success">{{this.connectionStatus.connected_clients}}</el-tag>
+        <p class="server-status-tag-p">
+          <el-tag class='server-status-container' type="info" size="big">
+            {{ $t('message.connected_clients') }}:
+            <span class="server-status-text">{{this.connectionStatus.connected_clients}}</span>
           </el-tag>
         </p>
 
-        <p>
-          <el-tag type="info" size="big">{{ $t('message.total_connections_received') }}:
-            <el-tag type="success">{{this.connectionStatus.total_connections_received}}</el-tag>
+        <p class="server-status-tag-p">
+          <el-tag class='server-status-container' type="info" size="big">
+            {{ $t('message.total_connections_received') }}:
+            <span class="server-status-text">{{this.connectionStatus.total_connections_received}}</span>
           </el-tag>
         </p>
 
-        <p>
-          <el-tag type="info" size="big">{{ $t('message.total_commands_processed') }}:
-            <el-tag type="success">{{this.connectionStatus.total_commands_processed}}</el-tag>
+        <p class="server-status-tag-p">
+          <el-tag class='server-status-container' type="info" size="big">
+            {{ $t('message.total_commands_processed') }}:
+            <span class="server-status-text">{{this.connectionStatus.total_commands_processed}}</span>
           </el-tag>
         </p>
       </el-card>
@@ -271,7 +280,15 @@ export default {
   .el-row.status-card {
     margin-top: 20px;
   }
-  .status-card .el-tag--success {
+  .server-status-tag-p {
+    height: 32px;
+  }
+  .server-status-container{
+    width: 100%;
+    overflow-x: hidden;
+    text-overflow: ellipsis;
+  }
+  .server-status-text{
     color: #43b50b;
   }
 </style>
