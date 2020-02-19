@@ -116,7 +116,7 @@ export default {
         const { length } = reply;
 
         for (var i = 0; i < length; i+=2) {
-          zsetData.push({ member: reply[i], score: reply[i + 1] });
+          zsetData.push({ member: reply[i], score: Number(reply[i + 1]) });
         }
 
         this.zsetData = zsetData;

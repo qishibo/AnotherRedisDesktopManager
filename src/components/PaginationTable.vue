@@ -16,7 +16,7 @@
       :total="dataAfterFilter.length"
       :page-size="pageSize"
       :current-page.sync="pageIndex"
-      layout="prev, pager, next"
+      layout="total, prev, pager, next"
       background
       >
     </el-pagination>
