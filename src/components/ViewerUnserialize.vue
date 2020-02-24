@@ -1,18 +1,18 @@
 <template>
-  <div class="text-formated-container">
-    <div class="collapse-container">
-      <el-button class="collapse-btn" type="text" @click="toggleCollapse">{{ $t('message.' + collapseText) }}</el-button>
-    </div>
-    <vue-json-pretty
-      :path="'res'"
-      :data="newContent"
-      :deep="maxDeep"
-      :showLength=true>
-    </vue-json-pretty>
+<div class="text-formated-container">
+  <div class="collapse-container">
+    <el-button class="collapse-btn" type="text" @click="toggleCollapse">{{ $t('message.' + collapseText) }}</el-button>
   </div>
+  <vue-json-pretty
+    :path="'res'"
+    :data="newContent"
+    :deep="maxDeep"
+    :showLength=true>
+  </vue-json-pretty>
+</div>
 </template>
 
-<script>
+<script type="text/javascript">
 import VueJsonPretty from 'vue-json-pretty';
 import unserialize from 'locutus/php/var/unserialize';
 
@@ -25,11 +25,12 @@ export default {
       collapseText: 'expand_all',
     };
   },
-  components: { VueJsonPretty },
+  components: {VueJsonPretty},
+  props: ['content'],
   computed: {
     newContent() {
       try {
-        return unserialize(this.$parent.$data.content);
+        return unserialize(this.content);
       } catch (e) {
         return this.$t('message.php_unserialize_format_failed');
       }
@@ -43,5 +44,5 @@ export default {
       this.collapseText = this.collapsed ? 'expand_all' : 'collapse_all';
     },
   },
-};
+}
 </script>

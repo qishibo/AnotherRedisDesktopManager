@@ -4,37 +4,19 @@
       <!-- add button -->
       <el-form :inline="true" size="small">
         <el-form-item>
-          <el-button size="small" type="primary" @click="dialogFormVisible = true">{{ $t('message.add_new_line') }}</el-button>
+          <el-button size="small" type="primary" @click='showEditDialog({})'>{{ $t('message.add_new_line') }}</el-button>
         </el-form-item>
       </el-form>
 
-      <!-- add dialog -->
-      <el-dialog :title="$t('message.add_new_line')" :visible.sync="dialogFormVisible">
-        <el-form>
-          <el-form-item label="Field">
-            <el-input v-model="newLineItem.field" autocomplete="off"></el-input>
-          </el-form-item>
-
-          <el-form-item label="Value">
-            <el-input type="textarea" :rows="2" v-model="newLineItem.value" autocomplete="off"></el-input>
-          </el-form-item>
-        </el-form>
-
-        <div slot="footer" class="dialog-footer">
-          <el-button @click="dialogFormVisible = false">{{ $t('el.messagebox.cancel') }}</el-button>
-          <el-button type="primary" @click="addLine">{{ $t('el.messagebox.confirm') }}</el-button>
-        </div>
-      </el-dialog>
-
-      <!-- edit dialog -->
-      <el-dialog :title="$t('message.edit_line')" :visible.sync="editDialog">
+      <!-- edit & add dialog -->
+      <el-dialog :title='dialogTitle' :visible.sync="editDialog">
         <el-form>
           <el-form-item label="Field">
             <el-input v-model="editLineItem.key" autocomplete="off"></el-input>
           </el-form-item>
 
           <el-form-item label="Value">
-            <el-input type="textarea" :rows="2" v-model="editLineItem.value" autocomplete="off"></el-input>
+            <FormatViewer :content.sync='editLineItem.value'></FormatViewer>
           </el-form-item>
         </el-form>
 
@@ -43,7 +25,6 @@
           <el-button type="primary" @click="editLine">{{ $t('el.messagebox.confirm') }}</el-button>
         </div>
       </el-dialog>
-
     </div>
 
     <!-- content table -->
@@ -90,21 +71,26 @@
 
 <script>
 import PaginationTable from '@/components/PaginationTable';
+import FormatViewer from '@/components/FormatViewer';
 
 export default {
   data() {
     return {
       filterValue: '',
-      dialogFormVisible: false,
       editDialog: false,
       hashData: [], // {key: xxx, value: xxx}
-      newLineItem: {},
       beforeEditItem: {},
       editLineItem: {},
     };
   },
-  components: {PaginationTable},
+  components: {PaginationTable, FormatViewer},
   props: ['client', 'redisKey', 'syncKeyParams'],
+  computed: {
+    dialogTitle() {
+      return this.beforeEditItem.key ? this.$t('message.edit_line') :
+             this.$t('message.add_new_line');
+    },
+  },
   methods: {
     initShow() {
       const key = this.syncKeyParams.keyName;
@@ -130,28 +116,47 @@ export default {
     },
     editLine() {
       const key = this.syncKeyParams.keyName;
+      const ttl = this.syncKeyParams.keyTTL;
       const client = this.client;
+
+      this.editDialog = false;
+
+      if (!key) {
+        this.$parent.$parent.emptyKeyWhenAdding();
+        return;
+      }
 
       const before = this.beforeEditItem;
       const after = this.editLineItem;
 
+      if (!after.key || !after.value) {
+        return;
+      }
+
       client.hsetAsync(key, after.key, after.value).then((reply) => {
-        // key changed
-        if (before.key !== after.key) {
+        // new key set ttl
+        if (!this.redisKey && ttl > 0) {
+          client.expireAsync(key, ttl).then(() => {});
+        }
+
+        // edit key && key changed
+        if (before.key && before.key !== after.key) {
           client.hdelAsync(key, before.key).then((reply) => {
             this.initShow();
           });
-        } else {
-          this.initShow();
         }
-      });
 
-      this.$message.success({
-        message: `${after.key} ${this.$t('message.modify_success')}`,
-        duration: 1000,
-      });
+        else {
+          // if in new key mode, exec refreshAfterAdd
+          this.redisKey ? this.initShow() : this.$parent.$parent.refreshAfterAdd(key);
+        }
 
-      this.editDialog = false;
+        // reply==1:new field; reply==0 field exists
+        this.$message.success({
+          message: reply ? this.$t('message.add_success') : this.$t('message.modify_success'),
+          duration: 1000,
+        });
+      });
     },
     deleteLine(row) {
       this.$confirm(this.$t('message.confirm_to_delete_row_data'), {
@@ -169,37 +174,6 @@ export default {
             this.initShow();
           }
         });
-      });
-    },
-    addLine() {
-      const key = this.syncKeyParams.keyName;
-      const ttl = this.syncKeyParams.keyTTL;
-      const client = this.client;
-
-      this.dialogFormVisible = false;
-
-      if (!key) {
-        this.$parent.$parent.emptyKeyWhenAdding();
-        return false;
-      }
-
-      if (!this.newLineItem.field || !this.newLineItem.value) {
-        return;
-      }
-
-      client.hsetAsync(key, this.newLineItem.field, this.newLineItem.value).then((reply) => {
-        if (ttl > 0) {
-          client.expireAsync(key, ttl).then((reply) => {});
-        }
-
-        // reply==1:new field; reply==0 field exists
-        this.$message.success({
-          message: reply ? this.$t('message.add_success') : this.$t('message.modify_success'),
-          duration: 1000,
-        });
-
-        // if in new key mode, exec refreshAfterAdd
-        this.redisKey ? this.initShow() : this.$parent.$parent.refreshAfterAdd(key);
       });
     },
   },
