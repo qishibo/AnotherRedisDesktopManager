@@ -58,7 +58,7 @@ export default {
 
   .text-formated-container {
     border: 1px solid #dcdfe6;
-    min-height: 100px;
+    min-height: 114px;
     padding: 5px 15px;
     line-height: 1.5;
     border-radius: 5px;

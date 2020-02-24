@@ -1,5 +1,5 @@
 <template>
-<el-form>
+<el-form class='key-content-string'>
   <!-- key content textarea -->
   <el-form-item>
     <FormatViewer :content.sync='content' float='left' :textrows=12></FormatViewer>
@@ -82,3 +82,9 @@ export default {
   },
 };
 </script>
+
+<style type="text/css">
+  .key-content-string .text-formated-container {
+    min-height: 228px;
+  }
+</style>
