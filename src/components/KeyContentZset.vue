@@ -4,29 +4,12 @@
       <!-- add button -->
       <el-form :inline="true" size="small">
         <el-form-item>
-          <el-button size="small" type="primary" @click="dialogFormVisible = true">{{ $t('message.add_new_line') }}</el-button>
+          <el-button size="small" type="primary" @click="showEditDialog({})">{{ $t('message.add_new_line') }}</el-button>
         </el-form-item>
       </el-form>
 
-      <!-- add dialog -->
-      <el-dialog :title="$t('message.add_new_line')" :visible.sync="dialogFormVisible">
-        <el-form>
-          <el-form-item label="Member">
-            <el-input v-model="newLineItem.member" autocomplete="off"></el-input>
-          </el-form-item>
-          <el-form-item label="Score">
-            <el-input v-model="newLineItem.score" autocomplete="off"></el-input>
-          </el-form-item>
-        </el-form>
-
-        <div slot="footer" class="dialog-footer">
-          <el-button @click="dialogFormVisible = false">{{ $t('el.messagebox.cancel') }}</el-button>
-          <el-button type="primary" @click="addLine">{{ $t('el.messagebox.confirm') }}</el-button>
-        </div>
-      </el-dialog>
-
-      <!-- edit dialog -->
-      <el-dialog :title="$t('message.edit_line')" :visible.sync="editDialog">
+      <!-- edit & add dialog -->
+      <el-dialog :title="dialogTitle" :visible.sync="editDialog">
         <el-form>
           <el-form-item label="Member">
             <el-input v-model="editLineItem.member" autocomplete="off"></el-input>
@@ -41,7 +24,6 @@
           <el-button type="primary" @click="editLine">{{ $t('el.messagebox.confirm') }}</el-button>
         </div>
       </el-dialog>
-
     </div>
 
     <!-- content table -->
@@ -93,16 +75,20 @@ export default {
   data() {
     return {
       filterValue: '',
-      dialogFormVisible: false,
       editDialog: false,
       zsetData: [], // {score: 111, member: xxx}
-      newLineItem: {},
       beforeEditItem: {},
       editLineItem: {},
     };
   },
   props: ['client', 'redisKey', 'syncKeyParams'],
   components: {PaginationTable},
+  computed: {
+    dialogTitle() {
+      return this.beforeEditItem.member ? this.$t('message.edit_line') :
+             this.$t('message.add_new_line');
+    },
+  },
   methods: {
     initShow() {
       const key = this.syncKeyParams.keyName;
@@ -129,28 +115,46 @@ export default {
     },
     editLine() {
       const key = this.syncKeyParams.keyName;
+      const ttl = this.syncKeyParams.keyTTL;
       const client = this.client;
+
+      this.editDialog = false;
+
+      if (!key) {
+        this.$parent.$parent.emptyKeyWhenAdding();
+        return;
+      }
 
       const before = this.beforeEditItem;
       const after = this.editLineItem;
 
+      if (!after.member || isNaN(after.score)) {
+        return;
+      }
+
       client.zaddAsync(key, after.score, after.member).then((reply) => {
-        // member changed
-        if (after.member !== before.member) {
+        // new key set ttl
+        if (!this.redisKey && ttl > 0) {
+          client.expireAsync(key, ttl).then(() => {});
+        }
+
+        // edit key member changed
+        if (before.member && before.member !== after.member) {
           client.zremAsync(key, before.member).then((reply) => {
             this.initShow();
           });
-        } else {
-          this.initShow();
         }
-      });
 
-      this.$message.success({
-        message: `${after.member} ${this.$t('message.modify_success')}`,
-        duration: 1000,
-      });
+        else {
+          // if in new key mode, exec refreshAfterAdd
+          this.redisKey ? this.initShow() : this.$parent.$parent.refreshAfterAdd(key);
+        }
 
-      this.editDialog = false;
+        this.$message.success({
+          message: reply ? this.$t('message.add_success') : this.$t('message.modify_success'),
+          duration: 1000,
+        });
+      });
     },
     deleteLine(row) {
       this.$confirm(this.$t('message.confirm_to_delete_row_data'), {
@@ -168,36 +172,6 @@ export default {
             this.initShow();
           }
         });
-      });
-    },
-    addLine() {
-      const key = this.syncKeyParams.keyName;
-      const ttl = this.syncKeyParams.keyTTL;
-      const client = this.client;
-
-      this.dialogFormVisible = false;
-
-      if (!key) {
-        this.$parent.$parent.emptyKeyWhenAdding();
-        return false;
-      }
-
-      if (!this.newLineItem.member || !this.newLineItem.score) {
-        return;
-      }
-
-      client.zaddAsync(key, this.newLineItem.score, this.newLineItem.member).then((reply) => {
-        if (ttl > 0) {
-          client.expireAsync(key, ttl).then((reply) => {});
-        }
-
-        this.$message.success({
-          message: reply ? this.$t('message.add_success') : this.$t('message.modify_success'),
-          duration: 1000,
-        });
-
-        // if in new key mode, exec refreshAfterAdd
-        this.redisKey ? this.initShow() : this.$parent.$parent.refreshAfterAdd(key);
       });
     },
   },

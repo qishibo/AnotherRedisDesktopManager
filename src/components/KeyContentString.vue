@@ -1,46 +1,28 @@
 <template>
-  <div>
-    <!-- select view -->
-    <el-form :inline="true" size="small">
-      <el-form-item>
-        <el-select v-model="selectedView" placeholder="View As">
-          <el-option
-            v-for="item in views"
-            :key="item.value"
-            :label="item.text"
-            :value="item.value">
-          </el-option>
-          <span slot="prefix" class="fa fa-sitemap"></span>
-        </el-select>
-      </el-form-item>
-    </el-form>
+<el-form>
+  <!-- key content textarea -->
+  <el-form-item>
+    <FormatViewer :content.sync='content' float='left' :textrows=12></FormatViewer>
+  </el-form-item>
 
-    <!-- content show -->
-    <div>
-      <component :is="selectedView" :redisKey="redisKey"></component>
-    </div>
-  </div>
+  <!-- save btn -->
+  <el-form-item>
+    <el-button type="primary" @click="execSave">{{ $t('message.save') }}</el-button>
+  </el-form-item>
+</el-form>
 </template>
 
 <script>
-import StringViewText from '@/components/StringViewText';
-import StringViewJson from '@/components/StringViewJson';
-import StringViewPhpUnserialize from '@/components/StringViewPhpUnserialize';
+import FormatViewer from '@/components/FormatViewer';
 
 export default {
   data() {
     return {
-      selectedView: 'StringViewText',
-      views: [
-        { value: 'StringViewText', text: 'View As Text' },
-        { value: 'StringViewJson', text: 'View As Json' },
-        { value: 'StringViewPhpUnserialize', text: 'View As PHPUnserialize' },
-      ],
       content: '',
     };
   },
   props: ['client', 'redisKey', 'syncKeyParams'],
-  components: { StringViewText, StringViewJson, StringViewPhpUnserialize },
+  components: { FormatViewer },
   methods: {
     initShow() {
       const key = this.syncKeyParams.keyName;
@@ -60,32 +42,43 @@ export default {
         }
       });
     },
+    execSave() {
+      const key = this.syncKeyParams.keyName;
+      const ttl = this.syncKeyParams.keyTTL;
+      const client = this.client;
+
+      if (!key) {
+        this.$parent.$parent.emptyKeyWhenAdding();
+        return;
+      }
+
+      client.setAsync(key, this.content).then((reply) => {
+        if (reply === 'OK') {
+          // if ttl is setted
+          if (ttl > 0) {
+            client.expireAsync(key, ttl).then(() => {});
+          }
+
+          // if in new key mode, exec refreshAfterAdd
+          this.redisKey ? this.initShow() : this.$parent.$parent.refreshAfterAdd(key);
+
+          this.$message.success({
+            message: `${key} ${this.$t('message.modify_success')}`,
+            duration: 1000,
+          });
+        }
+
+        else {
+          this.$message.error({
+            message: `${key} ${this.$t('message.modify_failed')}`,
+            duration: 1000,
+          });
+        }
+      });
+    },
   },
   mounted() {
     this.initShow();
   },
 };
 </script>
-
-<style type="text/css">
-  .text-formated-container {
-    border: 1px solid #dcdfe6;
-    min-height: 100px;
-    padding: 5px 15px;
-    line-height: 1.5;
-    border-radius: 5px;
-  }
-
-  .vjs__tree span {
-    color: #616069;
-  }
-
-  .collapse-container {
-    height: 27px;
-  }
-
-  .collapse-container .collapse-btn {
-    float: right;
-    padding: 9px 0;
-  }
-</style>

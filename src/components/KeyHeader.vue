@@ -3,27 +3,25 @@
     <el-form :inline="true">
       <!-- key name -->
       <el-form-item>
-        <el-input ref="keyNameInput" placeholder="" v-model="syncKeyParams.keyName" @keyup.enter.native="renameKey" placeholder="KeyName">
-          <i
-            class="el-icon-check el-input__icon cursor-pointer"
+        <el-input ref="keyNameInput" v-model="syncKeyParams.keyName" @keyup.enter.native="renameKey" placeholder="KeyName">
+          <span slot="prepend" class="key-detail-type">{{ keyType }}</span>
+          <i class="el-icon-check el-input__icon cursor-pointer"
             slot="suffix"
             :title="$t('message.click_enter_to_rename')"
             @click="renameKey">
           </i>
-          <template slot="prepend"><span class="key-detail-type">{{ keyType }}</span></template>
         </el-input>
       </el-form-item>
 
       <!-- key ttl -->
       <el-form-item>
-        <el-input placeholder="" v-model="syncKeyParams.keyTTL" @keyup.enter.native="ttlKey">
-          <i
-            class="el-icon-check el-input__icon cursor-pointer"
+        <el-input v-model="syncKeyParams.keyTTL" @keyup.enter.native="ttlKey">
+          <span slot="prepend">TTL</span>
+          <i class="el-icon-check el-input__icon cursor-pointer"
             slot="suffix"
             :title="$t('message.click_enter_to_ttl')"
             @click="ttlKey">
           </i>
-          <template slot="prepend">TTL</template>
         </el-input>
       </el-form-item>
 
