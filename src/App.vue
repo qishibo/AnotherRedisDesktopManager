@@ -1,5 +1,5 @@
 <template>
-  <el-container class="wrap-container" :style="{'font-family': fontFamily}">
+  <el-container class="wrap-container">
     <!-- left aside draggable container -->
     <div class="aside-drag-container" :style="{width: sideWidth + 'px'}">
       <!-- connections -->
@@ -43,7 +43,6 @@ export default {
   data() {
     return {
       sideWidth: 250,
-      fontFamily: 'Default Initial',
     };
   },
   created() {
@@ -94,9 +93,11 @@ export default {
     },
     initFont() {
       let fontFamily = this.$storage.getSetting('fontFamily');
-      !fontFamily && (fontFamily = [this.fontFamily]);
+      // default font-family
+      !fontFamily && (fontFamily = ['Default Initial']);
 
-      this.fontFamily = fontFamily.map((line) => {return `"${line}"`}).join(',');
+      document.body.style.fontFamily =
+        fontFamily.map((line) => {return `"${line}"`}).join(',');
     }
   },
   mounted() {
