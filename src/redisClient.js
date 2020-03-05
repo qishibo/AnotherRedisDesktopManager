@@ -30,7 +30,7 @@ export default {
 
     const config = {
       username: sshOptions.username,
-      password: sshOptions.auth,
+      password: auth,
       passphrase: sshOptions.password,
       host: sshOptions.host,
       port: sshOptions.port,
