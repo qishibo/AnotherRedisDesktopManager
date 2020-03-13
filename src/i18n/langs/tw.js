@@ -83,7 +83,8 @@ const tw = {
     3. 某些異常情況無法載入系統字體列表時，可以手動輸入已安裝的字體名稱',
     private_key_faq: '目前支持RSA格式私鑰，即以<pre>-----BEGIN RSA PRIVATE KEY-----</pre>開頭，\
     以<pre>-----BEGIN OPENSSH PRIVATE KEY-----</pre>開頭的，需要執行\
-    <pre>ssh-keygen -p -m pem -f ~/.ssh/id_rsa</pre>進行格式轉換後再使用，該操作不會影響以前的私鑰登陸'
+    <pre>ssh-keygen -p -m pem -f ~/.ssh/id_rsa</pre>進行格式轉換後再使用，該操作不會影響以前的私鑰登陸',
+    dark_mode: '深色模式',
   },
 };
 

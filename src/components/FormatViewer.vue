@@ -63,9 +63,15 @@ export default {
     line-height: 1.5;
     border-radius: 5px;
   }
+  .dark-mode .text-formated-container {
+    border-color: #7f8ea5;
+  }
 
   .vjs__tree span {
     color: #616069;
+  }
+  .dark-mode .vjs__tree span:not([class^="vjs"]) {
+    color: inherit;
   }
 
   .collapse-container {

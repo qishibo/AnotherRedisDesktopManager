@@ -103,4 +103,7 @@ export default {
     background: #dcdee0;
     border-radius: 3px;
   }
+  .dark-mode .connection-menu .connection-right-icon:hover {
+    background: #58707b;
+  }
 </style>

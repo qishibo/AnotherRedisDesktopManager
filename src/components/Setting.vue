@@ -3,6 +3,11 @@
   <el-dialog :title="$t('message.settings')" :visible.sync="settingDialog.visible">
     <el-form label-position="top" size="mini">
 
+      <!-- theme -->
+      <el-form-item :label="$t('message.dark_mode')">
+        <el-switch v-model='darkMode' @change="changeTheme"></el-switch>
+      </el-form-item>
+
       <!-- connections -->
       <el-form-item :label="$t('message.config_connections')">
         <el-button icon="el-icon-upload2" @click="exportConnection">{{ $t('message.export') }}</el-button>
@@ -95,6 +100,7 @@ export default {
       // electronVersion: process.versions.electron,
       allFonts: [],
       loadingFonts: false,
+      darkMode: localStorage.theme == 'dark',
     };
   },
   props: ['settingDialog'],
@@ -118,6 +124,10 @@ export default {
 
       this.settingDialog.visible = false;
       this.$bus.$emit('changeFont');
+    },
+    changeTheme() {
+      const themeName = this.darkMode ? 'dark' : 'chalk';
+      globalChangeTheme(themeName);
     },
     showImportDialog() {
       this.importConnectionVisible = true;
@@ -199,3 +209,9 @@ export default {
   },
 };
 </script>
+
+<style type="text/css">
+  .dark-mode .el-upload-dragger {
+    background: inherit;
+  }
+</style>

@@ -47,4 +47,8 @@ export default {
   .aside-new-connection {
     width: 100%;
   }
+  .dark-mode .aside-new-connection-container .el-button--info {
+    color: #52a6fd;
+    background: inherit;
+  }
 </style>
