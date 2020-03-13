@@ -34,11 +34,15 @@ Download latest `dmg` package from [release](https://github.com/qishibo/AnotherR
 
 ## Enjoy!
 
-![redis status](https://imgup.qii404.xyz/github/j4j4jhk52g253.JPG)
+![redis status dark](https://imgup.qii404.xyz/github/20200313141641.jpg)
+![redis status](https://imgup.qii404.xyz/github/20200313141504.jpg)
 
-![redis key hash](https://imgup.qii404.xyz/github/5k2kj5634h3.JPG)
 
-![redis console](https://imgup.qii404.xyz/github/4j52g5g2h45.JPG)
+![redis key hash dark](https://imgup.qii404.xyz/github/20200313141719.jpg)
+![redis key hash](https://imgup.qii404.xyz/github/20200313141610.jpg)
+
+![redis console dark](https://imgup.qii404.xyz/github/20200313141656.jpg)
+![redis console](https://imgup.qii404.xyz/github/20200313141530.jpg)
 
 
 ## Feature Log
@@ -111,7 +115,7 @@ npm install --platform=win32
 npm start
 
 
-# after the previous step is completed, open another tab, build up a desktop client
+# after the previous step is completed to 100%, open another tab, build up a desktop client
 npm run electron
 ```
 
