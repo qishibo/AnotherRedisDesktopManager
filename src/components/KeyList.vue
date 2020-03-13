@@ -181,9 +181,16 @@ export default {
     /*margin-right: 3px;*/
     padding-left: 6px;
   }
+  .dark-mode .connection-menu .key-list .key-item {
+    color: #f7f7f7;
+  }
   .connection-menu .key-list .key-item:hover {
-    color: #3c3d3e;
+    /*color: #3c3d3e;*/
     background: #e7ebec;
+  }
+  .dark-mode .connection-menu .key-list .key-item:hover {
+    color: #f7f7f7;
+    background: #50616b;
   }
   .connection-menu .key-list .key-item.key-select {
     color: #0b7ff7;
@@ -191,5 +198,9 @@ export default {
     box-sizing: border-box;
     border-left: 2px solid #68acf3;
     padding-left: 4px;
+  }
+  .dark-mode .connection-menu .key-list .key-item.key-select {
+    color: #f7f7f7;
+    background: #50616b;
   }
 </style>

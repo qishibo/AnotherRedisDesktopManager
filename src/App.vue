@@ -98,7 +98,7 @@ export default {
 
       document.body.style.fontFamily =
         fontFamily.map((line) => {return `"${line}"`}).join(',');
-    }
+    },
   },
   mounted() {
     setTimeout(() => {
@@ -135,12 +135,21 @@ button, input, textarea, .vjs__tree {
   background: #eaeaea;
   border-radius: 4px;
 }
+.dark-mode ::-webkit-scrollbar-track {
+  background: #475156;
+}
 ::-webkit-scrollbar-track:hover {
   background: #e0e0dd;
+}
+.dark-mode ::-webkit-scrollbar-track:hover {
+  background: #565656;
 }
 ::-webkit-scrollbar-thumb {
   border-radius: 8px;
   background: #c1c1c1;
+}
+.dark-mode ::-webkit-scrollbar-thumb {
+  background: #5d676d;
 }
 ::-webkit-scrollbar-thumb:hover {
   background: #7d7d7d;

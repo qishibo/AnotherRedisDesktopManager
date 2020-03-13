@@ -238,10 +238,14 @@ export default {
   }
 
   .input-suggestion input {
-    color: #babdc1 !important;
+    color: #babdc1;
     background: #263238;
     border-top: 0px;
     border-radius: 0 0 4px 4px;
+  }
+  .dark-mode .input-suggestion input  {
+    color: #f7f7f7;
+    background: #324148;
   }
 
   .input-suggestion input::-webkit-input-placeholder {
@@ -254,5 +258,9 @@ export default {
     border-bottom: 0px;
     border-radius: 4px 4px 0 0;
     cursor: text;
+  }
+  .dark-mode #cli-content {
+    color: #f7f7f7;
+    background: #324148;
   }
 </style>

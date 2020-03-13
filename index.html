@@ -3,9 +3,28 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" id="theme-link">
     <title>Another Redis DeskTop Manager</title>
   </head>
   <body>
+    <!-- this script must be placed here after body -->
+    <script type="text/javascript">
+      function globalChangeTheme(theme) {
+        theme  && (localStorage.theme = theme);
+        !theme && (theme = localStorage.theme);
+
+        const themeName =  (theme  == 'dark' ? 'dark' : 'chalk');
+        const themeHref = 'static/theme/' + themeName + '/index.css';
+
+        document.getElementById('theme-link').href = themeHref;
+        themeName == 'dark' ? document.body.classList.add('dark-mode') :
+                              document.body.classList.remove('dark-mode');
+      }
+
+      // theme init
+      globalChangeTheme();
+    </script>
+
     <div id="app"></div>
     <!-- built files will be auto injected -->
   </body>
