@@ -67,11 +67,19 @@ export default {
     border-color: #7f8ea5;
   }
 
+  /*key field span*/
   .vjs__tree span {
     color: #616069;
   }
   .dark-mode .vjs__tree span:not([class^="vjs"]) {
-    color: inherit;
+    color: #ebebec;
+  }
+  /*brackets*/
+  .dark-mode .vjs__tree .vjs__tree__node {
+    color: #9e9ea2;
+  }
+  .dark-mode .vjs__tree .vjs__tree__node:hover {
+    color: #20a0ff;
   }
 
   .collapse-container {
