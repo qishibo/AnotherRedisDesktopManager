@@ -199,13 +199,17 @@ button, input, textarea, .vjs__tree {
   display: inline-block;
   width: 2px;
   height: 20px;
-  border-left: 1px solid rgba(0, 0, 0, 0.2);
-  border-right: 1px solid rgba(0, 0, 0, 0.2);
+  border-left: 1px solid #adabab;
+  border-right: 1px solid #adabab;
 
   position: absolute;
   top: 0;
   right: 0;
   bottom: 0;
   margin: auto;
+}
+.dark-mode #drag-resize-pointer::after {
+  border-left: 1px solid #b9b8b8;
+  border-right: 1px solid #b9b8b8;
 }
 </style>
