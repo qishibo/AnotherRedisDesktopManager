@@ -14,7 +14,7 @@
     </div>
 
     <!-- right main container -->
-    <el-container>
+    <el-container style="width: 10%;">
       <!-- top setting header -->
       <el-header class="main-header">
         <Header></Header>
@@ -161,6 +161,7 @@ button, input, textarea, .vjs__tree {
 .aside-drag-container {
   position: relative;
   user-select: none;
+  max-width: 50%;
 }
 .aside-connection {
   height: 100%;
