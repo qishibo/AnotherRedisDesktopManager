@@ -1,30 +1,28 @@
-import redis from 'redis';
+import Redis from 'ioredis';
 import bluebird from 'bluebird';
 import tunnelssh from 'tunnel-ssh';
-
-bluebird.promisifyAll(redis);
 
 export default {
   createConnection(host, port, auth, connectionName = null) {
     const options = {
       connect_timeout: 2000,
-      // max_attempts: 3,
-      retry_strategy: (options) => {return this.retryStragety(options, {host: host, port: port})},
+      retry_strategy: (times) => {return this.retryStragety(times, {host, port})},
       no_ready_check: true,
-      connection_name: connectionName,
+      connectionName: connectionName,
       password: auth,
     };
 
-    const client = redis.createClient(port, host, options);
+    const client = new Redis(port, host, options);
 
     return client;
   },
 
   createSSHConnection(sshOptions, host, port, auth, connectionName = null) {
     const options = {
-      retry_strategy: (options) => {return this.retryStragety(options, {host: host, port: port})},
+      connect_timeout: 2000,
+      retry_strategy: (times) => {return this.retryStragety(times, {host, port})},
       no_ready_check: true,
-      connection_name: connectionName,
+      connectionName: connectionName,
       password: auth,
     };
 
@@ -49,7 +47,7 @@ export default {
         }
         else {
           const listenAddress = server.address();
-          const client = redis.createClient(listenAddress.port, listenAddress.address, options);
+          const client = new Redis(listenAddress.port, listenAddress.address, options);
           resolve(client);
         }
       });
@@ -63,15 +61,15 @@ export default {
     return sshPromise;
   },
 
-  retryStragety(options, connection) {
+  retryStragety(times, connection) {
     const maxRetryTimes = 3;
 
-    if (options.attempt >= maxRetryTimes) {
+    if (times >= maxRetryTimes) {
       alert(`${connection.host}:${connection.port}\nToo Many Attempts To Reconnect. Please Check The Server Status!`);
       return false;
     }
 
     // reconnect after
-    return Math.max(options.attempt * 200, 1000);
+    return Math.min(times * 200, 1000);
   },
 };

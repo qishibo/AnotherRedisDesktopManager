@@ -25,6 +25,14 @@ export default {
 
     return string.substr(0, maxLength) + '...';
   },
+  isJson(string) {
+    try {
+      let obj = JSON.parse(string);
+      return !!obj && typeof obj === 'object';
+    } catch (e) {}
+
+    return false;
+  },
   openHrefExternal(e, href) {
     e.preventDefault();
     require('electron').shell.openExternal(href);

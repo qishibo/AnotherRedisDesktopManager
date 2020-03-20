@@ -107,7 +107,7 @@ export default {
     beginScanning(cursor, match, count, callback, minLength = null, lastList = []) {
       !minLength && (minLength = this.keysPageSize);
 
-      const promise = this.client.scanAsync(cursor, 'MATCH', match, 'COUNT', count).then((reply) => {
+      const promise = this.client.scan(cursor, 'MATCH', match, 'COUNT', count).then((reply) => {
         reply[1] = reply[1].concat(lastList);
 
         // key list length smaller than minLength
@@ -124,7 +124,7 @@ export default {
     refreshKeyListExact() {
       const match = this.getMatchMode(false);
 
-      this.client.existsAsync(match).then((reply) => {
+      this.client.exists(match).then((reply) => {
         this.keyList = (reply === 1) ? [match] : [];
       });
 

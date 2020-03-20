@@ -99,7 +99,7 @@ export default {
         return;
       }
 
-      this.client.hgetallAsync(key).then((reply) => {
+      this.client.hgetall(key).then((reply) => {
         const hashData = [];
 
         for (const i in reply) {
@@ -133,15 +133,15 @@ export default {
         return;
       }
 
-      client.hsetAsync(key, after.key, after.value).then((reply) => {
+      client.hset(key, after.key, after.value).then((reply) => {
         // new key set ttl
         if (!this.redisKey && ttl > 0) {
-          client.expireAsync(key, ttl).then(() => {});
+          client.expire(key, ttl).then(() => {});
         }
 
         // edit key && key changed
         if (before.key && before.key !== after.key) {
-          client.hdelAsync(key, before.key).then((reply) => {
+          client.hdel(key, before.key).then((reply) => {
             this.initShow();
           });
         }
@@ -164,7 +164,7 @@ export default {
       }).then(() => {
         const key = this.syncKeyParams.keyName;
 
-        this.client.hdelAsync(key, row.key).then((reply) => {
+        this.client.hdel(key, row.key).then((reply) => {
           if (reply === 1) {
             this.$message.success({
               message: `${row.key} ${this.$t('message.delete_success')}`,

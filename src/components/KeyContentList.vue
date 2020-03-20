@@ -87,7 +87,7 @@ export default {
         return;
       }
 
-      this.client.lrangeAsync([key, 0, -1]).then((reply) => {
+      this.client.lrange([key, 0, -1]).then((reply) => {
         const listData = [];
 
         for (const i of reply) {
@@ -121,17 +121,17 @@ export default {
         return;
       }
 
-      client.rpushAsync(key, after.value).then((reply) => {
+      client.rpush(key, after.value).then((reply) => {
         // reply return list length if success
         if (reply > 0) {
           // new key set ttl
           if (!this.redisKey && ttl > 0) {
-            client.expireAsync(key, ttl).then(() => {});
+            client.expire(key, ttl).then(() => {});
           }
 
           // edit key remove previous value
           if (before.value) {
-            client.lremAsync(key, 1, before.value).then((reply) => {
+            client.lrem(key, 1, before.value).then((reply) => {
               this.initShow();
             });
           }
@@ -154,7 +154,7 @@ export default {
       }).then(() => {
         const key = this.syncKeyParams.keyName;
 
-        this.client.lremAsync(key, 1, row.value).then((reply) => {
+        this.client.lrem(key, 1, row.value).then((reply) => {
           if (reply === 1) {
             this.$message.success({
               message: this.$t('message.delete_success'),

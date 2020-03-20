@@ -31,7 +31,7 @@ export default {
         return;
       }
 
-      this.client.getAsync(key).then((reply) => {
+      this.client.get(key).then((reply) => {
         // character not visible
         if (!this.$util.isVisible(reply)) {
           this.content = this.$util.toUTF8(reply);
@@ -52,11 +52,11 @@ export default {
         return;
       }
 
-      client.setAsync(key, this.content).then((reply) => {
+      client.set(key, this.content).then((reply) => {
         if (reply === 'OK') {
           // if ttl is setted
           if (ttl > 0) {
-            client.expireAsync(key, ttl).then(() => {});
+            client.expire(key, ttl).then(() => {});
           }
 
           // if in new key mode, exec refreshAfterAdd

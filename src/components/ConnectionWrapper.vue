@@ -77,7 +77,7 @@ export default {
     },
     afterOpenConnection(client, callback = false) {
       // new connection, not ready
-      if (!client.ready) {
+      if (client.status != 'ready') {
         client.on('ready', () => {
           // open status tab
           if (!this.openedStatus) {

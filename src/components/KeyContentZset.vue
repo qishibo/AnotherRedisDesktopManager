@@ -97,7 +97,7 @@ export default {
         return;
       }
 
-      this.client.zrangeAsync([key, 0, -1, 'WITHSCORES']).then((reply) => {
+      this.client.zrange([key, 0, -1, 'WITHSCORES']).then((reply) => {
         const zsetData = [];
         const { length } = reply;
 
@@ -132,15 +132,15 @@ export default {
         return;
       }
 
-      client.zaddAsync(key, after.score, after.member).then((reply) => {
+      client.zadd(key, after.score, after.member).then((reply) => {
         // new key set ttl
         if (!this.redisKey && ttl > 0) {
-          client.expireAsync(key, ttl).then(() => {});
+          client.expire(key, ttl).then(() => {});
         }
 
         // edit key member changed
         if (before.member && before.member !== after.member) {
-          client.zremAsync(key, before.member).then((reply) => {
+          client.zrem(key, before.member).then((reply) => {
             this.initShow();
           });
         }
@@ -162,7 +162,7 @@ export default {
       }).then(() => {
         const key = this.syncKeyParams.keyName;
 
-        this.client.zremAsync(key, row.member).then((reply) => {
+        this.client.zrem(key, row.member).then((reply) => {
           if (reply === 1) {
             this.$message.success({
               message: `${row.member} ${this.$t('message.delete_success')}`,

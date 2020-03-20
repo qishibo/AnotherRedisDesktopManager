@@ -97,7 +97,7 @@ export default {
       this.initDatabaseSelect();
     },
     initDatabaseSelect() {
-      this.client.configAsync('get', 'databases').then((reply) => {
+      this.client.config('get', 'databases').then((reply) => {
         if (reply[1]) {
           this.dbs = [...Array(parseInt(reply[1])).keys()];
         }
@@ -116,7 +116,7 @@ export default {
         this.selectedDbIndex = parseInt(dbIndex);
       }
 
-      this.client.selectAsync(this.selectedDbIndex).then(() => {
+      this.client.select(this.selectedDbIndex).then(() => {
         this.$parent.$refs.keyList.refreshKeyList();
       });
     },

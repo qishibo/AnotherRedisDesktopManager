@@ -57,7 +57,7 @@ export default {
 
       this.syncKeyParams.keyName = redisKeyLast;
 
-      client.ttlAsync(redisKeyLast).then((reply) => {
+      client.ttl(redisKeyLast).then((reply) => {
         this.syncKeyParams.keyTTL = reply;
       });
     },
@@ -66,7 +66,7 @@ export default {
         this.$t('message.confirm_to_delete_key', { key: this.redisKeyLast }),
         { type: 'warning' },
       ).then(() => {
-        this.client.delAsync(this.redisKeyLast).then((reply) => {
+        this.client.del(this.redisKeyLast).then((reply) => {
           if (reply === 1) {
             this.$message.success({
               message: `${this.redisKeyLast} ${this.$t('message.delete_success')}`,
@@ -94,7 +94,7 @@ export default {
         return;
       }
 
-      this.client.renameAsync(this.redisKeyLast, this.syncKeyParams.keyName).then((reply) => {
+      this.client.rename(this.redisKeyLast, this.syncKeyParams.keyName).then((reply) => {
         if (reply === 'OK') {
           this.$message.success({
             message: `${this.redisKeyLast} rename to ${this.syncKeyParams.keyName} ${this.$t('message.modify_success')}`,
@@ -122,7 +122,7 @@ export default {
       }
     },
     setTTL(removePreTab = false) {
-      this.client.expireAsync(this.redisKeyLast, this.syncKeyParams.keyTTL).then((reply) => {
+      this.client.expire(this.redisKeyLast, this.syncKeyParams.keyTTL).then((reply) => {
         if (reply) {
           this.$message.success({
             message: `${this.redisKeyLast} expire ${this.syncKeyParams.keyTTL} ${this.$t('message.modify_success')}`,

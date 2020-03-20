@@ -85,7 +85,7 @@ export default {
         return;
       }
 
-      this.client.smembersAsync(key).then((reply) => {
+      this.client.smembers(key).then((reply) => {
         const setData = [];
 
         for (const i of reply) {
@@ -119,17 +119,17 @@ export default {
         return;
       }
 
-      client.saddAsync(key, after.value).then((reply) => {
+      client.sadd(key, after.value).then((reply) => {
         // add success
         if (reply === 1) {
           // new key set ttl
           if (!this.redisKey && ttl > 0) {
-            client.expireAsync(key, ttl).then(() => {});
+            client.expire(key, ttl).then(() => {});
           }
 
           // edit key remove previous value
           if (before.value) {
-            client.sremAsync(key, before.value).then((reply) => {
+            client.srem(key, before.value).then((reply) => {
               this.initShow();
             });
           }
@@ -160,7 +160,7 @@ export default {
       }).then(() => {
         const key = this.syncKeyParams.keyName;
 
-        this.client.sremAsync(key, row.value).then((reply) => {
+        this.client.srem(key, row.value).then((reply) => {
           if (reply === 1) {
             this.$message.success({
               message: this.$t('message.delete_success'),
