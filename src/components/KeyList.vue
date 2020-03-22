@@ -60,6 +60,7 @@ export default {
     clickKey(key, event = null, newTab = false) {
       // highlight clicked key
       event && this.hightKey(event);
+      event && (event.ctrlKey || event.metaKey) && (newTab = true);
       this.$bus.$emit('clickedKey', this.client, key, newTab);
     },
     hightKey(event) {
