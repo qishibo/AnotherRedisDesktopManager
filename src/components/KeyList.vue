@@ -45,6 +45,7 @@ export default {
       scanEndCount: 0,
       scanMoreDisabled: false,
       oneTimeListLength: 0,
+      firstScanFinished: false,
     };
   },
   props: ['client'],
@@ -127,6 +128,12 @@ export default {
         this.scanStreams.push(stream);
 
         stream.on('data', keys => {
+          // clear key list only after data scaned, to prevent list jitter
+          if (!this.firstScanFinished) {
+            this.firstScanFinished = true;
+            this.keyList = [];
+          }
+
           this.oneTimeListLength += keys.length;
           this.keyList = this.keyList.concat(keys.sort());
 
@@ -152,7 +159,8 @@ export default {
       });
     },
     resetKeyList() {
-      this.keyList = [];
+      // this.keyList = [];
+      this.firstScanFinished = false;
       this.scanStreams = [];
       this.oneTimeListLength = 0;
       this.scanMoreDisabled = false;
