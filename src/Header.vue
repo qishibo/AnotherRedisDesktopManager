@@ -28,7 +28,7 @@ export default {
       langItems: [
         { value: 'en', label: 'English' },
         { value: 'cn', label: '简体中文' },
-        { value: 'tw', label: '繁體中文（臺灣）' },
+        { value: 'tw', label: '繁體中文' },
       ],
       settingDialog: { visible: false },
     };

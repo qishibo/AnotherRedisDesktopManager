@@ -87,6 +87,7 @@ const cn = {
     dark_mode: '深色模式',
     load_more_keys: '加载更多',
     key_name: '键名',
+    project_home: '项目主页',
   },
 };
 

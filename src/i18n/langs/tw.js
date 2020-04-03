@@ -87,6 +87,7 @@ const tw = {
     dark_mode: '深色模式',
     load_more_keys: '加載更多',
     key_name: '鍵名',
+    project_home: '項目主頁',
   },
 };
 

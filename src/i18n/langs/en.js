@@ -87,6 +87,7 @@ const en = {
     dark_mode: 'Dark Mode',
     load_more_keys: 'load more',
     key_name: 'Key Name',
+    project_home: 'Project Home',
   },
 };
 
