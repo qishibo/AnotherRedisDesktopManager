@@ -1,32 +1,33 @@
 import Redis from 'ioredis';
-import bluebird from 'bluebird';
 import tunnelssh from 'tunnel-ssh';
 
 export default {
-  createConnection(host, port, auth, connectionName = null) {
+  createConnection(host, port, auth, config) {
     const options = {
       connect_timeout: 2000,
       retry_strategy: (times) => {return this.retryStragety(times, {host, port})},
       no_ready_check: true,
-      connectionName: connectionName,
+      connectionName: config.connectionName ? config.connectionName : null,
       password: auth,
     };
 
-    const client = new Redis(port, host, options);
+    const client = config.cluster ?
+                    new Redis.Cluster([{port, host}], options) :
+                    new Redis(port, host, options);
 
     return client;
   },
 
-  createSSHConnection(sshOptions, host, port, auth, connectionName = null) {
+  createSSHConnection(sshOptions, host, port, auth, config) {
     const options = {
       connect_timeout: 2000,
       retry_strategy: (times) => {return this.retryStragety(times, {host, port})},
       no_ready_check: true,
-      connectionName: connectionName,
+      connectionName: config.connectionName ? config.connectionName : null,
       password: auth,
     };
 
-    const config = {
+    const sshConfig = {
       username: sshOptions.username,
       password: sshOptions.password,
       host: sshOptions.host,
@@ -39,15 +40,17 @@ export default {
       privateKey: sshOptions.privatekey ?
                   require('fs').readFileSync(sshOptions.privatekey) : '',
     };
-
-    const sshPromise = new bluebird((resolve, reject) => {
-      var server = tunnelssh(config, function (error, server) {
+//======================================
+    const sshPromise = new Promise((resolve, reject) => {
+      var server = tunnelssh(sshConfig, function (error, server) {
         if (error) {
           reject(error);
         }
         else {
           const listenAddress = server.address();
-          const client = new Redis(listenAddress.port, listenAddress.address, options);
+          const client = config.cluster ?
+                          new Redis.Cluster([{port: listenAddress.port, host: listenAddress.address}], options) :
+                          new Redis(listenAddress.port, listenAddress.address, options);
           resolve(client);
         }
       });

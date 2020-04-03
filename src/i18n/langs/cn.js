@@ -85,6 +85,8 @@ const cn = {
     以<pre>-----BEGIN OPENSSH PRIVATE KEY-----</pre>开头的，需要执行\
     <pre>ssh-keygen -p -m pem -f ~/.ssh/id_rsa</pre>进行格式转换后再使用，该操作不会影响以前的私钥登陆',
     dark_mode: '深色模式',
+    load_more_keys: '加载更多',
+    key_name: '键名',
   },
 };
 

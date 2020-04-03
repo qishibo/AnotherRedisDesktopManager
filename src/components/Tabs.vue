@@ -55,11 +55,6 @@ export default {
     this.$bus.$on('removeAllTab', () => {
       this.tabs = [];
     });
-
-    // add new key tab
-    this.$bus.$on('addNewKey', (client, type) => {
-      this.addTab(this.initKeyTabItem(client, '', type), true);
-    });
   },
   methods: {
     removeTab(removeName) {

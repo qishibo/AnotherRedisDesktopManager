@@ -3,7 +3,7 @@
     <el-form :inline="true">
       <!-- key name -->
       <el-form-item>
-        <el-input ref="keyNameInput" v-model="syncKeyParams.keyName" @keyup.enter.native="renameKey" placeholder="KeyName">
+        <el-input ref="keyNameInput" v-model="keyName" @keyup.enter.native="renameKey" placeholder="KeyName">
           <span slot="prepend" class="key-detail-type">{{ keyType }}</span>
           <i class="el-icon-check el-input__icon cursor-pointer"
             slot="suffix"
@@ -15,7 +15,7 @@
 
       <!-- key ttl -->
       <el-form-item>
-        <el-input v-model="syncKeyParams.keyTTL" @keyup.enter.native="ttlKey">
+        <el-input v-model="keyTTL" @keyup.enter.native="ttlKey">
           <span slot="prepend">TTL</span>
           <i class="el-icon-check el-input__icon cursor-pointer"
             slot="suffix"
@@ -42,100 +42,108 @@
 export default {
   data() {
     return {
-      redisKeyLast: this.redisKey,
+      keyName: this.redisKey,
+      keyTTL: 0,
     };
   },
-  props: ['client', 'redisKey', 'keyType', 'syncKeyParams'],
+  props: ['client', 'redisKey', 'keyType'],
   methods: {
     initShow() {
+      const key = this.redisKey;
       const client = this.client;
-      const redisKeyLast = this.redisKeyLast;
 
-      if (!redisKeyLast) {
-        return;
-      }
+      // reset name input
+      this.keyName = key;
 
-      this.syncKeyParams.keyName = redisKeyLast;
-
-      client.ttl(redisKeyLast).then((reply) => {
-        this.syncKeyParams.keyTTL = reply;
-      });
-    },
-    deleteKey() {
-      this.$confirm(
-        this.$t('message.confirm_to_delete_key', { key: this.redisKeyLast }),
-        { type: 'warning' },
-      ).then(() => {
-        this.client.del(this.redisKeyLast).then((reply) => {
-          if (reply === 1) {
-            this.$message.success({
-              message: `${this.redisKeyLast} ${this.$t('message.delete_success')}`,
-              duration: 1000,
-            });
-
-            this.$bus.$emit('removePreTab');
-            this.refreshKeyList(this.redisKeyLast);
-          }
-          else {
-            this.$message.error({
-              message: `${this.redisKeyLast} ${this.$t('message.delete_failed')}`,
-              duration: 1000,
-            });
-          }
-        });
+      client.ttl(key).then((reply) => {
+        this.keyTTL = reply;
       });
     },
     refreshKey() {
       this.initShow();
       this.$emit('refreshContent');
     },
+    deleteKey() {
+      this.$confirm(
+        this.$t('message.confirm_to_delete_key', { key: this.redisKey }),
+        { type: 'warning' },
+      )
+      .then(() => {
+        this.client.del(this.redisKey).then((reply) => {
+          if (reply === 1) {
+            this.$message.success({
+              message: `${this.redisKey} ${this.$t('message.delete_success')}`,
+              duration: 1000,
+            });
+
+            this.$bus.$emit('removePreTab');
+            this.refreshKeyList(this.redisKey);
+          }
+          else {
+            this.$message.error({
+              message: `${this.redisKey} ${this.$t('message.delete_failed')}`,
+              duration: 1000,
+            });
+          }
+        });
+      }).catch(() => {});
+    },
     renameKey() {
-      if (this.redisKeyLast === this.syncKeyParams.keyName) {
+      if (this.keyName === this.redisKey) {
         return;
       }
 
-      this.client.rename(this.redisKeyLast, this.syncKeyParams.keyName).then((reply) => {
+      this.client.rename(this.redisKey, this.keyName).then((reply) => {
         if (reply === 'OK') {
           this.$message.success({
-            message: `${this.redisKeyLast} rename to ${this.syncKeyParams.keyName} ${this.$t('message.modify_success')}`,
+            message: `${this.redisKey} rename to ${this.keyName} ${this.$t('message.modify_success')}`,
             duration: 1000,
           });
 
-          this.redisKeyLast = this.syncKeyParams.keyName;
-          this.refreshKeyList();
-          this.$bus.$emit('clickedKey', this.client, this.syncKeyParams.keyName);
+          this.refreshKeyList(this.redisKey);
+          this.refreshKeyList(this.keyName, 'add');
+          this.$bus.$emit('clickedKey', this.client, this.keyName);
         }
+      }).catch(e => {
+        this.$message.error({
+          message: e.message,
+          duration: 3000,
+        });
       });
     },
     ttlKey() {
       // ttl <= 0
-      if (this.syncKeyParams.keyTTL <= 0) {
+      if (this.keyTTL <= 0) {
         this.$confirm(
           this.$t('message.ttl_delete'),
           { type: 'warning' },
-        ).then(() => {
+        )
+        .then(() => {
           this.setTTL(true);
-        }).catch(() => {});
+        })
+        .catch(() => {});
       }
       else {
         this.setTTL();
       }
     },
-    setTTL(removePreTab = false) {
-      this.client.expire(this.redisKeyLast, this.syncKeyParams.keyTTL).then((reply) => {
+    setTTL(keyDeleted = false) {
+      this.client.expire(this.redisKey, this.keyTTL).then((reply) => {
         if (reply) {
           this.$message.success({
-            message: `${this.redisKeyLast} expire ${this.syncKeyParams.keyTTL} ${this.$t('message.modify_success')}`,
+            message: `${this.redisKey} ttl ${this.keyTTL} ${this.$t('message.modify_success')}`,
             duration: 1000,
           });
 
-          this.refreshKeyList();
-          removePreTab && this.$bus.$emit('removePreTab');
+          if (keyDeleted) {
+            this.refreshKeyList(this.redisKey);
+            this.$bus.$emit('removePreTab');
+          }
         }
       });
     },
-    refreshKeyList(key) {
-      this.$bus.$emit('refreshKeyList', this.client, key);
+    refreshKeyList(key, type = 'del') {
+      this.$bus.$emit('refreshKeyList', this.client, key, type);
     },
   },
   mounted() {

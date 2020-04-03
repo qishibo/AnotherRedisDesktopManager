@@ -2,10 +2,23 @@
   <div>
     <el-container direction="vertical" class="key-tab-container">
       <!-- key info -->
-      <KeyHeader ref="keyHeader" :client='client' :redisKey="redisKey" :keyType="keyType" :syncKeyParams = "syncKeyParams" @refreshContent='refreshContent' class="key-header-info"></KeyHeader>
+      <KeyHeader
+        ref="keyHeader"
+        :client='client'
+        :redisKey="redisKey"
+        :keyType="keyType"
+        @refreshContent='refreshContent'
+        class="key-header-info">
+      </KeyHeader>
 
       <!-- key content -->
-      <component ref="keyContent" :is="componentName" :client='client' :redisKey="redisKey" :syncKeyParams = "syncKeyParams" class="key-content-container"></component>
+      <component
+        ref="keyContent"
+        :is="componentName"
+        :client='client'
+        :redisKey="redisKey"
+        class="key-content-container">
+      </component>
     </el-container>
   </div>
 </template>
@@ -20,9 +33,7 @@ import KeyContentList from '@/components/KeyContentList';
 
 export default {
   data() {
-    return {
-      syncKeyParams: { keyTTL: '', keyName: this.redisKey },
-    };
+    return {};
   },
   props: ['client', 'redisKey', 'keyType'],
   components: {
@@ -47,18 +58,6 @@ export default {
     },
     refreshContent() {
       this.$refs.keyContent.initShow();
-    },
-    refreshAfterAdd(key) {
-      this.$bus.$emit('clickedKey', this.client, key);
-      this.$bus.$emit('refreshKeyList', this.client);
-    },
-    emptyKeyWhenAdding() {
-      this.$message.error({
-        message: this.$t('message.enter_new_key'),
-        duration: 2000,
-      });
-
-      this.$refs.keyHeader.$refs.keyNameInput.focus();
     },
   },
 };

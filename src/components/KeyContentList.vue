@@ -71,7 +71,7 @@ export default {
       editLineItem: {},
     };
   },
-  props: ['client', 'redisKey', 'syncKeyParams'],
+  props: ['client', 'redisKey'],
   components: {PaginationTable, FormatViewer},
   computed: {
     dialogTitle() {
@@ -81,14 +81,8 @@ export default {
   },
   methods: {
     initShow() {
-      const key = this.syncKeyParams.keyName;
-
-      if (!key) {
-        return;
-      }
-
-      this.client.lrange([key, 0, -1]).then((reply) => {
-        const listData = [];
+      this.client.lrange([this.redisKey, 0, -1]).then((reply) => {
+        let listData = [];
 
         for (const i of reply) {
           listData.push({ value: i });
@@ -103,19 +97,12 @@ export default {
       this.editDialog = true;
     },
     editLine() {
-      const key = this.syncKeyParams.keyName;
-      const ttl = this.syncKeyParams.keyTTL;
+      const key = this.redisKey;
       const client = this.client;
-
-      this.editDialog = false;
-
-      if (!key) {
-        this.$parent.$parent.emptyKeyWhenAdding();
-        return;
-      }
-
       const before = this.beforeEditItem;
       const after = this.editLineItem;
+
+      this.editDialog = false;
 
       if (!after.value || before.value == after.value) {
         return;
@@ -124,11 +111,6 @@ export default {
       client.rpush(key, after.value).then((reply) => {
         // reply return list length if success
         if (reply > 0) {
-          // new key set ttl
-          if (!this.redisKey && ttl > 0) {
-            client.expire(key, ttl).then(() => {});
-          }
-
           // edit key remove previous value
           if (before.value) {
             client.lrem(key, 1, before.value).then((reply) => {
@@ -137,8 +119,7 @@ export default {
           }
 
           else {
-            // if in new key mode, exec refreshAfterAdd
-            this.redisKey ? this.initShow() : this.$parent.$parent.refreshAfterAdd(key);
+            this.initShow();
           }
 
           this.$message.success({
@@ -149,12 +130,11 @@ export default {
       });
     },
     deleteLine(row) {
-      this.$confirm(this.$t('message.confirm_to_delete_row_data'), {
-        type: 'warning',
-      }).then(() => {
-        const key = this.syncKeyParams.keyName;
-
-        this.client.lrem(key, 1, row.value).then((reply) => {
+      this.$confirm(
+        this.$t('message.confirm_to_delete_row_data'),
+        { type: 'warning' }
+      ).then(() => {
+        this.client.lrem(this.redisKey, 1, row.value).then((reply) => {
           if (reply === 1) {
             this.$message.success({
               message: this.$t('message.delete_success'),
@@ -164,7 +144,7 @@ export default {
             this.initShow();
           }
         });
-      });
+      }).catch(() => {});
     },
   },
   mounted() {

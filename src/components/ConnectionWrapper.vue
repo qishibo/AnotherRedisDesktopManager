@@ -7,20 +7,14 @@
 
   <KeyList
     ref='keyList'
-    :config='config'
     :client='client'>
   </KeyList>
-
-  <Pagenation
-    ref='pagenation'>
-  </Pagenation>
 </div>
 </template>
 
 <script type="text/javascript">
 import redisClient from '../redisClient.js';
 import KeyList from '@/components/KeyList';
-import Pagenation from '@/components/Pagenation';
 import OperateItem from '@/components/OperateItem';
 
 export default {
@@ -31,7 +25,7 @@ export default {
     };
   },
   props: ['config'],
-  components: {OperateItem, KeyList, Pagenation},
+  components: {OperateItem, KeyList},
   created() {
     this.$bus.$on('closeRedisClient', () => {
       this.client && this.client.quit && this.client.quit();
@@ -106,7 +100,7 @@ export default {
       // ssh tunnel
       if (config.sshOptions) {
         let sshPromise = redisClient.createSSHConnection(
-          config.sshOptions, config.host, config.port, config.auth, config.connectionName);
+          config.sshOptions, config.host, config.port, config.auth, config);
 
         sshPromise.then((client) => {
           client.on('error', (err) => {
@@ -127,7 +121,7 @@ export default {
       // normal client
       else {
         client = redisClient.createConnection(
-          config.host, config.port, config.auth, config.connectionName);
+          config.host, config.port, config.auth, config);
 
         client.on('error', (err) => {
           this.$message.error({

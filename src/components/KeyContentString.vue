@@ -21,17 +21,11 @@ export default {
       content: '',
     };
   },
-  props: ['client', 'redisKey', 'syncKeyParams'],
+  props: ['client', 'redisKey'],
   components: { FormatViewer },
   methods: {
     initShow() {
-      const key = this.syncKeyParams.keyName;
-
-      if (!key) {
-        return;
-      }
-
-      this.client.get(key).then((reply) => {
+      this.client.get(this.redisKey).then((reply) => {
         // character not visible
         if (!this.$util.isVisible(reply)) {
           this.content = this.$util.toUTF8(reply);
@@ -43,24 +37,11 @@ export default {
       });
     },
     execSave() {
-      const key = this.syncKeyParams.keyName;
-      const ttl = this.syncKeyParams.keyTTL;
-      const client = this.client;
+      const key = this.redisKey;
 
-      if (!key) {
-        this.$parent.$parent.emptyKeyWhenAdding();
-        return;
-      }
-
-      client.set(key, this.content).then((reply) => {
+      this.client.set(key, this.content).then((reply) => {
         if (reply === 'OK') {
-          // if ttl is setted
-          if (ttl > 0) {
-            client.expire(key, ttl).then(() => {});
-          }
-
-          // if in new key mode, exec refreshAfterAdd
-          this.redisKey ? this.initShow() : this.$parent.$parent.refreshAfterAdd(key);
+          this.initShow()
 
           this.$message.success({
             message: `${key} ${this.$t('message.modify_success')}`,

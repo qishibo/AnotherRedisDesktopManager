@@ -1,10 +1,21 @@
 <template>
-  <!-- key list -->
-  <ul class='key-list'>
-    <RightClickMenu :items='rightMenus' :clickValue='key' :key='key' v-for='key of keyList'>
-      <li class='key-item' :title='key'  @click='clickKey(key, $event)'>{{key}}</li>
-    </RightClickMenu>
-  </ul>
+  <div>
+    <!-- key list -->
+    <ul class='key-list'>
+      <RightClickMenu :items='rightMenus' :clickValue='key' :key='key' v-for='key of keyList'>
+        <li class='key-item' :title='key'  @click='clickKey(key, $event)'>{{key}}</li>
+      </RightClickMenu>
+    </ul>
+
+    <!-- load more -->
+    <el-button
+      ref='scanMoreBtn'
+      class='load-more-keys'
+      :disabled='scanMoreDisabled'
+      @click='refreshKeyList(false)'>
+      {{ $t('message.load_more_keys') }}
+    </el-button>
+  </div>
 </template>
 
 <script type="text/javascript">
@@ -14,8 +25,7 @@ export default {
   data() {
     return {
       keyList: [],
-      scanCursorList: [0],
-      keysPageSize: 50,
+      keysPageSize: 200,
       searchPageSize: 10000,
       rightMenus: [
         {
@@ -31,26 +41,24 @@ export default {
           },
         },
       ],
+      scanStreams: [],
+      scanEndCount: 0,
+      scanMoreDisabled: false,
+      oneTimeListLength: 0,
     };
   },
   props: ['client'],
   components: {RightClickMenu},
   created() {
-    this.$bus.$on('refreshKeyList', (client, removeKey) => {
+    // add or remove key from key list directly
+    this.$bus.$on('refreshKeyList', (client, key = '', type = 'del') => {
       // refresh only self connection key list
-      if (client !== this.client) {
+      if ((client !== this.client) || !key) {
         return;
       }
 
-      const match = this.getMatchMode();
-
-      // if in search mode, do not refresh list, because it may be slow.
-      if (match !== '*') {
-        removeKey && this.removeKeyFromKeyList(removeKey);
-        return;
-      }
-
-      this.refreshKeyList();
+      (type == 'del') && this.removeKeyFromKeyList(key);
+      (type == 'add') && this.keyList.push(key);
     });
   },
   methods: {
@@ -72,55 +80,82 @@ export default {
         event.target.classList.add('key-select');
       }
     },
-    refreshKeyList(pushToCursorList = true) {
-      const searchExact = this.$parent.$refs.operateItem.searchExact;
+    refreshKeyList(resetKeyList = true) {
+      // reset previous list, not append mode
+      resetKeyList && this.resetKeyList();
 
       // extract search
-      if (searchExact === true) {
-        this.refreshKeyListExact();
-        return true;
+      if (this.$parent.$refs.operateItem.searchExact === true) {
+        return this.refreshKeyListExact();
       }
-
-      const cursor = this.getScanCursor();
-      const match = this.getMatchMode();
-      const pageSize = (match === '*') ? this.keysPageSize : this.searchPageSize;
 
       // search loading
       this.$parent.$refs.operateItem.searchIcon = 'el-icon-loading';
 
-      const promise = this.beginScanning(cursor, match, pageSize, (reply, tmpShow = false) => {
-        // refresh key list
-        this.keyList = reply[1] ? reply[1].sort() : [];
+      // init scanStream
+      if (!this.scanStreams.length) {
+        this.initScanStreamsAndScan();
+      }
 
-        if (tmpShow) {
-          return true;
+      // scan more, resume previous scanStream
+      else {
+        // reset one scan count
+        this.oneTimeListLength = 0;
+
+        for (var stream of this.scanStreams) {
+          stream.resume();
         }
+      }
 
-        pushToCursorList && this.scanCursorList.push(reply[0]);
-        this.$parent.$refs.pagenation.nextPageDisabled = (reply[0] === '0') ? true : false;
-
-        // search input icon recover
-        this.$parent.$refs.operateItem.searchIcon = 'el-icon-search';
-      });
-
-      return promise;
+      return;
     },
-    beginScanning(cursor, match, count, callback, minLength = null, lastList = []) {
-      !minLength && (minLength = this.keysPageSize);
+    initScanStreamsAndScan() {
+      // this.client.nodes: cluster
+      let nodes = this.client.nodes ? this.client.nodes('master') : [this.client];
+      this.scanEndCount = nodes.length;
 
-      const promise = this.client.scan(cursor, 'MATCH', match, 'COUNT', count).then((reply) => {
-        reply[1] = reply[1].concat(lastList);
-
-        // key list length smaller than minLength
-        if ((reply[1].length < minLength) && (reply[0] !== '0')) {
-          callback && callback(reply, true);
-          return this.beginScanning(reply[0], match, count, callback, minLength, reply[1]);
+      nodes.map(node => {
+        let scanOption = {
+          match: this.getMatchMode(),
+          count: this.keysPageSize,
         }
 
-        callback && callback(reply);
-      });
+        // scan count is bigger when in search mode
+        scanOption.match != '*' && (scanOption.count = this.searchPageSize);
 
-      return promise;
+        let stream = node.scanStream(scanOption);
+        this.scanStreams.push(stream);
+
+        stream.on('data', keys => {
+          this.oneTimeListLength += keys.length;
+          this.keyList = this.keyList.concat(keys.sort());
+
+          // scan once reaches page size
+          if (this.oneTimeListLength >= this.keysPageSize) {
+            // temp stop
+            stream.pause();
+
+            // search input icon recover
+            this.$parent.$refs.operateItem.searchIcon = 'el-icon-search';
+          }
+        });
+
+        stream.on('end', () => {
+          // all nodes scan finished
+          if (--this.scanEndCount <= 0) {
+            // this.$refs.scanMoreBtn.disabled=true;
+            this.scanMoreDisabled = true;
+            // search input icon recover
+            this.$parent.$refs.operateItem.searchIcon = 'el-icon-search';
+          }
+        });
+      });
+    },
+    resetKeyList() {
+      this.keyList = [];
+      this.scanStreams = [];
+      this.oneTimeListLength = 0;
+      this.scanMoreDisabled = false;
     },
     refreshKeyListExact() {
       const match = this.getMatchMode(false);
@@ -129,13 +164,7 @@ export default {
         this.keyList = (reply === 1) ? [match] : [];
       });
 
-      this.$parent.$refs.pagenation.nextPageDisabled = true;
-    },
-    getScanCursor() {
-      const pageIndex = this.getPageIndex();
-      const cursorList = this.scanCursorList;
-
-      return cursorList[pageIndex - 1];
+      this.scanMoreDisabled = true;
     },
     getMatchMode(fillStar = true) {
       let match = this.$parent.$refs.operateItem.searchMatch;
@@ -148,11 +177,8 @@ export default {
 
       return match;
     },
-    getPageIndex() {
-      return this.$parent.$refs.pagenation.pageIndex;
-    },
     removeKeyFromKeyList(key) {
-      if (!key || !this.keyList) {
+      if (!this.keyList) {
         return false;
       }
 
@@ -203,5 +229,14 @@ export default {
   .dark-mode .connection-menu .key-list .key-item.key-select {
     color: #f7f7f7;
     background: #50616b;
+  }
+
+  .load-more-keys {
+    margin: 10px auto;
+    display: block;
+    height: 20px;
+    width: 100%;
+    font-size: 75%;
+    line-height: 1px;
   }
 </style>

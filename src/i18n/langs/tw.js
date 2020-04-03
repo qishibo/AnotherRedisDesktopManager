@@ -85,6 +85,8 @@ const tw = {
     以<pre>-----BEGIN OPENSSH PRIVATE KEY-----</pre>開頭的，需要執行\
     <pre>ssh-keygen -p -m pem -f ~/.ssh/id_rsa</pre>進行格式轉換後再使用，該操作不會影響以前的私鑰登陸',
     dark_mode: '深色模式',
+    load_more_keys: '加載更多',
+    key_name: '鍵名',
   },
 };
 
