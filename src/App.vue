@@ -121,7 +121,9 @@ body {
   padding: 8px;
   margin: 0;
   box-sizing: border-box;
-  /*font: caption;*/
+
+  /*fix body scroll-y caused by tooltip in table*/
+  overflow: hidden;
 }
 
 button, input, textarea, .vjs__tree {

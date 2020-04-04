@@ -78,4 +78,9 @@ export default {
     height: 24px;
     padding: 0 5px;
   }
+
+  /*tooltip in table width limit*/
+  .el-tooltip__popper {
+    max-width: 50%;
+  }
 </style>
