@@ -47,6 +47,7 @@ Download latest `dmg` package from [release](https://github.com/qishibo/AnotherR
 
 ## Feature Log
 
+- 2020-04-04: Cluster Support!!!
 - 2020-03-13: Dark Mode Support!!! && JsonView In Other Place
 - 2020-02-16: SSH Private Key Support
 - 2020-02-13: Open Cli Console In Tabs
