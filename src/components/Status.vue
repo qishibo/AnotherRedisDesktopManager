@@ -226,7 +226,7 @@ export default {
   },
   methods: {
     initShow() {
-      this.client.infoAsync().then((reply) => {
+      this.client.info().then((reply) => {
         this.connectionStatus = this.initStatus(reply);
       });
     },

@@ -20,7 +20,7 @@
         <el-col :span="12">
           <el-button class="new-key-btn" @click="newKeyDialog=true">
             <i class="el-icon-plus"></i>
-            {{ $t('message.add_new_key')}}
+            {{ $t('message.add_new_key') }}
           </el-button>
         </el-col>
       </el-row>
@@ -45,9 +45,13 @@
 
     <!-- new key dialog -->
     <el-dialog :title="$t('message.add_new_key')" :visible.sync="newKeyDialog" width="320px">
-      <el-form>
+      <el-form label-position="top" size="mini">
+        <el-form-item :label="$t('message.key_name')">
+          <el-input v-model='newKeyName'></el-input>
+        </el-form-item>
+
         <el-form-item :label="$t('message.key_type')">
-          <el-select size="mini" v-model="selectedNewKeyType">
+          <el-select style='width: 100%' v-model="selectedNewKeyType">
               <el-option
                 v-for="(type, showType) in newKeyTypes"
                 :key="type"
@@ -76,6 +80,7 @@ export default {
       searchExact: false,
       searchIcon: 'el-icon-search',
       newKeyDialog: false,
+      newKeyName: '',
       selectedNewKeyType: 'string',
       newKeyTypes: {
         String: 'string', Hash: 'hash', List: 'list', Set: 'set', Zset: 'zset',
@@ -97,48 +102,75 @@ export default {
       this.initDatabaseSelect();
     },
     initDatabaseSelect() {
-      this.client.configAsync('get', 'databases').then((reply) => {
+      this.client.config('get', 'databases').then((reply) => {
         if (reply[1]) {
           this.dbs = [...Array(parseInt(reply[1])).keys()];
         }
         else {
           this.dbs =  [...Array(16).keys()];
         }
-      }).catch((err) => {
+      }).catch((e) => {
         // config command may be renamed
         this.dbs =  [...Array(16).keys()];
       });
     },
     changeDb(dbIndex = false) {
-      this.resetDb();
-
       if (dbIndex !== false) {
         this.selectedDbIndex = parseInt(dbIndex);
       }
 
-      this.client.selectAsync(this.selectedDbIndex).then(() => {
+      this.client.select(this.selectedDbIndex)
+      .then(() => {
         this.$parent.$refs.keyList.refreshKeyList();
-      });
-    },
-    resetDb() {
-      this.$parent.$refs.pagenation.pageIndex = 1;
-      this.$parent.$refs.keyList.scanCursorList = [0];
-    },
-    addNewKey() {
-      this.$bus.$emit('addNewKey', this.client, this.selectedNewKeyType);
-      this.newKeyDialog = false;
-    },
-    changeMatchMode() {
-      this.resetDb();
-
-      let promise = this.$parent.$refs.keyList.refreshKeyList();
-
-      promise.then && promise.then(() => {
-        this.$message.success({
-          message: this.$t('message.refresh_success'),
-          duration: 1000,
+      })
+      // select is not allowed in cluster mode
+      .catch(e => {
+        this.$message.error({
+          message: e.message,
+          duration: 3000,
         });
       });
+    },
+    addNewKey() {
+      if (!this.newKeyName) {
+        return;
+      }
+
+      let promise = this.setDefaultValue(this.newKeyName, this.selectedNewKeyType);
+
+      promise.then(() => {
+        this.$bus.$emit('refreshKeyList', this.client, this.newKeyName, 'add');
+        this.$bus.$emit('clickedKey', this.client, this.newKeyName, true);
+      });
+
+      this.newKeyDialog = false;
+    },
+    setDefaultValue(key, type) {
+      switch (type) {
+        case 'string': {
+          return this.client.set(key, '');
+        }
+        case 'hash': {
+          return this.client.hset(key, 'field', 'value');
+        }
+        case 'list': {
+          return this.client.lpush(key, 'value');
+        }
+        case 'set': {
+          return this.client.sadd(key, 'value');
+        }
+        case 'zset': {
+          return this.client.zadd(key, 0, 'member');
+        }
+      }
+    },
+    changeMatchMode() {
+      // already searching status
+      if (this.searchIcon == 'el-icon-loading') {
+        return false;
+      }
+
+      this.$parent.$refs.keyList.refreshKeyList();
     },
   },
 }

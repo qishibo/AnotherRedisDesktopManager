@@ -69,7 +69,7 @@ export default {
       editLineItem: {},
     };
   },
-  props: ['client', 'redisKey', 'syncKeyParams'],
+  props: ['client', 'redisKey'],
   components: {PaginationTable},
   computed: {
     dialogTitle() {
@@ -79,14 +79,8 @@ export default {
   },
   methods: {
     initShow() {
-      const key = this.syncKeyParams.keyName;
-
-      if (!key) {
-        return;
-      }
-
-      this.client.smembersAsync(key).then((reply) => {
-        const setData = [];
+      this.client.smembers(this.redisKey).then((reply) => {
+        let setData = [];
 
         for (const i of reply) {
           setData.push({ value: i });
@@ -101,42 +95,29 @@ export default {
       this.editDialog = true;
     },
     editLine() {
-      const key = this.syncKeyParams.keyName;
-      const ttl = this.syncKeyParams.keyTTL;
+      const key = this.redisKey;
       const client = this.client;
-
-      this.editDialog = false;
-
-      if (!key) {
-        this.$parent.$parent.emptyKeyWhenAdding();
-        return;
-      }
-
       const before = this.beforeEditItem;
       const after = this.editLineItem;
+
+      this.editDialog = false;
 
       if (!after.value || before.value == after.value) {
         return;
       }
 
-      client.saddAsync(key, after.value).then((reply) => {
+      client.sadd(key, after.value).then((reply) => {
         // add success
         if (reply === 1) {
-          // new key set ttl
-          if (!this.redisKey && ttl > 0) {
-            client.expireAsync(key, ttl).then(() => {});
-          }
-
           // edit key remove previous value
           if (before.value) {
-            client.sremAsync(key, before.value).then((reply) => {
+            client.srem(key, before.value).then((reply) => {
               this.initShow();
             });
           }
 
           else {
-            // if in new key mode, exec refreshAfterAdd
-            this.redisKey ? this.initShow() : this.$parent.$parent.refreshAfterAdd(key);
+            this.initShow();
           }
 
           this.$message.success({
@@ -155,12 +136,11 @@ export default {
       });
     },
     deleteLine(row) {
-      this.$confirm(this.$t('message.confirm_to_delete_row_data'), {
-        type: 'warning',
-      }).then(() => {
-        const key = this.syncKeyParams.keyName;
-
-        this.client.sremAsync(key, row.value).then((reply) => {
+      this.$confirm(
+        this.$t('message.confirm_to_delete_row_data'),
+        { type: 'warning' }
+      ).then(() => {
+        this.client.srem(this.redisKey, row.value).then((reply) => {
           if (reply === 1) {
             this.$message.success({
               message: this.$t('message.delete_success'),
@@ -170,7 +150,7 @@ export default {
             this.initShow();
           }
         });
-      });
+      }).catch(() => {});
     },
   },
   mounted() {

@@ -15,6 +15,6 @@ export default {
       return;
     }
 
-    return client[`${operation}Async`](...params.slice(1));
+    return client[operation](...params.slice(1));
   },
 };

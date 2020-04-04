@@ -83,7 +83,7 @@ export default {
     overflow: hidden;
     text-overflow: ellipsis;
     font-weight: bold;
-    font-size: 103%;
+    font-size: 104%;
   }
   .connection-menu .connection-opt-icons {
     /*width: 30px;*/

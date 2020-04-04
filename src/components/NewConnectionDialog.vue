@@ -20,6 +20,7 @@
 
       <el-form-item label="">
         <el-checkbox v-model="sshOptionsShow">SSH Tunnel</el-checkbox>
+        <el-checkbox v-model="connection.cluster">Cluster</el-checkbox>
       </el-form-item>
 
       <!-- ssh connection form -->
@@ -71,6 +72,7 @@ export default {
         port: '',
         auth: '',
         name: '',
+        cluster: false,
         sshOptions: {
           host: '',
           port: 22,

@@ -81,7 +81,7 @@ export default {
       editLineItem: {},
     };
   },
-  props: ['client', 'redisKey', 'syncKeyParams'],
+  props: ['client', 'redisKey'],
   components: {PaginationTable},
   computed: {
     dialogTitle() {
@@ -91,17 +91,11 @@ export default {
   },
   methods: {
     initShow() {
-      const key = this.syncKeyParams.keyName;
-
-      if (!key) {
-        return;
-      }
-
-      this.client.zrangeAsync([key, 0, -1, 'WITHSCORES']).then((reply) => {
-        const zsetData = [];
+      this.client.zrange([this.redisKey, 0, -1, 'WITHSCORES']).then((reply) => {
+        let zsetData = [];
         const { length } = reply;
 
-        for (var i = 0; i < length; i+=2) {
+        for (var i = 0; i < length; i += 2) {
           zsetData.push({ member: reply[i], score: Number(reply[i + 1]) });
         }
 
@@ -114,40 +108,27 @@ export default {
       this.editDialog = true;
     },
     editLine() {
-      const key = this.syncKeyParams.keyName;
-      const ttl = this.syncKeyParams.keyTTL;
+      const key = this.redisKey;
       const client = this.client;
-
-      this.editDialog = false;
-
-      if (!key) {
-        this.$parent.$parent.emptyKeyWhenAdding();
-        return;
-      }
-
       const before = this.beforeEditItem;
       const after = this.editLineItem;
+
+      this.editDialog = false;
 
       if (!after.member || isNaN(after.score)) {
         return;
       }
 
-      client.zaddAsync(key, after.score, after.member).then((reply) => {
-        // new key set ttl
-        if (!this.redisKey && ttl > 0) {
-          client.expireAsync(key, ttl).then(() => {});
-        }
-
+      client.zadd(key, after.score, after.member).then((reply) => {
         // edit key member changed
         if (before.member && before.member !== after.member) {
-          client.zremAsync(key, before.member).then((reply) => {
+          client.zrem(key, before.member).then((reply) => {
             this.initShow();
           });
         }
 
         else {
-          // if in new key mode, exec refreshAfterAdd
-          this.redisKey ? this.initShow() : this.$parent.$parent.refreshAfterAdd(key);
+          this.initShow();
         }
 
         this.$message.success({
@@ -157,12 +138,11 @@ export default {
       });
     },
     deleteLine(row) {
-      this.$confirm(this.$t('message.confirm_to_delete_row_data'), {
-        type: 'warning',
-      }).then(() => {
-        const key = this.syncKeyParams.keyName;
-
-        this.client.zremAsync(key, row.member).then((reply) => {
+      this.$confirm(
+        this.$t('message.confirm_to_delete_row_data'),
+        { type: 'warning' }
+      ).then(() => {
+        this.client.zrem(this.redisKey, row.member).then((reply) => {
           if (reply === 1) {
             this.$message.success({
               message: `${row.member} ${this.$t('message.delete_success')}`,
@@ -172,7 +152,7 @@ export default {
             this.initShow();
           }
         });
-      });
+      }).catch(() => {});
     },
   },
   mounted() {

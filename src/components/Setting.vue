@@ -44,14 +44,12 @@
       </el-form-item>
 
       <!-- current version -->
-      <el-form-item :label="$t('message.pre_version')">
+      <el-form-item :label="$t('message.pre_version')" class='current-version'>
         <el-tag type="info">{{ appVersion }}</el-tag>
-        <small>
-          <a style="color: grey" href="###" @click.stop.prevent="checkUpdate">{{ $t('message.check_update') }}</a>
-        </small>
-        <small>
-          <a style="color: grey" href="https://github.com/qishibo/AnotherRedisDesktopManager/releases" target="blank">{{ $t('message.manual_update') }}</a>
-        </small>
+
+        <a href="###" @click.stop.prevent="checkUpdate">{{ $t('message.check_update') }}</a>
+        <a href="https://github.com/qishibo/AnotherRedisDesktopManager/releases">{{ $t('message.manual_update') }}</a>
+        <a href="https://github.com/qishibo/AnotherRedisDesktopManager/">{{ $t('message.project_home') }}</a>
       </el-form-item>
 
       <!-- import file dialog -->
@@ -213,5 +211,9 @@ export default {
 <style type="text/css">
   .dark-mode .el-upload-dragger {
     background: inherit;
+  }
+  .current-version a {
+    color: grey;
+    font-size: smaller;
   }
 </style>

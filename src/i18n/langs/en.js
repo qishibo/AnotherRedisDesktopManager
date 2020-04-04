@@ -85,6 +85,9 @@ const en = {
     private_key_faq: 'RSA format private key is supported, which starts with <pre>-----BEGIN RSA PRIVATE KEY-----</pre>\
     as to starts with<pre>-----BEGIN OPENSSH PRIVATE KEY-----</pre>you need to convert format via <pre>ssh-keygen -p -m pem -f ~/.ssh/id_rsa</pre>This operation will not affect the previous private key login',
     dark_mode: 'Dark Mode',
+    load_more_keys: 'load more',
+    key_name: 'Key Name',
+    project_home: 'Project Home',
   },
 };
 

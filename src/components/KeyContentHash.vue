@@ -84,7 +84,7 @@ export default {
     };
   },
   components: {PaginationTable, FormatViewer},
-  props: ['client', 'redisKey', 'syncKeyParams'],
+  props: ['client', 'redisKey'],
   computed: {
     dialogTitle() {
       return this.beforeEditItem.key ? this.$t('message.edit_line') :
@@ -93,14 +93,8 @@ export default {
   },
   methods: {
     initShow() {
-      const key = this.syncKeyParams.keyName;
-
-      if (!key) {
-        return;
-      }
-
-      this.client.hgetallAsync(key).then((reply) => {
-        const hashData = [];
+      this.client.hgetall(this.redisKey).then((reply) => {
+        let hashData = [];
 
         for (const i in reply) {
           hashData.push({ key: i, value: reply[i] });
@@ -115,40 +109,27 @@ export default {
       this.editDialog = true;
     },
     editLine() {
-      const key = this.syncKeyParams.keyName;
-      const ttl = this.syncKeyParams.keyTTL;
+      const key = this.redisKey;
       const client = this.client;
-
-      this.editDialog = false;
-
-      if (!key) {
-        this.$parent.$parent.emptyKeyWhenAdding();
-        return;
-      }
-
       const before = this.beforeEditItem;
       const after = this.editLineItem;
+
+      this.editDialog = false;
 
       if (!after.key || !after.value) {
         return;
       }
 
-      client.hsetAsync(key, after.key, after.value).then((reply) => {
-        // new key set ttl
-        if (!this.redisKey && ttl > 0) {
-          client.expireAsync(key, ttl).then(() => {});
-        }
-
+      client.hset(key, after.key, after.value).then((reply) => {
         // edit key && key changed
         if (before.key && before.key !== after.key) {
-          client.hdelAsync(key, before.key).then((reply) => {
+          client.hdel(key, before.key).then((reply) => {
             this.initShow();
           });
         }
 
         else {
-          // if in new key mode, exec refreshAfterAdd
-          this.redisKey ? this.initShow() : this.$parent.$parent.refreshAfterAdd(key);
+          this.initShow();
         }
 
         // reply==1:new field; reply==0 field exists
@@ -159,12 +140,11 @@ export default {
       });
     },
     deleteLine(row) {
-      this.$confirm(this.$t('message.confirm_to_delete_row_data'), {
-        type: 'warning',
-      }).then(() => {
-        const key = this.syncKeyParams.keyName;
-
-        this.client.hdelAsync(key, row.key).then((reply) => {
+      this.$confirm(
+        this.$t('message.confirm_to_delete_row_data'),
+        {type: 'warning'}
+      ).then(() => {
+        this.client.hdel(this.redisKey, row.key).then((reply) => {
           if (reply === 1) {
             this.$message.success({
               message: `${row.key} ${this.$t('message.delete_success')}`,
@@ -174,7 +154,7 @@ export default {
             this.initShow();
           }
         });
-      });
+      }).catch(() => {});
     },
   },
   mounted() {

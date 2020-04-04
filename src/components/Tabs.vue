@@ -55,11 +55,6 @@ export default {
     this.$bus.$on('removeAllTab', () => {
       this.tabs = [];
     });
-
-    // add new key tab
-    this.$bus.$on('addNewKey', (client, type) => {
-      this.addTab(this.initKeyTabItem(client, '', type), true);
-    });
   },
   methods: {
     removeTab(removeName) {
@@ -100,7 +95,7 @@ export default {
       this.addTab(newTabItem, newTab);
     },
     addKeyTab(client, key, newTab = false) {
-      client.typeAsync(key).then((type) => {
+      client.type(key).then((type) => {
         // key not exists
         if (type === 'none') {
           this.$message.error({
@@ -116,8 +111,8 @@ export default {
     },
     initKeyTabItem(client, key, type) {
       const cutString = this.$util.cutString;
-      const dbIndex = client.selected_db ? client.selected_db : 0;
-      const connectionName = client.options.connection_name;
+      const dbIndex = client.options.db ? client.options.db : 0;
+      const connectionName = client.options.connectionName;
 
       const label = `${cutString(key)} | ${cutString(connectionName)} | DB${dbIndex}`;
       const name  = `${key} | ${connectionName} | DB${dbIndex}`;
