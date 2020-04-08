@@ -31,12 +31,18 @@ const winState = {
     try {
       const winBounds = win.getBounds();
 
-      return {
+      let state = {
         x: winBounds.x,
         y: winBounds.y,
         width: winBounds.width,
         height: winBounds.height,
       }
+
+      // minimum size limit
+      state.width < 200 && (state.width = 200);
+      state.height < 200 && (state.height = 200);
+
+      return state;
     }
     catch (err) {
       return false;
