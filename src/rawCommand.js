@@ -1,20 +1,26 @@
 export default {
+  message: {
+    catchError: '(error) Operate failed',
+    clientEmpty: 'Redis Client Is Not Yet',
+    unknownCommand: '(error) ERR unknown command',
+  },
+
   exec(client, params = []) {
     if (!client) {
-      alert('Redis Client Is Not Yet');
-      return;
+      return this.message.clientEmpty;
     }
 
     const operation = params[0];
 
-    if (!operation) {
-      return;
+    if (!operation || typeof client[operation] != 'function') {
+      return this.message.unknownCommand;
     }
 
-    if (!client[operation]) {
-      return;
+    try {
+      return client[operation](...params.slice(1));
     }
-
-    return client[operation](...params.slice(1));
+    catch (e) {
+      return this.message.catchError;
+    }
   },
 };

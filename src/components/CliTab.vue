@@ -96,29 +96,30 @@ export default {
       if (params === 'multi') {
         this.multiClient = this.client.multi();
         this.content += "OK\n";
-        this.scrollToBottom();
 
-        return;
+        return this.scrollToBottom();
       }
 
-      const promise = rawCommand.exec(this.multiClient ? this.multiClient : this.client, paramsArr);
+      let promise = rawCommand.exec(this.multiClient ? this.multiClient : this.client, paramsArr);
 
-      if (!promise) {
-        this.content += '(error) ERR unknown command\n';
-        this.scrollToBottom();
+      // exec error
+      if (typeof promise == 'string') {
+        // fetal error in some cluster condition
+        if (promise == rawCommand.message.catchError) {
+          this.multiClient = null;
+        }
 
-        return;
-      }
-
-      if (params === 'exec') {
-        this.multiClient = null;
+        this.content += `${promise}\n`;
+        return this.scrollToBottom();
       }
 
       if (this.multiClient && (params !== 'exec')) {
         this.content += "QUEUED\n";
-        this.scrollToBottom();
+        return this.scrollToBottom();
+      }
 
-        return;
+      if (params === 'exec') {
+        this.multiClient = null;
       }
 
       promise.then((reply) => {

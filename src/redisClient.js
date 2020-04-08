@@ -4,9 +4,9 @@ import tunnelssh from 'tunnel-ssh';
 export default {
   createConnection(host, port, auth, config) {
     const options = {
-      connect_timeout: 2000,
-      retry_strategy: (times) => {return this.retryStragety(times, {host, port})},
-      no_ready_check: true,
+      connectTimeout: 3000,
+      retryStrategy: (times) => {return this.retryStragety(times, {host, port})},
+      enableReadyCheck: false,
       connectionName: config.connectionName ? config.connectionName : null,
       password: auth,
     };
@@ -20,9 +20,9 @@ export default {
 
   createSSHConnection(sshOptions, host, port, auth, config) {
     const options = {
-      connect_timeout: 2000,
-      retry_strategy: (times) => {return this.retryStragety(times, {host, port})},
-      no_ready_check: true,
+      connectTimeout: 3000,
+      retryStrategy: (times) => {return this.retryStragety(times, {host, port})},
+      enableReadyCheck: false,
       connectionName: config.connectionName ? config.connectionName : null,
       password: auth,
     };
@@ -40,7 +40,7 @@ export default {
       privateKey: sshOptions.privatekey ?
                   require('fs').readFileSync(sshOptions.privatekey) : '',
     };
-//======================================
+
     const sshPromise = new Promise((resolve, reject) => {
       var server = tunnelssh(sshConfig, function (error, server) {
         if (error) {
