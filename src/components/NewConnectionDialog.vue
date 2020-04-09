@@ -21,6 +21,10 @@
       <el-form-item label="">
         <el-checkbox v-model="sshOptionsShow">SSH Tunnel</el-checkbox>
         <el-checkbox v-model="connection.cluster">Cluster</el-checkbox>
+        <el-popover trigger="hover">
+          <i slot="reference" class="el-icon-question"></i>
+          {{ $t('message.cluster_faq') }}
+        </el-popover>
       </el-form-item>
 
       <!-- ssh connection form -->

@@ -88,6 +88,7 @@ const tw = {
     load_more_keys: '加載更多',
     key_name: '鍵名',
     project_home: '項目主頁',
+    cluster_faq: '選擇集群中任一節點配置填入即可，會自動識別其它節點',
   },
 };
 

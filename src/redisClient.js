@@ -11,8 +11,14 @@ export default {
       password: auth,
     };
 
+    const clusterOptions = {
+      connectionName: options.connectionName,
+      enableReadyCheck: false,
+      redisOptions: options,
+    };
+
     const client = config.cluster ?
-                    new Redis.Cluster([{port, host}], options) :
+                    new Redis.Cluster([{port, host}], clusterOptions) :
                     new Redis(port, host, options);
 
     return client;
@@ -25,6 +31,12 @@ export default {
       enableReadyCheck: false,
       connectionName: config.connectionName ? config.connectionName : null,
       password: auth,
+    };
+
+    const clusterOptions = {
+      connectionName: options.connectionName,
+      enableReadyCheck: false,
+      redisOptions: options,
     };
 
     const sshConfig = {
@@ -49,7 +61,7 @@ export default {
         else {
           const listenAddress = server.address();
           const client = config.cluster ?
-                          new Redis.Cluster([{port: listenAddress.port, host: listenAddress.address}], options) :
+                          new Redis.Cluster([{port: listenAddress.port, host: listenAddress.address}], clusterOptions) :
                           new Redis(listenAddress.port, listenAddress.address, options);
           resolve(client);
         }

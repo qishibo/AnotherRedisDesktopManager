@@ -88,6 +88,7 @@ const cn = {
     load_more_keys: '加载更多',
     key_name: '键名',
     project_home: '项目主页',
+    cluster_faq: '选择集群中任一节点配置填入即可，会自动识别其它节点',
   },
 };
 
