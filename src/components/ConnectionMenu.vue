@@ -1,10 +1,31 @@
 <template>
 <div>
   <div class="connection-opt-icons">
-    <i :title="$t('message.refresh_connection')" class="connection-right-icon el-icon-refresh" @click.stop.prevent="refreshConnection()"></i>
+    <!-- right menu operate icons -->
+    <i :title="$t('message.redis_status')" class="connection-right-icon fa fa-info-circle" @click.stop.prevent="openStatus()"></i>
     <i :title="$t('message.redis_console')" class="connection-right-icon fa fa-terminal" @click.stop.prevent="openCli()"></i>
     <i :title="$t('message.edit_connection')" class="connection-right-icon el-icon-edit-outline" @click.stop.prevent="showEditConnection()"></i>
     <i :title="$t('message.del_connection')" class="connection-right-icon el-icon-delete" @click.stop.prevent="deleteConnection()"></i>
+
+    <!-- more operate menu -->
+    <el-dropdown
+      placement='bottom-start'
+      @command='handleMoreOperate'
+      :show-timeout=100
+      :hide-timeout=300>
+      <i class="connection-right-icon el-icon-menu"></i>
+      <el-dropdown-menu slot="dropdown">
+        <el-dropdown-item command='refresh'>
+          <i class='el-icon-refresh'> Refresh</i>
+        </el-dropdown-item>
+        <el-dropdown-item command='batchDel'>
+          <i class='el-icon-delete'> Batch Delete</i>
+        </el-dropdown-item>
+        <el-dropdown-item command='flushDB'>
+          <i class='fa fa-bomb'> FlushDB</i>
+        </el-dropdown-item>
+      </el-dropdown-menu>
+    </el-dropdown>
   </div>
   <div :title="config.connectionName" class="connection-name">{{config.connectionName}}</div>
 
@@ -26,7 +47,7 @@ export default {
   data() {
     return {};
   },
-  props: ['config'],
+  props: ['config', 'client'],
   components: {NewConnectionDialog},
   methods: {
     refreshConnection() {
@@ -58,10 +79,45 @@ export default {
         });
       }).catch(() => {});
     },
+    openStatus() {
+      if (!this.client) {
+        // open Connections.vue menu
+        this.$parent.$parent.$parent.$refs.connectionMenu.open(this.config.connectionName);
+        // open connection
+        this.$parent.$parent.$parent.openConnection(this.config.connectionName);
+      }
+
+      else {
+        this.$bus.$emit('openStatus', this.client, this.config.connectionName);
+      }
+    },
     openCli() {
-      // todo: if ConnectionMenu.vue owns its self client,
-      // use client emit to Tabs.vue directly is better.
-      this.$bus.$emit('proxyOpenCli', this.config.connectionName);
+      // open cli before connection opened
+      if (!this.client) {
+        // open Connections.vue menu
+        this.$parent.$parent.$parent.$refs.connectionMenu.open(this.config.connectionName);
+        // open connection
+        this.$parent.$parent.$parent.openConnection(this.config.connectionName, () => {
+          this.$bus.$emit('openCli', this.client, this.config.connectionName);
+        });
+      }
+
+      else {
+        this.$bus.$emit('openCli', this.client, this.config.connectionName);
+      }
+    },
+    handleMoreOperate(operate) {
+      console.log(operate);
+      switch (operate) {
+        case 'refresh':
+          this.refreshConnection();
+          break;
+        case 'batchDel':
+          break;
+        case 'flushDB':
+          break;
+
+      }
     },
   },
 }
@@ -76,7 +132,7 @@ export default {
   }
 
   .connection-menu .connection-name {
-    /*margin-right: 65px;*/
+    margin-right: 115px;
     padding-right: 6px;
     word-break: keep-all;
     white-space: nowrap;
@@ -87,8 +143,10 @@ export default {
   }
   .connection-menu .connection-opt-icons {
     /*width: 30px;*/
-    float: right;
-    margin-right: 28px;
+    /*float: right;
+    margin-right: 28px;*/
+    position: absolute;
+    right: 25px;
   }
   .connection-menu .connection-right-icon {
     display: inline-block;

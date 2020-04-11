@@ -72,7 +72,7 @@ export default {
       nextSelectTab && (this.selectedTabName = nextSelectTab.name);
       this.tabs = this.tabs.filter(tab => tab.name !== removeName);
     },
-    addStatusTab(client, tabName, newTab = false) {
+    addStatusTab(client, tabName, newTab = true) {
       const newTabItem = {
         name: `status_${tabName}`,
         label: this.$util.cutString(tabName),

@@ -74,7 +74,7 @@
 export default {
   data() {
     return {
-      dbs: [],
+      dbs: [0],
       selectedDbIndex: 0,
       searchMatch: '',
       searchExact: false,
