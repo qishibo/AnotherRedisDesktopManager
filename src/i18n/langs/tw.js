@@ -90,6 +90,8 @@ const tw = {
     project_home: '項目主頁',
     cluster_faq: '選擇集群中任一節點配置填入即可，會自動識別其它節點',
     redis_status: 'Redis信息',
+    confirm_flush_db: '確認刪除db{db}中的所有鍵值麽？',
+    flushdb: '刪除所有鍵',
   },
 };
 

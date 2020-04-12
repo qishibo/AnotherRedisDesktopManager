@@ -111,7 +111,7 @@ export default {
     },
     initKeyTabItem(client, key, type) {
       const cutString = this.$util.cutString;
-      const dbIndex = client.options.db ? client.options.db : 0;
+      const dbIndex = client.condition.select;
       const connectionName = client.options.connectionName;
 
       const label = `${cutString(key)} | ${cutString(connectionName)} | DB${dbIndex}`;

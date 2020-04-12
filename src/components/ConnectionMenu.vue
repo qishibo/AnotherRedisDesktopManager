@@ -2,7 +2,7 @@
 <div>
   <div class="connection-opt-icons">
     <!-- right menu operate icons -->
-    <i :title="$t('message.redis_status')" class="connection-right-icon fa fa-info-circle" @click.stop.prevent="openStatus()"></i>
+    <i :title="$t('message.redis_status')" class="connection-right-icon fa fa-home" @click.stop.prevent="openStatus()"></i>
     <i :title="$t('message.redis_console')" class="connection-right-icon fa fa-terminal" @click.stop.prevent="openCli()"></i>
     <i :title="$t('message.edit_connection')" class="connection-right-icon el-icon-edit-outline" @click.stop.prevent="showEditConnection()"></i>
     <i :title="$t('message.del_connection')" class="connection-right-icon el-icon-delete" @click.stop.prevent="deleteConnection()"></i>
@@ -16,13 +16,13 @@
       <i class="connection-right-icon el-icon-menu"></i>
       <el-dropdown-menu slot="dropdown">
         <el-dropdown-item command='refresh'>
-          <i class='el-icon-refresh'> Refresh</i>
+          <i class='el-icon-refresh'> {{ $t('message.refresh_connection') }}</i>
         </el-dropdown-item>
-        <el-dropdown-item command='batchDel'>
+        <!-- <el-dropdown-item command='batchDel'>
           <i class='el-icon-delete'> Batch Delete</i>
-        </el-dropdown-item>
+        </el-dropdown-item> -->
         <el-dropdown-item command='flushDB'>
-          <i class='fa fa-bomb'> FlushDB</i>
+          <i class='fa fa-bomb'> {{ $t('message.flushdb') }}</i>
         </el-dropdown-item>
       </el-dropdown-menu>
     </el-dropdown>
@@ -112,12 +112,33 @@ export default {
         case 'refresh':
           this.refreshConnection();
           break;
+        case 'flushDB':
+          this.flushDB();
+          break;
         case 'batchDel':
           break;
-        case 'flushDB':
-          break;
-
       }
+    },
+    flushDB() {
+      if (!this.client) {
+        return;
+      }
+
+      this.$confirm(
+        this.$t('message.confirm_flush_db', {db: this.client.condition.select}),
+        {type: 'warning'}
+      ).then(() => {
+        this.client.flushdb().then((reply) => {
+          if (reply == 'OK') {
+            this.$message.success({
+              message: this.$t('message.delete_success'),
+              duration: 1000,
+            });
+
+            this.refreshConnection();
+          }
+        });
+      }).catch(() => {});
     },
   },
 }

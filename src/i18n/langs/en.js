@@ -90,6 +90,8 @@ const en = {
     project_home: 'Project Home',
     cluster_faq: 'Select any node in the cluster to fill in, and other nodes will be identified automatically.',
     redis_status: 'Redis Info',
+    confirm_flush_db: 'Confirm to delete all the keys in db{db} ?',
+    flushdb: 'Flush DB',
   },
 };
 
