@@ -1,52 +1,50 @@
 <template>
-<div>
-  <OperateItem
-    ref='operateItem'
-    :client='client'>
-  </OperateItem>
+  <el-menu
+    ref="connectionMenu"
+    @open="openConnection()"
+    class="connection-menu"
+    active-text-color="#ffd04b">
+    <el-submenu :index="config.connectionName">
+      <!-- connection menu -->
+      <ConnectionMenu
+        slot="title"
+        :config="config"
+        :client='client'
+        @refreshConnection='openConnection()'>
+      </ConnectionMenu>
 
-  <KeyList
-    ref='keyList'
-    :client='client'>
-  </KeyList>
-</div>
+      <!-- db search operate -->
+      <OperateItem
+        ref='operateItem'
+        :client='client'>
+      </OperateItem>
+
+      <!-- key list -->
+      <KeyList
+        ref='keyList'
+        :client='client'>
+      </KeyList>
+    </el-submenu>
+  </el-menu>
 </template>
 
 <script type="text/javascript">
-import redisClient from '../redisClient.js';
+import redisClient from '@/redisClient.js';
 import KeyList from '@/components/KeyList';
 import OperateItem from '@/components/OperateItem';
+import ConnectionMenu from '@/components/ConnectionMenu';
 
 export default {
   data() {
     return {
       client: null,
-      openedStatus: false,
     };
   },
   props: ['config'],
-  components: {OperateItem, KeyList},
+  components: {ConnectionMenu, OperateItem, KeyList},
   created() {
-    this.$bus.$on('closeRedisClient', () => {
-      this.client && this.client.quit && this.client.quit();
-      this.client = null;
-    });
-    this.$bus.$on('proxyOpenCli', (connectionName) => {
-      if (connectionName !== this.config.connectionName) {
-        return;
-      }
-      // open cli before connection opened
-      if (!this.client) {
-        // open Connections.vue menu
-        this.$parent.$parent.$parent.$refs.connectionMenu.open(connectionName);
-        // open connection
-        this.openConnection(() => {
-          this.$bus.$emit('openCli', this.client, this.config.connectionName);
-        });
-      }
-      else {
-        this.$bus.$emit('openCli', this.client, this.config.connectionName);
-      }
+    this.$bus.$on('closeConnection', (connectionName = false) => {
+      this.closeConnection(connectionName);
     });
   },
   methods: {
@@ -74,10 +72,7 @@ export default {
       if (client.status != 'ready') {
         client.on('ready', () => {
           // open status tab
-          if (!this.openedStatus) {
-            this.$bus.$emit('openStatus', this.client, this.config.connectionName);
-            this.openedStatus = true;
-          }
+          this.$bus.$emit('openStatus', client, this.config.connectionName);
 
           this.initShow();
           callback && callback();
@@ -89,6 +84,18 @@ export default {
         this.initShow();
         callback && callback();
       }
+    },
+    closeConnection(connectionName) {
+      // if connectionName is not passed, close all connections
+      if (connectionName && connectionName != this.config.connectionName) {
+        return;
+      }
+
+      this.$refs.connectionMenu.close(this.config.connectionName);
+      this.$bus.$emit('removeAllTab', connectionName);
+
+      this.client && this.client.quit && this.client.quit();
+      this.client = null;
     },
     getRedisClient(config) {
       let client = this.client;
@@ -109,7 +116,7 @@ export default {
               duration: 3000,
             });
 
-            this.$bus.$emit('closeAllConnection');
+            this.$bus.$emit('closeConnection');
           });
 
           this.client = client;
@@ -129,7 +136,7 @@ export default {
             duration: 3000,
           });
 
-          this.$bus.$emit('closeAllConnection');
+          this.$bus.$emit('closeConnection');
         });
 
         return this.client = client;
@@ -138,3 +145,11 @@ export default {
   },
 }
 </script>
+
+<style type="text/css">
+  .connection-menu {
+    margin-top: 10px;
+    padding-right: 6px;
+    border-right: 0;
+  }
+</style>

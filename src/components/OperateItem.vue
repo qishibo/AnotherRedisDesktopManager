@@ -44,7 +44,7 @@
     </el-form-item>
 
     <!-- new key dialog -->
-    <el-dialog :title="$t('message.add_new_key')" :visible.sync="newKeyDialog" width="320px">
+    <el-dialog :title="$t('message.add_new_key')" :visible.sync="newKeyDialog">
       <el-form label-position="top" size="mini">
         <el-form-item :label="$t('message.key_name')">
           <el-input v-model='newKeyName'></el-input>
@@ -74,7 +74,7 @@
 export default {
   data() {
     return {
-      dbs: [],
+      dbs: [0],
       selectedDbIndex: 0,
       searchMatch: '',
       searchExact: false,
@@ -121,7 +121,7 @@ export default {
 
       this.client.select(this.selectedDbIndex)
       .then(() => {
-        this.$parent.$refs.keyList.refreshKeyList();
+        this.$parent.$parent.$parent.$refs.keyList.refreshKeyList();
       })
       // select is not allowed in cluster mode
       .catch(e => {
@@ -129,6 +129,9 @@ export default {
           message: e.message,
           duration: 3000,
         });
+
+        // reset to db0
+        this.selectedDbIndex = 0;
       });
     },
     addNewKey() {
@@ -170,7 +173,7 @@ export default {
         return false;
       }
 
-      this.$parent.$refs.keyList.refreshKeyList();
+      this.$parent.$parent.$parent.$refs.keyList.refreshKeyList();
     },
   },
 }
