@@ -2,7 +2,11 @@
   <div>
     <!-- key list -->
     <ul class='key-list'>
-      <RightClickMenu :items='rightMenus' :clickValue='key' :key='key' v-for='key of keyList'>
+      <RightClickMenu
+        :items='rightMenus'
+        :clickValue='key'
+        :key='key'
+        v-for='key of keyList'>
         <li class='key-item' :title='key'  @click='clickKey(key, $event)'>{{key}}</li>
       </RightClickMenu>
     </ul>
@@ -86,12 +90,12 @@ export default {
       resetKeyList && this.resetKeyList();
 
       // extract search
-      if (this.$parent.$refs.operateItem.searchExact === true) {
+      if (this.$parent.$parent.$parent.$refs.operateItem.searchExact === true) {
         return this.refreshKeyListExact();
       }
 
       // search loading
-      this.$parent.$refs.operateItem.searchIcon = 'el-icon-loading';
+      this.$parent.$parent.$parent.$refs.operateItem.searchIcon = 'el-icon-loading';
 
       // init scanStream
       if (!this.scanStreams.length) {
@@ -107,8 +111,6 @@ export default {
           stream.resume();
         }
       }
-
-      return;
     },
     initScanStreamsAndScan() {
       // this.client.nodes: cluster
@@ -143,7 +145,7 @@ export default {
             stream.pause();
 
             // search input icon recover
-            this.$parent.$refs.operateItem.searchIcon = 'el-icon-search';
+            this.$parent.$parent.$parent.$refs.operateItem.searchIcon = 'el-icon-search';
           }
         });
 
@@ -153,7 +155,7 @@ export default {
             // this.$refs.scanMoreBtn.disabled=true;
             this.scanMoreDisabled = true;
             // search input icon recover
-            this.$parent.$refs.operateItem.searchIcon = 'el-icon-search';
+            this.$parent.$parent.$parent.$refs.operateItem.searchIcon = 'el-icon-search';
           }
         });
       });
@@ -175,7 +177,7 @@ export default {
       this.scanMoreDisabled = true;
     },
     getMatchMode(fillStar = true) {
-      let match = this.$parent.$refs.operateItem.searchMatch;
+      let match = this.$parent.$parent.$parent.$refs.operateItem.searchMatch;
 
       match = match || '*';
 

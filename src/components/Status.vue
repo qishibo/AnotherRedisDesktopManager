@@ -228,6 +228,13 @@ export default {
     initShow() {
       this.client.info().then((reply) => {
         this.connectionStatus = this.initStatus(reply);
+      }).catch((e) => {
+        this.$message.error({
+          message: e.message,
+          duration: 3000,
+        });
+
+        this.$bus.$emit('closeConnection');
       });
     },
     refreshInit() {

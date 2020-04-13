@@ -52,8 +52,15 @@ export default {
     });
 
     // remove all tab
-    this.$bus.$on('removeAllTab', () => {
-      this.tabs = [];
+    this.$bus.$on('removeAllTab', (connectionName) => {
+      // close all tabs
+      if (!connectionName) {
+        return this.tabs = [];
+      }
+
+      this.tabs = this.tabs.filter((tab) => {
+        return tab.client.options.connectionName != connectionName;
+      });
     });
   },
   methods: {
@@ -111,7 +118,7 @@ export default {
     },
     initKeyTabItem(client, key, type) {
       const cutString = this.$util.cutString;
-      const dbIndex = client.condition.select;
+      const dbIndex = client.condition ? client.condition.select : 0;
       const connectionName = client.options.connectionName;
 
       const label = `${cutString(key)} | ${cutString(connectionName)} | DB${dbIndex}`;

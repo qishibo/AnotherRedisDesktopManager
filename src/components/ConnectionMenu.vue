@@ -58,7 +58,7 @@ export default {
         this.$t('message.close_to_edit_connection'),
         { type: 'warning' },
       ).then(() => {
-        this.$bus.$emit('closeAllConnection');
+        this.$bus.$emit('closeConnection');
         this.$refs.editConnectionDialog.dialogVisible = true;
       }).catch(() => {});
     },
@@ -107,7 +107,6 @@ export default {
       }
     },
     handleMoreOperate(operate) {
-      console.log(operate);
       switch (operate) {
         case 'refresh':
           this.refreshConnection();
