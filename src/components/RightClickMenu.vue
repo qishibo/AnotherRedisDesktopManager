@@ -1,8 +1,9 @@
 <template>
   <div @contextmenu.prevent.stop="show($event)">
+    <!-- default slot -->
     <slot name="default"></slot>
-
-    <div class="qii404-vue-right-menu" :class="themeClass" ref="menu">
+    <!-- right menu -->
+    <div class="qii404-vue-right-menu" ref="menu">
       <ul>
         <li v-for="item of items" @click.stop="clickItem($event, item)">{{ item.name }}</li>
       </ul>
@@ -14,17 +15,10 @@
 export default {
   data() {
     return {
-      themes: {light: 'light', dark: 'dark'},
       triggerEvent: null,
     };
   },
-  props: ['items', 'clickValue', 'theme'],
-  computed: {
-    themeClass() {
-      const themeClass = this.themes[this.theme];
-      return themeClass ? themeClass : 'light';
-    },
-  },
+  props: ['items', 'clickValue'],
   methods: {
     show($event) {
       this.triggerEvent = $event;
@@ -73,15 +67,14 @@ export default {
     position: fixed;
     top: 0;
     left: 0;
-    padding: 5px 0px;
+    padding: 0px;
     z-index: 99999;
-  }
-  .qii404-vue-right-menu.light {
-    border: 1px solid lightgrey;
+    overflow: hidden;
+    border-radius: 3px;
+    border: 2px solid lightgrey;
     background: #fafafa;
   }
-  .qii404-vue-right-menu.dark {
-    border: 1px solid lightgrey;
+  .dark-mode .qii404-vue-right-menu {
     background: #263238;
   }
 
@@ -89,23 +82,24 @@ export default {
     list-style: none;
     padding: 0px;
   }
+  .qii404-vue-right-menu ul li:not(:last-child) {
+    border-bottom: 1px solid lightgrey;
+  }
 
   .qii404-vue-right-menu ul li {
-    font-size: 90%;
-    padding: 3px 10px;
+    font-size: 13.4px;
+    padding: 6px 10px;
     cursor: pointer;
-  }
-  .qii404-vue-right-menu.light ul li {
     color: #263238;
   }
-  .qii404-vue-right-menu.dark ul li {
+  .dark-mode .qii404-vue-right-menu ul li {
     color: #fff;
   }
 
-  .qii404-vue-right-menu.light ul li:hover {
+  .qii404-vue-right-menu ul li:hover {
     background: #e4e2e2;
   }
-  .qii404-vue-right-menu.dark ul li:hover {
+  .dark-mode .qii404-vue-right-menu ul li:hover {
     background: #344A4E;
   }
 </style>
