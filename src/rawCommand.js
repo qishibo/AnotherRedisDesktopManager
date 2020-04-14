@@ -10,7 +10,7 @@ export default {
       return this.message.clientEmpty;
     }
 
-    const operation = params[0];
+    const operation = params[0] ? params[0].toLowerCase() : '';
 
     if (!operation || typeof client[operation] != 'function') {
       return this.message.unknownCommand;

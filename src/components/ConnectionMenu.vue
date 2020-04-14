@@ -84,7 +84,7 @@ export default {
         // open Connections.vue menu
         this.$parent.$parent.$parent.$refs.connectionMenu.open(this.config.connectionName);
         // open connection
-        this.$parent.$parent.$parent.openConnection(this.config.connectionName);
+        this.$parent.$parent.$parent.openConnection();
       }
 
       else {
@@ -97,7 +97,7 @@ export default {
         // open Connections.vue menu
         this.$parent.$parent.$parent.$refs.connectionMenu.open(this.config.connectionName);
         // open connection
-        this.$parent.$parent.$parent.openConnection(this.config.connectionName, () => {
+        this.$parent.$parent.$parent.openConnection(() => {
           this.$bus.$emit('openCli', this.client, this.config.connectionName);
         });
       }
