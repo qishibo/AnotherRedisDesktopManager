@@ -229,12 +229,11 @@ export default {
       this.client.info().then((reply) => {
         this.connectionStatus = this.initStatus(reply);
       }).catch((e) => {
+        // info command may be disabled
         this.$message.error({
-          message: e.message,
+          message: this.$t('message.info_disabled'),
           duration: 3000,
         });
-
-        this.$bus.$emit('closeConnection');
       });
     },
     refreshInit() {

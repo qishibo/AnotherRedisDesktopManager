@@ -103,16 +103,25 @@ export default {
     },
     initDatabaseSelect() {
       this.client.config('get', 'databases').then((reply) => {
-        if (reply[1]) {
-          this.dbs = [...Array(parseInt(reply[1])).keys()];
-        }
-        else {
-          this.dbs =  [...Array(16).keys()];
-        }
+        this.dbs = [...Array(parseInt(reply[1])).keys()];
       }).catch((e) => {
         // config command may be renamed
         this.dbs =  [...Array(16).keys()];
+        // read dbs from info
+        this.getDatabasesFromInfo();
       });
+    },
+    getDatabasesFromInfo() {
+      this.client.info().then((info) => {
+        try{
+          let lastDB = info.trim().split('\n').pop().match(/db(\d+)/)[1];
+          lastDB = parseInt(lastDB);
+
+          if (lastDB > 16) {
+            this.dbs = [...Array(lastDB + 1).keys()];
+          }
+        }catch (e) {};
+      }).catch(() => {});
     },
     changeDb(dbIndex = false) {
       if (dbIndex !== false) {

@@ -92,6 +92,7 @@ const tw = {
     redis_status: 'Redis信息',
     confirm_flush_db: '確認刪除db{db}中的所有鍵值麽？',
     flushdb: '刪除所有鍵',
+    info_disabled: 'Info命令執行異常（可能已被禁用），無法顯示Redis信息',
   },
 };
 
