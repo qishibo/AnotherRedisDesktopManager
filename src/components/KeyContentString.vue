@@ -47,14 +47,14 @@ export default {
           this.initShow()
 
           this.$message.success({
-            message: `${this.$util.bufToString(key)} ${this.$t('message.modify_success')}`,
+            message: this.$t('message.modify_success'),
             duration: 1000,
           });
         }
 
         else {
           this.$message.error({
-            message: `${this.$util.bufToString(key)} ${this.$t('message.modify_failed')}`,
+            message: this.$t('message.modify_failed'),
             duration: 1000,
           });
         }

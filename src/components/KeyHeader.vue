@@ -71,14 +71,14 @@ export default {
     },
     deleteKey() {
       this.$confirm(
-        this.$t('message.confirm_to_delete_key', { key: this.redisKey }),
+        this.$t('message.confirm_to_delete_key', { key: this.$util.bufToString(this.redisKey) }),
         { type: 'warning' },
       )
       .then(() => {
         this.client.del(this.redisKey).then((reply) => {
           if (reply === 1) {
             this.$message.success({
-              message: `${this.redisKey} ${this.$t('message.delete_success')}`,
+              message: this.$t('message.delete_success'),
               duration: 1000,
             });
 
@@ -137,7 +137,7 @@ export default {
       this.client.expire(this.redisKey, this.keyTTL).then((reply) => {
         if (reply) {
           this.$message.success({
-            message: `${this.redisKey} ttl ${this.keyTTL} ${this.$t('message.modify_success')}`,
+            message: this.$t('message.modify_success'),
             duration: 1000,
           });
 

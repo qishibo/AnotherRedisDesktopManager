@@ -164,7 +164,7 @@ export default {
         ).then((reply) => {
           if (reply === 1) {
             this.$message.success({
-              message: `${row.key} ${this.$t('message.delete_success')}`,
+              message: this.$t('message.delete_success'),
               duration: 1000,
             });
 
