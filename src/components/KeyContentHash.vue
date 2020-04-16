@@ -12,10 +12,12 @@
       <el-dialog :title='dialogTitle' :visible.sync="editDialog">
         <el-form>
           <el-form-item label="Field">
+            <span v-if='editLineItem.binaryK' class='content-binary'>Hex</span>
             <el-input v-model="editLineItem.key" autocomplete="off"></el-input>
           </el-form-item>
 
           <el-form-item label="Value">
+            <span v-if='editLineItem.binaryV' class='content-binary'>Hex</span>
             <FormatViewer :content.sync='editLineItem.value'></FormatViewer>
           </el-form-item>
         </el-form>
@@ -93,11 +95,16 @@ export default {
   },
   methods: {
     initShow() {
-      this.client.hgetall(this.redisKey).then((reply) => {
+      this.client.hgetallBuffer(this.redisKey).then((reply) => {
         let hashData = [];
 
-        for (const i in reply) {
-          hashData.push({ key: i, value: reply[i] });
+        for (let i of reply) {
+          hashData.push({
+            key: this.$util.bufToString(i[0]),
+            value: this.$util.bufToString(i[1]),
+            binaryK: !this.$util.bufVisible(i[0]),
+            binaryV: !this.$util.bufVisible(i[1]),
+          });
         }
 
         this.hashData = hashData;
@@ -120,10 +127,17 @@ export default {
         return;
       }
 
-      client.hset(key, after.key, after.value).then((reply) => {
+      client.hset(
+        key,
+        before.binaryK ? this.$util.xToBuffer(after.key) : after.key,
+        before.binaryV ? this.$util.xToBuffer(after.value) : after.value
+      ).then((reply) => {
         // edit key && key changed
         if (before.key && before.key !== after.key) {
-          client.hdel(key, before.key).then((reply) => {
+          client.hdel(
+            key,
+            before.binaryK ? this.$util.xToBuffer(before.key) : before.key
+          ).then((reply) => {
             this.initShow();
           });
         }
@@ -144,7 +158,10 @@ export default {
         this.$t('message.confirm_to_delete_row_data'),
         {type: 'warning'}
       ).then(() => {
-        this.client.hdel(this.redisKey, row.key).then((reply) => {
+        this.client.hdel(
+          this.redisKey,
+          row.binaryK ? this.$util.xToBuffer(row.key) : row.key
+        ).then((reply) => {
           if (reply === 1) {
             this.$message.success({
               message: `${row.key} ${this.$t('message.delete_success')}`,

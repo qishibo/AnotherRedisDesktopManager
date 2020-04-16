@@ -9,6 +9,7 @@
         :value="item.value">
       </el-option>
     </el-select>
+    <span v-if='binary' class='formater-binary'>Hex</span>
     <br>
 
     <component
@@ -44,13 +45,14 @@ export default {
     float: {default: 'right'},
     content: {default: ''},
     textrows: {default: 6},
+    binary: {default: false},
   },
 }
 </script>
 
 <style type="text/css">
   .format-selector {
-    width: 120px;
+    width: 122px;
   }
   .format-selector .el-input__inner {
     height: 22px;
@@ -89,5 +91,10 @@ export default {
   .collapse-container .collapse-btn {
     float: right;
     padding: 9px 0;
+  }
+  .formater-binary {
+    padding-left: 5px;
+    color: #7ab3ef;
+    font-size: 80%;
   }
 </style>

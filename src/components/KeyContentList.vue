@@ -12,6 +12,7 @@
       <el-dialog :title="dialogTitle" :visible.sync="editDialog">
         <el-form>
           <el-form-item label="Value">
+            <span v-if='editLineItem.binary' class='content-binary'>Hex</span>
             <FormatViewer :content.sync='editLineItem.value'></FormatViewer>
           </el-form-item>
         </el-form>
@@ -81,11 +82,14 @@ export default {
   },
   methods: {
     initShow() {
-      this.client.lrange([this.redisKey, 0, -1]).then((reply) => {
+      this.client.lrangeBuffer([this.redisKey, 0, -1]).then((reply) => {
         let listData = [];
 
         for (const i of reply) {
-          listData.push({ value: i });
+          listData.push({
+            value: this.$util.bufToString(i),
+            binary: !this.$util.bufVisible(i),
+          });
         }
 
         this.listData = listData;
@@ -108,12 +112,19 @@ export default {
         return;
       }
 
-      client.rpush(key, after.value).then((reply) => {
+      client.rpush(
+        key,
+        before.binary ? this.$util.xToBuffer(after.value) : after.value
+      ).then((reply) => {
         // reply return list length if success
         if (reply > 0) {
           // edit key remove previous value
           if (before.value) {
-            client.lrem(key, 1, before.value).then((reply) => {
+            client.lrem(
+              key,
+              1,
+              before.binary ? this.$util.xToBuffer(before.value) : before.value
+            ).then((reply) => {
               this.initShow();
             });
           }
@@ -134,7 +145,11 @@ export default {
         this.$t('message.confirm_to_delete_row_data'),
         { type: 'warning' }
       ).then(() => {
-        this.client.lrem(this.redisKey, 1, row.value).then((reply) => {
+        this.client.lrem(
+          this.redisKey,
+          1,
+          row.binary ? this.$util.xToBuffer(row.value) : row.value
+        ).then((reply) => {
           if (reply === 1) {
             this.$message.success({
               message: this.$t('message.delete_success'),

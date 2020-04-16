@@ -6,18 +6,15 @@ export default {
   set(name, value) {
     this.data[name] = value;
   },
-  isVisible(string) {
-    let ele = document.createElement('p');
-    ele.innerHTML = string;
-
-    const equal = (ele.innerHTML === string);
-    ele = null;
-
-    return equal;
+  bufVisible(buf) {
+    return buf.equals(Buffer.from(buf.toString()));
   },
   bufToString(buf) {
-    // buff visible
-    if (buf.equals(Buffer.from(buf.toString()))) {
+    if (typeof buf == 'string') {
+      return buf;
+    }
+
+    if (this.bufVisible(buf)) {
       return buf.toString();
     }
 
@@ -33,8 +30,20 @@ export default {
 
     return result.join('');
   },
-  toUTF8(string) {
-    return encodeURI(string).replace(/%/g, '\\x').toLowerCase();
+  xToBuffer(str) {
+    let result = '';
+
+    for(var i = 0; i < str.length;) {
+      if (str.substr(i, 2) == "\\x") {
+        result += str.substr(i + 2, 2);
+        i+=4;
+      }
+      else {
+        result += Buffer.from(str[i++]).toString('hex')
+      }
+    }
+
+    return Buffer.from(result, 'hex');
   },
   cutString(string, maxLength = 20) {
     if (string.length <= maxLength) {
@@ -50,9 +59,5 @@ export default {
     } catch (e) {}
 
     return false;
-  },
-  openHrefExternal(e, href) {
-    e.preventDefault();
-    require('electron').shell.openExternal(href);
   },
 };

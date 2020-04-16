@@ -3,7 +3,12 @@
     <el-form :inline="true">
       <!-- key name -->
       <el-form-item>
-        <el-input ref="keyNameInput" v-model="keyName" @keyup.enter.native="renameKey" placeholder="KeyName">
+        <el-input
+          ref="keyNameInput"
+          :value="$util.bufToString(keyName)"
+          @change='changeKeyInput'
+          @keyup.enter.native="renameKey"
+          placeholder="KeyName">
           <span slot="prepend" class="key-detail-type">{{ keyType }}</span>
           <i class="el-icon-check el-input__icon cursor-pointer"
             slot="suffix"
@@ -40,6 +45,7 @@ export default {
     return {
       keyName: this.redisKey,
       keyTTL: 0,
+      binary: false,
     };
   },
   props: ['client', 'redisKey', 'keyType'],
@@ -50,10 +56,14 @@ export default {
 
       // reset name input
       this.keyName = key;
+      this.binary  = !this.$util.bufVisible(key);
 
       client.ttl(key).then((reply) => {
         this.keyTTL = reply;
       });
+    },
+    changeKeyInput(keyInput) {
+      this.keyName = this.binary ? this.$util.xToBuffer(keyInput) : Buffer.from(keyInput);
     },
     refreshKey() {
       this.initShow();
@@ -85,14 +95,14 @@ export default {
       }).catch(() => {});
     },
     renameKey() {
-      if (this.keyName === this.redisKey) {
+      if (this.keyName.equals(this.redisKey)) {
         return;
       }
 
       this.client.rename(this.redisKey, this.keyName).then((reply) => {
         if (reply === 'OK') {
           this.$message.success({
-            message: `${this.redisKey} rename to ${this.keyName} ${this.$t('message.modify_success')}`,
+            message: this.$t('message.modify_success'),
             duration: 1000,
           });
 
