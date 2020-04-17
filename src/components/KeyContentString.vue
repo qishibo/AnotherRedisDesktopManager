@@ -2,7 +2,12 @@
 <el-form class='key-content-string'>
   <!-- key content textarea -->
   <el-form-item>
-    <FormatViewer :content.sync='content' float='left' :textrows=12></FormatViewer>
+    <FormatViewer
+      :content.sync='content'
+      :binary='binary'
+      float='left'
+      :textrows=12>
+    </FormatViewer>
   </el-form-item>
 
   <!-- save btn -->
@@ -19,39 +24,37 @@ export default {
   data() {
     return {
       content: '',
+      binary: false,
     };
   },
   props: ['client', 'redisKey'],
   components: { FormatViewer },
   methods: {
     initShow() {
-      this.client.get(this.redisKey).then((reply) => {
-        // character not visible
-        if (!this.$util.isVisible(reply)) {
-          this.content = this.$util.toUTF8(reply);
-        }
-
-        else {
-          this.content = reply;
-        }
+      this.client.getBuffer(this.redisKey).then((reply) => {
+        this.content = this.$util.bufToString(reply);
+        this.binary = !this.$util.bufVisible(reply);
       });
     },
     execSave() {
       const key = this.redisKey;
 
-      this.client.set(key, this.content).then((reply) => {
+      this.client.set(
+        key,
+        this.binary ? this.$util.xToBuffer(this.content) : this.content
+      ).then((reply) => {
         if (reply === 'OK') {
           this.initShow()
 
           this.$message.success({
-            message: `${key} ${this.$t('message.modify_success')}`,
+            message: this.$t('message.modify_success'),
             duration: 1000,
           });
         }
 
         else {
           this.$message.error({
-            message: `${key} ${this.$t('message.modify_failed')}`,
+            message: this.$t('message.modify_failed'),
             duration: 1000,
           });
         }

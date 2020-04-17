@@ -12,6 +12,7 @@
       <el-dialog :title="dialogTitle" :visible.sync="editDialog">
         <el-form>
           <el-form-item label="Member">
+            <span v-if='editLineItem.binaryM' class='content-binary'>Hex</span>
             <el-input v-model="editLineItem.member" autocomplete="off"></el-input>
           </el-form-item>
           <el-form-item label="Score">
@@ -91,12 +92,16 @@ export default {
   },
   methods: {
     initShow() {
-      this.client.zrange([this.redisKey, 0, -1, 'WITHSCORES']).then((reply) => {
+      this.client.zrangeBuffer([this.redisKey, 0, -1, 'WITHSCORES']).then((reply) => {
         let zsetData = [];
         const { length } = reply;
 
         for (var i = 0; i < length; i += 2) {
-          zsetData.push({ member: reply[i], score: Number(reply[i + 1]) });
+          zsetData.push({
+            score: Number(reply[i + 1]),
+            member: this.$util.bufToString(reply[i]),
+            binaryM: !this.$util.bufVisible(reply[i]),
+          });
         }
 
         this.zsetData = zsetData;
@@ -119,10 +124,17 @@ export default {
         return;
       }
 
-      client.zadd(key, after.score, after.member).then((reply) => {
+      client.zadd(
+        key,
+        after.score,
+        before.binaryM ? this.$util.xToBuffer(after.member) : after.member
+      ).then((reply) => {
         // edit key member changed
         if (before.member && before.member !== after.member) {
-          client.zrem(key, before.member).then((reply) => {
+          client.zrem(
+            key,
+            before.binaryM ? this.$util.xToBuffer(before.member) : before.member
+          ).then((reply) => {
             this.initShow();
           });
         }
@@ -142,10 +154,13 @@ export default {
         this.$t('message.confirm_to_delete_row_data'),
         { type: 'warning' }
       ).then(() => {
-        this.client.zrem(this.redisKey, row.member).then((reply) => {
+        this.client.zrem(
+          this.redisKey,
+          row.binaryM ? this.$util.xToBuffer(row.member) : row.member
+        ).then((reply) => {
           if (reply === 1) {
             this.$message.success({
-              message: `${row.member} ${this.$t('message.delete_success')}`,
+              message: this.$t('message.delete_success'),
               duration: 1000,
             });
 

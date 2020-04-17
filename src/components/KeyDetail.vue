@@ -83,4 +83,10 @@ export default {
   .el-tooltip__popper {
     max-width: 50%;
   }
+
+  .content-binary {
+    color: #7ab3ef;
+    font-size: 80%;
+    float: left;
+  }
 </style>

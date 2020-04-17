@@ -12,6 +12,7 @@
       <el-dialog :title="dialogTitle" :visible.sync="editDialog">
         <el-form>
           <el-form-item label="Value">
+            <span v-if='editLineItem.binary' class='content-binary'>Hex</span>
             <el-input type="textarea" :rows="6" v-model="editLineItem.value" autocomplete="off"></el-input>
           </el-form-item>
         </el-form>
@@ -79,11 +80,14 @@ export default {
   },
   methods: {
     initShow() {
-      this.client.smembers(this.redisKey).then((reply) => {
+      this.client.smembersBuffer(this.redisKey).then((reply) => {
         let setData = [];
 
         for (const i of reply) {
-          setData.push({ value: i });
+          setData.push({
+            value: this.$util.bufToString(i),
+            binary: !this.$util.bufVisible(i),
+          });
         }
 
         this.setData = setData;
@@ -106,12 +110,18 @@ export default {
         return;
       }
 
-      client.sadd(key, after.value).then((reply) => {
+      client.sadd(
+        key,
+        before.binary ? this.$util.xToBuffer(after.value) : after.value
+      ).then((reply) => {
         // add success
         if (reply === 1) {
           // edit key remove previous value
           if (before.value) {
-            client.srem(key, before.value).then((reply) => {
+            client.srem(
+              key,
+              before.binary ? this.$util.xToBuffer(before.value) : before.value
+            ).then((reply) => {
               this.initShow();
             });
           }
@@ -140,7 +150,10 @@ export default {
         this.$t('message.confirm_to_delete_row_data'),
         { type: 'warning' }
       ).then(() => {
-        this.client.srem(this.redisKey, row.value).then((reply) => {
+        this.client.srem(
+          this.redisKey,
+          row.binary ? this.$util.xToBuffer(row.value) : row.value
+        ).then((reply) => {
           if (reply === 1) {
             this.$message.success({
               message: this.$t('message.delete_success'),

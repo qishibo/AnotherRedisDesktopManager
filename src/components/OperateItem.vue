@@ -148,11 +148,14 @@ export default {
         return;
       }
 
-      let promise = this.setDefaultValue(this.newKeyName, this.selectedNewKeyType);
+      // key to buffer
+      const key = Buffer.from(this.newKeyName);
+
+      let promise = this.setDefaultValue(key, this.selectedNewKeyType);
 
       promise.then(() => {
-        this.$bus.$emit('refreshKeyList', this.client, this.newKeyName, 'add');
-        this.$bus.$emit('clickedKey', this.client, this.newKeyName, true);
+        this.$bus.$emit('refreshKeyList', this.client, key, 'add');
+        this.$bus.$emit('clickedKey', this.client, key, true);
       });
 
       this.newKeyDialog = false;

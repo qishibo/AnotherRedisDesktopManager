@@ -121,7 +121,7 @@ export default {
       const dbIndex = client.condition ? client.condition.select : 0;
       const connectionName = client.options.connectionName;
 
-      const label = `${cutString(key)} | ${cutString(connectionName)} | DB${dbIndex}`;
+      const label = `${cutString(this.$util.bufToString(key))} | ${cutString(connectionName)} | DB${dbIndex}`;
       const name  = `${key} | ${connectionName} | DB${dbIndex}`;
 
       return {
