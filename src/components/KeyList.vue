@@ -152,12 +152,12 @@ export default {
         stream.on('error', (e) => {
           this.$message.error({
             message: 'Stream On Error: ' +  e.message,
-            duration: 4000,
+            duration: 1500,
           });
 
           setTimeout(() => {
             this.$bus.$emit('closeConnection');
-          }, 1000);
+          }, 50);
         });
 
         stream.on('end', () => {

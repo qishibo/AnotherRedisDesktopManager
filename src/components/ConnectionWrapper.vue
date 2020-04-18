@@ -115,7 +115,7 @@ export default {
           client.on('error', (err) => {
             this.$message.error({
               message: 'SSH Redis Client On Error: ' + err,
-              duration: 5500,
+              duration: 2500,
             });
 
             this.$bus.$emit('closeConnection');
@@ -135,7 +135,7 @@ export default {
         client.on('error', (err) => {
           this.$message.error({
             message: 'Redis Client On Error: ' + err,
-            duration: 5500,
+            duration: 2500,
           });
 
           this.$bus.$emit('closeConnection');
