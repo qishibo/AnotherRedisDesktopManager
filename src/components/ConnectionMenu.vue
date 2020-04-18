@@ -2,26 +2,33 @@
 <div>
   <div class="connection-opt-icons">
     <!-- right menu operate icons -->
-    <i :title="$t('message.redis_status')" class="connection-right-icon fa fa-home" @click.stop.prevent="openStatus()"></i>
-    <i :title="$t('message.redis_console')" class="connection-right-icon fa fa-terminal" @click.stop.prevent="openCli()"></i>
-    <i :title="$t('message.edit_connection')" class="connection-right-icon el-icon-edit-outline" @click.stop.prevent="showEditConnection()"></i>
-    <i :title="$t('message.del_connection')" class="connection-right-icon el-icon-delete" @click.stop.prevent="deleteConnection()"></i>
+    <i :title="$t('message.redis_status')"
+      class="connection-right-icon fa fa-home"
+      @click.stop.prevent="openStatus">
+    </i>
+    <i :title="$t('message.redis_console')"
+      class="connection-right-icon fa fa-terminal"
+      @click.stop.prevent="openCli">
+    </i>
+    <i :title="$t('message.refresh_connection')"
+      class='connection-right-icon el-icon-refresh'
+      @click.stop.prevent="refreshConnection">
+    </i>
 
     <!-- more operate menu -->
     <el-dropdown
       placement='bottom-start'
-      @command='handleMoreOperate'
       :show-timeout=100
       :hide-timeout=300>
       <i class="connection-right-icon el-icon-menu"></i>
       <el-dropdown-menu slot="dropdown">
-        <el-dropdown-item command='refresh'>
-          <i class='el-icon-refresh'> {{ $t('message.refresh_connection') }}</i>
+        <el-dropdown-item @click.native='showEditConnection'>
+          <i class='el-icon-edit-outline'> {{ $t('message.edit_connection') }}</i>
         </el-dropdown-item>
-        <!-- <el-dropdown-item command='batchDel'>
-          <i class='el-icon-delete'> Batch Delete</i>
-        </el-dropdown-item> -->
-        <el-dropdown-item command='flushDB'>
+        <el-dropdown-item @click.native='deleteConnection'>
+          <i class='el-icon-delete'> {{ $t('message.del_connection') }}</i>
+        </el-dropdown-item>
+        <el-dropdown-item @click.native='flushDB'>
           <i class='fa fa-bomb'> {{ $t('message.flushdb') }}</i>
         </el-dropdown-item>
       </el-dropdown-menu>
@@ -104,18 +111,6 @@ export default {
 
       else {
         this.$bus.$emit('openCli', this.client, this.config.connectionName);
-      }
-    },
-    handleMoreOperate(operate) {
-      switch (operate) {
-        case 'refresh':
-          this.refreshConnection();
-          break;
-        case 'flushDB':
-          this.flushDB();
-          break;
-        case 'batchDel':
-          break;
       }
     },
     flushDB() {

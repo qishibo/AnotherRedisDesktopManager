@@ -149,6 +149,17 @@ export default {
           }
         });
 
+        stream.on('error', (e) => {
+          this.$message.error({
+            message: 'Stream On Error: ' +  e.message,
+            duration: 4000,
+          });
+
+          setTimeout(() => {
+            this.$bus.$emit('closeConnection');
+          }, 1000);
+        });
+
         stream.on('end', () => {
           // all nodes scan finished
           if (--this.scanEndCount <= 0) {
