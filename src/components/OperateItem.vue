@@ -112,6 +112,10 @@ export default {
       });
     },
     getDatabasesFromInfo() {
+      if (!this.client) {
+        return;
+      }
+
       this.client.info().then((info) => {
         try{
           let lastDB = info.trim().split('\n').pop().match(/db(\d+)/)[1];

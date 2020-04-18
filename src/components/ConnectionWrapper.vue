@@ -1,6 +1,7 @@
 <template>
   <el-menu
     ref="connectionMenu"
+    :collapse-transition='false'
     @open="openConnection()"
     class="connection-menu"
     active-text-color="#ffd04b">
@@ -91,6 +92,7 @@ export default {
         return;
       }
 
+      this.$refs.connectionMenu &&
       this.$refs.connectionMenu.close(this.config.connectionName);
       this.$bus.$emit('removeAllTab', connectionName);
 
@@ -113,7 +115,7 @@ export default {
           client.on('error', (err) => {
             this.$message.error({
               message: 'SSH Redis Client On Error: ' + err,
-              duration: 3000,
+              duration: 2500,
             });
 
             this.$bus.$emit('closeConnection');
@@ -133,7 +135,7 @@ export default {
         client.on('error', (err) => {
           this.$message.error({
             message: 'Redis Client On Error: ' + err,
-            duration: 3000,
+            duration: 2500,
           });
 
           this.$bus.$emit('closeConnection');
