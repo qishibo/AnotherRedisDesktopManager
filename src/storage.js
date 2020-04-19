@@ -5,6 +5,10 @@ export default {
 
     return key ? settings[key] : settings;
   },
+  saveSettings(settings) {
+    settings = JSON.stringify(settings);
+    return localStorage.setItem('settings', settings);
+  },
   addConnection(connection) {
     const connections = this.getConnections();
     const key = this.getConnectionKey(connection);

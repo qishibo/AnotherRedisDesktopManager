@@ -46,8 +46,8 @@ export default {
     };
   },
   created() {
-    this.$bus.$on('changeFont', () => {
-      this.initFont();
+    this.$bus.$on('reloadSettings', () => {
+      this.reloadSettings();
     });
   },
   components: {Header, Aside, Tabs, ScrollToTop, UpdateCheck},
@@ -91,6 +91,10 @@ export default {
         }
       });
     },
+    reloadSettings() {
+      this.initFont();
+      this.initZoom();
+    },
     initFont() {
       let fontFamily = this.$storage.getSetting('fontFamily');
       // default font-family
@@ -99,13 +103,20 @@ export default {
       document.body.style.fontFamily =
         fontFamily.map((line) => {return `"${line}"`}).join(',');
     },
+    initZoom() {
+      let zoomFactor = this.$storage.getSetting('zoomFactor');
+      zoomFactor = zoomFactor ? zoomFactor : 1.0;
+
+      const {webFrame} = require('electron');
+      webFrame.setZoomFactor(zoomFactor);
+    },
   },
   mounted() {
     setTimeout(() => {
       this.$bus.$emit('update-check');
     }, 2000);
 
-    this.initFont();
+    this.reloadSettings();
     this.bindSideBarDrag();
     this.openHrefInBrowser();
   },

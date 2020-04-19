@@ -93,6 +93,7 @@ const en = {
     confirm_flush_db: 'Confirm to delete all the keys in db{db} ?',
     flushdb: 'Flush DB',
     info_disabled: 'Info command execution exception(may have been disabled), redis info cannot be displayed',
+    page_zoom: 'Page Zoom',
   },
 };
 

@@ -3,12 +3,26 @@
   <el-dialog :title="$t('message.settings')" :visible.sync="settingDialog.visible">
     <el-form label-position="top" size="mini">
 
-      <!-- theme -->
+      <!-- theme select-->
       <el-form-item :label="$t('message.dark_mode')">
         <el-switch v-model='darkMode' @change="changeTheme"></el-switch>
       </el-form-item>
 
-      <!-- connections -->
+      <!-- zoom page -->
+      <el-form-item :label="$t('message.page_zoom')">
+        <el-input-number
+          size="mini"
+          placeholder='1.0'
+          :min=0.5
+          :max=2.0
+          :step=0.1
+          :precision=1
+          @change='changeZoom'
+          v-model='form.zoomFactor'>
+        </el-input-number>
+      </el-form-item>
+
+      <!-- export connections -->
       <el-form-item :label="$t('message.config_connections')">
         <el-button icon="el-icon-upload2" @click="exportConnection">{{ $t('message.export') }}</el-button>
         <el-button icon="el-icon-download" @click="showImportDialog">{{ $t('message.import') }}</el-button>
@@ -89,7 +103,7 @@ import { ipcRenderer } from 'electron';
 export default {
   data() {
     return {
-      form: {fontFamily: ''},
+      form: {fontFamily: '', zoomFactor: 1.0},
       importConnectionVisible: false,
       connectionFileContent: '',
       appVersion: (new URL(window.location.href)).searchParams.get('version'),
@@ -102,28 +116,25 @@ export default {
   props: ['settingDialog'],
   methods: {
     showSettings() {
-      let settings = this.getSettings();
-
-      if (!settings) {
-        return;
-      }
-
-      settings = JSON.parse(settings);
-      this.form = settings;
-    },
-    getSettings() {
-      return localStorage.getItem('settings');
+      let settings = storage.getSetting();
+      this.form = {...this.form, ...settings};
     },
     saveSettings() {
-      const settings = JSON.stringify(this.form);
-      localStorage.setItem('settings', settings);
+      storage.saveSettings(this.form);
 
       this.settingDialog.visible = false;
-      this.$bus.$emit('changeFont');
+      this.$bus.$emit('reloadSettings');
     },
     changeTheme() {
       const themeName = this.darkMode ? 'dark' : 'chalk';
       globalChangeTheme(themeName);
+    },
+    changeZoom() {
+      const {webFrame} = require('electron');
+      let zoomFactor   = this.form.zoomFactor;
+
+      zoomFactor = zoomFactor ? zoomFactor : 1.0;
+      webFrame.setZoomFactor(zoomFactor);
     },
     showImportDialog() {
       this.importConnectionVisible = true;

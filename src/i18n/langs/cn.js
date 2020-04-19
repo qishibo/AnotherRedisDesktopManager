@@ -93,6 +93,7 @@ const cn = {
     confirm_flush_db: '确认删除db{db}中的所有键值么？',
     flushdb: '删除所有键',
     info_disabled: 'Info命令执行异常（可能已被禁用），无法显示Redis信息',
+    page_zoom: '页面缩放',
   },
 };
 
