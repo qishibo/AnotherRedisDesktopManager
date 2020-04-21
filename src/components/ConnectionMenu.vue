@@ -118,8 +118,10 @@ export default {
         return;
       }
 
+      const preDB = this.client.condition ? this.client.condition.select : 0;
+
       this.$confirm(
-        this.$t('message.confirm_flush_db', {db: this.client.condition.select}),
+        this.$t('message.confirm_flush_db', {db: preDB}),
         {type: 'warning'}
       ).then(() => {
         this.client.flushdb().then((reply) => {
