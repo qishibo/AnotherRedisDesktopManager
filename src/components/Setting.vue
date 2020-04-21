@@ -146,7 +146,7 @@ export default {
     },
     importConnnection() {
       this.importConnectionVisible = false;
-      let config = atob(this.connectionFileContent);
+      let config = this.$util.base64Decode(this.connectionFileContent);
 
       if (!config) {
         return;
@@ -168,7 +168,7 @@ export default {
     },
     exportConnection() {
       let connections = storage.getConnections(true);
-      connections = btoa(JSON.stringify(connections));
+      connections = this.$util.base64Encode(JSON.stringify(connections));
       this.createAndDownloadFile('connections.ano', connections);
       this.settingDialog.visible = false;
     },
