@@ -145,7 +145,6 @@ export default {
   .connection-menu .el-submenu__title {
     padding-left: 0px !important;
     padding-right: 0px;
-    font-size: 13px !important;
   }
 
   .connection-menu .connection-name {
@@ -156,7 +155,7 @@ export default {
     overflow: hidden;
     text-overflow: ellipsis;
     font-weight: bold;
-    font-size: 104%;
+    font-size: 1.04em;
   }
   .connection-menu .connection-opt-icons {
     /*width: 30px;*/

@@ -5,7 +5,7 @@
       <el-row :gutter="6">
         <!-- db index select -->
         <el-col :span="12">
-          <el-select class="db-select" v-model="selectedDbIndex" placeholder="DB" size="mini" @change="changeDb()" filterable default-first-option>
+          <el-select class="db-select" v-model="selectedDbIndex" placeholder="DB" @change="changeDb()" filterable default-first-option>
             <el-option
               v-for="index in dbs"
               :key="index"
@@ -198,6 +198,11 @@ export default {
 <style type="text/css">
   .connection-menu .db-select {
     width: 100%;
+  }
+  /*fix el-select height different from el-input*/
+  .connection-menu .db-select .el-input__inner {
+    /*margin-top: 0.5px;*/
+    height: 30.5px;
   }
   .connection-menu .new-key-btn {
     width: 100%;

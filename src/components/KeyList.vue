@@ -225,8 +225,8 @@ export default {
     text-overflow: ellipsis;
     cursor: pointer;
     color: #292f31;
-    font-size: 82%;
-    line-height: 1.6;
+    font-size: 0.9em;
+    line-height: 1.52;
     /*margin-right: 3px;*/
     padding-left: 6px;
   }

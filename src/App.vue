@@ -97,8 +97,15 @@ export default {
     },
     initFont() {
       let fontFamily = this.$storage.getSetting('fontFamily');
-      // default font-family
-      !fontFamily && (fontFamily = ['Default Initial']);
+
+      // set to default font-family
+      if (
+        !fontFamily || !fontFamily.length ||
+        fontFamily.toString() === 'Default Initial'
+      ) {
+        fontFamily = ['-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Helvetica',
+        'Arial', 'sans-serif','Microsoft YaHei', 'Apple Color Emoji', 'Segoe UI Emoji'];
+      }
 
       document.body.style.fontFamily =
         fontFamily.map((line) => {return `"${line}"`}).join(',');
@@ -132,6 +139,7 @@ body {
   padding: 8px;
   margin: 0;
   box-sizing: border-box;
+  -webkit-font-smoothing: antialiased;
 
   /*fix body scroll-y caused by tooltip in table*/
   overflow: hidden;
