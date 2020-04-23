@@ -25,7 +25,12 @@
     </div>
 
     <!-- content table -->
-    <PaginationTable :data="setData" :filterValue="filterValue" filterKey="value">
+    <el-table
+      stripe
+      size="small"
+      border
+      min-height=300
+      :data="setData">
       <el-table-column
         type="index"
         label="ID"
@@ -45,15 +50,28 @@
           <input
             class="el-input__inner key-detail-filter-value"
             v-model="filterValue"
-            :placeholder="$t('message.key_to_search')"
-            />
+            @keyup.enter='initShow()'
+            :placeholder="$t('message.key_to_search')"/>
+          <i :class='loadingIcon'></i>
         </template>
         <template slot-scope="scope">
           <el-button type="text" @click="showEditDialog(scope.row)" icon="el-icon-edit" circle></el-button>
           <el-button type="text" @click="deleteLine(scope.row)" icon="el-icon-delete" circle></el-button>
         </template>
       </el-table-column>
-    </PaginationTable>
+    </el-table>
+
+    <!-- load more content -->
+    <div class='content-more-container'>
+      <el-button
+        size='mini'
+        @click='initShow(false)'
+        :icon='loadingIcon'
+        :disabled='loadMoreDisable'
+        class='content-more-btn'>
+        {{ $t('message.load_more_keys') }}
+      </el-button>
+    </div>
   </div>
 </template>
 
@@ -68,6 +86,12 @@ export default {
       setData: [], // {value: xxx}
       beforeEditItem: {},
       editLineItem: {},
+      loadingIcon: '',
+      pageSize: 100,
+      searchPageSize: 1000,
+      oneTimeListLength: 0,
+      scanStream: null,
+      loadMoreDisable: false,
     };
   },
   props: ['client', 'redisKey'],
@@ -79,8 +103,35 @@ export default {
     },
   },
   methods: {
-    initShow() {
-      this.client.smembersBuffer(this.redisKey).then((reply) => {
+    initShow(resetTable = true) {
+      resetTable && this.resetTable();
+      this.loadingIcon = 'el-icon-loading';
+
+      if (!this.scanStream) {
+        this.initScanStream();
+      }
+
+      else {
+        this.oneTimeListLength = 0;
+        this.scanStream.resume();
+      }
+    },
+    resetTable() {
+      this.setData = [];
+      this.scanStream = null;
+      this.oneTimeListLength = 0;
+      this.loadMoreDisable = false;
+    },
+    initScanStream() {
+      const scanOption = {match: this.getScanMatch(), count: this.pageSize};
+      scanOption.match != '*' && (scanOption.count = this.searchPageSize);
+
+      this.scanStream = this.client.sscanBufferStream(
+        this.redisKey,
+        scanOption
+      );
+
+      this.scanStream.on('data', reply => {
         let setData = [];
 
         for (const i of reply) {
@@ -90,8 +141,22 @@ export default {
           });
         }
 
-        this.setData = setData;
+        this.oneTimeListLength += setData.length;
+        this.setData = this.setData.concat(setData);
+
+        if (this.oneTimeListLength >= this.pageSize) {
+          this.scanStream.pause();
+          this.loadingIcon = '';
+        }
       });
+
+      this.scanStream.on('end', () => {
+        this.loadingIcon = '';
+        this.loadMoreDisable = true;
+      });
+    },
+    getScanMatch() {
+      return this.filterValue ? `*${this.filterValue}*` : '*';
     },
     showEditDialog(row) {
       this.editLineItem = row;

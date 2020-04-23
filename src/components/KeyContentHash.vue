@@ -30,7 +30,12 @@
     </div>
 
     <!-- content table -->
-    <PaginationTable :data="hashData" :filterValue="filterValue" filterKey="key">
+    <el-table
+      stripe
+      size="small"
+      border
+      min-height=300
+      :data="hashData">
       <el-table-column
         type="index"
         label="ID"
@@ -59,15 +64,28 @@
           <input
             class="el-input__inner key-detail-filter-value"
             v-model="filterValue"
-            :placeholder="$t('message.key_to_search')"
-            />
+            @keyup.enter='initShow()'
+            :placeholder="$t('message.key_to_search')"/>
+          <i :class='loadingIcon'></i>
         </template>
         <template slot-scope="scope">
           <el-button type="text" @click="showEditDialog(scope.row)" icon="el-icon-edit" circle></el-button>
           <el-button type="text" @click="deleteLine(scope.row)" icon="el-icon-delete" circle></el-button>
         </template>
       </el-table-column>
-    </PaginationTable>
+    </el-table>
+
+    <!-- load more content -->
+    <div class='content-more-container'>
+      <el-button
+        size='mini'
+        @click='initShow(false)'
+        :icon='loadingIcon'
+        :disabled='loadMoreDisable'
+        class='content-more-btn'>
+        {{ $t('message.load_more_keys') }}
+      </el-button>
+    </div>
   </div>
 </template>
 
@@ -83,6 +101,12 @@ export default {
       hashData: [], // {key: xxx, value: xxx}
       beforeEditItem: {},
       editLineItem: {},
+      loadingIcon: '',
+      pageSize: 100,
+      searchPageSize: 1000,
+      oneTimeListLength: 0,
+      scanStream: null,
+      loadMoreDisable: false,
     };
   },
   components: {PaginationTable, FormatViewer},
@@ -94,21 +118,62 @@ export default {
     },
   },
   methods: {
-    initShow() {
-      this.client.hgetallBuffer(this.redisKey).then((reply) => {
+    initShow(resetTable = true) {
+      resetTable && this.resetTable();
+      this.loadingIcon = 'el-icon-loading';
+
+      if (!this.scanStream) {
+        this.initScanStream();
+      }
+
+      else {
+        this.oneTimeListLength = 0;
+        this.scanStream.resume();
+      }
+    },
+    resetTable() {
+      this.hashData = [];
+      this.scanStream = null;
+      this.oneTimeListLength = 0;
+      this.loadMoreDisable = false;
+    },
+    initScanStream() {
+      const scanOption = {match: this.getScanMatch(), count: this.pageSize};
+      scanOption.match != '*' && (scanOption.count = this.searchPageSize);
+
+      this.scanStream = this.client.hscanBufferStream(
+        this.redisKey,
+        scanOption
+      );
+
+      this.scanStream.on('data', reply => {
         let hashData = [];
 
-        for (let i of reply) {
+        for (let i = 0; i < reply.length; i += 2) {
           hashData.push({
-            key: this.$util.bufToString(i[0]),
-            value: this.$util.bufToString(i[1]),
-            binaryK: !this.$util.bufVisible(i[0]),
-            binaryV: !this.$util.bufVisible(i[1]),
+            key: this.$util.bufToString(reply[i]),
+            value: this.$util.bufToString(reply[i + 1]),
+            binaryK: !this.$util.bufVisible(reply[i]),
+            binaryV: !this.$util.bufVisible(reply[i + 1]),
           });
         }
 
-        this.hashData = hashData;
+        this.oneTimeListLength += hashData.length;
+        this.hashData = this.hashData.concat(hashData);
+
+        if (this.oneTimeListLength >= this.pageSize) {
+          this.scanStream.pause();
+          this.loadingIcon = '';
+        }
       });
+
+      this.scanStream.on('end', () => {
+        this.loadingIcon = '';
+        this.loadMoreDisable = true;
+      });
+    },
+    getScanMatch() {
+      return this.filterValue ? `*${this.filterValue}*` : '*';
     },
     showEditDialog(row) {
       this.editLineItem = row;

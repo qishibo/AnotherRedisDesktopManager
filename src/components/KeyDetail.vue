@@ -89,4 +89,12 @@ export default {
     font-size: 80%;
     float: left;
   }
+
+  .content-more-container {
+    text-align: center;
+    margin-top: 10px;
+  }
+  .content-more-container .content-more-btn {
+    width: 95%;
+  }
 </style>
