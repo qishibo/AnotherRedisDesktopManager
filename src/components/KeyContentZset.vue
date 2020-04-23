@@ -28,7 +28,12 @@
     </div>
 
     <!-- content table -->
-    <PaginationTable :data="zsetData" :filterValue="filterValue" filterKey="member">
+    <el-table
+      stripe
+      size="small"
+      border
+      min-height=300
+      :data="zsetData">
       <el-table-column
         type="index"
         label="ID"
@@ -57,15 +62,28 @@
           <input
             class="el-input__inner key-detail-filter-value"
             v-model="filterValue"
-            :placeholder="$t('message.key_to_search')"
-            />
+            @keyup.enter='initShow()'
+            :placeholder="$t('message.key_to_search')"/>
+          <i :class='loadingIcon'></i>
         </template>
         <template slot-scope="scope">
           <el-button type="text" @click="showEditDialog(scope.row)" icon="el-icon-edit" circle></el-button>
           <el-button type="text" @click="deleteLine(scope.row)" icon="el-icon-delete" circle></el-button>
         </template>
       </el-table-column>
-    </PaginationTable>
+    </el-table>
+
+    <!-- load more content -->
+    <div class='content-more-container'>
+      <el-button
+        size='mini'
+        @click='initShow(false)'
+        :icon='loadingIcon'
+        :disabled='loadMoreDisable'
+        class='content-more-btn'>
+        {{ $t('message.load_more_keys') }}
+      </el-button>
+    </div>
   </div>
 </template>
 
@@ -80,6 +98,13 @@ export default {
       zsetData: [], // {score: 111, member: xxx}
       beforeEditItem: {},
       editLineItem: {},
+      loadingIcon: '',
+      pageSize: 100,
+      pageIndex: 0,
+      searchPageSize: 1000,
+      oneTimeListLength: 0,
+      scanStream: null,
+      loadMoreDisable: false,
     };
   },
   props: ['client', 'redisKey'],
@@ -91,21 +116,95 @@ export default {
     },
   },
   methods: {
-    initShow() {
-      this.client.zrangeBuffer([this.redisKey, 0, -1, 'WITHSCORES']).then((reply) => {
-        let zsetData = [];
-        const { length } = reply;
+    initShow(resetTable = true) {
+      resetTable && this.resetTable();
+      this.loadingIcon = 'el-icon-loading';
 
-        for (var i = 0; i < length; i += 2) {
-          zsetData.push({
-            score: Number(reply[i + 1]),
-            member: this.$util.bufToString(reply[i]),
-            binaryM: !this.$util.bufVisible(reply[i]),
-          });
-        }
+      // search mode, scan, random order
+      if (this.getScanMatch() != '*') {
+        this.getListScan();
+      }
 
-        this.zsetData = zsetData;
+      // default mode, ordered
+      else {
+        this.getListRange();
+        this.pageIndex++;
+      }
+    },
+    resetTable() {
+      this.zsetData = [];
+      this.pageIndex = 0;
+      this.scanStream = null;
+      this.oneTimeListLength = 0;
+      this.loadMoreDisable = false;
+    },
+    getListRange(resetTable) {
+      let start = this.pageSize * this.pageIndex;
+      let end = start + this.pageSize - 1;
+
+      this.client.zrevrangeBuffer([this.redisKey, start, end, 'WITHSCORES']).then((reply) => {
+        let zsetData = this.solveList(reply);
+
+        this.zsetData = resetTable ? zsetData : this.zsetData.concat(zsetData);
+        (zsetData.length < this.pageSize) && (this.loadMoreDisable = true);
+        this.loadingIcon = '';
       });
+    },
+    getListScan() {
+      if (!this.scanStream) {
+        this.initScanStream();
+      }
+
+      else {
+        this.oneTimeListLength = 0;
+        this.scanStream.resume();
+      }
+    },
+    initScanStream() {
+      const scanOption = {match: this.getScanMatch(), count: this.pageSize};
+      scanOption.match != '*' && (scanOption.count = this.searchPageSize);
+
+      this.scanStream = this.client.zscanBufferStream(
+        this.redisKey,
+        scanOption
+      );
+
+      this.scanStream.on('data', reply => {
+        let zsetData = this.solveList(reply);
+
+        this.oneTimeListLength += zsetData.length;
+        this.zsetData = this.zsetData.concat(zsetData);
+
+        if (this.oneTimeListLength >= this.pageSize) {
+          this.scanStream.pause();
+          this.loadingIcon = '';
+        }
+      });
+
+      this.scanStream.on('end', () => {
+        this.loadingIcon = '';
+        this.loadMoreDisable = true;
+      });
+    },
+    solveList(list) {
+      if (!list) {
+        return [];
+      }
+
+      let zsetData = [];
+
+      for (var i = 0; i < list.length; i += 2) {
+        zsetData.push({
+          score: Number(list[i + 1]),
+          member: this.$util.bufToString(list[i]),
+          binaryM: !this.$util.bufVisible(list[i]),
+        });
+      }
+
+      return zsetData;
+    },
+    getScanMatch() {
+      return this.filterValue ? `*${this.filterValue}*` : '*';
     },
     showEditDialog(row) {
       this.editLineItem = row;

@@ -25,7 +25,12 @@
     </div>
 
     <!-- content table -->
-    <PaginationTable :data="listData" :filterValue="filterValue" filterKey="value">
+    <el-table
+      stripe
+      size="small"
+      border
+      min-height=300
+      :data="listData">
       <el-table-column
         type="index"
         label="ID"
@@ -41,19 +46,24 @@
       </el-table-column>
 
       <el-table-column label="Operation">
-        <template slot="header" slot-scope="scope">
-          <input
-            class="el-input__inner key-detail-filter-value"
-            v-model="filterValue"
-            :placeholder="$t('message.key_to_search')"
-            />
-        </template>
         <template slot-scope="scope">
           <el-button type="text" @click="showEditDialog(scope.row)" icon="el-icon-edit" circle></el-button>
           <el-button type="text" @click="deleteLine(scope.row)" icon="el-icon-delete" circle></el-button>
         </template>
       </el-table-column>
-    </PaginationTable>
+    </el-table>
+
+    <!-- load more content -->
+    <div class='content-more-container'>
+      <el-button
+        size='mini'
+        @click='loadMore'
+        :icon='loadingIcon'
+        :disabled='loadMoreDisable'
+        class='content-more-btn'>
+        {{ $t('message.load_more_keys') }}
+      </el-button>
+    </div>
   </div>
 </template>
 
@@ -70,6 +80,10 @@ export default {
       listData: [], // {value: xxx}
       beforeEditItem: {},
       editLineItem: {},
+      loadingIcon: '',
+      pageSize: 100,
+      pageIndex: 0,
+      loadMoreDisable: false,
     };
   },
   props: ['client', 'redisKey'],
@@ -81,8 +95,14 @@ export default {
     },
   },
   methods: {
-    initShow() {
-      this.client.lrangeBuffer([this.redisKey, 0, -1]).then((reply) => {
+    initShow(resetTable = true) {
+      resetTable && this.resetTable();
+      this.loadingIcon = 'el-icon-loading';
+
+      let start = this.pageSize * this.pageIndex;
+      let end = start + this.pageSize - 1;
+
+      this.client.lrangeBuffer([this.redisKey, start, end]).then((reply) => {
         let listData = [];
 
         for (const i of reply) {
@@ -92,8 +112,19 @@ export default {
           });
         }
 
-        this.listData = listData;
+        this.listData = resetTable ? listData : this.listData.concat(listData);
+        (listData.length < this.pageSize) && (this.loadMoreDisable = true);
+        this.loadingIcon = '';
       });
+    },
+    resetTable() {
+      this.listData = [];
+      this.pageIndex = 0;
+      this.loadMoreDisable = false;
+    },
+    loadMore() {
+      this.pageIndex++;
+      this.initShow(false);
     },
     showEditDialog(row) {
       this.editLineItem = row;
