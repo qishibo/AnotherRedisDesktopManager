@@ -94,6 +94,7 @@ const en = {
     flushdb: 'Flush DB',
     info_disabled: 'Info command execution exception(may have been disabled), redis info cannot be displayed',
     page_zoom: 'Page Zoom',
+    scan_disabled: 'Scan command execution exception(may have been disabled), key list cannot be displayed',
   },
 };
 

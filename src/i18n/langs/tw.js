@@ -94,6 +94,7 @@ const tw = {
     flushdb: '刪除所有鍵',
     info_disabled: 'Info命令執行異常（可能已被禁用），無法顯示Redis信息',
     page_zoom: '頁面縮放',
+    scan_disabled: 'Scan命令執行異常（可能已被禁用），無法顯示key列表',
   },
 };
 

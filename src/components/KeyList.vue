@@ -150,6 +150,19 @@ export default {
         });
 
         stream.on('error', (e) => {
+          this.$parent.$parent.$parent.$refs.operateItem.searchIcon = 'el-icon-search';
+
+          // scan command disabled, other functions may be used normally
+          if (e.message == "ERR unknown command 'scan'") {
+            this.$message.error({
+              message: this.$t('message.scan_disabled'),
+              duration: 1500,
+            });
+
+            return;
+          }
+
+          // other errors
           this.$message.error({
             message: 'Stream On Error: ' +  e.message,
             duration: 1500,
@@ -182,7 +195,7 @@ export default {
       const match = this.getMatchMode(false);
 
       this.client.exists(match).then((reply) => {
-        this.keyList = (reply === 1) ? [match] : [];
+        this.keyList = (reply === 1) ? [Buffer.from(match)] : [];
       });
 
       this.scanMoreDisabled = true;

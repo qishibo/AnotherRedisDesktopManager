@@ -94,6 +94,7 @@ const cn = {
     flushdb: '删除所有键',
     info_disabled: 'Info命令执行异常（可能已被禁用），无法显示Redis信息',
     page_zoom: '页面缩放',
+    scan_disabled: 'Scan命令执行异常（可能已被禁用），无法显示Key列表',
   },
 };
 
