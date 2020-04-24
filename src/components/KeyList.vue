@@ -153,7 +153,10 @@ export default {
           this.$parent.$parent.$parent.$refs.operateItem.searchIcon = 'el-icon-search';
 
           // scan command disabled, other functions may be used normally
-          if (e.message == "ERR unknown command 'scan'") {
+          if (
+            e.message == "ERR unknown command 'scan'" ||
+            e.message.includes("command 'SCAN' is not allowed")
+          ) {
             this.$message.error({
               message: this.$t('message.scan_disabled'),
               duration: 1500,
