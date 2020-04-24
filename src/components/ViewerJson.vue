@@ -6,7 +6,7 @@
   <vue-json-pretty
     :path="'res'"
     :data="newContent"
-    :deep="maxDeep"
+    :deep="previousDeep"
     :showLength=true>
   </vue-json-pretty>
 </div>
@@ -18,10 +18,8 @@ import VueJsonPretty from 'vue-json-pretty';
 export default {
   data() {
     return {
-      maxDeep: 2,
-      collapseAllDeep: 0,
-      collapsed: true,
-      collapseText: 'expand_all',
+      previousDeep: 3,
+      collapseText: 'collapse_all',
     };
   },
   components: {VueJsonPretty},
@@ -36,11 +34,13 @@ export default {
     },
   },
   methods: {
+    resetViewer() {
+      this.previousDeep = 3;
+      this.collapseText = 'collapse_all';
+    },
     toggleCollapse() {
-      this.maxDeep = this.collapsed ? Infinity : this.collapseAllDeep;
-      this.collapsed = !this.collapsed;
-
-      this.collapseText = this.collapsed ? 'expand_all' : 'collapse_all';
+      this.previousDeep = this.previousDeep ? 0 : Infinity;
+      this.collapseText = this.previousDeep ? 'collapse_all' : 'expand_all';
     },
   },
 }

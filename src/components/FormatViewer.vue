@@ -13,6 +13,7 @@
     <br>
 
     <component
+      ref='viewer'
       :is='selectedView'
       :content='content'
       :textrows='textrows'
@@ -60,6 +61,10 @@ export default {
       else {
         this.selectedView = 'ViewerText';
       }
+
+      // reset viewer status
+      const viewer = this.$refs.viewer;
+      viewer.resetViewer && viewer.resetViewer();
     },
   },
 }
