@@ -3,6 +3,7 @@
   <!-- key content textarea -->
   <el-form-item>
     <FormatViewer
+      ref='formatViewer'
       :content.sync='content'
       :binary='binary'
       float='left'
@@ -34,6 +35,10 @@ export default {
       this.client.getBuffer(this.redisKey).then((reply) => {
         this.content = this.$util.bufToString(reply);
         this.binary = !this.$util.bufVisible(reply);
+
+        this.$nextTick(() => {
+          this.$refs.formatViewer.autoFormat();
+        });
       });
     },
     execSave() {
@@ -69,7 +74,7 @@ export default {
 
 <style type="text/css">
   .key-content-string .text-formated-container {
-    min-height: 228px;
+    min-height: 252px;
   }
   .key-content-string .el-textarea textarea {
     font-size: 14px;

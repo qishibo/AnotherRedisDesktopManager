@@ -47,6 +47,21 @@ export default {
     textrows: {default: 6},
     binary: {default: false},
   },
+  methods: {
+    autoFormat() {
+      if (!this.content) {
+        this.selectedView = 'ViewerText';
+        return;
+      }
+
+      if (this.$util.isJson(this.content)) {
+        this.selectedView = 'ViewerJson';
+      }
+      else {
+        this.selectedView = 'ViewerText';
+      }
+    },
+  },
 }
 </script>
 

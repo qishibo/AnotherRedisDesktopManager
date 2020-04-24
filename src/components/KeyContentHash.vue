@@ -9,7 +9,7 @@
       </el-form>
 
       <!-- edit & add dialog -->
-      <el-dialog :title='dialogTitle' :visible.sync="editDialog">
+      <el-dialog :title='dialogTitle' :visible.sync="editDialog" @open='openDialog'>
         <el-form>
           <el-form-item label="Field">
             <span v-if='editLineItem.binaryK' class='content-binary'>Hex</span>
@@ -18,7 +18,7 @@
 
           <el-form-item label="Value">
             <span v-if='editLineItem.binaryV' class='content-binary'>Hex</span>
-            <FormatViewer :content.sync='editLineItem.value'></FormatViewer>
+            <FormatViewer ref='formatViewer' :content.sync='editLineItem.value'></FormatViewer>
           </el-form-item>
         </el-form>
 
@@ -174,6 +174,11 @@ export default {
     },
     getScanMatch() {
       return this.filterValue ? `*${this.filterValue}*` : '*';
+    },
+    openDialog() {
+      this.$nextTick(() => {
+        this.$refs.formatViewer.autoFormat();
+      });
     },
     showEditDialog(row) {
       this.editLineItem = row;

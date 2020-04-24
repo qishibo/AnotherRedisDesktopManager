@@ -9,11 +9,11 @@
       </el-form>
 
       <!-- edit & add dialog -->
-      <el-dialog :title="dialogTitle" :visible.sync="editDialog">
+      <el-dialog :title="dialogTitle" :visible.sync="editDialog" @open='openDialog'>
         <el-form>
           <el-form-item label="Value">
             <span v-if='editLineItem.binary' class='content-binary'>Hex</span>
-            <FormatViewer :content.sync='editLineItem.value'></FormatViewer>
+            <FormatViewer ref='formatViewer' :content.sync='editLineItem.value'></FormatViewer>
           </el-form-item>
         </el-form>
 
@@ -125,6 +125,11 @@ export default {
     loadMore() {
       this.pageIndex++;
       this.initShow(false);
+    },
+    openDialog() {
+      this.$nextTick(() => {
+        this.$refs.formatViewer.autoFormat();
+      });
     },
     showEditDialog(row) {
       this.editLineItem = row;
