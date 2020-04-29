@@ -102,7 +102,7 @@ export default {
       beforeEditItem: {},
       editLineItem: {},
       loadingIcon: '',
-      pageSize: 100,
+      pageSize: 30,
       searchPageSize: 1000,
       oneTimeListLength: 0,
       scanStream: null,

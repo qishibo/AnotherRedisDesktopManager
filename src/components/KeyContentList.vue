@@ -81,7 +81,7 @@ export default {
       beforeEditItem: {},
       editLineItem: {},
       loadingIcon: '',
-      pageSize: 100,
+      pageSize: 30,
       pageIndex: 0,
       loadMoreDisable: false,
     };
