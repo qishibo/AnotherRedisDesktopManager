@@ -17,6 +17,7 @@
 
     <!-- more operate menu -->
     <el-dropdown
+      class='connection-menu-more'
       placement='bottom-start'
       :show-timeout=100
       :hide-timeout=300>
@@ -163,10 +164,11 @@ export default {
     margin-right: 28px;*/
     position: absolute;
     right: 25px;
+    top: -2px;
   }
   .connection-menu .connection-right-icon {
     display: inline-block;
-    font-size: 14px;
+    font-size: 1.2em;
     /*font-weight: bold;*/
     padding: 3px;
     margin-right: -4px;
@@ -179,5 +181,10 @@ export default {
   }
   .dark-mode .connection-menu .connection-right-icon:hover {
     background: #58707b;
+  }
+
+  /*fix more operation icon vertical-center*/
+  .connection-menu-more {
+    vertical-align: baseline;
   }
 </style>
