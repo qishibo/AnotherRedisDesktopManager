@@ -25,7 +25,7 @@ export default {
       if (item >= 32 && item <= 126) {
         return String.fromCharCode(item);
       }
-      return "\\x" + item.toString(16);
+      return "\\x" + item.toString(16).padStart(2, 0);
     });
 
     return result.join('');
