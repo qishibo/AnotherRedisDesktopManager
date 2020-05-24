@@ -3,26 +3,27 @@
   <div class="collapse-container">
     <el-button class="collapse-btn" type="text" @click="toggleCollapse">{{ $t('message.' + collapseText) }}</el-button>
   </div>
-  <vue-json-pretty
-    :path="'res'"
-    :data="newContent"
-    :deep="previousDeep"
-    :showLength=true>
-  </vue-json-pretty>
+  <JsonViewer
+    v-if='show'
+    :value="newContent"
+    :expand-depth="previousDeep"
+    >
+  </JsonViewer>
 </div>
 </template>
 
 <script type="text/javascript">
-import VueJsonPretty from 'vue-json-pretty';
+import JsonViewer from 'vue-json-viewer'
 
 export default {
   data() {
     return {
+      show: true,
       previousDeep: 3,
       collapseText: 'collapse_all',
     };
   },
-  components: {VueJsonPretty},
+  components: {JsonViewer},
   props: ['content'],
   computed: {
     newContent() {
@@ -34,13 +35,15 @@ export default {
     },
   },
   methods: {
-    resetViewer() {
-      this.previousDeep = 3;
-      this.collapseText = 'collapse_all';
-    },
     toggleCollapse() {
       this.previousDeep = this.previousDeep ? 0 : Infinity;
       this.collapseText = this.previousDeep ? 'collapse_all' : 'expand_all';
+
+      // reload json tree
+      this.show = false;
+      this.$nextTick(() => {
+        this.show = true;
+      });
     },
   },
 }

@@ -36,9 +36,7 @@ export default {
         this.content = this.$util.bufToString(reply);
         this.binary = !this.$util.bufVisible(reply);
 
-        this.$nextTick(() => {
-          this.$refs.formatViewer.autoFormat();
-        });
+        this.$refs.formatViewer.autoFormat();
       });
     },
     execSave() {

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div style="min-height: 296px;">
     <el-select v-model="selectedView" class='format-selector' :style='selectStyle' size='mini'>
       <span slot="prefix" class="fa fa-sitemap"></span>
       <el-option
@@ -30,7 +30,7 @@ import ViewerUnserialize from '@/components/ViewerUnserialize';
 export default {
   data() {
     return {
-      selectedView: 'ViewerText',
+      selectedView: '',
       viewers: [
         { value: 'ViewerText', text: 'Text' },
         { value: 'ViewerJson', text: 'Json' },
@@ -50,21 +50,22 @@ export default {
   },
   methods: {
     autoFormat() {
-      if (!this.content) {
-        this.selectedView = 'ViewerText';
-        return;
-      }
+      // reload each viewer
+      this.selectedView = '';
 
-      if (this.$util.isJson(this.content)) {
-        this.selectedView = 'ViewerJson';
-      }
-      else {
-        this.selectedView = 'ViewerText';
-      }
+      this.$nextTick(() => {
+        if (!this.content) {
+          this.selectedView = 'ViewerText';
+          return;
+        }
 
-      // reset viewer status
-      const viewer = this.$refs.viewer;
-      viewer.resetViewer && viewer.resetViewer();
+        if (this.$util.isJson(this.content)) {
+          this.selectedView = 'ViewerJson';
+        }
+        else {
+          this.selectedView = 'ViewerText';
+        }
+      });
     },
   },
 }
@@ -89,19 +90,19 @@ export default {
     border-color: #7f8ea5;
   }
 
-  /*key field span*/
-  .vjs__tree span {
-    color: #616069;
+  /*json tree*/
+  .dark-mode .jv-container.jv-light {
+    background: none;
   }
-  .dark-mode .vjs__tree span:not([class^="vjs"]) {
+  .dark-mode .jv-container.jv-light .jv-key {
     color: #ebebec;
   }
-  /*brackets*/
-  .dark-mode .vjs__tree .vjs__tree__node {
-    color: #9e9ea2;
+  .dark-mode .jv-container.jv-light .jv-item.jv-array,
+  .dark-mode .jv-container.jv-light .jv-item.jv-object {
+    color: #b6b6b9;
   }
-  .dark-mode .vjs__tree .vjs__tree__node:hover {
-    color: #20a0ff;
+  .dark-mode .jv-container.jv-light .jv-ellipsis {
+    background: #c5c5c5;
   }
 
   .collapse-container {

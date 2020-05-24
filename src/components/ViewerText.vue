@@ -1,5 +1,6 @@
 <template>
   <div>
+    <!-- </textarea> -->
     <el-input type='textarea' :rows='textrows' :value='content' @change="$emit('updateContent', $event)"></el-input>
   </div>
 </template>
