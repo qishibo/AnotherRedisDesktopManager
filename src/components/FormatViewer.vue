@@ -1,6 +1,6 @@
 <template>
-  <div style="min-height: 296px;">
-    <el-select v-model="selectedView" class='format-selector' :style='selectStyle' size='mini'>
+  <div class="format-viewer-container">
+    <el-select v-model="selectedView" class='format-selector' :style='selectStyle' size='mini' placeholder='Text'>
       <span slot="prefix" class="fa fa-sitemap"></span>
       <el-option
         v-for="item in viewers"

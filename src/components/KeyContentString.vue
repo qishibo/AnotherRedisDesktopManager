@@ -77,4 +77,8 @@ export default {
   .key-content-string .el-textarea textarea {
     font-size: 14px;
   }
+
+  .key-content-string .format-viewer-container {
+    min-height: 296px;
+  }
 </style>
