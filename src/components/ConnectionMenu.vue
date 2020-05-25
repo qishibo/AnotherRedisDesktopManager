@@ -168,7 +168,7 @@ export default {
   }
   .connection-menu .connection-right-icon {
     display: inline-block;
-    font-size: 1.2em;
+    font-size: 1.16em;
     /*font-weight: bold;*/
     padding: 3px;
     margin-right: -4px;
