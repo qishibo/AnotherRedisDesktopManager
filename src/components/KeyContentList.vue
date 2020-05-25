@@ -33,7 +33,7 @@
       :data="listData">
       <el-table-column
         type="index"
-        label="ID"
+        :label="'ID (Total: ' + total + ')'"
         sortable
         width="150">
       </el-table-column>
@@ -75,6 +75,7 @@ import FormatViewer from '@/components/FormatViewer';
 export default {
   data() {
     return {
+      total: 0,
       filterValue: '',
       editDialog: false,
       listData: [], // {value: xxx}
@@ -115,6 +116,14 @@ export default {
         this.listData = resetTable ? listData : this.listData.concat(listData);
         (listData.length < this.pageSize) && (this.loadMoreDisable = true);
         this.loadingIcon = '';
+      });
+
+      // total lines
+      this.initTotal();
+    },
+    initTotal() {
+      this.client.llen(this.redisKey).then((reply) => {
+        this.total = reply;
       });
     },
     resetTable() {

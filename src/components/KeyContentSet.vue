@@ -33,7 +33,7 @@
       :data="setData">
       <el-table-column
         type="index"
-        label="ID"
+        :label="'ID (Total: ' + total + ')'"
         sortable
         width="150">
       </el-table-column>
@@ -81,6 +81,7 @@ import PaginationTable from '@/components/PaginationTable';
 export default {
   data() {
     return {
+      total: 0,
       filterValue: '',
       editDialog: false,
       setData: [], // {value: xxx}
@@ -115,6 +116,14 @@ export default {
         this.oneTimeListLength = 0;
         this.scanStream.resume();
       }
+
+      // total lines
+      this.initTotal();
+    },
+    initTotal() {
+      this.client.scard(this.redisKey).then((reply) => {
+        this.total = reply;
+      });
     },
     resetTable() {
       this.setData = [];

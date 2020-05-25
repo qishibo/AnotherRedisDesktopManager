@@ -36,7 +36,7 @@
       :data="zsetData">
       <el-table-column
         type="index"
-        label="ID"
+        :label="'ID (Total: ' + total + ')'"
         sortable
         width="150">
       </el-table-column>
@@ -93,6 +93,7 @@ import PaginationTable from '@/components/PaginationTable';
 export default {
   data() {
     return {
+      total: 0,
       filterValue: '',
       editDialog: false,
       zsetData: [], // {score: 111, member: xxx}
@@ -130,6 +131,14 @@ export default {
         this.getListRange();
         this.pageIndex++;
       }
+
+      // total lines
+      this.initTotal();
+    },
+    initTotal() {
+      this.client.zcard(this.redisKey).then((reply) => {
+        this.total = reply;
+      });
     },
     resetTable() {
       this.zsetData = [];
