@@ -42,7 +42,7 @@
         </el-form-item>
 
         <el-form-item label="Password">
-          <el-input v-model="connection.sshOptions.password" autocomplete="off"></el-input>
+          <el-input v-model="connection.sshOptions.password" type='password' autocomplete="off"></el-input>
         </el-form-item>
 
         <el-form-item label="PrivateKey">
