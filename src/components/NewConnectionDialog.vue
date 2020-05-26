@@ -11,7 +11,7 @@
       </el-form-item>
 
       <el-form-item label="Auth">
-        <el-input v-model="connection.auth" autocomplete="off"></el-input>
+        <el-input v-model="connection.auth" type='password' autocomplete="off"></el-input>
       </el-form-item>
 
       <el-form-item label="Name">
