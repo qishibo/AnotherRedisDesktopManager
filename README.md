@@ -1,4 +1,4 @@
-<img align="right" width="110" src="https://imgup.qii404.xyz/ardm_icon.png">
+<img align="right" width="110" src="https://imgup.qii404.xyz/github/ardm-new-icon.png">
 
 # Another Redis DeskTop Manager
 

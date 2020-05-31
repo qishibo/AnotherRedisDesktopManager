@@ -1,12 +1,12 @@
-## 操作系统OS
+## OS
 
 Windows or Linux or Mac
 
-## 应用版本
+## VERSION
 
-在设置里有显示当前版本号，如果没有版本号，说明该版本<=1.1.4，请先下载最新版本尝试后再发起issue，并填下版本号
+Version in settings
 
 
-## 问题描述
+## ISSUE DESCRIPTION
 
-问题复现流程，操作截图等，建议把刚点开连接时展示的Redis Info信息页截图，方便查看Redis概况
+Bug reproduction process and configuration screenshot if possible

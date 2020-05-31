@@ -36,9 +36,7 @@ export default {
         this.content = this.$util.bufToString(reply);
         this.binary = !this.$util.bufVisible(reply);
 
-        this.$nextTick(() => {
-          this.$refs.formatViewer.autoFormat();
-        });
+        this.$refs.formatViewer.autoFormat();
       });
     },
     execSave() {
@@ -78,5 +76,9 @@ export default {
   }
   .key-content-string .el-textarea textarea {
     font-size: 14px;
+  }
+
+  .key-content-string .format-viewer-container {
+    min-height: 296px;
   }
 </style>

@@ -38,7 +38,7 @@
       :data="hashData">
       <el-table-column
         type="index"
-        label="ID"
+        :label="'ID (Total: ' + total + ')'"
         sortable
         width="150">
       </el-table-column>
@@ -96,6 +96,7 @@ import FormatViewer from '@/components/FormatViewer';
 export default {
   data() {
     return {
+      total: 0,
       filterValue: '',
       editDialog: false,
       hashData: [], // {key: xxx, value: xxx}
@@ -130,6 +131,14 @@ export default {
         this.oneTimeListLength = 0;
         this.scanStream.resume();
       }
+
+      // total lines
+      this.initTotal();
+    },
+    initTotal() {
+      this.client.hlen(this.redisKey).then((reply) => {
+        this.total = reply;
+      });
     },
     resetTable() {
       this.hashData = [];

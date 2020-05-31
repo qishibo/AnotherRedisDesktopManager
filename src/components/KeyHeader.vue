@@ -44,7 +44,7 @@ export default {
   data() {
     return {
       keyName: this.redisKey,
-      keyTTL: 0,
+      keyTTL: -1,
       binary: false,
     };
   },

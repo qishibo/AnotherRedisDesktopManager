@@ -127,6 +127,12 @@ export default {
         }catch (e) {};
       }).catch(() => {});
     },
+    resetStatus() {
+      this.dbs =[0];
+      this.selectedDbIndex = 0;
+      this.searchMatch = '';
+      this.searchExact = false;
+    },
     changeDb(dbIndex = false) {
       if (dbIndex !== false) {
         this.selectedDbIndex = parseInt(dbIndex);

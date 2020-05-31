@@ -96,6 +96,9 @@ export default {
       this.$refs.connectionMenu.close(this.config.connectionName);
       this.$bus.$emit('removeAllTab', connectionName);
 
+      // reset operateItem items
+      this.$refs.operateItem && this.$refs.operateItem.resetStatus();
+
       this.client && this.client.quit && this.client.quit();
       this.client = null;
     },

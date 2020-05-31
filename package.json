@@ -25,12 +25,12 @@
     "element-ui": "^2.4.11",
     "font-awesome": "^4.7.0",
     "ioredis": "^4.16.0",
-    "locutus": "^2.0.10",
+    "php-serialize": "^4.0.2",
     "splitargs": "0.0.7",
     "tunnel-ssh": "^4.1.4",
     "vue": "^2.5.2",
     "vue-i18n": "^8.7.0",
-    "vue-json-pretty": "^1.4.1"
+    "vue-json-viewer": "^2.2.11"
   },
   "devDependencies": {
     "asar": "^1.0.0",

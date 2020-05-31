@@ -32,7 +32,7 @@
           const nowTop = that.realDom.scrollTop;
 
           if (nowTop > 5000) {
-            that.realDom.scrollTop -= 1000;
+            that.realDom.scrollTop -= 2500;
             timer = requestAnimationFrame(fn);
           }
           else if (nowTop > 1000 && nowTop <= 5000) {
