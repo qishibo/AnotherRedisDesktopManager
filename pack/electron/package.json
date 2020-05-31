@@ -9,15 +9,10 @@
     "electron-updater": "^4.0.6",
     "font-manager": "^0.3.0"
   },
-  "publish": [{
-    "provider": "github",
-    "owner": "qishibo",
-    "repo": "AnotherRedisDesktopManager"
-  }],
   "repository": "github:qishibo/AnotherRedisDesktopManager",
   "build": {
     "appId": "me.qii404.another-redis-desktop-manager",
-    "productName": "Another.Redis.Desktop.Manager",
+    "productName": "Another Redis Desktop Manager",
     "artifactName": "${productName}.${version}.${ext}",
     "copyright": "Copyright © 2020 qii404.me",
     "asar": true,
@@ -30,6 +25,12 @@
       "!static/js/*.map",
       "!static/css/*.map"
     ],
+    "publish": [{
+      "provider": "github",
+      "owner": "qishibo",
+      "repo": "AnotherRedisDesktopManager",
+      "releaseType": "prerelease"
+    }],
     "win": {
       "icon": "icons/icon.png",
       "target": [
@@ -50,7 +51,7 @@
       ]
     },
     "mac": {
-      "icon": "icons/icon.png",
+      "icon": "icons/512.png",
       "type": "development",
       "category": "public.app-category.developer-tools",
       "target": [

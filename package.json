@@ -15,9 +15,9 @@
     "lint:init": "eslint --init",
     "asar": "node_modules/.bin/asar pack dist dist/app.asar --unpack-dir \"{app.asar,build-apps,app.asar.unpacked}\"",
     "pack:prepare": "npm run build && cp -r pack/electron/* dist/",
-    "pack:win": "node_modules/.bin/electron-builder --project=dist -w -p never",
-    "pack:mac": "node_modules/.bin/electron-builder --project=dist -m -p never",
-    "pack:linux": "node_modules/.bin/electron-builder --project=dist -l -p never",
+    "pack:win": "node_modules/.bin/electron-builder --project=dist -w -p always",
+    "pack:mac": "node_modules/.bin/electron-builder --project=dist -m -p always",
+    "pack:linux": "node_modules/.bin/electron-builder --project=dist -l -p always",
     "pack:win:docker": "docker run --rm -it --env GH_TOKEN=$GH_TOKEN --env ELECTRON_CACHE=\"/root/.cache/electron\" --env ELECTRON_BUILDER_CACHE=\"/root/.cache/electron-builder\" -v ${PWD}:/project -v ~/.cache/electron:/root/.cache/electron -v ~/.cache/electron-builder:/root/.cache/electron-builder electronuserland/builder:wine sh -c \"node_modules/.bin/electron-builder --project=dist -w -p never\"",
     "et": "node_modules/.bin/et -m"
   },
@@ -30,7 +30,7 @@
     "tunnel-ssh": "^4.1.4",
     "vue": "^2.5.2",
     "vue-i18n": "^8.7.0",
-    "vue-json-viewer": "^2.2.11"
+    "vue-json-viewer": "git+https://github.com/qishibo/vue-json-viewer.git"
   },
   "devDependencies": {
     "asar": "^1.0.0",
@@ -49,7 +49,7 @@
     "cross-env": "^5.2.0",
     "css-loader": "^0.28.0",
     "electron": "^4.0.8",
-    "electron-builder": "^20.39.0",
+    "electron-builder": "^21.2.0",
     "electron-rebuild": "^1.8.5",
     "element-theme": "^2.0.1",
     "element-theme-chalk": "^2.13.0",
@@ -59,7 +59,7 @@
     "eslint-plugin-vue": "^5.2.2",
     "extract-text-webpack-plugin": "^3.0.0",
     "file-loader": "^1.1.4",
-    "font-manager": "^0.3.0",
+    "font-manager": "^0.3.1",
     "friendly-errors-webpack-plugin": "^1.6.1",
     "html-webpack-plugin": "^2.30.1",
     "js-yaml": ">=3.13.1",
