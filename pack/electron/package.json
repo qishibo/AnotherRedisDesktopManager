@@ -7,7 +7,8 @@
   "main": "electron-main.js",
   "dependencies": {
     "electron-updater": "^4.0.6",
-    "font-manager": "^0.3.0"
+    "font-manager": "^0.3.0",
+    "clipboard": "^2.0.4"
   },
   "publish": [{
     "provider": "github",
