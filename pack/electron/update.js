@@ -1,6 +1,9 @@
 const { session, ipcMain, net } = require('electron');
 const { autoUpdater } = require("electron-updater");
 
+// disable auto download
+autoUpdater.autoDownload = false;
+
 let mainEvent;
 
 const update = () => {
@@ -8,7 +11,11 @@ const update = () => {
 
   ipcMain.on('update-check', (event, arg) => {
     mainEvent = event;
-    autoUpdater.checkForUpdates(event);
+    autoUpdater.checkForUpdates();
+  });
+
+  ipcMain.on('continue-update', (event, arg) => {
+    autoUpdater.downloadUpdate();
   });
 };
 
@@ -28,7 +35,6 @@ function bindMainListener() {
   });
 
   autoUpdater.on('download-progress', (progressObj) => {
-    let log_message = `Downloading...${progressObj.bytesPerSecond}, ${progressObj.percent}%, ${progressObj.transferred}/${progressObj.total}`;
     mainEvent.sender.send('download-progress', progressObj);
   });
 

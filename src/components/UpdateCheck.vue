@@ -38,11 +38,16 @@ export default {
 
       ipcRenderer.on('update-available', (event, arg) => {
         this.$notify.closeAll();
-        this.$notify({
-          title: `${this.$t('message.update_available')}: ${arg.version}, ${this.$t('message.update_downloading')}`,
+
+        this.$confirm(arg.releaseNotes, {
+          title: `${this.$t('message.update_available')}: ${arg.version}`,
+          confirmButtonText: this.$t('message.begin_update'),
           dangerouslyUseHTMLString: true,
-          message: arg.releaseNotes.replace(/(\<a)/ig, '$1 target="blank"'),
           duration: 0
+        }).then(() => {
+          ipcRenderer.send('continue-update');
+        }).catch(() => {
+          this.resetDownloadProcess();
         });
       });
 
