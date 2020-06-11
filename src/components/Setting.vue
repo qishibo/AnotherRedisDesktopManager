@@ -191,12 +191,7 @@ export default {
       this.$bus.$emit('update-check', true);
     },
     bindGetAllFonts() {
-      ipcRenderer.on('send-all-fonts', (event, arg) => {
-        const fonts = arg.map((line) => {
-          return line.family;
-        });
-
-        fonts.sort();
+      ipcRenderer.on('send-all-fonts', (event, fonts) => {
         fonts.unshift('Default Initial');
 
         this.allFonts = [...new Set(fonts)];

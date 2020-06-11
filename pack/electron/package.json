@@ -7,7 +7,7 @@
   "main": "electron-main.js",
   "dependencies": {
     "electron-updater": "^4.0.6",
-    "font-manager": "^0.3.0"
+    "font-list": "^1.2.11"
   },
   "repository": "github:qishibo/AnotherRedisDesktopManager",
   "build": {

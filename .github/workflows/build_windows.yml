@@ -21,6 +21,6 @@ jobs:
         node-version: ${{ matrix.node-version }}
     - run: npm ci
     - run: npm run pack:prepare
-    - run: npm run pack:win
+    - run: npm run pack:win:publish
       env:
         GH_TOKEN: ${{secrets.GH_TOKEN}}
