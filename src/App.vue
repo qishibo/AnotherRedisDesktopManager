@@ -149,6 +149,12 @@ button, input, textarea, .vjs__tree {
   font-family: inherit !important;
 }
 
+
+/*fix el-select bottom scroll bar*/
+.el-scrollbar__wrap {
+  overflow-x: hidden;
+}
+
 ::-webkit-scrollbar {
   width: 9px;
 }

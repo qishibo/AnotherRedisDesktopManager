@@ -1,5 +1,6 @@
 import Redis from 'ioredis';
 import tunnelssh from 'tunnel-ssh';
+const fs = require('fs');
 
 // fix ioredis hgetall key has been toString()
 Redis.Command.setReplyTransformer("hgetall", (result) => {
@@ -19,6 +20,7 @@ export default {
       enableReadyCheck: false,
       connectionName: config.connectionName ? config.connectionName : null,
       password: auth,
+      tls: config.sslOptions ? this.getTLSOptions(config.sslOptions) : undefined,
     };
 
     const clusterOptions = {
@@ -41,6 +43,7 @@ export default {
       enableReadyCheck: false,
       connectionName: config.connectionName ? config.connectionName : null,
       password: auth,
+      tls: config.sslOptions ? this.getTLSOptions(config.sslOptions) : undefined,
     };
 
     const clusterOptions = {
@@ -60,7 +63,7 @@ export default {
       localHost: '127.0.0.1',
       localPort: null,
       privateKey: sshOptions.privatekey ?
-                  require('fs').readFileSync(sshOptions.privatekey) : '',
+                  fs.readFileSync(sshOptions.privatekey) : '',
     };
 
     const sshPromise = new Promise((resolve, reject) => {
@@ -84,6 +87,20 @@ export default {
     });
 
     return sshPromise;
+  },
+
+  getTLSOptions(options) {
+    return {
+      ca: options.ca ? fs.readFileSync(options.ca) : '',
+      key: options.key ? fs.readFileSync(options.key) : '',
+      cert: options.cert ? fs.readFileSync(options.cert) : '',
+
+      checkServerIdentity: (servername, cert) => {
+        // skip certificate hostname validation
+        return undefined;
+      },
+      rejectUnauthorized: false,
+    }
   },
 
   retryStragety(times, connection) {
