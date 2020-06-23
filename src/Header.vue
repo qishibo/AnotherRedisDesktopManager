@@ -29,6 +29,7 @@ export default {
         { value: 'en', label: 'English' },
         { value: 'cn', label: '简体中文' },
         { value: 'tw', label: '繁體中文' },
+        { value: 'tr', label: 'Türkçe' },
       ],
       settingDialog: { visible: false },
     };
