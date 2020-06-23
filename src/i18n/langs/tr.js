@@ -33,7 +33,7 @@ const tr = {
       confirm_to_delete_key: '{key} Anahtarı Silinsin mi?',
       edit_line: 'Satırı Düzenle',
       auto_refresh: 'Otomatik Yenile',
-      auto_refresh_tip: 'Auto Refresh Switch, Refresh Every {interval} Seconds',
+      auto_refresh_tip: 'Otomatik Yenileme, Her {interval} Saniyede Itomatik Yenile',
       key_not_exists: 'Anahtar Mevcut Değil',
       collapse_all: 'Hepsini Daralt',
       expand_all: 'Hepsini Genişlet',
