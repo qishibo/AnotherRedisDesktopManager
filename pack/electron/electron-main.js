@@ -64,11 +64,12 @@ app.on('ready', createWindow);
 
 // Quit when all windows are closed.
 app.on('window-all-closed', () => {
+  app.quit();
   // On macOS it is common for applications and their menu bar
   // to stay active until the user quits explicitly with Cmd + Q
-  if (process.platform !== 'darwin') {
-    app.quit();
-  }
+  // if (process.platform !== 'darwin') {
+  //   app.quit();
+  // }
 });
 
 app.on('activate', () => {
@@ -80,26 +81,59 @@ app.on('activate', () => {
 });
 
 // for mac copy paset shortcut
-if ((process.platform === 'darwin') && (APP_ENV === 'production')) {
-  const template = [{
-    label: 'Edit',
-    submenu: [
-      { label: 'Undo', accelerator: 'CmdOrCtrl+Z', selector: 'undo:' },
-      { label: 'Redo', accelerator: 'Shift+CmdOrCtrl+Z', selector: 'redo:' },
-      { type: 'separator' },
-      { label: 'Cut', accelerator: 'CmdOrCtrl+X', selector: 'cut:' },
-      { label: 'Copy', accelerator: 'CmdOrCtrl+C', selector: 'copy:' },
-      { label: 'Paste', accelerator: 'CmdOrCtrl+V', selector: 'paste:' },
-      { label: 'Select All', accelerator: 'CmdOrCtrl+A', selector: 'selectAll:' },
-      {
-        label: 'Quit',
-        accelerator: 'CmdOrCtrl+Q',
-        click () {
-          app.quit();
+if (process.platform === 'darwin') {
+  const template = [
+    // { role: 'appMenu' },
+    {
+      label: app.name,
+      submenu: [
+        { role: 'about' },
+        { type: 'separator' },
+        { role: 'services' },
+        { type: 'separator' },
+        { role: 'hide' },
+        { role: 'hideothers' },
+        { role: 'unhide' },
+        { type: 'separator' },
+        { role: 'quit' }
+      ]
+    },
+    { role: 'editMenu' },
+    // { role: 'viewMenu' },
+    {
+      label: 'View',
+      submenu: [
+        ...(
+          (APP_ENV === 'production') ? [] : [{ role: 'toggledevtools' }]
+        ),
+        { role: 'togglefullscreen' }
+      ]
+    },
+    // { role: 'windowMenu' },
+    {
+      role: 'window',
+      submenu: [
+        { role: 'minimize' },
+        { role: 'zoom' },
+        { type: 'separator' },
+        { role: 'front' },
+        { type: 'separator' },
+        // { role: 'window' }
+      ]
+    },
+    {
+      role: 'help',
+      submenu: [
+        {
+          label: 'Learn More',
+          click: async () => {
+            const { shell } = require('electron')
+            await shell.openExternal('https://github.com/qishibo/AnotherRedisDesktopManager')
+          }
         }
-      }
-    ]
-  }];
+      ]
+    }
+  ];
 
   menu = Menu.buildFromTemplate(template);
   Menu.setApplicationMenu(menu);

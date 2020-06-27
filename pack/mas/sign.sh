@@ -18,7 +18,7 @@ LOGINHELPER_PLIST="loginhelper.plist"
 FRAMEWORKS_PATH="$APP_PATH/Contents/Frameworks"
 
 # sign font-list binary
-codesign -s "$APP_KEY" --deep --force --verify --verbose=4 --timestamp --options runtime --entitlements "$CHILD_PLIST" "$APP_PATH/Contents/Resources/app.asar.unpacked/node_modules/font-list/libs/darwin/fontlist"
+codesign --deep --force --verify --verbose=4 --timestamp --options runtime --entitlements "$CHILD_PLIST" -s "$APP_KEY" "$APP_PATH/Contents/Resources/app.asar.unpacked/node_modules/font-list/libs/darwin/fontlist"
 
 codesign -s "$APP_KEY" -f --entitlements "$CHILD_PLIST" "$FRAMEWORKS_PATH/Electron Framework.framework/Versions/A/Electron Framework"
 codesign -s "$APP_KEY" -f --entitlements "$CHILD_PLIST" "$FRAMEWORKS_PATH/Electron Framework.framework/Versions/A/Libraries/libffmpeg.dylib"
