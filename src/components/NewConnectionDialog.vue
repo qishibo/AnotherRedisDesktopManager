@@ -1,7 +1,7 @@
 <template>
   <el-dialog :title="dialogTitle" :visible.sync="dialogVisible" :append-to-body='true'>
     <!-- redis connection form -->
-    <el-form :label-position="labelPosition" label-width="80px">
+    <el-form :label-position="labelPosition" label-width="90px">
       <el-form-item label="Host">
         <el-input v-model="connection.host" autocomplete="off" placeholder="127.0.0.1"></el-input>
       </el-form-item>
@@ -29,7 +29,7 @@
       </el-form-item>
 
       <!-- ssh connection form -->
-      <el-form v-if="sshOptionsShow" v-show="sshOptionsShow" label-width="80px">
+      <el-form v-if="sshOptionsShow" v-show="sshOptionsShow" label-width="90px">
         <el-form-item label="Host">
           <el-input v-model="connection.sshOptions.host" autocomplete="off"></el-input>
         </el-form-item>
@@ -55,12 +55,12 @@
       </el-form>
 
       <!-- SSL connection form -->
-      <el-form v-if="sslOptionsShow" v-show="sslOptionsShow" label-width="80px">
-        <el-form-item label="Private Key">
+      <el-form v-if="sslOptionsShow" v-show="sslOptionsShow" label-width="90px">
+        <el-form-item label="PrivateKey">
           <FileInput :file.sync='connection.sslOptions.key' placeholder='SSL Private Key Pem (key)'></FileInput>
         </el-form-item>
 
-        <el-form-item label="Public Key">
+        <el-form-item label="PublicKey">
           <FileInput :file.sync='connection.sslOptions.cert' placeholder='SSL Public Key Pem (cert)'></FileInput>
         </el-form-item>
 

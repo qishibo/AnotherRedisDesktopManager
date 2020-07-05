@@ -50,7 +50,7 @@
     "copy-webpack-plugin": "^4.0.1",
     "cross-env": "^5.2.0",
     "css-loader": "^0.28.0",
-    "electron": "^9.0.4",
+    "electron": "^8.2.0",
     "electron-builder": "^21.2.0",
     "element-theme": "^2.0.1",
     "element-theme-chalk": "^2.13.0",
