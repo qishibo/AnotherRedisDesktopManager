@@ -143,9 +143,9 @@ npm run pack:linux
 - Give me a star ⭐!
 - Through [OpenCollective](https://opencollective.com/AnotherRedisDesktopManager)
 - Through [Paypal](https://www.paypal.me/qii404)
-<!-- - If you are a Mac user, you can purchase this software from the [app store](https://apps.apple.com/app/id1516451072) to sponsor, and then let the app store automatically update it for you.
+- If you are a Mac user, you can purchase this software from the [app store](https://apps.apple.com/app/id1516451072) to sponsor, and then let the app store automatically update it for you.
 
-  [![app store](https://imgup.qii404.xyz/github/download_from_app_store.png)](https://apps.apple.com/app/id1516451072) -->
+  [![app store](https://imgup.qii404.xyz/github/download_from_app_store.png)](https://apps.apple.com/app/id1516451072)
 - Wechat sponsor code
 
   <img width="150px" src="https://imgup.qii404.xyz/github/wechat_sponsor_code.jpg" />
@@ -155,6 +155,8 @@ npm run pack:linux
 
 This project exists thanks to all the people who contribute.
 [![contributors](https://opencollective.com/AnotherRedisDesktopManager/contributors.svg?width=890&button=false)](https://github.com/qishibo/AnotherRedisDesktopManager/graphs/contributors)
+[![backers](https://opencollective.com/AnotherRedisDesktopManager/backers.svg)](https://opencollective.com/AnotherRedisDesktopManager)
+
 
 
 ## License
