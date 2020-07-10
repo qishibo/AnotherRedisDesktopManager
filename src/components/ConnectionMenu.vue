@@ -21,7 +21,7 @@
       placement='bottom-start'
       :show-timeout=100
       :hide-timeout=300>
-      <i class="connection-right-icon el-icon-menu"></i>
+      <i class="connection-right-icon el-icon-menu" @click.stop></i>
       <el-dropdown-menu slot="dropdown">
         <el-dropdown-item @click.native='showEditConnection'>
           <i class='el-icon-edit-outline'> {{ $t('message.edit_connection') }}</i>
