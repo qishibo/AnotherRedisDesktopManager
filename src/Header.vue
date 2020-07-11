@@ -30,6 +30,7 @@ export default {
         { value: 'cn', label: '简体中文' },
         { value: 'tw', label: '繁體中文' },
         { value: 'tr', label: 'Türkçe' },
+        { value: 'ru', label: 'Русский' },
       ],
       settingDialog: { visible: false },
     };
