@@ -23,6 +23,9 @@
       :hide-timeout=300>
       <i class="connection-right-icon el-icon-menu" @click.stop></i>
       <el-dropdown-menu slot="dropdown">
+        <el-dropdown-item @click.native='closeConnection'>
+          <i class='el-icon-close'> {{ $t('message.close_connection') }}</i>
+        </el-dropdown-item>
         <el-dropdown-item @click.native='showEditConnection'>
           <i class='el-icon-edit-outline'> {{ $t('message.edit_connection') }}</i>
         </el-dropdown-item>
@@ -31,9 +34,6 @@
         </el-dropdown-item>
         <el-dropdown-item @click.native='flushDB'>
           <i class='fa fa-bomb'> {{ $t('message.flushdb') }}</i>
-        </el-dropdown-item>
-        <el-dropdown-item @click.native='closeConnection'>
-          <i class='fa fa-close'> {{ $t('message.close_connection') }}</i>
         </el-dropdown-item>
       </el-dropdown-menu>
     </el-dropdown>
