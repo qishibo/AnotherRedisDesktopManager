@@ -5,7 +5,7 @@ const en = {
     edit_connection: 'Edit Connection',
     del_connection: 'Delete Connection',
     add_new_line: 'Add New Line',
-    redis_version: 'Redis Verson',
+    redis_version: 'Redis Version',
     process_id: 'Process ID',
     used_memory: 'Used Memory',
     used_memory_peak: 'Used Memory Peak',
