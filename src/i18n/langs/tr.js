@@ -4,6 +4,7 @@ const tr = {
       refresh_connection: 'Yenile',
       edit_connection: 'Bağlantıyı Düzenle',
       del_connection: 'Bağlantıyı Sil',
+      close_connection: 'Bağlantıyı Kapatmayı',
       add_new_line: 'Yeni Satır Ekle',
       redis_version: 'Redis Sürümü',
       process_id: 'Süreç Kimliği',
@@ -44,6 +45,7 @@ const tr = {
       confirm_to_delete_connection: 'Bağlantıyı Silmeyi Onayla ?',
       connection_exists: 'Bağlantı Yapılandırması Zaten Var',
       close_to_edit_connection: 'Düzenlemeden Önce Bağlantıyı Kapatmalısınız',
+      close_to_connection: 'Bağlantıyı Kapatmayı Onayla ?',
       ttl_delete: 'TTL Ayarı <= 0 Olanlar Anahtar Doğrudan Silecek',
       max_page_reached: 'Maks. Sayfaya Ulaşıldı',
       add_new_key: 'Yeni Anahtar',
@@ -98,6 +100,5 @@ const tr = {
       scan_disabled: 'Tarama komutu yürütme istisnası (devre dışı bırakılmış olabilir), anahtar listesi görüntülenemiyor',
     },
   };
-  
+
   export default tr;
-  

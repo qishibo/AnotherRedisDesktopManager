@@ -32,6 +32,9 @@
         <el-dropdown-item @click.native='flushDB'>
           <i class='fa fa-bomb'> {{ $t('message.flushdb') }}</i>
         </el-dropdown-item>
+        <el-dropdown-item @click.native='closeConnection'>
+          <i class='fa fa-close'> {{ $t('message.close_connection') }}</i>
+        </el-dropdown-item>
       </el-dropdown-menu>
     </el-dropdown>
   </div>
@@ -68,6 +71,14 @@ export default {
       ).then(() => {
         this.$bus.$emit('closeConnection');
         this.$refs.editConnectionDialog.dialogVisible = true;
+      }).catch(() => {});
+    },
+    closeConnection() {
+      this.$confirm(
+        this.$t('message.close_to_connection'),
+        { type: 'warning' },
+      ).then(() => {
+        this.$bus.$emit('closeConnection');
       }).catch(() => {});
     },
     editConnectionFinished() {
