@@ -49,6 +49,9 @@ export default {
     this.$bus.$on('reloadSettings', () => {
       this.reloadSettings();
     });
+
+    // restore side bar width
+    this.restoreSideBarWidth();
   },
   components: {Header, Aside, Tabs, ScrollToTop, UpdateCheck},
   methods: {
@@ -70,6 +73,9 @@ export default {
       {
         document.documentElement.removeEventListener('mousemove', mousemove);
         document.documentElement.removeEventListener('mouseup', mouseup);
+
+        // store side bar with
+        localStorage.sideWidth = that.sideWidth;
       }
 
       dragPointer.addEventListener('mousedown', (e) => {
@@ -78,6 +84,10 @@ export default {
         document.documentElement.addEventListener('mousemove', mousemove);
         document.documentElement.addEventListener('mouseup', mouseup);
       });
+    },
+    restoreSideBarWidth() {
+      let sideWidth = localStorage.sideWidth;
+      sideWidth && (this.sideWidth = sideWidth);
     },
     openHrefInBrowser() {
       const shell = require('electron').shell;
