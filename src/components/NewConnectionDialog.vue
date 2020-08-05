@@ -1,5 +1,5 @@
 <template>
-  <el-dialog :title="dialogTitle" :visible.sync="dialogVisible" :append-to-body='true'>
+  <el-dialog :title="dialogTitle" :visible.sync="dialogVisible" :append-to-body='true' :close-on-click-modal='false'>
     <!-- redis connection form -->
     <el-form :label-position="labelPosition" label-width="90px">
       <el-form-item label="Host">

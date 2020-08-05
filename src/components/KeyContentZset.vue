@@ -9,7 +9,7 @@
       </el-form>
 
       <!-- edit & add dialog -->
-      <el-dialog :title="dialogTitle" :visible.sync="editDialog">
+      <el-dialog :title="dialogTitle" :visible.sync="editDialog" :close-on-click-modal='false'>
         <el-form>
           <el-form-item label="Member">
             <span v-if='editLineItem.binaryM' class='content-binary'>Hex</span>
