@@ -31,6 +31,7 @@ export default {
         { value: 'tw', label: '繁體中文' },
         { value: 'tr', label: 'Türkçe' },
         { value: 'ru', label: 'Русский' },
+        { value: 'pt', label: 'Português' }
       ],
       settingDialog: { visible: false },
     };
