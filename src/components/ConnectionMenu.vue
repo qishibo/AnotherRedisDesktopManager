@@ -24,16 +24,16 @@
       <i class="connection-right-icon el-icon-menu" @click.stop></i>
       <el-dropdown-menu slot="dropdown">
         <el-dropdown-item @click.native='closeConnection'>
-          <i class='el-icon-close'> {{ $t('message.close_connection') }}</i>
+          <span><i class='el-icon-close'></i>&nbsp;{{ $t('message.close_connection') }}</span>
         </el-dropdown-item>
         <el-dropdown-item @click.native='showEditConnection'>
-          <i class='el-icon-edit-outline'> {{ $t('message.edit_connection') }}</i>
+          <span><i class='el-icon-edit-outline'></i>&nbsp;{{ $t('message.edit_connection') }}</span>
         </el-dropdown-item>
         <el-dropdown-item @click.native='deleteConnection'>
-          <i class='el-icon-delete'> {{ $t('message.del_connection') }}</i>
+          <span><i class='el-icon-delete'></i>&nbsp;{{ $t('message.del_connection') }}</span>
         </el-dropdown-item>
         <el-dropdown-item @click.native='flushDB'>
-          <i class='fa fa-bomb'> {{ $t('message.flushdb') }}</i>
+          <span><i class='fa fa-bomb'></i>&nbsp;{{ $t('message.flushdb') }}</span>
         </el-dropdown-item>
       </el-dropdown-menu>
     </el-dropdown>
