@@ -98,6 +98,7 @@ const pt = {
     info_disabled: 'Exceção de execução do comando de informação (pode ter sido desativado), as informações do redis não podem ser exibidas',
     page_zoom: 'Zoom da página',
     scan_disabled: 'Exceção de execução do comando de scan (pode ter sido desativada), a lista de chaves não pode ser exibida',
+    key_type_not_support: 'Visual display não é suportado para este tipo. Por favor, use console',
   },
 };
 

@@ -54,10 +54,17 @@ export default {
         list  : 'KeyContentList',
       };
 
-      return map[keyType];
+      if (map[keyType]) {
+        return map[keyType];
+      }
+      // type not support, such as bf
+      else {
+        this.$message.error(this.$t('message.key_type_not_support'));
+        return '';
+      }
     },
     refreshContent() {
-      this.$refs.keyContent.initShow();
+      this.$refs.keyContent && this.$refs.keyContent.initShow();
     },
   },
 };

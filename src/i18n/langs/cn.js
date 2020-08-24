@@ -98,6 +98,7 @@ const cn = {
     info_disabled: 'Info命令执行异常（可能已被禁用），无法显示Redis信息',
     page_zoom: '页面缩放',
     scan_disabled: 'Scan命令执行异常（可能已被禁用），无法显示Key列表',
+    key_type_not_support: '该类型暂不支持可视化展示，请使用命令行进行操作',
   },
 };
 
