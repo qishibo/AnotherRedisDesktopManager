@@ -30,6 +30,8 @@ export default {
       try {
         // solve big int in json
         let jsonSolved = this.content.replace(/([\[:])?([\d\.]{15,})([,\}\]])/g, "$1\"$2\"$3");
+        // convert double and other numeric values ​​to strings
+        jsonSolved = jsonSolved.replace(/([\[:])?(\d+\.\d+[L,F,D])([,\}\]])/g, "$1\"$2\"$3");
         return JSON.parse(jsonSolved);
       } catch (e) {
         return this.$t('message.json_format_failed');
