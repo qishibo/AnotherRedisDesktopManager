@@ -30,6 +30,8 @@ export default {
       try {
         // solve big int in json
         let jsonSolved = this.content.replace(/([\[:])?([\d\.]{15,})([,\}\]])/g, "$1\"$2\"$3");
+        // 处理double float long类型的值
+        jsonSolved = jsonSolved.replace(/([\[:])?(\d+\.?\d*[lfdLFD])([,\}\]])/g, "$1\"$2\"$3");
         return JSON.parse(jsonSolved);
       } catch (e) {
         return this.$t('message.json_format_failed');
