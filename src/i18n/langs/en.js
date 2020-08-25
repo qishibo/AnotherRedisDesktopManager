@@ -98,6 +98,7 @@ const en = {
     info_disabled: 'Info command execution exception(may have been disabled), redis info cannot be displayed',
     page_zoom: 'Page Zoom',
     scan_disabled: 'Scan command execution exception(may have been disabled), key list cannot be displayed',
+    key_type_not_support: 'Visual display is not supported for this type. Please use console',
   },
 };
 

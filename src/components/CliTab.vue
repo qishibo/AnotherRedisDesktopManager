@@ -42,8 +42,8 @@ export default {
       params: '',
       content: '',
       historyIndex: 0,
-      multiClient: null,
       inputSuggestionItems: [],
+      multiQueue: null,
     };
   },
   props: ['client'],
@@ -83,52 +83,66 @@ export default {
       this.appendToHistory(params);
 
       if (params == 'exit' || params == 'quit') {
-        this.$bus.$emit('removePreTab');
-        return;
+        return this.$bus.$emit('removePreTab');
       }
 
       if (params == 'clear') {
-        this.content = '';
-        return;
+        return this.content = '';
       }
 
       // multi-exec mode
-      if (params === 'multi') {
-        this.multiClient = this.client.multi();
-        this.content += "OK\n";
-
-        return this.scrollToBottom();
+      if (params == 'multi') {
+        this.multiQueue = [];
+        return this.scrollToBottom('OK');
       }
 
-      let promise = rawCommand.exec(this.multiClient ? this.multiClient : this.client, paramsArr);
+      // multi dequeue
+      if (params == 'exec') {
+        // exec when not multi condition
+        if (!Array.isArray(this.multiQueue)) {
+          return this.scrollToBottom('(error) ERR EXEC without MULTI');
+        }
+
+        this.client.multi(this.multiQueue).exec((err, reply) => {
+          if (err) {
+            this.content += `${err}\n`;
+          }
+          else {
+            this.content += this.resolveResult(reply);
+          }
+
+          this.scrollToBottom();
+        });
+
+        return this.multiQueue = null;
+      }
+
+      // multi enqueue
+      if (Array.isArray(this.multiQueue)) {
+        this.multiQueue.push(['call', paramsArr[0], ...paramsArr.slice(1)]);
+        return this.scrollToBottom('QUEUED');
+      }
+
+      // normal command
+      let promise = rawCommand.exec(this.client, paramsArr);
 
       // exec error
       if (typeof promise == 'string') {
         // fetal error in some cluster condition
         if (promise == rawCommand.message.catchError) {
-          this.multiClient = null;
+          this.multiQueue = null;
         }
 
-        this.content += `${promise}\n`;
-        return this.scrollToBottom();
+        return this.scrollToBottom(promise);
       }
 
-      if (this.multiClient && (params !== 'exec')) {
-        this.content += "QUEUED\n";
-        return this.scrollToBottom();
-      }
-
-      if (params === 'exec') {
-        this.multiClient = null;
-      }
-
+      // normal command promise
       promise.then((reply) => {
         this.content += this.resolveResult(reply);
         this.execFinished(paramsArr);
         this.scrollToBottom();
       }).catch((err) => {
-        this.content += `${err.message}\n`;
-        this.scrollToBottom();
+        this.scrollToBottom(err.message);
       });
     },
     execFinished(params) {
@@ -138,7 +152,9 @@ export default {
         this.$bus.$emit('changeDb', this.client, params[1]);
       }
     },
-    scrollToBottom() {
+    scrollToBottom(append = '') {
+      append && (this.content += `${append}\n`);
+
       this.$nextTick(() => {
         const textarea = this.$refs.cliContent.$el.firstChild;
         textarea.scrollTop = textarea.scrollHeight;
@@ -155,7 +171,6 @@ export default {
         items.push(params);
       }
 
-      this.inputSuggestionItems = items;
       this.historyIndex = items.length;
     },
     resolveResult(result) {
@@ -164,8 +179,8 @@ export default {
       if (result === null) {
         append = `${null}\n`;
       }
-      else if (typeof result === 'object') {
-        const isArray = !isNaN(result.length);
+      else if (typeof result === 'object' && !Buffer.isBuffer(result)) {
+        const isArray = Array.isArray(result);
 
         for (const i in result) {
           if (typeof result[i] === 'object' && result[i] !== null) {
