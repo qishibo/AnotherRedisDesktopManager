@@ -187,8 +187,8 @@ export default {
         });
       });
     },
-    resetKeyList() {
-      // this.keyList = [];
+    resetKeyList(clearKeys = false) {
+      clearKeys && (this.keyList = []);
       this.firstScanFinished = false;
       this.scanStreams = [];
       this.oneTimeListLength = 0;
