@@ -54,19 +54,16 @@ export default {
       this.$refs.keyList.initShow();
     },
     openConnection(callback = false) {
-      const client = this.getRedisClient(this.config);
-
-      // ssh tunnel promise client
-      if (typeof client.then === 'function') {
-        client.then((realClient) => {
-          this.afterOpenConnection(realClient, callback);
-        });
+      if (this.client) {
+        return this.afterOpenConnection(this.client, callback);
       }
 
-      // normal client
-      else {
-        this.afterOpenConnection(client, callback);
-      }
+      // create a new client
+      const clientPromise = this.getRedisClient(this.config);
+
+      clientPromise.then((realClient) => {
+        this.afterOpenConnection(realClient, callback);
+      }).catch(e => {});
     },
     afterOpenConnection(client, callback = false) {
       // new connection, not ready
@@ -88,7 +85,7 @@ export default {
     },
     closeConnection(connectionName) {
       // if connectionName is not passed, close all connections
-      if (connectionName && connectionName != this.config.connectionName) {
+      if (connectionName && (connectionName != this.config.connectionName)) {
         return;
       }
 
@@ -98,54 +95,41 @@ export default {
 
       // reset operateItem items
       this.$refs.operateItem && this.$refs.operateItem.resetStatus();
+      // reset keyList items
+      this.$refs.keyList && this.$refs.keyList.resetKeyList(true);
 
       this.client && this.client.quit && this.client.quit();
       this.client = null;
     },
     getRedisClient(config) {
-      let client = this.client;
-
-      if (client) {
-        return client;
-      }
-
-      // ssh tunnel
+      // ssh client
       if (config.sshOptions) {
-        let sshPromise = redisClient.createSSHConnection(
+        var clientPromise = redisClient.createSSHConnection(
           config.sshOptions, config.host, config.port, config.auth, config);
-
-        sshPromise.then((client) => {
-          client.on('error', (err) => {
-            this.$message.error({
-              message: 'SSH Redis Client On Error: ' + err,
-              duration: 2500,
-            });
-
-            this.$bus.$emit('closeConnection');
-          });
-
-          this.client = client;
-        });
-
-        return sshPromise;
       }
-
       // normal client
       else {
-        client = redisClient.createConnection(
+        var clientPromise = redisClient.createConnection(
           config.host, config.port, config.auth, config);
+      }
 
-        client.on('error', (err) => {
+      clientPromise.then((client) => {
+        this.client = client;
+
+        client.on('error', (error) => {
           this.$message.error({
-            message: 'Redis Client On Error: ' + err,
-            duration: 2500,
+            message: 'Redis Client On Error: ' + error + ' Config right?',
+            duration: 3000,
           });
 
           this.$bus.$emit('closeConnection');
         });
+      }).catch(error => {
+        this.$message.error(error.message);
+        this.$bus.$emit('closeConnection');
+      });
 
-        return this.client = client;
-      }
+      return clientPromise;
     },
   },
 }

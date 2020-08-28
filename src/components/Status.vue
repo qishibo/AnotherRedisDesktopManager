@@ -230,7 +230,7 @@ export default {
         this.connectionStatus = this.initStatus(reply);
       }).catch((e) => {
         // info command may be disabled
-        if (e.message == "ERR unknown command 'info'") {
+        if (e.message.includes("ERR unknown command")) {
           this.$message.error({
             message: this.$t('message.info_disabled'),
             duration: 3000,
