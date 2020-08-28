@@ -200,7 +200,8 @@ export default {
     const maxRetryTimes = 3;
 
     if (times >= maxRetryTimes) {
-      alert(`${connection.host}:${connection.port}\nToo Many Attempts To Reconnect. Please Check The Server Status!`);
+      vue.$message.error("Too Many Attempts To Reconnect. Please Check The Server Status!");
+      vue.$bus.$emit('closeConnection');
       return false;
     }
 
