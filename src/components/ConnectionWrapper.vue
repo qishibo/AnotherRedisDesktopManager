@@ -63,7 +63,7 @@ export default {
 
       clientPromise.then((realClient) => {
         this.afterOpenConnection(realClient, callback);
-      });
+      }).catch(e => {});
     },
     afterOpenConnection(client, callback = false) {
       // new connection, not ready
@@ -118,12 +118,15 @@ export default {
 
         client.on('error', (error) => {
           this.$message.error({
-            message: 'Redis Client On Error: ' + error,
-            duration: 2500,
+            message: 'Redis Client On Error: ' + error + ' Config right?',
+            duration: 3000,
           });
 
           this.$bus.$emit('closeConnection');
         });
+      }).catch(error => {
+        this.$message.error(error.message);
+        this.$bus.$emit('closeConnection');
       });
 
       return clientPromise;

@@ -1,6 +1,8 @@
 import Redis from 'ioredis';
 import tunnelssh from 'tunnel-ssh';
+import vue from '@/main.js';
 const fs = require('fs');
+
 
 export default {
   createConnection(host, port, auth, config, promise = true) {
@@ -44,15 +46,22 @@ export default {
 
     const sshPromise = new Promise((resolve, reject) => {
       var server = tunnelssh(sshConfig, (error, server) => {
+        // ssh error only on this, not the 'error' argument...
+        server.on('error', error => {
+          vue.$message.error(error.message + ' SSH config right?');
+          vue.$bus.$emit('closeConnection');
+          // return reject(error);
+        });
+
         if (error) {
           return reject(error);
         }
-        
+
         const listenAddress = server.address();
 
         // ssh standalone redis
         if (!config.cluster) {
-          let client = this.createConnection(listenAddress.address, listenAddress.port, auth, config);
+          let client = this.createConnection(listenAddress.address, listenAddress.port, auth, config, false);
           return resolve(client);
         }
 
@@ -79,7 +88,7 @@ export default {
 
               // select first line of tunnels to connect
               const clusterClient = this.createConnection(tunnels[0].localHost, tunnels[0].localPort, auth, configRaw, false);
-              
+
               resolve(clusterClient);
             });
           })
@@ -162,7 +171,7 @@ export default {
 
     return Promise.all(sshTunnelStack);
   },
-  
+
   initNatMap(tunnels) {
     let natMap = {};
 
