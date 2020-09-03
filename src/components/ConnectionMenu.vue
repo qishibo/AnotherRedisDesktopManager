@@ -70,7 +70,7 @@ export default {
         { type: 'warning' },
       ).then(() => {
         this.$bus.$emit('closeConnection');
-        this.$refs.editConnectionDialog.dialogVisible = true;
+        this.$refs.editConnectionDialog.show();
       }).catch(() => {});
     },
     closeConnection() {
