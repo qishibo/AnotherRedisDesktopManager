@@ -3,6 +3,7 @@
     :value='file'
     clearable
     @clear='clearFile'
+    @change="changeValue"
     :placeholder='placeholder'>
     <template slot="append">
       <el-button @click='showFileSelector'>...</el-button>
@@ -24,6 +25,9 @@
         this.$refs.fileDom.value = '';
         this.$emit('update:file', '');
       },
+      changeValue(value) {
+        this.$emit('update:file', value);
+      },
       changeFile(e) {
         if (!e.target.files[0]) {
           return;
@@ -33,6 +37,6 @@
       showFileSelector() {
         this.$refs.fileDom.click();
       }
-    }
+    },
   }
 </script>
