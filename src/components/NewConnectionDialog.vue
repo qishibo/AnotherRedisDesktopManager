@@ -106,6 +106,8 @@ export default {
           ca: '',
         }
       },
+      connectionRaw: {},
+      connectionEmpty: {},
       sshOptionsShow: false,
       sslOptionsShow: false,
     }
@@ -119,6 +121,26 @@ export default {
     },
   },
   methods: {
+    show() {
+      this.dialogVisible = true;
+      this.resetFields();
+    },
+    resetFields() {
+      // edit connection mode
+      if (this.editMode) {
+        this.sshOptionsShow = !!this.connectionRaw.sshOptions
+        this.sslOptionsShow = !!this.connectionRaw.sslOptions
+        // recovery connection before edit
+        let connection = Object.assign({}, this.connectionEmpty, this.connectionRaw);
+        this.connection = JSON.parse(JSON.stringify(connection));
+      }
+      // new connection mode
+      else {
+        this.sshOptionsShow = false;
+        this.sslOptionsShow = false;
+        this.connection = JSON.parse(JSON.stringify(this.connectionEmpty));
+      }
+    },
     editConnection() {
       const config = JSON.parse(JSON.stringify(this.connection));
 
@@ -133,6 +155,8 @@ export default {
         delete config.sslOptions;
       }
 
+      // config as new connectionRaw
+      this.connectionRaw = config;
       storage.editConnectionByKey(config, this.oldKey);
 
       this.dialogVisible = false;
@@ -140,7 +164,14 @@ export default {
     },
   },
   mounted() {
+    // back up the empty connection
+    this.connectionEmpty = JSON.parse(JSON.stringify(this.connection));
+
+    // edit mode
     if (this.editMode) {
+      // back up the raw connection for edit mode
+      this.connectionRaw = JSON.parse(JSON.stringify(this.config));
+
       this.oldKey = storage.getConnectionKey(this.config);
       this.sslOptionsShow = !!this.config.sslOptions;
       this.sshOptionsShow = !!this.config.sshOptions;

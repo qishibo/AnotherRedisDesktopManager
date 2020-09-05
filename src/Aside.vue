@@ -34,7 +34,7 @@ export default {
       this.$refs.connections.initConnections();
     },
     addNewConnection() {
-      this.$refs.newConnectionDialog.dialogVisible = true;
+      this.$refs.newConnectionDialog.show();
     },
   },
 };
