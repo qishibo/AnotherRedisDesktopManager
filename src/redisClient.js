@@ -40,6 +40,7 @@ export default {
       localPort: null,
       privateKey: sshOptions.privatekey ?
                   fs.readFileSync(sshOptions.privatekey) : '',
+      passphrase: sshOptions.passphrase
     };
 
     const sshConfigRaw = JSON.parse(JSON.stringify(sshConfig));

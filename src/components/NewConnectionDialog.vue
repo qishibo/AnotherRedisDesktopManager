@@ -52,6 +52,10 @@
             <FileInput :file.sync='connection.sshOptions.privatekey' placeholder='SSH Private Key'></FileInput>
           </el-tooltip>
         </el-form-item>
+
+        <el-form-item label="Passphrase">
+          <el-input v-model="connection.sshOptions.passphrase" type='password' autocomplete="off"></el-input>
+        </el-form-item>
       </el-form>
 
       <!-- SSL connection form -->
