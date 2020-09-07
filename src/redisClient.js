@@ -132,9 +132,13 @@ export default {
       node = node.trim().split(' ');
 
       if (node[2].includes(type)) {
-        let dsn = node[1];
-        dsn = dsn.split('@')[0].split(':');
-        result.push({host: dsn[0], port: dsn[1]})
+        let dsn = node[1].split('@')[0];
+        let lastIndex = dsn.lastIndexOf(':');
+
+        let host = dsn.substr(0, lastIndex);
+        let port = dsn.substr(lastIndex + 1);
+
+        result.push({host: host, port: port})
       }
     }
 
