@@ -160,7 +160,7 @@ export default {
 
           // scan command disabled, other functions may be used normally
           if (
-            e.message == "ERR unknown command 'scan'" ||
+            (e.message.includes('unknown command') && e.message.includes('scan')) ||
             e.message.includes("command 'SCAN' is not allowed")
           ) {
             this.$message.error({
