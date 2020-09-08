@@ -135,10 +135,14 @@ npm run electron
 npm run pack:prepare
 
 # build package on respective platforms
-# on windows
+# on windows build 64bit package
 npm run pack:win
+# on windows build 32bit package
+npm run pack:win32
+
 # on mac
 npm run pack:mac
+
 # on linux
 npm run pack:linux
 ```

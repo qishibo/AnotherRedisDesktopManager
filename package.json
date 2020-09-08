@@ -14,6 +14,7 @@
     "asar": "node_modules/.bin/asar pack dist dist/app.asar --unpack-dir \"{app.asar,build-apps,app.asar.unpacked}\"",
     "pack:prepare": "npm run build && cp -r pack/electron/* dist/",
     "pack:win": "node_modules/.bin/electron-builder --project=dist -w -p never",
+    "pack:win32": "node_modules/.bin/electron-builder --project=dist -w --ia32 -p never",
     "pack:mac": "node_modules/.bin/electron-builder --project=dist -m -p never",
     "pack:linux": "node_modules/.bin/electron-builder --project=dist -l -p never",
     "pack:win:publish": "node_modules/.bin/electron-builder --project=dist -w -p always",
