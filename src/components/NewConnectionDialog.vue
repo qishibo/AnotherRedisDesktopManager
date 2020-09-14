@@ -103,6 +103,7 @@ export default {
           username: '',
           password: '',
           privatekey: '',
+          passphrase: '',
         },
         sslOptions: {
           key: '',
