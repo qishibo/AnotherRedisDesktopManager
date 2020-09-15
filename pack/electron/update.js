@@ -11,11 +11,19 @@ const update = () => {
 
   ipcMain.on('update-check', (event, arg) => {
     mainEvent = event;
-    autoUpdater.checkForUpdates();
+    autoUpdater.checkForUpdates()
+      .then(() => {})
+      .catch(err => {
+        mainEvent.sender.send('update-error', err);
+      });
   });
 
   ipcMain.on('continue-update', (event, arg) => {
-    autoUpdater.downloadUpdate();
+    autoUpdater.downloadUpdate()
+      .then(() => {})
+      .catch(err => {
+        mainEvent.sender.send('update-error', err);
+      });
   });
 };
 
