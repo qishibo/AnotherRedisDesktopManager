@@ -75,7 +75,7 @@ Download latest [AppImage](https://github.com/qishibo/AnotherRedisDesktopManager
 
 ```bash
 # clone code
-git clone https://github.com/qishibo/AnotherRedisDesktopManager.git
+git clone https://github.com/qishibo/AnotherRedisDesktopManager.git --depth=1
 cd AnotherRedisDesktopManager
 
 # install dependencies
@@ -110,7 +110,7 @@ sudo apt install libfontconfig1-dev
 npm install -g windows-build-tools
 
 # clone code
-git clone https://github.com/qishibo/AnotherRedisDesktopManager.git
+git clone https://github.com/qishibo/AnotherRedisDesktopManager.git --depth=1
 cd AnotherRedisDesktopManager
 
 # install dependencies, 32-bit or 64-bit all use win32

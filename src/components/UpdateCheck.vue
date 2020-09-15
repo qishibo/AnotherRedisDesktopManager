@@ -45,6 +45,8 @@ export default {
           dangerouslyUseHTMLString: true,
           duration: 0
         }).then(() => {
+          // update btn clicked
+          this.manual = true;
           ipcRenderer.send('continue-update');
         }).catch(() => {
           this.resetDownloadProcess();
@@ -63,16 +65,25 @@ export default {
       });
 
       ipcRenderer.on('update-error', (event, arg) => {
-        // due to net problems
-        if (!arg.code) {
+        this.resetDownloadProcess();
+
+        let message = '';
+        let error = (arg.code ? arg.code : arg.message).toLowerCase();
+
+        // auto update check at app init
+        if (!this.manual || !error) {
           return;
         }
 
-        // this.$notify.closeAll();
-        this.resetDownloadProcess();
-        const message = (arg.code === 'ERR_UPDATER_ZIP_FILE_NOT_FOUND') ?
-          this.$t('message.mac_not_support_auto_update') :
-          (this.$t('message.update_error') + ': ' + arg.code);
+        // mac not support auto update
+        if (error.includes('zip') && error.includes('file')) {
+          message = this.$t('message.mac_not_support_auto_update');
+        }
+
+        // err_internet_disconnected err_name_not_resolved err_connection_refused
+        else {
+          message = this.$t('message.update_error') + `: ${error}`;
+        }
 
         this.$notify.error({
           title: message,
