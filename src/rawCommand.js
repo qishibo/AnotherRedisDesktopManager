@@ -12,15 +12,15 @@ export default {
 
     const operation = params[0] ? params[0].toLowerCase() : '';
 
-    if (!operation || typeof client[operation] != 'function') {
-      return this.message.unknownCommand;
-    }
-
-    try {
-      return client[operation](...params.slice(1));
-    }
-    catch (e) {
-      return this.message.catchError;
-    }
-  },
+    return new Promise((resolve, reject) => {
+      client.call(operation, params.slice(1), (err, reply) => {
+        if (err) {
+          reject(err);
+        }
+        else {
+          resolve(reply);
+        }
+      });
+    });
+  }
 };

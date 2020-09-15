@@ -46,10 +46,11 @@ export default {
         },
       ],
       scanStreams: [],
-      scanEndCount: 0,
+      scanningCount: 0,
       scanMoreDisabled: false,
-      oneTimeListLength: 0,
-      firstScanFinished: false,
+      onePageList: [],
+      onePageFinishedCount: 0,
+      firstPageFinished: false,
     };
   },
   props: ['client'],
@@ -104,8 +105,9 @@ export default {
 
       // scan more, resume previous scanStream
       else {
-        // reset one scan count
-        this.oneTimeListLength = 0;
+        // reset one page scan param
+        this.onePageList = [];
+        this.onePageFinishedCount = 0;
 
         for (var stream of this.scanStreams) {
           stream.resume();
@@ -115,7 +117,7 @@ export default {
     initScanStreamsAndScan() {
       // this.client.nodes: cluster
       let nodes = this.client.nodes ? this.client.nodes('master') : [this.client];
-      this.scanEndCount = nodes.length;
+      this.scanningCount = nodes.length;
 
       nodes.map(node => {
         let scanOption = {
@@ -130,22 +132,26 @@ export default {
         this.scanStreams.push(stream);
 
         stream.on('data', keys => {
-          // clear key list only after data scaned, to prevent list jitter
-          if (!this.firstScanFinished) {
-            this.firstScanFinished = true;
-            this.keyList = [];
-          }
-
-          this.oneTimeListLength += keys.length;
-          this.keyList = this.keyList.concat(keys.sort());
+          this.onePageList = this.onePageList.concat(keys);
 
           // scan once reaches page size
-          if (this.oneTimeListLength >= this.keysPageSize) {
+          if (this.onePageList.length >= this.keysPageSize) {
             // temp stop
             stream.pause();
-
             // search input icon recover
             this.$parent.$parent.$parent.$refs.operateItem.searchIcon = 'el-icon-search';
+
+            // last node refresh keylist
+            if (++this.onePageFinishedCount >= this.scanningCount) {
+              // clear key list only after data scaned, to prevent list jitter
+              if (!this.firstPageFinished) {
+                this.firstPageFinished = true;
+                this.keyList = [];
+              }
+
+              // this page key list append to raw key list
+              this.keyList = this.keyList.concat(this.onePageList.sort());
+            }
           }
         });
 
@@ -154,7 +160,7 @@ export default {
 
           // scan command disabled, other functions may be used normally
           if (
-            e.message == "ERR unknown command 'scan'" ||
+            (e.message.includes('unknown command') && e.message.includes('scan')) ||
             e.message.includes("command 'SCAN' is not allowed")
           ) {
             this.$message.error({
@@ -177,9 +183,17 @@ export default {
         });
 
         stream.on('end', () => {
-          // all nodes scan finished
-          if (--this.scanEndCount <= 0) {
-            // this.$refs.scanMoreBtn.disabled=true;
+          // all nodes scan finished(cusor back to 0)
+          if (--this.scanningCount <= 0) {
+            // clear key list only after data scaned, to prevent list jitter
+            if (!this.firstPageFinished) {
+              this.firstPageFinished = true;
+              this.keyList = [];
+            }
+
+            // this page key list append to raw key list
+            this.keyList = this.keyList.concat(this.onePageList.sort());
+
             this.scanMoreDisabled = true;
             // search input icon recover
             this.$parent.$parent.$parent.$refs.operateItem.searchIcon = 'el-icon-search';
@@ -187,11 +201,12 @@ export default {
         });
       });
     },
-    resetKeyList() {
-      // this.keyList = [];
-      this.firstScanFinished = false;
+    resetKeyList(clearKeys = false) {
+      clearKeys && (this.keyList = []);
+      this.firstPageFinished = false;
       this.scanStreams = [];
-      this.oneTimeListLength = 0;
+      this.onePageList = [];
+      this.onePageFinishedCount = 0;
       this.scanMoreDisabled = false;
     },
     refreshKeyListExact() {

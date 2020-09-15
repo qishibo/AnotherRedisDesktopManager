@@ -15,17 +15,17 @@
 
 ## Windows
 
-Download latest `exe` package from [release](https://github.com/qishibo/AnotherRedisDesktopManager/releases) [or [gitee](https://gitee.com/qishibo/AnotherRedisDesktopManager/releases) in China], double click to install.
+Download latest [exe](https://github.com/qishibo/AnotherRedisDesktopManager/releases) package from [release](https://github.com/qishibo/AnotherRedisDesktopManager/releases) [or [gitee](https://gitee.com/qishibo/AnotherRedisDesktopManager/releases) in China], double click to install.
 
 ## Linux
 
-Download latest `AppImage` package from [release](https://github.com/qishibo/AnotherRedisDesktopManager/releases) [or [gitee](https://gitee.com/qishibo/AnotherRedisDesktopManager/releases) in China], `chmod +x`, double click to run.
+Download latest [AppImage](https://github.com/qishibo/AnotherRedisDesktopManager/releases) package from [release](https://github.com/qishibo/AnotherRedisDesktopManager/releases) [or [gitee](https://gitee.com/qishibo/AnotherRedisDesktopManager/releases) in China], `chmod +x`, double click to run.
 
 ## Mac
 
-Download latest `dmg` package from [release](https://github.com/qishibo/AnotherRedisDesktopManager/releases) [or [gitee](https://gitee.com/qishibo/AnotherRedisDesktopManager/releases) in China], double click to install.
-<br/>Or by **brew**: `brew cask install another-redis-desktop-manager`
-<br/>Or **sponsor** by app store, It's not free, and I will be very grateful to you. 
+- Download latest [dmg](https://github.com/qishibo/AnotherRedisDesktopManager/releases) package from [release](https://github.com/qishibo/AnotherRedisDesktopManager/releases) [or [gitee](https://gitee.com/qishibo/AnotherRedisDesktopManager/releases) in China], double click to install.
+- Or by **brew**: `brew cask install another-redis-desktop-manager`
+- Or **sponsor** by app store, It's not free, and I will be very grateful to you.
 <br/>[![app store](https://imgup.qii404.xyz/github/download_from_app_store.png)](https://apps.apple.com/app/id1516451072)
 
 <!--
@@ -51,6 +51,7 @@ Download latest `dmg` package from [release](https://github.com/qishibo/AnotherR
 
 ## Feature Log
 
+- 2020-09-04: SSH Cluster Support && Extension Commands Support
 - 2020-06-18: SSL/TLS Support!!!
 - 2020-04-28: Page Zoom && Big Key Loads With Scan && Auto Json
 - 2020-04-18: Unvisible Key\Value Format Support
@@ -74,7 +75,7 @@ Download latest `dmg` package from [release](https://github.com/qishibo/AnotherR
 
 ```bash
 # clone code
-git clone https://github.com/qishibo/AnotherRedisDesktopManager.git
+git clone https://github.com/qishibo/AnotherRedisDesktopManager.git --depth=1
 cd AnotherRedisDesktopManager
 
 # install dependencies
@@ -109,7 +110,7 @@ sudo apt install libfontconfig1-dev
 npm install -g windows-build-tools
 
 # clone code
-git clone https://github.com/qishibo/AnotherRedisDesktopManager.git
+git clone https://github.com/qishibo/AnotherRedisDesktopManager.git --depth=1
 cd AnotherRedisDesktopManager
 
 # install dependencies, 32-bit or 64-bit all use win32
@@ -134,10 +135,14 @@ npm run electron
 npm run pack:prepare
 
 # build package on respective platforms
-# on windows
+# on windows build 64bit package
 npm run pack:win
+# on windows build 32bit package
+npm run pack:win32
+
 # on mac
 npm run pack:mac
+
 # on linux
 npm run pack:linux
 ```

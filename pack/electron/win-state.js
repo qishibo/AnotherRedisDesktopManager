@@ -5,7 +5,7 @@ const fs = require('fs');
 const winState = {
   // {x, y, width, height}
   getLastState() {
-    let data = false;
+    let data = '{}';
 
     try {
       data = fs.readFileSync(this.getStateFile());
@@ -37,10 +37,6 @@ const winState = {
         width: winBounds.width,
         height: winBounds.height,
       }
-
-      // minimum size limit
-      state.width < 200 && (state.width = 200);
-      state.height < 200 && (state.height = 200);
 
       return state;
     }

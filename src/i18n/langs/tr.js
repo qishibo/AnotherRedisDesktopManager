@@ -98,6 +98,7 @@ const tr = {
       info_disabled: 'Bilgi komutu yürütme istisnası (devre dışı bırakılmış olabilir), yeniden bilgi gösterilemiyor',
       page_zoom: 'Sayfa Yakınlaştırma',
       scan_disabled: 'Tarama komutu yürütme istisnası (devre dışı bırakılmış olabilir), anahtar listesi görüntülenemiyor',
+      key_type_not_support: 'Görsel görüntüler bu tür için desteklenmiyor. Lütfen konsole kullanın',
     },
   };
 

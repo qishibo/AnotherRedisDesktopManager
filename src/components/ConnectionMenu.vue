@@ -7,11 +7,11 @@
       @click.stop.prevent="openStatus">
     </i>
     <i :title="$t('message.redis_console')"
-      class="connection-right-icon fa fa-terminal"
+      class="connection-right-icon fa fa-terminal font-weight-bold"
       @click.stop.prevent="openCli">
     </i>
     <i :title="$t('message.refresh_connection')"
-      class='connection-right-icon el-icon-refresh'
+      class='connection-right-icon el-icon-refresh font-weight-bold'
       @click.stop.prevent="refreshConnection">
     </i>
 
@@ -24,16 +24,16 @@
       <i class="connection-right-icon el-icon-menu" @click.stop></i>
       <el-dropdown-menu slot="dropdown">
         <el-dropdown-item @click.native='closeConnection'>
-          <i class='el-icon-close'> {{ $t('message.close_connection') }}</i>
+          <span><i class='fa fa-power-off'></i>&nbsp;{{ $t('message.close_connection') }}</span>
         </el-dropdown-item>
         <el-dropdown-item @click.native='showEditConnection'>
-          <i class='el-icon-edit-outline'> {{ $t('message.edit_connection') }}</i>
+          <span><i class='el-icon-edit-outline'></i>&nbsp;{{ $t('message.edit_connection') }}</span>
         </el-dropdown-item>
         <el-dropdown-item @click.native='deleteConnection'>
-          <i class='el-icon-delete'> {{ $t('message.del_connection') }}</i>
+          <span><i class='el-icon-delete'></i>&nbsp;{{ $t('message.del_connection') }}</span>
         </el-dropdown-item>
-        <el-dropdown-item @click.native='flushDB'>
-          <i class='fa fa-bomb'> {{ $t('message.flushdb') }}</i>
+        <el-dropdown-item @click.native='flushDB' divided>
+          <span><i class='fa fa-exclamation-triangle'></i>&nbsp;{{ $t('message.flushdb') }}</span>
         </el-dropdown-item>
       </el-dropdown-menu>
     </el-dropdown>
@@ -70,7 +70,7 @@ export default {
         { type: 'warning' },
       ).then(() => {
         this.$bus.$emit('closeConnection');
-        this.$refs.editConnectionDialog.dialogVisible = true;
+        this.$refs.editConnectionDialog.show();
       }).catch(() => {});
     },
     closeConnection() {
@@ -197,5 +197,9 @@ export default {
   /*fix more operation icon vertical-center*/
   .connection-menu-more {
     vertical-align: baseline;
+  }
+
+  .font-weight-bold {
+    font-weight: bold;
   }
 </style>

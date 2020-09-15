@@ -98,6 +98,7 @@ const tw = {
     info_disabled: 'Info命令執行異常（可能已被禁用），無法顯示Redis訊息',
     page_zoom: '頁面縮放',
     scan_disabled: 'Scan命令執行異常（可能已被禁用），無法顯示key列表',
+    key_type_not_support: '該類型暫不支持視覺化展示，請使用Console',
   },
 };
 
