@@ -5,6 +5,7 @@
     <FormatViewer
       ref='formatViewer'
       :content.sync='content'
+      :contentBuff='contentBuff'
       :binary='binary'
       float='left'
       :textrows=12>
@@ -25,6 +26,7 @@ export default {
   data() {
     return {
       content: '',
+      contentBuff: '',
       binary: false,
     };
   },
@@ -33,6 +35,7 @@ export default {
   methods: {
     initShow() {
       this.client.getBuffer(this.redisKey).then((reply) => {
+        this.contentBuff = reply;
         this.content = this.$util.bufToString(reply);
         this.binary = !this.$util.bufVisible(reply);
 
