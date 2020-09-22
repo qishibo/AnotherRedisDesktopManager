@@ -94,7 +94,10 @@ export default {
         });
       }).catch(() => {});
     },
-    renameKey() {
+    renameKey(e) {
+      // input blur to prevent trigger twice by enter
+      e && e.srcElement.blur();
+
       if (this.keyName.equals(this.redisKey)) {
         return;
       }
