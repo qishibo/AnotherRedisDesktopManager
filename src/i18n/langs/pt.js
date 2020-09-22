@@ -32,6 +32,7 @@ const pt = {
     click_enter_to_rename: 'Clique ou pressione Enter para renomear',
     click_enter_to_ttl: 'Clique ou pressione Enter para modificar TTL',
     confirm_to_delete_key: 'Você deseja deletar {key} ?',
+    confirm_to_rename_key: 'Confirmar o renome {old} -> {new} ?',
     edit_line: 'Editar linha',
     auto_refresh: 'Atualização Automática',
     auto_refresh_tip: 'Interruptor de atualização automática, atualiza a cada {interval} segundo',
