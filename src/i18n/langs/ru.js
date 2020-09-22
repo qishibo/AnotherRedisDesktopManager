@@ -32,6 +32,7 @@ const ru = {
     click_enter_to_rename: 'Нажмите сюда или нажмите Enter, чтобы переименовать ключ.',
     click_enter_to_ttl: 'Нажмите сюда или нажмите Enter, чтобы изменить время жизни ключа.',
     confirm_to_delete_key: 'Подтвердите удаление {key} ?',
+    confirm_to_rename_key: 'Подтвердить переименование {old} -> {new} ?',
     edit_line: 'Редактировать строку',
     auto_refresh: 'Автоматическое обновление',
     auto_refresh_tip: 'Автоматическое обновление, обновление каждые {interval} секунды',

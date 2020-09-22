@@ -94,28 +94,39 @@ export default {
         });
       }).catch(() => {});
     },
-    renameKey() {
+    renameKey(e) {
+      // input blur to prevent trigger twice by enter
+      e && e.srcElement.blur();
+
       if (this.keyName.equals(this.redisKey)) {
         return;
       }
 
-      this.client.rename(this.redisKey, this.keyName).then((reply) => {
-        if (reply === 'OK') {
-          this.$message.success({
-            message: this.$t('message.modify_success'),
-            duration: 1000,
-          });
+      this.$confirm(
+          this.$t('message.confirm_to_rename_key', {
+            old: this.$util.bufToString(this.redisKey),
+            new: this.$util.bufToString(this.keyName),
+          }),
+          { type: 'warning' },
+      ).then(() => {
+        this.client.rename(this.redisKey, this.keyName).then((reply) => {
+          if (reply === 'OK') {
+            this.$message.success({
+              message: this.$t('message.modify_success'),
+              duration: 1000,
+            });
 
-          this.refreshKeyList(this.redisKey);
-          this.refreshKeyList(this.keyName, 'add');
-          this.$bus.$emit('clickedKey', this.client, this.keyName);
-        }
-      }).catch(e => {
-        this.$message.error({
-          message: e.message,
-          duration: 3000,
+            this.refreshKeyList(this.redisKey);
+            this.refreshKeyList(this.keyName, 'add');
+            this.$bus.$emit('clickedKey', this.client, this.keyName);
+          }
+        }).catch(e => {
+          this.$message.error({
+            message: e.message,
+            duration: 3000,
+          });
         });
-      });
+      }).catch(() => {});
     },
     ttlKey() {
       // ttl <= 0
