@@ -32,6 +32,7 @@ const tr = {
       click_enter_to_rename: 'Yeniden Adlandırmak için Tıklayın veya Enter Tuşuna Basın',
       click_enter_to_ttl: 'TTLyi Değiştirmek için Tıklayın veya Enter Tuşuna Basın',
       confirm_to_delete_key: '{key} Anahtarı Silinsin mi?',
+      confirm_to_rename_key: 'Yeniden Adlandır {old} -> {new} ?',
       edit_line: 'Satırı Düzenle',
       auto_refresh: 'Otomatik Yenile',
       auto_refresh_tip: 'Otomatik Yenileme, Her {interval} Saniyede Itomatik Yenile',
