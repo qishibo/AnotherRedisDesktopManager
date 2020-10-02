@@ -8,6 +8,8 @@ import zhTwLocale from 'element-ui/lib/locale/lang/zh-TW';
 import trTrLocale from 'element-ui/lib/locale/lang/tr-TR';
 import ruLocale from 'element-ui/lib/locale/lang/ru-RU';
 import ptBrLocale from 'element-ui/lib/locale/lang/pt-br';
+import deLocale from 'element-ui/lib/locale/lang/de';
+
 
 import en from './langs/en';
 import cn from './langs/cn';
@@ -15,6 +17,7 @@ import tw from './langs/tw';
 import tr from './langs/tr';
 import ru from './langs/ru';
 import pt from './langs/pt';
+import de from './langs/de';
 
 Vue.use(VueI18n);
 
@@ -42,6 +45,10 @@ const messages = {
   pt: {
     ...pt,
     ...ptBrLocale,
+  },
+  de: {
+    ...de,
+    ...deLocale
   },
 };
 
