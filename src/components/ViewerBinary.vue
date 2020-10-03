@@ -1,22 +1,28 @@
 <template>
   <div>
     <!-- </textarea> -->
-    <el-input disabled type='textarea' :rows='textrows' :value='binaryValue'></el-input>
+    <el-input type='textarea' :rows='textrows' :value='binaryValue' @change="updateContent($event)"></el-input>
   </div>
 </template>
 
 <script type="text/javascript">
 export default {
-  props: ['content', 'textrows', 'contentBuff'],
+  props: ['content', 'textrows'],
   computed: {
     binaryValue() {
-        let binary = '';
+      let binary = '';
 
-        for (let item of this.contentBuff) {
-            binary += item.toString(2).padStart(8, 0);
-        }
+      for (let item of this.content) {
+          binary += item.toString(2).padStart(8, 0);
+      }
 
-        return binary;
+      return binary;
+    },
+  },
+  methods: {
+    updateContent(value) {
+      let newContent = this.$util.binaryStringToBuffer(value);
+      this.$emit('updateContent', newContent);
     },
   },
 }

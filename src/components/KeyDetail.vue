@@ -91,12 +91,6 @@ export default {
     max-width: 50%;
   }
 
-  .content-binary {
-    color: #7ab3ef;
-    font-size: 80%;
-    float: left;
-  }
-
   .content-more-container {
     text-align: center;
     margin-top: 10px;

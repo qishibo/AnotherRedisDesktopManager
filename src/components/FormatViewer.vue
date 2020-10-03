@@ -9,14 +9,14 @@
         :value="item.value">
       </el-option>
     </el-select>
-    <span v-if='binary' class='formater-binary'>Hex</span>
+    <span v-if='!contentVisible' class='formater-binary-tag'>Hex</span>
     <br>
 
     <component
       ref='viewer'
       :is='selectedView'
       :content='content'
-      :contentBuff='contentBuff'
+      :contentVisible='contentVisible'
       :textrows='textrows'
       @updateContent="$emit('update:content', $event)">
     </component>
@@ -47,10 +47,13 @@ export default {
   components: {ViewerText, ViewerJson, ViewerBinary, ViewerUnserialize},
   props: {
     float: {default: 'right'},
-    content: {default: ''},
-    contentBuff: {default: () => Buffer.from('')},
+    content: {default: () => Buffer.from('')},
     textrows: {default: 6},
-    binary: {default: false},
+  },
+  computed: {
+    contentVisible() {
+      return this.$util.bufVisible(this.content);
+    },
   },
   methods: {
     autoFormat() {
@@ -117,8 +120,8 @@ export default {
     float: right;
     padding: 9px 0;
   }
-  .formater-binary {
-    padding-left: 5px;
+  .formater-binary-tag {
+    /*padding-left: 5px;*/
     color: #7ab3ef;
     font-size: 80%;
   }

@@ -5,9 +5,8 @@
     <FormatViewer
       ref='formatViewer'
       :content.sync='content'
-      :contentBuff='contentBuff'
       :binary='binary'
-      float='left'
+      float=''
       :textrows=12>
     </FormatViewer>
   </el-form-item>
@@ -25,8 +24,7 @@ import FormatViewer from '@/components/FormatViewer';
 export default {
   data() {
     return {
-      content: '',
-      contentBuff: '',
+      content: Buffer.from(''),
       binary: false,
     };
   },
@@ -35,10 +33,7 @@ export default {
   methods: {
     initShow() {
       this.client.getBuffer(this.redisKey).then((reply) => {
-        this.contentBuff = reply;
-        this.content = this.$util.bufToString(reply);
-        this.binary = !this.$util.bufVisible(reply);
-
+        this.content = reply;
         this.$refs.formatViewer.autoFormat();
       });
     },
@@ -47,7 +42,7 @@ export default {
 
       this.client.set(
         key,
-        this.binary ? this.$util.xToBuffer(this.content) : this.content
+        this.content
       ).then((reply) => {
         if (reply === 'OK') {
           this.initShow()
