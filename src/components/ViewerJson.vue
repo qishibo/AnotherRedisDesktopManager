@@ -29,7 +29,7 @@ export default {
     newContent() {
       try {
         // solve big int in json
-        let jsonSolved = this.content.replace(/([\[:])?([\d\.]{15,})([,\}\]])/g, "$1\"$2\"$3");
+        let jsonSolved = this.content.toString().replace(/([\[:])?([\d\.]{15,})([,\}\]])/g, "$1\"$2\"$3");
         return JSON.parse(jsonSolved);
       } catch (e) {
         return this.$t('message.json_format_failed');

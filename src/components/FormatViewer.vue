@@ -9,13 +9,14 @@
         :value="item.value">
       </el-option>
     </el-select>
-    <span v-if='binary' class='formater-binary'>Hex</span>
+    <span v-if='!contentVisible' class='formater-binary-tag'>Hex</span>
     <br>
 
     <component
       ref='viewer'
       :is='selectedView'
       :content='content'
+      :contentVisible='contentVisible'
       :textrows='textrows'
       @updateContent="$emit('update:content', $event)">
     </component>
@@ -25,6 +26,7 @@
 <script type="text/javascript">
 import ViewerText from '@/components/ViewerText';
 import ViewerJson from '@/components/ViewerJson';
+import ViewerBinary from '@/components/ViewerBinary';
 import ViewerUnserialize from '@/components/ViewerUnserialize';
 
 export default {
@@ -34,6 +36,7 @@ export default {
       viewers: [
         { value: 'ViewerText', text: 'Text' },
         { value: 'ViewerJson', text: 'Json' },
+        { value: 'ViewerBinary', text: 'Binary' },
         { value: 'ViewerUnserialize', text: 'Unserialize' },
       ],
       selectStyle: {
@@ -41,12 +44,16 @@ export default {
       },
     };
   },
-  components: {ViewerText, ViewerJson, ViewerUnserialize},
+  components: {ViewerText, ViewerJson, ViewerBinary, ViewerUnserialize},
   props: {
     float: {default: 'right'},
-    content: {default: ''},
+    content: {default: () => Buffer.from('')},
     textrows: {default: 6},
-    binary: {default: false},
+  },
+  computed: {
+    contentVisible() {
+      return this.$util.bufVisible(this.content);
+    },
   },
   methods: {
     autoFormat() {
@@ -113,8 +120,8 @@ export default {
     float: right;
     padding: 9px 0;
   }
-  .formater-binary {
-    padding-left: 5px;
+  .formater-binary-tag {
+    /*padding-left: 5px;*/
     color: #7ab3ef;
     font-size: 80%;
   }

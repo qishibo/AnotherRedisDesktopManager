@@ -9,14 +9,13 @@
       </el-form>
 
       <!-- edit & add dialog -->
-      <el-dialog :title="dialogTitle" :visible.sync="editDialog" :close-on-click-modal='false'>
+      <el-dialog :title="dialogTitle" :visible.sync="editDialog"  @open='openDialog' :close-on-click-modal='false'>
         <el-form>
-          <el-form-item label="Member">
-            <span v-if='editLineItem.binaryM' class='content-binary'>Hex</span>
-            <el-input v-model="editLineItem.member" autocomplete="off"></el-input>
-          </el-form-item>
           <el-form-item label="Score">
             <el-input v-model="editLineItem.score" autocomplete="off"></el-input>
+          </el-form-item>
+          <el-form-item label="Member">
+            <FormatViewer ref='formatViewer' :content.sync='editLineItem.member'></FormatViewer>
           </el-form-item>
         </el-form>
 
@@ -49,7 +48,7 @@
         >
       </el-table-column>
       <el-table-column
-        prop="member"
+        prop="memberDisplay"
         resizable
         sortable
         show-overflow-tooltip
@@ -89,6 +88,7 @@
 
 <script>
 import PaginationTable from '@/components/PaginationTable';
+import FormatViewer from '@/components/FormatViewer';
 
 export default {
   data() {
@@ -109,7 +109,7 @@ export default {
     };
   },
   props: ['client', 'redisKey'],
-  components: {PaginationTable},
+  components: {PaginationTable, FormatViewer},
   computed: {
     dialogTitle() {
       return this.beforeEditItem.member ? this.$t('message.edit_line') :
@@ -205,8 +205,8 @@ export default {
       for (var i = 0; i < list.length; i += 2) {
         zsetData.push({
           score: Number(list[i + 1]),
-          member: this.$util.bufToString(list[i]),
-          binaryM: !this.$util.bufVisible(list[i]),
+          member: list[i],
+          memberDisplay: this.$util.bufToString(list[i]),
         });
       }
 
@@ -215,9 +215,14 @@ export default {
     getScanMatch() {
       return this.filterValue ? `*${this.filterValue}*` : '*';
     },
+    openDialog() {
+      this.$nextTick(() => {
+        this.$refs.formatViewer.autoFormat();
+      });
+    },
     showEditDialog(row) {
       this.editLineItem = row;
-      this.beforeEditItem = JSON.parse(JSON.stringify(row));
+      this.beforeEditItem = this.$util.cloneObjWithBuff(row);
       this.editDialog = true;
     },
     editLine() {
@@ -235,13 +240,13 @@ export default {
       client.zadd(
         key,
         after.score,
-        before.binaryM ? this.$util.xToBuffer(after.member) : after.member
+        after.member
       ).then((reply) => {
         // edit key member changed
-        if (before.member && before.member !== after.member) {
+        if (before.member && !before.member.equals(after.member)) {
           client.zrem(
             key,
-            before.binaryM ? this.$util.xToBuffer(before.member) : before.member
+            before.member
           ).then((reply) => {
             this.initShow();
           });
@@ -264,7 +269,7 @@ export default {
       ).then(() => {
         this.client.zrem(
           this.redisKey,
-          row.binaryM ? this.$util.xToBuffer(row.member) : row.member
+          row.member
         ).then((reply) => {
           if (reply === 1) {
             this.$message.success({
