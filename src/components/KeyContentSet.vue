@@ -9,11 +9,10 @@
       </el-form>
 
       <!-- edit & add dialog -->
-      <el-dialog :title="dialogTitle" :visible.sync="editDialog" :close-on-click-modal='false'>
+      <el-dialog :title="dialogTitle" :visible.sync="editDialog" @open='openDialog' :close-on-click-modal='false'>
         <el-form>
           <el-form-item label="Value">
-            <span v-if='editLineItem.binary' class='content-binary'>Hex</span>
-            <el-input type="textarea" :rows="6" v-model="editLineItem.value" autocomplete="off"></el-input>
+            <FormatViewer ref='formatViewer' :content.sync='editLineItem.value'></FormatViewer>
           </el-form-item>
         </el-form>
 
@@ -38,7 +37,7 @@
         width="150">
       </el-table-column>
       <el-table-column
-        prop="value"
+        prop="valueDisplay"
         resizable
         sortable
         show-overflow-tooltip
@@ -77,6 +76,7 @@
 
 <script>
 import PaginationTable from '@/components/PaginationTable';
+import FormatViewer from '@/components/FormatViewer';
 
 export default {
   data() {
@@ -96,7 +96,7 @@ export default {
     };
   },
   props: ['client', 'redisKey'],
-  components: {PaginationTable},
+  components: {PaginationTable, FormatViewer},
   computed: {
     dialogTitle() {
       return this.beforeEditItem.value ? this.$t('message.edit_line') :
@@ -145,8 +145,8 @@ export default {
 
         for (const i of reply) {
           setData.push({
-            value: this.$util.bufToString(i),
-            binary: !this.$util.bufVisible(i),
+            value: i,
+            valueDisplay: this.$util.bufToString(i),
           });
         }
 
@@ -167,9 +167,14 @@ export default {
     getScanMatch() {
       return this.filterValue ? `*${this.filterValue}*` : '*';
     },
+    openDialog() {
+      this.$nextTick(() => {
+        this.$refs.formatViewer.autoFormat();
+      });
+    },
     showEditDialog(row) {
       this.editLineItem = row;
-      this.beforeEditItem = JSON.parse(JSON.stringify(row));
+      this.beforeEditItem = this.$util.cloneObjWithBuff(row);
       this.editDialog = true;
     },
     editLine() {
@@ -180,13 +185,13 @@ export default {
 
       this.editDialog = false;
 
-      if (!after.value || before.value == after.value) {
+      if (!after.value || (before.value && before.value.equals(after.value))) {
         return;
       }
 
       client.sadd(
         key,
-        before.binary ? this.$util.xToBuffer(after.value) : after.value
+        after.value
       ).then((reply) => {
         // add success
         if (reply === 1) {
@@ -194,7 +199,7 @@ export default {
           if (before.value) {
             client.srem(
               key,
-              before.binary ? this.$util.xToBuffer(before.value) : before.value
+              before.value
             ).then((reply) => {
               this.initShow();
             });
@@ -226,7 +231,7 @@ export default {
       ).then(() => {
         this.client.srem(
           this.redisKey,
-          row.binary ? this.$util.xToBuffer(row.value) : row.value
+          row.value
         ).then((reply) => {
           if (reply === 1) {
             this.$message.success({

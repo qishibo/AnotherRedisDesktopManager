@@ -22,4 +22,18 @@ var vue = new Vue({
   template: '<App/>',
 });
 
+// handle uncaught exception
+process.on('uncaughtException', (err, origin) => {
+  if (!err) {
+    return;
+  }
+
+  vue.$message.error({
+    message: 'Uncaught Exception: ' + err,
+    duration: 5000,
+  });
+
+  vue.$bus.$emit('closeConnection');
+});
+
 export default vue;

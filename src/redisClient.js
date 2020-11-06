@@ -33,13 +33,15 @@ export default {
       password: sshOptions.password,
       host: sshOptions.host,
       port: sshOptions.port,
-      readyTimeout: 2000,
+      readyTimeout: (sshOptions.timeout) > 0 ? (sshOptions.timeout * 1000) : 30000,
       dstHost: host,
       dstPort: port,
       localHost: '127.0.0.1',
-      localPort: null,
+      localPort: null, // set null to use available port in local machine
       privateKey: sshOptions.privatekey ?
-                  fs.readFileSync(sshOptions.privatekey) : '',
+                  fs.readFileSync(sshOptions.privatekey) : undefined,
+      passphrase: sshOptions.passphrase ? sshOptions.passphrase : undefined,
+      keepaliveInterval: 10000,
     };
 
     const sshConfigRaw = JSON.parse(JSON.stringify(sshConfig));
@@ -101,7 +103,7 @@ export default {
 
   getRedisOptions(host, port, auth, config) {
     return {
-      connectTimeout: 3000,
+      connectTimeout: 30000,
       retryStrategy: (times) => {return this.retryStragety(times, {host, port})},
       enableReadyCheck: false,
       connectionName: config.connectionName ? config.connectionName : null,
@@ -114,6 +116,7 @@ export default {
     return {
       connectionName: redisOptions.connectionName,
       enableReadyCheck: false,
+      slotsRefreshTimeout: 30000,
       redisOptions: redisOptions,
       natMap: natMap,
     };
@@ -131,9 +134,13 @@ export default {
       node = node.trim().split(' ');
 
       if (node[2].includes(type)) {
-        let dsn = node[1];
-        dsn = dsn.split('@')[0].split(':');
-        result.push({host: dsn[0], port: dsn[1]})
+        let dsn = node[1].split('@')[0];
+        let lastIndex = dsn.lastIndexOf(':');
+
+        let host = dsn.substr(0, lastIndex);
+        let port = dsn.substr(lastIndex + 1);
+
+        result.push({host: host, port: port})
       }
     }
 
@@ -146,6 +153,9 @@ export default {
     for (let node of nodes) {
       // tunnelssh will change 'config' param, so just copy it
       let sshConfigCopy = JSON.parse(JSON.stringify(sshConfig));
+
+      // revocery the buffer after json.parse
+      sshConfigCopy.privateKey && (sshConfigCopy.privateKey = Buffer.from(sshConfigCopy.privateKey));
 
       sshConfigCopy.dstHost = node.host;
       sshConfigCopy.dstPort = node.port;

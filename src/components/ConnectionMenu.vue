@@ -32,7 +32,7 @@
         <el-dropdown-item @click.native='deleteConnection'>
           <span><i class='el-icon-delete'></i>&nbsp;{{ $t('message.del_connection') }}</span>
         </el-dropdown-item>
-        <el-dropdown-item @click.native='flushDB'>
+        <el-dropdown-item @click.native='flushDB' divided>
           <span><i class='fa fa-exclamation-triangle'></i>&nbsp;{{ $t('message.flushdb') }}</span>
         </el-dropdown-item>
       </el-dropdown-menu>

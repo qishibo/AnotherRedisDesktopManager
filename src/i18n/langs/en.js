@@ -32,6 +32,7 @@ const en = {
     click_enter_to_rename: 'Click Or Press Enter To Rename',
     click_enter_to_ttl: 'Click Or Press Enter To Modify TTL',
     confirm_to_delete_key: 'Confirm To Delete {key} ?',
+    confirm_to_rename_key: 'Confirm To Rename {old} -> {new} ?',
     edit_line: 'Edit Line',
     auto_refresh: 'Auto Refresh',
     auto_refresh_tip: 'Auto Refresh Switch, Refresh Every {interval} Seconds',

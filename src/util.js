@@ -7,6 +7,10 @@ export default {
     this.data[name] = value;
   },
   bufVisible(buf) {
+    if (typeof buf == 'string') {
+      return true;
+    }
+
     return buf.equals(Buffer.from(buf.toString()));
   },
   bufToString(buf) {
@@ -45,6 +49,12 @@ export default {
 
     return Buffer.from(result, 'hex');
   },
+  binaryStringToBuffer(str) {
+    const groups = str.match(/[01]{8}/g);
+    const numbers = groups.map(binary => parseInt(binary, 2))
+
+    return Buffer.from(new Uint8Array(numbers));
+  },
   cutString(string, maxLength = 20) {
     if (string.length <= maxLength) {
       return string;
@@ -65,5 +75,16 @@ export default {
   },
   base64Decode(str) {
     return (new Buffer(str, 'base64')).toString('utf8');
+  },
+  cloneObjWithBuff(object) {
+    let clone = JSON.parse(JSON.stringify(object));
+
+    for (let i in clone) {
+      if ((typeof clone[i] === 'object') && (clone[i].type === 'Buffer')) {
+        clone[i] = Buffer.from(clone[i]);
+      }
+    }
+
+    return clone;
   },
 };

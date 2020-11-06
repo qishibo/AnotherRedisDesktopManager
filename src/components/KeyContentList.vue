@@ -12,7 +12,6 @@
       <el-dialog :title="dialogTitle" :visible.sync="editDialog" @open='openDialog' :close-on-click-modal='false'>
         <el-form>
           <el-form-item label="Value">
-            <span v-if='editLineItem.binary' class='content-binary'>Hex</span>
             <FormatViewer ref='formatViewer' :content.sync='editLineItem.value'></FormatViewer>
           </el-form-item>
         </el-form>
@@ -38,7 +37,7 @@
         width="150">
       </el-table-column>
       <el-table-column
-        prop="value"
+        prop="valueDisplay"
         resizable
         sortable
         show-overflow-tooltip
@@ -108,8 +107,8 @@ export default {
 
         for (const i of reply) {
           listData.push({
-            value: this.$util.bufToString(i),
-            binary: !this.$util.bufVisible(i),
+            value: i,
+            valueDisplay: this.$util.bufToString(i),
           });
         }
 
@@ -142,7 +141,7 @@ export default {
     },
     showEditDialog(row) {
       this.editLineItem = row;
-      this.beforeEditItem = JSON.parse(JSON.stringify(row));
+      this.beforeEditItem = this.$util.cloneObjWithBuff(row);
       this.editDialog = true;
     },
     editLine() {
@@ -153,13 +152,13 @@ export default {
 
       this.editDialog = false;
 
-      if (!after.value || before.value == after.value) {
+      if (!after.value || (before.value && before.value.equals(after.value))) {
         return;
       }
 
       client.rpush(
         key,
-        before.binary ? this.$util.xToBuffer(after.value) : after.value
+        after.value
       ).then((reply) => {
         // reply return list length if success
         if (reply > 0) {
@@ -168,7 +167,7 @@ export default {
             client.lrem(
               key,
               1,
-              before.binary ? this.$util.xToBuffer(before.value) : before.value
+              before.value
             ).then((reply) => {
               this.initShow();
             });
@@ -193,7 +192,7 @@ export default {
         this.client.lrem(
           this.redisKey,
           1,
-          row.binary ? this.$util.xToBuffer(row.value) : row.value
+          row.value
         ).then((reply) => {
           if (reply === 1) {
             this.$message.success({
