@@ -281,6 +281,10 @@ export default {
     this.initShow();
     this.refreshInit();
   },
+  beforeDestroy() {
+    // clear interval when tab is closed
+    clearInterval(this.refreshTimer);
+  },
 };
 </script>
 
