@@ -33,7 +33,7 @@ export default {
       password: sshOptions.password,
       host: sshOptions.host,
       port: sshOptions.port,
-      readyTimeout: 20000,
+      readyTimeout: (sshOptions.timeout) > 0 ? (sshOptions.timeout * 1000) : 30000,
       dstHost: host,
       dstPort: port,
       localHost: '127.0.0.1',
@@ -103,7 +103,7 @@ export default {
 
   getRedisOptions(host, port, auth, config) {
     return {
-      connectTimeout: 20000,
+      connectTimeout: 30000,
       retryStrategy: (times) => {return this.retryStragety(times, {host, port})},
       enableReadyCheck: false,
       connectionName: config.connectionName ? config.connectionName : null,
@@ -116,7 +116,7 @@ export default {
     return {
       connectionName: redisOptions.connectionName,
       enableReadyCheck: false,
-      slotsRefreshTimeout: 20000,
+      slotsRefreshTimeout: 30000,
       redisOptions: redisOptions,
       natMap: natMap,
     };
