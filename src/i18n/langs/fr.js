@@ -1,6 +1,6 @@
 const fr = {
   message: {
-    new_connection: 'Nouvelle Connexion',
+    new_connection: 'Nouvelle connexion',
     refresh_connection: 'Actualiser',
     edit_connection: 'Éditer connexion',
     del_connection: 'Supprimer connexion',
@@ -18,7 +18,7 @@ const fr = {
     all_redis_info: 'Toutes les informations Redis',
     server: 'Serveur',
     memory: 'Mémoire',
-    stats: 'Stats',
+    stats: 'Statistiques',
     settings: 'Paramètres',
     confirm_to_delete_row_data: 'Supprimer les données de cette ligne ?',
     delete_success: 'Suppression réussie',
@@ -30,7 +30,7 @@ const fr = {
     value_exists: 'La valeur existe',
     refresh_success: 'Actualisation réussie',
     click_enter_to_rename: 'Cliquez ou pressez Entrée pour renommer',
-    click_enter_to_ttl: 'Cliquez ou pressez entrée pour modifier le TTL',
+    click_enter_to_ttl: 'Cliquez ou pressez Entrée pour modifier le TTL',
     confirm_to_delete_key: 'Supprimer {key} ?',
     confirm_to_rename_key: 'Renommer {old} -> {new} ?',
     edit_line: 'Éditer la ligne',
@@ -40,7 +40,7 @@ const fr = {
     collapse_all: 'Tout fermer',
     expand_all: 'Tout étendre',
     json_format_failed: 'Échec de l\'analyse du JSON',
-    php_unserialize_format_failed: 'Écher de la désérialisation PHP',
+    php_unserialize_format_failed: 'Échec de la désérialisation PHP',
     clean_up: 'Nettoyer',
     redis_console: 'Console Redis',
     confirm_to_delete_connection: 'Supprimer la connexion ?',
@@ -79,14 +79,14 @@ const fr = {
     update_downloading: 'Téléchargement...',
     update_download_progress: 'Téléchargement en cours',
     update_downloaded: 'Téléchargement de la mise à jour terminé, redémarrez l\'application s\'il vous plaît',
-    mac_not_support_auto_update: 'Les Mac ne supportent pas les mise à jour automatique, vous pouvez télécharger et réinstaller manuellement,\
+    mac_not_support_auto_update: 'Les Mac ne supportent pas les mises à jour automatique, vous pouvez télécharger et réinstaller manuellement,\
     ou lancer "brew cask reinstall another-redis-desktop-manager"',
     font_family: 'Famille de polices',
     font_faq_title: 'Instructions de configuration de polices',
     font_faq: '1. Plusieurs polices peuvent être paramétrées<br>\
     2. La sélection des polices est ordonnée. Il est suggéré de choisir d\'abord la police anglaise et ensuite la police de votre langue<br>\
     3. Dans certains cas exceptionnels, lorsque la liste des polices du système ne peut être chargée, vous pouvez saisir manuellement le nom de la police installée.',
-    private_key_faq: 'La clé privée au format RSA est prise en charge, qui commence par <pre>-----BEGIN RSA PRIVATE KEY-----</pre>\
+    private_key_faq: 'La clé privée au format RSA est prise en charge, commançant par <pre>-----BEGIN RSA PRIVATE KEY-----</pre>\
     pour commencer par <pre>-----BEGIN OPENSSH PRIVATE KEY-----</pre> vous devez convertir le format via <pre>ssh-keygen -p -m pem -f ~/.ssh/id_rsa</pre> Cette opéaration n\'affectera pas la précédente clé de connexion',
     dark_mode: 'Mode sombre',
     load_more_keys: 'charger plus',
