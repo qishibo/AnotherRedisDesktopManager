@@ -87,7 +87,7 @@ const de = {
     2. Die Auswahl der Schriftart ist geordnet. Es wird empfohlen, zuerst die englische Schriftart und dann die Schriftart in Ihrer Sprache zu wählen.<br>\
     3. Wenn die Systemschriftenliste in einigen Ausnahmefällen nicht geladen werden kann, können Sie den Namen der installierten Schrift manuell eingeben.',
     private_key_faq: 'RSA format private key is supported, which starts with <pre>-----BEGIN RSA PRIVATE KEY-----</pre>\
-    beginnt mit <pre>-----BEGIN OPENSSH PRIVATE KEY-----</pre>Sie müssen das Format konvertieren mittels <pre>ssh-keygen -p -m pem -f ~/.ssh/id_rsa</pre>This operation will not affect the previous private key login',
+    beginnt mit <pre>-----BEGIN OPENSSH PRIVATE KEY-----</pre>Sie müssen das Format konvertieren mittels <pre>ssh-keygen -p -m pem -f ~/.ssh/id_rsa</pre>Dieser Vorgang hat keine Auswirkungen auf die vorherige Anmeldung mit privatem Schlüssel',
     dark_mode: 'Dunkel-Modus',
     load_more_keys: 'mehr laden',
     key_name: 'Schlüssel-Name',
