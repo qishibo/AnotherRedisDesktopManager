@@ -18,6 +18,10 @@
         <el-input v-model="connection.name" autocomplete="off"></el-input>
       </el-form-item>
 
+      <el-form-item label="Separator">
+        <el-input v-model="connection.separator" autocomplete="off" placeholder=':'></el-input>
+      </el-form-item>
+
       <el-form-item label="">
         <el-checkbox v-model="sshOptionsShow">SSH Tunnel</el-checkbox>
         <el-checkbox v-model="sslOptionsShow">SSL</el-checkbox>
@@ -112,6 +116,7 @@ export default {
         port: '',
         auth: '',
         name: '',
+        separator: '',
         cluster: false,
         // sentinel: false,
         sshOptions: {

@@ -87,4 +87,46 @@ export default {
 
     return clone;
   },
+  keysToTree(keys, separator = ':') {
+    let tree = {};
+    keys.forEach(key => {
+      let currentNode = tree;
+      let keyStr = this.bufToString(key);
+      let keySplited = keyStr.split(separator);
+      let lastIndex = keySplited.length - 1;
+
+      keySplited.forEach((value, index) => {
+        // key node
+        if (index === lastIndex) {
+          currentNode[keyStr] = {
+            keyNode: true,
+            nameBuffer: key,
+          };
+        }
+        // folder node
+        else {
+          (currentNode[value] === undefined) && (currentNode[value] = {});
+        }
+
+        currentNode = currentNode[value];
+      });
+    });
+
+    return this.formatTreeData(tree)
+  },
+  formatTreeData(tree) {
+    return Object.keys(tree).map(key => {
+      let node = { name: key};
+
+      if(!tree[key].keyNode && Object.keys(tree[key]).length > 0) {
+        node.children = this.formatTreeData(tree[key]);
+      }
+      else {
+        node.name = key;
+        node.nameBuffer = tree[key].nameBuffer.toJSON();
+      }
+
+      return node;
+    });
+  }
 };
