@@ -2,7 +2,7 @@
   <div>
     <!-- key list -->
     <div class='key-list-ztree'>
-      <div class="ztree" id="ztreeId"></div>
+      <div class="ztree" :id='treeId'></div>
     </div>
 
     <!-- load more -->
@@ -33,9 +33,10 @@ export default {
       onePageList: [],
       onePageFinishedCount: 0,
       firstPageFinished: false,
+      treeId: 'treeId' + Math.ceil(Math.random() * 1e10),
       setting: {
         view: {
-          showIcon: false,
+          showIcon: true,
           showLine: false,
           selectedMulti: false,
           dblClickExpand: false,
@@ -244,7 +245,7 @@ export default {
     treeRefresh(nodes) {
       this.ztreeObj && this.ztreeObj.destroy();
       this.ztreeObj = $.fn.zTree.init(
-        $("#ztreeId"),
+        $(`#${this.treeId}`),
         this.setting,
         nodes
       );
@@ -266,14 +267,12 @@ export default {
   padding: 0;
 }
 .ztree * {
+  font-size: 14px;
   font-family: inherit;
 }
 .ztree li ul {
   margin: 0;
   padding: 0
-}
-.ztree li {
-  overflow: hidden;
 }
 .ztree li a {
   width: 100%;
@@ -283,30 +282,69 @@ export default {
   overflow: hidden;
   text-overflow: ellipsis;
 }
+.dark-mode .ztree li a {
+  color: #f7f7f7;
+}
 .ztree li a:hover {
   text-decoration: none;
   background-color: #E7E7E7;
+}
+.dark-mode .ztree li a:hover {
+  background: #50616b;
 }
 .ztree li a.curSelectedNode {
   height: 22px;
   border: 0;
   background-color: #D4D4D4;
 }
-.ztree li span.node_name {
-  overflow: hidden;
-  text-overflow: ellipsis;
+.dark-mode .ztree li a.curSelectedNode {
+  background: #50616b;
 }
 
-.ztree li span.button {background-image: url("../assets/key_tree_toggle.png");}
-.ztree li span.button.switch {width: 16px;height: 16px;}
-.ztree li span.button.switch.level0 {width: 20px; height: 20px}
-.ztree li span.button.switch.level1 {width: 20px; height: 20px}
+/*toggle switch*/
+.ztree li span.button {font-size: 115%; background-image: none; vertical-align: middle;}
+.ztree li span.button.switch {height: 22px; width: 20px; background-image: url("../assets/key_tree_toggle.png");}
 .ztree li span.button.noline_open {background-position: 0 0;}
 .ztree li span.button.noline_close {background-position: -18px 0;}
-.ztree li span.button.noline_open.level0 {background-position: 0 -18px;}
-.ztree li span.button.noline_close.level0 {background-position: -18px -18px;}
+/*level0 toggle icon bigger*/
+/*.ztree li span.button.noline_open.level0 {background-position: 0 -18px;}
+.ztree li span.button.noline_close.level0 {background-position: -18px -18px;}*/
 
-.ztree li[class^="level"]:not(.level0) {}
+
+/*folder icon*/
+.ztree li span.button.ico_close, .ztree li span.button.ico_open {
+  margin-right: 5px;
+}
+/*key node remove icon*/
+.ztree li span.button.ico_docu {
+  display: none;
+}
+/*hide key node switch icon*/
+.ztree li span.button.noline_docu {
+  background-image: none;
+}
+/*keys in level0, switch icon*/
+.ztree li span.button.level0.noline_docu {
+  width: 10px;
+}
+
+/*folder icon*/
+.ztree li span.button.ico_open::before {
+  content: "\f07c";
+}
+.ztree li span.button.ico_close::before {
+  content: "\f07b";
+}
+.ztree li span.button::before {
+  display: inline-block;
+  padding-top: 10px;
+  padding-left: 2px;
+  font-family: FontAwesome;
+  color: #848a90;
+}
+.dark-mode .ztree li span.button::before {
+  color: #9ea4a9;
+}
 
 .load-more-keys {
   margin: 10px auto;
