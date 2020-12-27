@@ -120,8 +120,10 @@ export default {
 
       if(!tree[key].keyNode && Object.keys(tree[key]).length > 0) {
         node.children = this.formatTreeData(tree[key]);
+        node.keyCount = node.children.reduce((a, b) => a + (b.keyCount || 0), 0);
       }
       else {
+        node.keyCount = 1;
         node.name = key;
         node.nameBuffer = tree[key].nameBuffer.toJSON();
       }

@@ -41,6 +41,7 @@ export default {
           selectedMulti: false,
           dblClickExpand: false,
           addDiyDom: this.addDiyDom,
+          // expandSpeed: '',
         },
         callback: {
           onClick: (e, treeId, treeNode) => {
@@ -237,6 +238,12 @@ export default {
       switchObj.remove();
       icoObj.before(switchObj);
 
+      // show key count
+      if (treeNode.children) {
+        icoObj.after(`<span>(${treeNode.keyCount}) </span>`)
+      }
+
+      // folder indent
       if (treeNode.level >= 1) {
         const spaceStr = "<span style='display: inline-block;width:" + (spaceWidth * treeNode.level)+ "px'></span>";
         switchObj.before(spaceStr);
