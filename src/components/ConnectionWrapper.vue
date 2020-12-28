@@ -32,8 +32,7 @@
 
 <script type="text/javascript">
 import redisClient from '@/redisClient.js';
-// import KeyList from '@/components/KeyList';
-import KeyList from '@/components/KeyListTree';
+import KeyList from '@/components/KeyList';
 import OperateItem from '@/components/OperateItem';
 import ConnectionMenu from '@/components/ConnectionMenu';
 

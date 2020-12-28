@@ -19,7 +19,7 @@
       </el-form-item>
 
       <el-form-item label="Separator">
-        <el-input v-model="connection.separator" autocomplete="off" placeholder=':'></el-input>
+        <el-input v-model="connection.separator" autocomplete="off" placeholder='Empty to disable tree view'></el-input>
       </el-form-item>
 
       <el-form-item label="">
@@ -116,7 +116,7 @@ export default {
         port: '',
         auth: '',
         name: '',
-        separator: '',
+        separator: ':',
         cluster: false,
         // sentinel: false,
         sshOptions: {
