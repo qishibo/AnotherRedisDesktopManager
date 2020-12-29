@@ -213,7 +213,7 @@ export default {
 </script>
 
 <style type="text/css" scoped>
-  .new-connection-dailog, .el-checkbox {
+  .new-connection-dailog .el-checkbox {
     margin-left: 0;
     margin-right: 15px;
   }

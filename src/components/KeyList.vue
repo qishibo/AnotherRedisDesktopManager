@@ -28,7 +28,7 @@ export default {
     return {
       keyList: [],
       keyListType: this.config.separator === '' ? 'KeyListNormal' : 'KeyListTree',
-      keysPageSize: 400,
+      keysPageSize: this.keyListType === 'KeyListNormal' ? 200 : 400,
       searchPageSize: 10000,
       scanStreams: [],
       scanningCount: 0,
