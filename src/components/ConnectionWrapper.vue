@@ -23,6 +23,7 @@
       <!-- key list -->
       <KeyList
         ref='keyList'
+        :config="config"
         :client='client'>
       </KeyList>
     </el-submenu>
