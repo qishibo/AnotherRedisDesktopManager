@@ -42,7 +42,7 @@ export default {
         const ignoreUpdateKey = `IgnoreUpdateVersion_${arg.version}`;
         // version ignored
         if (!this.manual && localStorage[ignoreUpdateKey]) {
-          return;
+          return this.resetDownloadProcess();
         }
 
         this.$confirm(arg.releaseNotes, {
