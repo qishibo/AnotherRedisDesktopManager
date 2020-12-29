@@ -19,7 +19,7 @@
       </el-form-item>
 
       <el-form-item label="Separator">
-        <el-input v-model="connection.separator" autocomplete="off" placeholder='Empty to disable tree view'></el-input>
+        <el-input v-model="connection.separator" autocomplete="off" placeholder='Empty To Disable Tree View'></el-input>
       </el-form-item>
 
       <el-form-item label="">

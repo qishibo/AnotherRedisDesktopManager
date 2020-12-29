@@ -98,7 +98,7 @@ export default {
       keySplited.forEach((value, index) => {
         // key node
         if (index === lastIndex) {
-          currentNode[keyStr] = {
+          currentNode[keyStr + '`k`'] = {
             keyNode: true,
             nameBuffer: key,
           };
@@ -118,13 +118,13 @@ export default {
     return Object.keys(tree).map(key => {
       let node = { name: key};
 
-      if(!tree[key].keyNode && Object.keys(tree[key]).length > 0) {
+      if (!tree[key].keyNode && Object.keys(tree[key]).length > 0) {
         node.children = this.formatTreeData(tree[key]);
         node.keyCount = node.children.reduce((a, b) => a + (b.keyCount || 0), 0);
       }
       else {
         node.keyCount = 1;
-        node.name = key;
+        node.name = key.replace(/`k`$/, '');
         node.nameBuffer = tree[key].nameBuffer.toJSON();
       }
 
