@@ -103,6 +103,7 @@ export default {
 
   getRedisOptions(host, port, auth, config) {
     return {
+      family: config.ipv6 === true ? '6' : '4',
       connectTimeout: 30000,
       retryStrategy: (times) => {return this.retryStragety(times, {host, port})},
       enableReadyCheck: false,

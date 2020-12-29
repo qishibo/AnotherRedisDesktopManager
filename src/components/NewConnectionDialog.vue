@@ -3,7 +3,13 @@
     <!-- redis connection form -->
     <el-form :label-position="labelPosition" label-width="90px">
       <el-form-item label="Host">
-        <el-input v-model="connection.host" autocomplete="off" placeholder="127.0.0.1"></el-input>
+        <el-input v-model="connection.host" autocomplete="off" placeholder="127.0.0.1">
+          <span slot="suffix">
+            <el-tooltip effect="dark" content="IPV6" placement="bottom">
+              <el-checkbox v-model="connection.ipv6"></el-checkbox>
+            </el-tooltip>
+          </span>
+        </el-input>
       </el-form-item>
 
       <el-form-item label="Port">
@@ -22,7 +28,7 @@
         <el-input v-model="connection.separator" autocomplete="off" placeholder='Empty to disable tree view'></el-input>
       </el-form-item>
 
-      <el-form-item label="">
+      <el-form-item label="" class="check-box-container">
         <el-checkbox v-model="sshOptionsShow">SSH Tunnel</el-checkbox>
         <el-checkbox v-model="sslOptionsShow">SSL</el-checkbox>
         <!-- <el-checkbox v-model="connection.sentinel">Sentinel</el-checkbox> -->
@@ -113,6 +119,7 @@ export default {
       oldKey: '',
       connection: {
         host: '',
+        ipv6: false,
         port: '',
         auth: '',
         name: '',
@@ -213,7 +220,7 @@ export default {
 </script>
 
 <style type="text/css" scoped>
-  .new-connection-dailog .el-checkbox {
+  .new-connection-dailog .check-box-container .el-checkbox {
     margin-left: 0;
     margin-right: 15px;
   }
