@@ -87,7 +87,7 @@ export default {
 
     return clone;
   },
-  keysToTree(keys, separator = ':') {
+  keysToTree(keys, separator = ':', openStatus = {}) {
     let tree = {};
     keys.forEach(key => {
       let currentNode = tree;
@@ -112,14 +112,16 @@ export default {
       });
     });
 
-    return this.formatTreeData(tree)
+    return this.formatTreeData(tree, '', openStatus)
   },
-  formatTreeData(tree) {
+  formatTreeData(tree, previousKey = '', openStatus = {}) {
     return Object.keys(tree).map(key => {
       let node = { name: key};
 
       if (!tree[key].keyNode && Object.keys(tree[key]).length > 0) {
-        node.children = this.formatTreeData(tree[key]);
+        let tillNowKeyName = previousKey + key;
+        node.open     = !!openStatus[tillNowKeyName];
+        node.children = this.formatTreeData(tree[key], tillNowKeyName, openStatus);
         node.keyCount = node.children.reduce((a, b) => a + (b.keyCount || 0), 0);
       }
       else {
