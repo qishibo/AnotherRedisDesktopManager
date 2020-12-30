@@ -1,6 +1,6 @@
 <template>
   <div>
-    <span v-if="!buffVisible" class='input-binary-tag'>Hex</span>
+    <span v-if="!buffVisible" class='input-binary-tag'>[Hex]</span>
     <el-input :value='contentDisplay' @change="updateContent($event)"></el-input>
   </div>
 </template>

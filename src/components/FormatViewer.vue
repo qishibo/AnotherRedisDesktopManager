@@ -9,7 +9,8 @@
         :value="item.value">
       </el-option>
     </el-select>
-    <span v-if='!contentVisible' class='formater-binary-tag'>Hex</span>
+    <span v-if='!contentVisible' class='formater-binary-tag'>[Hex]</span>
+    <span class='formater-binary-tag'>Size: {{ $util.humanFileSize(buffSize) }}</span>
     <br>
 
     <component
@@ -53,6 +54,9 @@ export default {
   computed: {
     contentVisible() {
       return this.$util.bufVisible(this.content);
+    },
+    buffSize() {
+      return Buffer.byteLength(this.content);
     },
   },
   methods: {
