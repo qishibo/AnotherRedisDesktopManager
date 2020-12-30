@@ -13,6 +13,7 @@ export default {
   data() {
     return {
       treeId: 'treeId' + Math.ceil(Math.random() * 1e10),
+      openStatus: {},
       setting: {
         view: {
           showIcon: true,
@@ -24,9 +25,20 @@ export default {
         },
         callback: {
           onClick: (event, treeId, treeNode) => {
-            // toggle tree view
+            // folder clicked
             if (treeNode.children) {
+              // toggle tree view
               this.ztreeObj && this.ztreeObj.expandNode(treeNode);
+
+              // store open status
+              let parentNode = treeNode;
+              let keyPrefix  = treeNode.name;
+              while (parentNode.parentTId) {
+                parentNode = this.ztreeObj.getNodeByTId(parentNode.parentTId);
+                keyPrefix = parentNode.name + keyPrefix;
+              }
+              this.openStatus[keyPrefix] = treeNode.open;
+
               return;
             }
 
@@ -61,7 +73,7 @@ export default {
       }
     },
     treeRefresh(nodes) {
-      this.ztreeObj && this.ztreeObj.destroy();
+      // this.ztreeObj && this.ztreeObj.destroy();
       this.ztreeObj = $.fn.zTree.init(
         $(`#${this.treeId}`),
         this.setting,
@@ -72,7 +84,7 @@ export default {
   watch: {
     keyList(newList) {
       const spiltChar = this.config.separator ? this.config.separator : ':';
-      this.treeRefresh(this.$util.keysToTree(newList, spiltChar));
+      this.treeRefresh(this.$util.keysToTree(newList, spiltChar, this.openStatus));
     },
   },
 }
