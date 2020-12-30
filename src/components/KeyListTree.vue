@@ -63,7 +63,7 @@ export default {
 
       // show key count
       if (treeNode.children) {
-        icoObj.after(`<span>(${treeNode.keyCount}) </span>`)
+        icoObj.after(`<span class='key-list-count'>(${treeNode.keyCount}) </span>`)
       }
 
       // folder indent
@@ -174,5 +174,12 @@ export default {
 }
 .dark-mode .ztree li span.button::before {
   color: #9ea4a9;
+}
+
+.ztree .key-list-count {
+  color: #848a90;
+}
+.dark-mode .ztree .key-list-count {
+  color: #a3a6ad;
 }
 </style>
