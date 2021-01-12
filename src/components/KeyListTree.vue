@@ -85,6 +85,11 @@ export default {
     keyList(newList) {
       const spiltChar = this.config.separator ? this.config.separator : ':';
       this.treeRefresh(this.$util.keysToTree(newList, spiltChar, this.openStatus));
+
+      // only 1 key such as extract search, expand all
+      if (newList.length <= 1) {
+        this.ztreeObj && this.ztreeObj.expandAll(true);
+      }
     },
   },
 }
