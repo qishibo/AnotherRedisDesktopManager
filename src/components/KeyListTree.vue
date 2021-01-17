@@ -74,6 +74,15 @@ export default {
     },
     treeRefresh(nodes) {
       // this.ztreeObj && this.ztreeObj.destroy();
+      // folder keep in front
+      nodes = nodes.sort(function(a, b) {
+        if (a.children && b.children) {
+          return 0;
+        }
+
+        return a.children ? -1 : (b.children ? 1 : 0);
+      });
+
       this.ztreeObj = $.fn.zTree.init(
         $(`#${this.treeId}`),
         this.setting,
