@@ -97,6 +97,9 @@ export default {
     line-height: 1.5;
     border-radius: 5px;
   }
+  .text-formated-container * {
+    font-family: inherit !important;
+  }
   .dark-mode .text-formated-container {
     border-color: #7f8ea5;
   }
