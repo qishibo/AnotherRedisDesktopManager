@@ -51,6 +51,7 @@ Download latest [AppImage](https://github.com/qishibo/AnotherRedisDesktopManager
 
 ## Feature Log
 
+- 2020-12-30: Tree View Support!!!
 - 2020-11-03: Binary View Support && SSH Passparse\Timeout Support
 - 2020-09-04: SSH Cluster Support && Extension Commands Support
 - 2020-06-18: SSL/TLS Support!!!

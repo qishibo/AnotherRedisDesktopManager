@@ -25,6 +25,7 @@
     "sign": "cd pack/mas; bash sign.sh"
   },
   "dependencies": {
+    "@ztree/ztree_v3": "^3.5.46",
     "element-ui": "^2.4.11",
     "font-awesome": "^4.7.0",
     "ioredis": "^4.16.0",

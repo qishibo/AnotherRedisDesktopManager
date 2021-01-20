@@ -9,7 +9,8 @@
         :value="item.value">
       </el-option>
     </el-select>
-    <span v-if='!contentVisible' class='formater-binary-tag'>Hex</span>
+    <span v-if='!contentVisible' class='formater-binary-tag'>[Hex]</span>
+    <span class='formater-binary-tag'>Size: {{ $util.humanFileSize(buffSize) }}</span>
     <br>
 
     <component
@@ -54,6 +55,9 @@ export default {
     contentVisible() {
       return this.$util.bufVisible(this.content);
     },
+    buffSize() {
+      return Buffer.byteLength(this.content);
+    },
   },
   methods: {
     autoFormat() {
@@ -92,6 +96,9 @@ export default {
     padding: 5px 15px;
     line-height: 1.5;
     border-radius: 5px;
+  }
+  .text-formated-container * {
+    font-family: inherit !important;
   }
   .dark-mode .text-formated-container {
     border-color: #7f8ea5;

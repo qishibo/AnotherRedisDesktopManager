@@ -76,6 +76,13 @@ export default {
   base64Decode(str) {
     return (new Buffer(str, 'base64')).toString('utf8');
   },
+  humanFileSize(size = 0) {
+    if (!size) {
+      return 0;
+    }
+    var i = Math.floor(Math.log(size) / Math.log(1024));
+    return (size / Math.pow(1024, i)).toFixed(2) * 1 + ['B', 'kB', 'MB', 'GB', 'TB'][i];
+  },
   cloneObjWithBuff(object) {
     let clone = JSON.parse(JSON.stringify(object));
 
@@ -87,4 +94,50 @@ export default {
 
     return clone;
   },
+  keysToTree(keys, separator = ':', openStatus = {}) {
+    let tree = {};
+    keys.forEach(key => {
+      let currentNode = tree;
+      let keyStr = this.bufToString(key);
+      let keySplited = keyStr.split(separator);
+      let lastIndex = keySplited.length - 1;
+
+      keySplited.forEach((value, index) => {
+        // key node
+        if (index === lastIndex) {
+          currentNode[keyStr + '`k`'] = {
+            keyNode: true,
+            nameBuffer: key,
+          };
+        }
+        // folder node
+        else {
+          (currentNode[value] === undefined) && (currentNode[value] = {});
+        }
+
+        currentNode = currentNode[value];
+      });
+    });
+
+    return this.formatTreeData(tree, '', openStatus)
+  },
+  formatTreeData(tree, previousKey = '', openStatus = {}) {
+    return Object.keys(tree).map(key => {
+      let node = { name: key};
+
+      if (!tree[key].keyNode && Object.keys(tree[key]).length > 0) {
+        let tillNowKeyName = previousKey + key;
+        node.open     = !!openStatus[tillNowKeyName];
+        node.children = this.formatTreeData(tree[key], tillNowKeyName, openStatus);
+        node.keyCount = node.children.reduce((a, b) => a + (b.keyCount || 0), 0);
+      }
+      else {
+        node.keyCount = 1;
+        node.name = key.replace(/`k`$/, '');
+        node.nameBuffer = tree[key].nameBuffer.toJSON();
+      }
+
+      return node;
+    });
+  }
 };
