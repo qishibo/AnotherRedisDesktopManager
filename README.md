@@ -24,7 +24,7 @@ Download latest [AppImage](https://github.com/qishibo/AnotherRedisDesktopManager
 ## Mac
 
 - Download latest [dmg](https://github.com/qishibo/AnotherRedisDesktopManager/releases) package from [release](https://github.com/qishibo/AnotherRedisDesktopManager/releases) [or [gitee](https://gitee.com/qishibo/AnotherRedisDesktopManager/releases) in China], double click to install.
-- Or by **brew**: `brew cask install another-redis-desktop-manager`
+- Or by **brew**: `brew install another-redis-desktop-manager --cask`
 - Or **sponsor** by app store, It's not free, and I will be very grateful to you.
 <br/>[![app store](https://imgup.qii404.xyz/github/download_from_app_store.png)](https://apps.apple.com/app/id1516451072)
 
