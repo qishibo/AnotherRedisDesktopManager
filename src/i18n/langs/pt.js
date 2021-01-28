@@ -80,7 +80,7 @@ const pt = {
     update_download_progress: 'Download em progresso',
     update_downloaded: 'Download de atualização concluído, reinicie seu aplicativo por favor',
     mac_not_support_auto_update: 'Mac não suporta atualização automática, faça o download e reinstale manualmente, \
-    Ou execute "brew cask reinstall another-redis-desktop-manager"',
+    Ou execute "brew reinstall --cask another-redis-desktop-manager"',
     font_family: 'Font Family',
     font_faq_title: 'Instruções de configuração de fonte',
     font_faq: '1. Múltiplas fontes podem ser definidas <br>\
