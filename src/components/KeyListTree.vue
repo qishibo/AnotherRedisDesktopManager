@@ -112,7 +112,7 @@ export default {
 }
 .ztree * {
   font-size: 14px;
-  font-family: inherit;
+  font-family: consolas;
 }
 .ztree li ul {
   margin: 0;

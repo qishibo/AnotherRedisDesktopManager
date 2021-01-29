@@ -118,8 +118,8 @@ export default {
         currentNode = currentNode[value];
       });
     });
-
-    return this.formatTreeData(tree, '', openStatus)
+    var formatTree = this.formatTreeData(tree, '', openStatus)
+    return this.formatAgain(formatTree)
   },
   formatTreeData(tree, previousKey = '', openStatus = {}) {
     return Object.keys(tree).map(key => {
@@ -139,5 +139,21 @@ export default {
 
       return node;
     });
+  },
+  formatAgain(r){
+    r.forEach(node=>{
+        while(node.children!=undefined && node.children.length==1){
+            if(node.children[0].nameBuffer == undefined){
+                node.name += ':'+node.children[0].name
+                node.children = node.children[0].children
+            }else{
+                break;
+            }
+        }
+        if(node.children!=undefined){
+            this.formatAgain(node.children)
+        }
+    })
+    return r;
   }
 };
