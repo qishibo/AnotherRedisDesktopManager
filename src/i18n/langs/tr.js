@@ -80,7 +80,7 @@ const tr = {
       update_download_progress: 'İndirme Durumu',
       update_downloaded: 'Güncelleme İndirme Tamamlandı, Lütfen Uygulamanızı Yeniden Başlatın',
       mac_not_support_auto_update: 'Mac Otomatik Güncellemeyi Desteklemez, Lütfen Manuel Olarak İndirin ve Yükleyin,\
-      veya Yükleme Komutunu Çalıştırın "brew cask reinstall another-redis-desktop-manager"',
+      veya Yükleme Komutunu Çalıştırın "brew reinstall --cask another-redis-desktop-manager"',
       font_family: 'Yazı Tipi Ailesi',
       font_faq_title: 'Yazı Tipi Ayar Talimatları',
       font_faq: '1. Birden fazla yazı tipi ayarlanabilir<br>\

@@ -80,7 +80,7 @@ const de = {
     update_download_progress: 'Download Fortschritt',
     update_downloaded: 'Update Download abgeschlossen, bitte starten Sie Ihre App neu',
     mac_not_support_auto_update: 'Mac unterstützt keine automatische Aktualisierung, bitte manuell herunterladen und neu installieren,\
-    or ausführen "brew cask reinstall another-redis-desktop-manager"',
+    or ausführen "brew reinstall --cask another-redis-desktop-manager"',
     font_family: 'Schrift-Familie',
     font_faq_title: 'Anweisungen zum Einstellen der Schriftart',
     font_faq: '1. Mehrere Schriftarten können eingestellt werden<br>\

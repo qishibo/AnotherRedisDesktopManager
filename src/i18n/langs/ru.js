@@ -80,7 +80,7 @@ const ru = {
     update_download_progress: 'Прогресс загрузки',
     update_downloaded: 'Обновление завершено, перезапустите приложение, пожалуйста',
     mac_not_support_auto_update: 'Mac не поддерживает автоматическое обновление, скачайте и переустановите приложение вручную,\
-    Или выполните комманду "brew cask reinstall another-redis-desktop-manager"',
+    Или выполните комманду "brew reinstall --cask another-redis-desktop-manager"',
     font_family: 'Семейство шрифтов',
     font_faq_title: 'Инструкции по настройке шрифта',
     font_faq: '1. Можно установить несколько шрифтов.<br>\

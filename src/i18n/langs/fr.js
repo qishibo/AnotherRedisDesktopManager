@@ -80,7 +80,7 @@ const fr = {
     update_download_progress: 'Téléchargement en cours',
     update_downloaded: 'Téléchargement de la mise à jour terminé, redémarrez l\'application s\'il vous plaît',
     mac_not_support_auto_update: 'Les Mac ne supportent pas les mises à jour automatique, vous pouvez télécharger et réinstaller manuellement,\
-    ou lancer "brew cask reinstall another-redis-desktop-manager"',
+    ou lancer "brew reinstall --cask another-redis-desktop-manager"',
     font_family: 'Famille de polices',
     font_faq_title: 'Instructions de configuration de polices',
     font_faq: '1. Plusieurs polices peuvent être paramétrées<br>\

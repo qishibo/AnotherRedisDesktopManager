@@ -80,7 +80,7 @@ const tw = {
     update_download_progress: '下載進度',
     update_downloaded: '更新下載完成，重啟用戶端生效',
     mac_not_support_auto_update: 'Mac 暫時不支援自動更新，請手動下載後重新安裝，或者執行\
-    brew cask reinstall another-redis-desktop-manager',
+    brew reinstall --cask another-redis-desktop-manager',
     font_family: '字體選擇',
     font_faq_title: '字體設定說明',
     font_faq: '1. 可以設定多個字體<br>2. 字體選擇是有分先後順序的，建議首先選擇英文字體，然後再選擇中文字體<br>\
