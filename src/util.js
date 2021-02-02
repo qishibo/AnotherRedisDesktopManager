@@ -118,8 +118,9 @@ export default {
         currentNode = currentNode[value];
       });
     });
-
-    return this.formatTreeData(tree, '', openStatus, separator)
+    var formatTree = this.formatTreeData(tree, '', openStatus, separator)
+    debugger;
+    return this.formatAgain(formatTree,separator)
   },
   formatTreeData(tree, previousKey = '', openStatus = {}, separator = ':') {
     return Object.keys(tree).map(key => {
@@ -140,5 +141,21 @@ export default {
 
       return node;
     });
+  },
+  formatAgain(r,separator){
+    r.forEach(node=>{
+        while(node.children!=undefined && node.children.length==1){
+            if(node.children[0].nameBuffer == undefined){
+                node.name += separator + node.children[0].name
+                node.children = node.children[0].children
+            }else{
+                break;
+            }
+        }
+        if(node.children!=undefined){
+            this.formatAgain(node.children,separator)
+        }
+    })
+    return r;
   }
 };
