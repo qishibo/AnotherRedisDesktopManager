@@ -1,6 +1,5 @@
 <template>
   <div ref="treeWrapper" class='key-list-ztree'>
-
     <!-- multi operate -->
     <el-row class="batch-operate" :gutter="6">
       <el-col :span="12">
@@ -42,7 +41,6 @@ export default {
   data() {
     return {
       treeId: 'treeId' + Math.ceil(Math.random() * 1e10),
-      separator: this.config.separator ? this.config.separator : ':',
       openStatus: {},
       rightClickNode: {},
       multiOperating: false,
@@ -101,6 +99,11 @@ export default {
     };
   },
   props: ['client', 'config', 'keyList'],
+  computed: {
+    separator() {
+      return this.config.separator ? this.config.separator : ':';
+    }
+  },
   methods: {
     showMultiSelect() {
       this.multiOperating = true;
@@ -235,13 +238,7 @@ export default {
     treeRefresh(nodes) {
       // this.ztreeObj && this.ztreeObj.destroy();
       // folder keep in front
-      nodes = nodes.sort(function(a, b) {
-        if (a.children && b.children) {
-          return 0;
-        }
-
-        return a.children ? -1 : (b.children ? 1 : 0);
-      });
+      this.$util.sortNodes(nodes);
 
       this.ztreeObj = $.fn.zTree.init(
         $(`#${this.treeId}`),
