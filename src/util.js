@@ -129,6 +129,8 @@ export default {
         let tillNowKeyName = previousKey + key + separator;
         node.open     = !!openStatus[tillNowKeyName];
         node.children = this.formatTreeData(tree[key], tillNowKeyName, openStatus, separator);
+        // keep folder node in top of the tree(not include the outest list)
+        this.sortNodes(node.children);
         node.keyCount = node.children.reduce((a, b) => a + (b.keyCount || 0), 0);
         node.fullName = tillNowKeyName;
       }
@@ -140,5 +142,15 @@ export default {
 
       return node;
     });
-  }
+  },
+  // nodes is reference
+  sortNodes(nodes) {
+    nodes.sort(function(a, b) {
+      if (a.children && b.children) {
+        return 0;
+      }
+
+      return a.children ? -1 : (b.children ? 1 : 0);
+    });
+  },
 };
