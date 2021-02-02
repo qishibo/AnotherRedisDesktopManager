@@ -100,6 +100,11 @@ const cn = {
     page_zoom: '页面缩放',
     scan_disabled: 'Scan命令执行异常（可能已被禁用），无法显示Key列表',
     key_type_not_support: '该类型暂不支持可视化展示，请使用命令行进行操作',
+    delete_folder: '删除文件夹',
+    multiple_select: '多项选择',
+    copy: '复制',
+    keys_to_be_deleted: '即将删除的键值',
+    delete_all: '全部删除',
   },
 };
 

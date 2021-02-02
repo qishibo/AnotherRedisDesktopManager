@@ -119,17 +119,18 @@ export default {
       });
     });
 
-    return this.formatTreeData(tree, '', openStatus)
+    return this.formatTreeData(tree, '', openStatus, separator)
   },
-  formatTreeData(tree, previousKey = '', openStatus = {}) {
+  formatTreeData(tree, previousKey = '', openStatus = {}, separator = ':') {
     return Object.keys(tree).map(key => {
       let node = { name: key};
 
       if (!tree[key].keyNode && Object.keys(tree[key]).length > 0) {
-        let tillNowKeyName = previousKey + key;
+        let tillNowKeyName = previousKey + key + separator;
         node.open     = !!openStatus[tillNowKeyName];
-        node.children = this.formatTreeData(tree[key], tillNowKeyName, openStatus);
+        node.children = this.formatTreeData(tree[key], tillNowKeyName, openStatus, separator);
         node.keyCount = node.children.reduce((a, b) => a + (b.keyCount || 0), 0);
+        node.fullName = tillNowKeyName;
       }
       else {
         node.keyCount = 1;
