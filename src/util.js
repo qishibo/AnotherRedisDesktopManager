@@ -119,6 +119,7 @@ export default {
       });
     });
     var formatTree = this.formatTreeData(tree, '', openStatus, separator)
+    debugger;
     return this.formatAgain(formatTree,separator)
   },
   formatTreeData(tree, previousKey = '', openStatus = {}, separator = ':') {
@@ -152,7 +153,7 @@ export default {
             }
         }
         if(node.children!=undefined){
-            this.formatAgain(node.children)
+            this.formatAgain(node.children,separator)
         }
     })
     return r;
