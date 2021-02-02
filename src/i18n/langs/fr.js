@@ -100,6 +100,11 @@ const fr = {
     page_zoom: 'Agrandir la page',
     scan_disabled: 'Exception d\'exécution de la commande Scan (peut avoir été désactivée), la liste des clés ne peut pas être affichée',
     key_type_not_support: 'L\'affichage visuel n\'est pas pris en charge pour ce type. Veuillez utiliser la console',
+    delete_folder: 'Supprimer le dossier',
+    multiple_select: 'Sélection multiple',
+    copy: 'Copie',
+    keys_to_be_deleted: 'Clés à supprimer',
+    delete_all: 'Supprimer tout',
   },
 };
 

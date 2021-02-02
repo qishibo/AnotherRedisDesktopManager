@@ -100,6 +100,11 @@ const de = {
     page_zoom: 'Seite vergrößern',
     scan_disabled: 'Ausnahme bei der Ausführung von Scan-Befehlen (kann deaktiviert worden sein), Schlüsselliste kann nicht angezeigt werden',
     key_type_not_support: 'Die visuelle Anzeige wird für diesen Typ wird nicht unterstützt. Bitte benutzen Sie die Konsole.',
+    delete_folder: 'Ordner entfernen',
+    multiple_select: 'Mehrere Auswahl',
+    copy: 'Kopieren',
+    keys_to_be_deleted: 'Zu löschende Schlüssel',
+    delete_all: 'Alle löschen',
   },
 };
 

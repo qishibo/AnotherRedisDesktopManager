@@ -44,8 +44,13 @@ export default {
     // add or remove key from key list directly
     this.$bus.$on('refreshKeyList', (client, key = '', type = 'del') => {
       // refresh only self connection key list
-      if ((client !== this.client) || !key) {
+      if (client !== this.client) {
         return;
+      }
+
+      // refresh directly
+      if (!key) {
+        return this.refreshKeyList();
       }
 
       (type == 'del') && this.removeKeyFromKeyList(key);

@@ -100,6 +100,11 @@ const tr = {
       page_zoom: 'Sayfa Yakınlaştırma',
       scan_disabled: 'Tarama komutu yürütme istisnası (devre dışı bırakılmış olabilir), anahtar listesi görüntülenemiyor',
       key_type_not_support: 'Görsel görüntüler bu tür için desteklenmiyor. Lütfen konsole kullanın',
+      delete_folder: 'Klasörü Sil',
+      multiple_select: 'Çoklu Seçim',
+      copy: 'Kopyala',
+      keys_to_be_deleted: 'Silinecek Anahtarlar',
+      delete_all: 'Hepsini sil',
     },
   };
 
