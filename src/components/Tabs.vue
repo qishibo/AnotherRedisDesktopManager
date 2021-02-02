@@ -11,6 +11,7 @@
       </span>
       <Status :client='item.client' v-if="item.component === 'status'"></Status>
       <CliTab :client='item.client' v-else-if="item.component === 'cli'"></CliTab>
+      <DeleteBatch :client='item.client' v-else-if="item.component === 'delbatch'" :rule="item.rule"></DeleteBatch>
       <KeyDetail :client='item.client' v-else :redisKey="item.redisKey" :keyType="item.keyType"></KeyDetail>
     </el-tab-pane>
   </el-tabs>
@@ -21,6 +22,7 @@
 import Status from '@/components/Status';
 import CliTab from '@/components/CliTab';
 import KeyDetail from '@/components/KeyDetail';
+import DeleteBatch from '@/components/DeleteBatch';
 
 export default {
   data() {
@@ -29,7 +31,7 @@ export default {
       tabs: [],
     };
   },
-  components: { Status, KeyDetail, CliTab },
+  components: { Status, KeyDetail, CliTab, DeleteBatch },
   created() {
     // key clicked
     this.$bus.$on('clickedKey', (client, key, newTab = false) => {
@@ -44,6 +46,11 @@ export default {
     // open cli tab
     this.$bus.$on('openCli', (client, tabName) => {
       this.addCliTab(client, tabName);
+    });
+
+    // open delete batch tab
+    this.$bus.$on('openDelBatch', (client, tabName, rule = {}) => {
+      this.addDelBatchTab(client, tabName, rule);
     });
 
     // remove pre tab
@@ -100,6 +107,18 @@ export default {
       }
 
       this.addTab(newTabItem, newTab);
+    },
+    addDelBatchTab(client, tabName, rule = {}) {
+      const newTabItem = {
+        name: `del_batch_${tabName}_${Math.random()}`,
+        label: this.$util.cutString(tabName),
+        title: tabName,
+        client: client,
+        component: 'delbatch',
+        rule: rule,
+      }
+
+      this.addTab(newTabItem, true);
     },
     addKeyTab(client, key, newTab = false) {
       client.type(key).then((type) => {
@@ -172,6 +191,7 @@ export default {
       const map = {
         cli: 'fa fa-terminal',
         status: 'el-icon-info',
+        delbatch: 'el-icon-delete',
       };
 
       const icon = map[component];

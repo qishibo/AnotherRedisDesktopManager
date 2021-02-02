@@ -100,6 +100,11 @@ const en = {
     page_zoom: 'Page Zoom',
     scan_disabled: 'Scan command execution exception(may have been disabled), key list cannot be displayed',
     key_type_not_support: 'Visual display is not supported for this type. Please use console',
+    delete_folder: 'Delete Folder',
+    multiple_select: 'Multiple Select',
+    copy: 'Copy',
+    keys_to_be_deleted: 'Keys To Be Deleted',
+    delete_all: 'Delete All',
   },
 };
 

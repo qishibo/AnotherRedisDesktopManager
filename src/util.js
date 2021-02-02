@@ -118,18 +118,19 @@ export default {
         currentNode = currentNode[value];
       });
     });
-    var formatTree = this.formatTreeData(tree, '', openStatus)
-    return this.formatAgain(formatTree)
+    var formatTree = this.formatTreeData(tree, '', openStatus, separator)
+    return this.formatAgain(formatTree,separator)
   },
-  formatTreeData(tree, previousKey = '', openStatus = {}) {
+  formatTreeData(tree, previousKey = '', openStatus = {}, separator = ':') {
     return Object.keys(tree).map(key => {
       let node = { name: key};
 
       if (!tree[key].keyNode && Object.keys(tree[key]).length > 0) {
-        let tillNowKeyName = previousKey + key;
+        let tillNowKeyName = previousKey + key + separator;
         node.open     = !!openStatus[tillNowKeyName];
-        node.children = this.formatTreeData(tree[key], tillNowKeyName, openStatus);
+        node.children = this.formatTreeData(tree[key], tillNowKeyName, openStatus, separator);
         node.keyCount = node.children.reduce((a, b) => a + (b.keyCount || 0), 0);
+        node.fullName = tillNowKeyName;
       }
       else {
         node.keyCount = 1;
@@ -140,11 +141,11 @@ export default {
       return node;
     });
   },
-  formatAgain(r){
+  formatAgain(r,separator){
     r.forEach(node=>{
         while(node.children!=undefined && node.children.length==1){
             if(node.children[0].nameBuffer == undefined){
-                node.name += ':'+node.children[0].name
+                node.name += separator + node.children[0].name
                 node.children = node.children[0].children
             }else{
                 break;
