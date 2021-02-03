@@ -40,6 +40,7 @@ const uk = {
     collapse_all: 'Згорнути все',
     expand_all: 'Розгорнути все',
     json_format_failed: 'Не вдалося форматувати в JSON',
+    msgpack_format_failed: 'Не вдалося форматувати в MessagePack', 
     php_unserialize_format_failed: 'PHP Unserialize форматування невдале',
     clean_up: 'Очистити',
     redis_console: 'Redis консоль',
