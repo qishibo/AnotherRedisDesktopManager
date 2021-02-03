@@ -40,6 +40,7 @@ const tr = {
       collapse_all: 'Hepsini Daralt',
       expand_all: 'Hepsini Genişlet',
       json_format_failed: 'Json Ayrıştırma Başarısız Oldu',
+      msgpack_format_failed: 'Msgpack Ayrıştırma Başarısız Oldu',
       php_unserialize_format_failed: 'PHP Serileştirmesi Başarısız Oldu',
       clean_up: 'Pırıl Pırıl Yap',
       redis_console: 'Redis Konsolu',

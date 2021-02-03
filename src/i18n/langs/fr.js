@@ -40,6 +40,7 @@ const fr = {
     collapse_all: 'Tout fermer',
     expand_all: 'Tout étendre',
     json_format_failed: 'Échec de l\'analyse du JSON',
+    msgpack_format_failed: 'Échec de l\'analyse du Msgpack',
     php_unserialize_format_failed: 'Échec de la désérialisation PHP',
     clean_up: 'Nettoyer',
     redis_console: 'Console Redis',

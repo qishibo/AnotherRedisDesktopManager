@@ -40,6 +40,7 @@ const tw = {
     collapse_all: '全部摺疊',
     expand_all: '全部展開',
     json_format_failed: 'JSON 格式化失敗',
+    msgpack_format_failed: 'Msgpack 格式化失敗',
     php_unserialize_format_failed: 'PHP Unserialize 格式化失敗',
     clean_up: '清空',
     redis_console: 'Redis 控制台',
