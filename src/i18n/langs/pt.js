@@ -40,6 +40,7 @@ const pt = {
     collapse_all: 'Recolher todos',
     expand_all: 'Expandir todos',
     json_format_failed: 'Falha na análise do JSON',
+    msgpack_format_failed: 'Falha na análise do Msgpack',
     php_unserialize_format_failed: 'Falha na desserialização do PHP',
     clean_up: 'Limpar',
     redis_console: 'Console do Redis',

@@ -40,6 +40,7 @@ const en = {
     collapse_all: 'Collapse All',
     expand_all: 'Expand All',
     json_format_failed: 'Json Parse Failed',
+    msgpack_format_failed: 'Msgpack Parse Failed',
     php_unserialize_format_failed: 'PHP Unserialize Failed',
     clean_up: 'Clean Up',
     redis_console: 'Redis Console',

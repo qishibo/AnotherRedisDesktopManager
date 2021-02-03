@@ -40,6 +40,7 @@ const ru = {
     collapse_all: 'Свернуть все',
     expand_all: 'Развернуть все',
     json_format_failed: 'Не удалось форматировать в JSON',
+    msgpack_format_failed: 'Не удалось форматировать в Msgpack',
     php_unserialize_format_failed: 'PHP Unserialize форматирование не удалось',
     clean_up: 'Очистить',
     redis_console: 'Redis console',

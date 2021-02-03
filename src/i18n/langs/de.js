@@ -40,6 +40,7 @@ const de = {
     collapse_all: 'Alle einklappen',
     expand_all: 'Alle ausklappen',
     json_format_failed: 'Json parsen fehlgeschlagen',
+    msgpack_format_failed: 'Msgpack parsen fehlgeschlagen',
     php_unserialize_format_failed: 'PHP Unserialisieren fehlgeschlagen',
     clean_up: 'Bereinigen',
     redis_console: 'Redis Konsole',
