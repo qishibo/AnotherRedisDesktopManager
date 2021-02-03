@@ -119,7 +119,6 @@ export default {
       });
     });
     var formatTree = this.formatTreeData(tree, '', openStatus, separator)
-    debugger;
     return this.formatAgain(formatTree,separator)
   },
   formatTreeData(tree, previousKey = '', openStatus = {}, separator = ':') {
