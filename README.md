@@ -38,15 +38,13 @@ Download latest [AppImage](https://github.com/qishibo/AnotherRedisDesktopManager
 
 ## Enjoy!
 
-![redis status dark](https://imgup.qii404.xyz/github/20200313141641.jpg)
-![redis status](https://imgup.qii404.xyz/github/20200313141504.jpg)
+![redis status dark](https://imgup.qii404.xyz/github/20210203/status.jpg)
+<!-- ![redis status](https://imgup.qii404.xyz/github/20210203/statusl.jpg) -->
 
 
-![redis key hash dark](https://imgup.qii404.xyz/github/20200313141719.jpg)
-![redis key hash](https://imgup.qii404.xyz/github/20200313141610.jpg)
+![redis key hash dark](https://imgup.qii404.xyz/github/20210203/hash.jpg)
 
-![redis console dark](https://imgup.qii404.xyz/github/20200313141656.jpg)
-![redis console](https://imgup.qii404.xyz/github/20200313141530.jpg)
+![redis console dark](https://imgup.qii404.xyz/github/20210203/cli.jpg)
 
 
 ## Feature Log
