@@ -33,7 +33,8 @@ export default {
         { value: 'ru', label: 'Русский' },
         { value: 'pt', label: 'Português' },
         { value: 'de', label: 'Deutsch' },
-        { value: 'fr', label: 'Français' }
+        { value: 'fr', label: 'Français' },
+        { value: 'ua', label: 'Українською' }
       ],
       settingDialog: { visible: false },
     };

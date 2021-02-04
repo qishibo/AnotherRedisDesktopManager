@@ -1,4 +1,4 @@
-const uk = {
+const ua = {
   message: {
     new_connection: 'Нове з`єднання',
     refresh_connection: 'Оновити',
@@ -40,7 +40,7 @@ const uk = {
     collapse_all: 'Згорнути все',
     expand_all: 'Розгорнути все',
     json_format_failed: 'Не вдалося форматувати в JSON',
-    msgpack_format_failed: 'Не вдалося форматувати в MessagePack', 
+    msgpack_format_failed: 'Не вдалося форматувати в MessagePack',
     php_unserialize_format_failed: 'PHP Unserialize форматування невдале',
     clean_up: 'Очистити',
     redis_console: 'Redis консоль',
@@ -97,9 +97,9 @@ const uk = {
     redis_status: 'Інформація Redis',
     confirm_flush_db: 'Ви впевнені, що видалили всі ключі в db {db}?',
     flushdb: 'Видалити всі ключі',
-    info_disabled: 'Виняток при виконанні команди Info (можливо, було від`єднано), інформація про Redis не може бути відображена',
+    info_disabled: 'Виняток при виконанні команди Info (можливо, було відключено), інформація про Redis не відображається',
     page_zoom: 'Масштаб сторінки',
-    scan_disabled: 'Виняток при виконанні команди Scan (можливо, було від`єднано), неможливо відобразити список ключів',
+    scan_disabled: 'Виняток при виконанні команди Scan (можливо, було відключено), неможливо відобразити список ключів',
     key_type_not_support: 'показ цього типу поки не підтримується, використовуйте консоль',
     delete_folder: 'Видалити папку',
     multiple_select: 'Вибрати кілька',
@@ -109,4 +109,4 @@ const uk = {
   },
 };
 
-export default uk;
+export default ua;
