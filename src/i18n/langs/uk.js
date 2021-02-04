@@ -59,7 +59,7 @@ const uk = {
     select_import_file: 'Виберіть файл',
     import_success: 'Успішно імпортовано',
     put_file_here: 'Перетягніть файли сюди або натисніть, щоб вибрати',
-    config_connections: 'Налаштування з`єднання,
+    config_connections: 'Налаштування з`єднання',
     import: 'Імпорт',
     export: 'Експорт',
     open: 'Відкрити',
