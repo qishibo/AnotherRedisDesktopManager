@@ -29,6 +29,7 @@ import ViewerText from '@/components/ViewerText';
 import ViewerJson from '@/components/ViewerJson';
 import ViewerBinary from '@/components/ViewerBinary';
 import ViewerUnserialize from '@/components/ViewerUnserialize';
+import ViewerMsgpack from '@/components/ViewerMsgpack';
 
 export default {
   data() {
@@ -38,6 +39,7 @@ export default {
         { value: 'ViewerText', text: 'Text' },
         { value: 'ViewerJson', text: 'Json' },
         { value: 'ViewerBinary', text: 'Binary' },
+        { value: 'ViewerMsgpack', text: 'Msgpack' },
         { value: 'ViewerUnserialize', text: 'Unserialize' },
       ],
       selectStyle: {
@@ -45,7 +47,7 @@ export default {
       },
     };
   },
-  components: {ViewerText, ViewerJson, ViewerBinary, ViewerUnserialize},
+  components: {ViewerText, ViewerJson, ViewerBinary, ViewerUnserialize, ViewerMsgpack},
   props: {
     float: {default: 'right'},
     content: {default: () => Buffer.from('')},

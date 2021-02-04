@@ -40,6 +40,7 @@ const cn = {
     collapse_all: '全部折叠',
     expand_all: '全部展开',
     json_format_failed: 'Json 格式化失败',
+    msgpack_format_failed: 'Msgpack 格式化失败',
     php_unserialize_format_failed: 'PHP Unserialize 格式化失败',
     clean_up: '清空',
     redis_console: 'Redis 控制台',
@@ -80,7 +81,7 @@ const cn = {
     update_download_progress: '下载进度',
     update_downloaded: '更新下载完成，重启客户端生效',
     mac_not_support_auto_update: 'Mac暂时不支持自动更新，请手动下载后重新安装，或者执行\
-    brew cask reinstall another-redis-desktop-manager',
+    brew reinstall --cask another-redis-desktop-manager',
     font_family: '字体选择',
     font_faq_title: '字体设置说明',
     font_faq: '1. 可以设置多个字体<br>2. 字体选择是有序的，建议首先选择英文字体，然后再选择中文字体<br>\
@@ -100,6 +101,11 @@ const cn = {
     page_zoom: '页面缩放',
     scan_disabled: 'Scan命令执行异常（可能已被禁用），无法显示Key列表',
     key_type_not_support: '该类型暂不支持可视化展示，请使用命令行进行操作',
+    delete_folder: '删除文件夹',
+    multiple_select: '多项选择',
+    copy: '复制',
+    keys_to_be_deleted: '即将删除的键值',
+    delete_all: '全部删除',
   },
 };
 

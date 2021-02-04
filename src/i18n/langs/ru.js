@@ -40,6 +40,7 @@ const ru = {
     collapse_all: 'Свернуть все',
     expand_all: 'Развернуть все',
     json_format_failed: 'Не удалось форматировать в JSON',
+    msgpack_format_failed: 'Не удалось форматировать в Msgpack',
     php_unserialize_format_failed: 'PHP Unserialize форматирование не удалось',
     clean_up: 'Очистить',
     redis_console: 'Redis console',
@@ -80,7 +81,7 @@ const ru = {
     update_download_progress: 'Прогресс загрузки',
     update_downloaded: 'Обновление завершено, перезапустите приложение, пожалуйста',
     mac_not_support_auto_update: 'Mac не поддерживает автоматическое обновление, скачайте и переустановите приложение вручную,\
-    Или выполните комманду "brew cask reinstall another-redis-desktop-manager"',
+    Или выполните комманду "brew reinstall --cask another-redis-desktop-manager"',
     font_family: 'Семейство шрифтов',
     font_faq_title: 'Инструкции по настройке шрифта',
     font_faq: '1. Можно установить несколько шрифтов.<br>\
@@ -100,6 +101,11 @@ const ru = {
     page_zoom: 'Масштаб страницы',
     scan_disabled: 'Исключение при выполнении команды Scan (возможно, было отключено), невозможно отобразить список ключей.',
     key_type_not_support: 'показ этого типа пока не поддерживается, используйте консоль',
+    delete_folder: 'Удалить папку',
+    multiple_select: 'Множественный выбор',
+    copy: 'Копировать',
+    keys_to_be_deleted: 'Ключи для удаления',
+    delete_all: 'Удалить все',
   },
 };
 

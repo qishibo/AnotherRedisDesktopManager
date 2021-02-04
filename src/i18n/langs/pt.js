@@ -40,6 +40,7 @@ const pt = {
     collapse_all: 'Recolher todos',
     expand_all: 'Expandir todos',
     json_format_failed: 'Falha na análise do JSON',
+    msgpack_format_failed: 'Falha na análise do Msgpack',
     php_unserialize_format_failed: 'Falha na desserialização do PHP',
     clean_up: 'Limpar',
     redis_console: 'Console do Redis',
@@ -80,7 +81,7 @@ const pt = {
     update_download_progress: 'Download em progresso',
     update_downloaded: 'Download de atualização concluído, reinicie seu aplicativo por favor',
     mac_not_support_auto_update: 'Mac não suporta atualização automática, faça o download e reinstale manualmente, \
-    Ou execute "brew cask reinstall another-redis-desktop-manager"',
+    Ou execute "brew reinstall --cask another-redis-desktop-manager"',
     font_family: 'Font Family',
     font_faq_title: 'Instruções de configuração de fonte',
     font_faq: '1. Múltiplas fontes podem ser definidas <br>\
@@ -100,6 +101,11 @@ const pt = {
     page_zoom: 'Zoom da página',
     scan_disabled: 'Exceção de execução do comando de scan (pode ter sido desativada), a lista de chaves não pode ser exibida',
     key_type_not_support: 'Visual display não é suportado para este tipo. Por favor, use console',
+    delete_folder: 'Apagar Pasta',
+    multiple_select: 'Múltiplos Seleccionar',
+    copy: 'Copiar',
+    keys_to_be_deleted: 'Chaves a serem apagadas',
+    delete_all: 'Apagar Tudo',
   },
 };
 

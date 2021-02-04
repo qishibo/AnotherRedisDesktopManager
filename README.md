@@ -24,7 +24,7 @@ Download latest [AppImage](https://github.com/qishibo/AnotherRedisDesktopManager
 ## Mac
 
 - Download latest [dmg](https://github.com/qishibo/AnotherRedisDesktopManager/releases) package from [release](https://github.com/qishibo/AnotherRedisDesktopManager/releases) [or [gitee](https://gitee.com/qishibo/AnotherRedisDesktopManager/releases) in China], double click to install.
-- Or by **brew**: `brew cask install another-redis-desktop-manager`
+- Or by **brew**: `brew install another-redis-desktop-manager --cask`
 - Or **sponsor** by app store, It's not free, and I will be very grateful to you.
 <br/>[![app store](https://imgup.qii404.xyz/github/download_from_app_store.png)](https://apps.apple.com/app/id1516451072)
 
@@ -38,19 +38,18 @@ Download latest [AppImage](https://github.com/qishibo/AnotherRedisDesktopManager
 
 ## Enjoy!
 
-![redis status dark](https://imgup.qii404.xyz/github/20200313141641.jpg)
-![redis status](https://imgup.qii404.xyz/github/20200313141504.jpg)
+![redis status dark](https://imgup.qii404.xyz/github/20210203/status.jpg)
+<!-- ![redis status](https://imgup.qii404.xyz/github/20210203/statusl.jpg) -->
 
 
-![redis key hash dark](https://imgup.qii404.xyz/github/20200313141719.jpg)
-![redis key hash](https://imgup.qii404.xyz/github/20200313141610.jpg)
+![redis key hash dark](https://imgup.qii404.xyz/github/20210203/hash.jpg)
 
-![redis console dark](https://imgup.qii404.xyz/github/20200313141656.jpg)
-![redis console](https://imgup.qii404.xyz/github/20200313141530.jpg)
+![redis console dark](https://imgup.qii404.xyz/github/20210203/cli.jpg)
 
 
 ## Feature Log
 
+- 2021-02-03: Multiple Select\Delete && Msgpack Viewer Support
 - 2020-12-30: Tree View Support!!!
 - 2020-11-03: Binary View Support && SSH Passparse\Timeout Support
 - 2020-09-04: SSH Cluster Support && Extension Commands Support

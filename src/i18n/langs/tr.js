@@ -40,6 +40,7 @@ const tr = {
       collapse_all: 'Hepsini Daralt',
       expand_all: 'Hepsini Genişlet',
       json_format_failed: 'Json Ayrıştırma Başarısız Oldu',
+      msgpack_format_failed: 'Msgpack Ayrıştırma Başarısız Oldu',
       php_unserialize_format_failed: 'PHP Serileştirmesi Başarısız Oldu',
       clean_up: 'Pırıl Pırıl Yap',
       redis_console: 'Redis Konsolu',
@@ -80,7 +81,7 @@ const tr = {
       update_download_progress: 'İndirme Durumu',
       update_downloaded: 'Güncelleme İndirme Tamamlandı, Lütfen Uygulamanızı Yeniden Başlatın',
       mac_not_support_auto_update: 'Mac Otomatik Güncellemeyi Desteklemez, Lütfen Manuel Olarak İndirin ve Yükleyin,\
-      veya Yükleme Komutunu Çalıştırın "brew cask reinstall another-redis-desktop-manager"',
+      veya Yükleme Komutunu Çalıştırın "brew reinstall --cask another-redis-desktop-manager"',
       font_family: 'Yazı Tipi Ailesi',
       font_faq_title: 'Yazı Tipi Ayar Talimatları',
       font_faq: '1. Birden fazla yazı tipi ayarlanabilir<br>\
@@ -100,6 +101,11 @@ const tr = {
       page_zoom: 'Sayfa Yakınlaştırma',
       scan_disabled: 'Tarama komutu yürütme istisnası (devre dışı bırakılmış olabilir), anahtar listesi görüntülenemiyor',
       key_type_not_support: 'Görsel görüntüler bu tür için desteklenmiyor. Lütfen konsole kullanın',
+      delete_folder: 'Klasörü Sil',
+      multiple_select: 'Çoklu Seçim',
+      copy: 'Kopyala',
+      keys_to_be_deleted: 'Silinecek Anahtarlar',
+      delete_all: 'Hepsini sil',
     },
   };
 

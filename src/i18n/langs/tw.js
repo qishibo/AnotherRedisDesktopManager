@@ -40,6 +40,7 @@ const tw = {
     collapse_all: '全部摺疊',
     expand_all: '全部展開',
     json_format_failed: 'JSON 格式化失敗',
+    msgpack_format_failed: 'Msgpack 格式化失敗',
     php_unserialize_format_failed: 'PHP Unserialize 格式化失敗',
     clean_up: '清空',
     redis_console: 'Redis 控制台',
@@ -80,7 +81,7 @@ const tw = {
     update_download_progress: '下載進度',
     update_downloaded: '更新下載完成，重啟用戶端生效',
     mac_not_support_auto_update: 'Mac 暫時不支援自動更新，請手動下載後重新安裝，或者執行\
-    brew cask reinstall another-redis-desktop-manager',
+    brew reinstall --cask another-redis-desktop-manager',
     font_family: '字體選擇',
     font_faq_title: '字體設定說明',
     font_faq: '1. 可以設定多個字體<br>2. 字體選擇是有分先後順序的，建議首先選擇英文字體，然後再選擇中文字體<br>\
@@ -100,6 +101,11 @@ const tw = {
     page_zoom: '頁面縮放',
     scan_disabled: 'Scan命令執行異常（可能已被禁用），無法顯示key列表',
     key_type_not_support: '該類型暫不支持視覺化展示，請使用Console',
+    delete_folder: '刪除資料夾',
+    multiple_select: '多項選擇',
+    copy: '複製',
+    keys_to_be_deleted: '即將刪除的鍵',
+    delete_all: '全部删除',
   },
 };
 
