@@ -61,7 +61,11 @@
         <el-form-item label="PrivateKey">
           <el-tooltip effect="dark">
             <div slot="content" v-html="$t('message.private_key_faq')"></div>
-            <FileInput :file.sync='connection.sshOptions.privatekey' placeholder='SSH Private Key'></FileInput>
+            <FileInput 
+              :file.sync='connection.sshOptions.privatekey'
+              :bookmark.sync='connection.sshOptions.privatekeybookmark'
+              placeholder='SSH Private Key'>
+            </FileInput>
           </el-tooltip>
         </el-form-item>
 
@@ -231,3 +235,4 @@ export default {
     border-color: #7b95ad;
   }
 </style>
+
