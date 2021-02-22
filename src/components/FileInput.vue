@@ -37,7 +37,7 @@
           if (reply.canceled) {
             return;
           }
-          console.log('file selected', reply);
+
           reply.filePaths && this.$emit('update:file', reply.filePaths[0]);
           reply.bookmarks && this.$emit('update:bookmark', reply.bookmarks[0]);
         }).catch(e => {

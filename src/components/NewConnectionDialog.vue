@@ -61,7 +61,7 @@
         <el-form-item label="PrivateKey">
           <el-tooltip effect="dark">
             <div slot="content" v-html="$t('message.private_key_faq')"></div>
-            <FileInput 
+            <FileInput
               :file.sync='connection.sshOptions.privatekey'
               :bookmark.sync='connection.sshOptions.privatekeybookmark'
               placeholder='SSH Private Key'>
@@ -85,15 +85,27 @@
         </fieldset>
 
         <el-form-item label="PrivateKey">
-          <FileInput :file.sync='connection.sslOptions.key' placeholder='SSL Private Key Pem (key)'></FileInput>
+          <FileInput
+            :file.sync='connection.sslOptions.key'
+            :bookmark.sync='connection.sslOptions.keybookmark'
+            placeholder='SSL Private Key Pem (key)'>
+            </FileInput>
         </el-form-item>
 
         <el-form-item label="PublicKey">
-          <FileInput :file.sync='connection.sslOptions.cert' placeholder='SSL Public Key Pem (cert)'></FileInput>
+          <FileInput
+            :file.sync='connection.sslOptions.cert'
+            :bookmark.sync='connection.sslOptions.certbookmark'
+            placeholder='SSL Public Key Pem (cert)'>
+            </FileInput>
         </el-form-item>
 
         <el-form-item label="Authority">
-          <FileInput :file.sync='connection.sslOptions.ca' placeholder='SSL Certificate Authority (CA)'></FileInput>
+          <FileInput
+            :file.sync='connection.sslOptions.ca'
+            :bookmark.sync='connection.sslOptions.cabookmark'
+            placeholder='SSL Certificate Authority (CA)'>
+            </FileInput>
         </el-form-item>
       </el-form>
     </el-form>
