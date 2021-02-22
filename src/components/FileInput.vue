@@ -3,40 +3,48 @@
     :value='file'
     clearable
     @clear='clearFile'
-    @change="changeValue"
+    @focus='focus'
     :placeholder='placeholder'>
     <template slot="append">
       <el-button @click='showFileSelector'>...</el-button>
-    </template>
-    <template slot='append'>
-      <input ref='fileDom' type="file" @change="changeFile($event)" style="display: none">
     </template>
   </el-input>
 </template>
 
 <script type="text/javascript">
+  import {remote} from 'electron';
+
   export default {
     props: {
       file: {default: ''},
+      bookmark: {default: ''},
       placeholder: {default: 'Select File'}
     },
     methods: {
       clearFile() {
-        this.$refs.fileDom.value = '';
         this.$emit('update:file', '');
+        this.$emit('update:bookmark', '');
       },
-      changeValue(value) {
-        this.$emit('update:file', value);
-      },
-      changeFile(e) {
-        if (!e.target.files[0]) {
-          return;
-        }
-        this.$emit('update:file', e.target.files[0].path);
+      focus(e) {
+        // edit is forbidden, input blur
+        e.target.blur();
       },
       showFileSelector() {
-        this.$refs.fileDom.click();
+        remote.dialog.showOpenDialog(remote.getCurrentWindow(), {
+          securityScopedBookmarks: true,
+          properties: ['openFile','showHiddenFiles']
+        }).then(reply => {
+          if (reply.canceled) {
+            return;
+          }
+
+          reply.filePaths && this.$emit('update:file', reply.filePaths[0]);
+          reply.bookmarks && this.$emit('update:bookmark', reply.bookmarks[0]);
+        }).catch(e => {
+          this.$message.error(`File Input Error: ${e.message}`);
+        });
       }
     },
   }
 </script>
+
