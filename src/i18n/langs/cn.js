@@ -106,6 +106,7 @@ const cn = {
     copy: '复制',
     keys_to_be_deleted: '即将删除的键值',
     delete_all: '全部删除',
+    clear_cache: '清除缓存',
   },
 };
 

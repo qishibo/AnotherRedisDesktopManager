@@ -1,9 +1,9 @@
 <template>
   <div>
     <ConnectionWrapper
-      v-for="(item, connectionName) of connections"
-      :key="connectionName"
-      :index="connectionName"
+      v-for="item of connections"
+      :key="item.key ? item.key : item.connectionName"
+      :index="item.connectionName"
       :config='item'>
     </ConnectionWrapper>
   </div>
@@ -28,18 +28,16 @@ export default {
   methods: {
     initConnections() {
       const connections = storage.getConnections(true);
-      const slovedConnections = {};
+      const slovedConnections = [];
+      // this.connections = [];
 
       for (const item of connections) {
-        item.connectionName = this.initConnectionName(item);
-        slovedConnections[item.connectionName] = item;
+        item.connectionName = storage.getConnectionName(item);
+        slovedConnections.push(item);
       }
 
       this.connections = slovedConnections;
-    },
-    initConnectionName(connection) {
-      return connection.name || `${connection.host}@${connection.port}`;
-    },
+    }
   },
   mounted() {
     this.initConnections();

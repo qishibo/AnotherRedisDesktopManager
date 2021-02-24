@@ -106,6 +106,7 @@ const ru = {
     copy: 'Копировать',
     keys_to_be_deleted: 'Ключи для удаления',
     delete_all: 'Удалить все',
+    clear_cache: 'Oчистить кэш',
   },
 };
 

@@ -157,7 +157,14 @@ export default {
     }
   },
   components: {FileInput},
-  props: ['config', 'editMode'],
+  props: {
+    config: {
+      default: _ => new Array,
+    },
+    editMode: {
+      default: false,
+    },
+  },
   computed: {
     dialogTitle() {
       return this.editMode ? this.$t('message.edit_connection') :
@@ -199,9 +206,13 @@ export default {
         delete config.sslOptions;
       }
 
+      const oldKey = storage.getConnectionKey(this.config);
+      // fix key miss from raw format import first 20210224
+      // this.config.key && (config.key = this.config.key);
+
       // config as new connectionRaw
       this.connectionRaw = config;
-      storage.editConnectionByKey(config, this.oldKey);
+      storage.editConnectionByKey(config, oldKey);
 
       this.dialogVisible = false;
       this.$emit('editConnectionFinished');
@@ -216,7 +227,6 @@ export default {
       // back up the raw connection for edit mode
       this.connectionRaw = JSON.parse(JSON.stringify(this.config));
 
-      this.oldKey = storage.getConnectionKey(this.config);
       this.sslOptionsShow = !!this.config.sslOptions;
       this.sshOptionsShow = !!this.config.sshOptions;
 
