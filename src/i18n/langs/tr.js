@@ -106,6 +106,7 @@ const tr = {
       copy: 'Kopyala',
       keys_to_be_deleted: 'Silinecek Anahtarlar',
       delete_all: 'Hepsini sil',
+      clear_cache: 'önbelleği temizle',
     },
   };
 

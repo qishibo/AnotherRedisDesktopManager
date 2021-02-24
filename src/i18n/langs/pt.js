@@ -106,6 +106,7 @@ const pt = {
     copy: 'Copiar',
     keys_to_be_deleted: 'Chaves a serem apagadas',
     delete_all: 'Apagar Tudo',
+    clear_cache: 'Limpar cache',
   },
 };
 

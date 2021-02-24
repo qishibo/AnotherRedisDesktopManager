@@ -106,6 +106,7 @@ const fr = {
     copy: 'Copie',
     keys_to_be_deleted: 'Clés à supprimer',
     delete_all: 'Supprimer tout',
+    clear_cache: 'Vider le cache',
   },
 };
 

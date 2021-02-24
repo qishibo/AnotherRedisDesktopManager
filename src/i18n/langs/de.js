@@ -106,6 +106,7 @@ const de = {
     copy: 'Kopieren',
     keys_to_be_deleted: 'Zu löschende Schlüssel',
     delete_all: 'Alle löschen',
+    clear_cache: 'Cache leeren',
   },
 };
 

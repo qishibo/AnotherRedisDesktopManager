@@ -59,6 +59,7 @@
       <el-form-item :label="$t('message.pre_version')" class='current-version'>
         <el-tag type="info">{{ appVersion }}</el-tag>
 
+        <a href="###" @click.stop.prevent="clearCache">{{ $t('message.clear_cache') }}</a>
         <a href="###" @click.stop.prevent="checkUpdate">{{ $t('message.check_update') }}</a>
         <a href="https://github.com/qishibo/AnotherRedisDesktopManager/releases">{{ $t('message.manual_update') }}</a>
         <a href="https://github.com/qishibo/AnotherRedisDesktopManager/">{{ $t('message.project_home') }}</a>
@@ -155,12 +156,18 @@ export default {
       config = JSON.parse(config);
       // remove all connections first
       storage.setConnections({});
+      // close all connections
+      this.$bus.$emit('closeConnection');
+      this.$bus.$emit('refreshConnections');
 
       for (const line of config) {
         storage.addConnection(line);
       }
 
-      this.$bus.$emit('refreshConnections');
+      this.$nextTick(() => {
+        this.$bus.$emit('refreshConnections');
+      });
+
       this.$message.success({
         message: this.$t('message.import_success'),
         duration: 1000,
@@ -203,6 +210,11 @@ export default {
         this.loadingFonts = true;
         ipcRenderer.send('get-all-fonts');
       }
+    },
+    clearCache() {
+      localStorage.clear();
+      this.$message.success(this.$t('message.delete_success'));
+      window.location.reload();
     },
   },
   mounted() {
