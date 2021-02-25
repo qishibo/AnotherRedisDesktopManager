@@ -10,36 +10,60 @@ export default {
     return localStorage.setItem('settings', settings);
   },
   addConnection(connection) {
-    const connections = this.getConnections();
-    const key = this.getConnectionKey(connection);
-
-    if (connections[key]) {
-      return false;
-    }
-
-    connections[key] = connection;
-    this.setConnections(connections);
+    this.editConnectionByKey(connection, '');
   },
   getConnections(returnList = false) {
     let connections = localStorage.connections || '{}';
 
     connections = JSON.parse(connections);
-    connections = this.sortByKey(connections);
 
     if (returnList) {
       connections = Object.keys(connections).map(key => connections[key]);
+      this.sortConnections(connections);
     }
 
     return connections;
   },
   editConnectionByKey(connection, oldKey = '') {
+    oldKey = connection.key || oldKey;
+
     const connections = this.getConnections();
-    const newKey = this.getConnectionKey(connection);
-
     delete connections[oldKey];
-    connections[newKey] = connection;
 
+    this.updateConnectionName(connection, connections);
+    const newKey = this.getConnectionKey(connection, true);
+    connection.key = newKey;
+
+    connections[newKey] = connection;
     this.setConnections(connections);
+  },
+  editConnectionItem(connection, items = {}) {
+    const key = this.getConnectionKey(connection);
+    const connections = this.getConnections();
+
+    if (!connections[key]) {
+      return;
+    }
+
+    Object.assign(connection, items);
+    Object.assign(connections[key], items);
+    this.setConnections(connections);
+  },
+  updateConnectionName(connection, connections) {
+    let name = this.getConnectionName(connection);
+
+    for (let key in connections) {
+      // if 'name' same with others, add random suffix
+      if (this.getConnectionName(connections[key]) == name) {
+        name += ` (${Math.random().toString(36).substr(-3)})`;
+        break;
+      }
+    }
+
+    connection.name = name;
+  },
+  getConnectionName(connection) {
+    return connection.name || `${connection.host}@${connection.port}`;
   },
   setConnections(connections) {
     localStorage.connections = JSON.stringify(connections);
@@ -52,11 +76,28 @@ export default {
 
     this.setConnections(connections);
   },
-  getConnectionKey(connection) {
+  getConnectionKey(connection, forceUnique = false) {
+    if (Object.keys(connection).length === 0) {
+      return '';
+    }
+
+    if (connection.key) {
+      return connection.key;
+    }
+
+    if (forceUnique) {
+      return new Date().getTime() + '_' + Math.random().toString(36).substr(-5);
+    }
+
     return connection.host + connection.port + connection.name;
   },
-  sortByKey(obj) {
-    return Object.keys(obj).sort()
-      .reduce((acc, c) => { acc[c] = obj[c]; return acc; }, {});
+  sortConnections(connections) {
+    connections.sort(function(a, b) {
+      if (a.key && b.key) {
+        return a.key < b.key ? -1 : 1;
+      }
+
+      return a.key ? 1 : (b.key ? -1 : 0);
+    });
   },
 };

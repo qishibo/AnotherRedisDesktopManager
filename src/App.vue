@@ -64,7 +64,7 @@ export default {
         const mouseX = e.x;
         const dragSideWidth = mouseX - 19;
 
-        if ((dragSideWidth > 200) && (dragSideWidth < 500)) {
+        if ((dragSideWidth > 200) && (dragSideWidth < 1500)) {
           that.sideWidth = dragSideWidth;
         }
       }
@@ -198,7 +198,7 @@ button, input, textarea, .vjs__tree {
 .aside-drag-container {
   position: relative;
   user-select: none;
-  max-width: 50%;
+  /*max-width: 50%;*/
 }
 .aside-connection {
   height: 100%;

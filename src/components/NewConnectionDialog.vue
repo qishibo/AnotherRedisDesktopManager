@@ -61,7 +61,11 @@
         <el-form-item label="PrivateKey">
           <el-tooltip effect="dark">
             <div slot="content" v-html="$t('message.private_key_faq')"></div>
-            <FileInput :file.sync='connection.sshOptions.privatekey' placeholder='SSH Private Key'></FileInput>
+            <FileInput
+              :file.sync='connection.sshOptions.privatekey'
+              :bookmark.sync='connection.sshOptions.privatekeybookmark'
+              placeholder='SSH Private Key'>
+            </FileInput>
           </el-tooltip>
         </el-form-item>
 
@@ -81,15 +85,27 @@
         </fieldset>
 
         <el-form-item label="PrivateKey">
-          <FileInput :file.sync='connection.sslOptions.key' placeholder='SSL Private Key Pem (key)'></FileInput>
+          <FileInput
+            :file.sync='connection.sslOptions.key'
+            :bookmark.sync='connection.sslOptions.keybookmark'
+            placeholder='SSL Private Key Pem (key)'>
+            </FileInput>
         </el-form-item>
 
         <el-form-item label="PublicKey">
-          <FileInput :file.sync='connection.sslOptions.cert' placeholder='SSL Public Key Pem (cert)'></FileInput>
+          <FileInput
+            :file.sync='connection.sslOptions.cert'
+            :bookmark.sync='connection.sslOptions.certbookmark'
+            placeholder='SSL Public Key Pem (cert)'>
+            </FileInput>
         </el-form-item>
 
         <el-form-item label="Authority">
-          <FileInput :file.sync='connection.sslOptions.ca' placeholder='SSL Certificate Authority (CA)'></FileInput>
+          <FileInput
+            :file.sync='connection.sslOptions.ca'
+            :bookmark.sync='connection.sslOptions.cabookmark'
+            placeholder='SSL Certificate Authority (CA)'>
+            </FileInput>
         </el-form-item>
       </el-form>
     </el-form>
@@ -134,14 +150,20 @@ export default {
           ca: '',
         }
       },
-      connectionRaw: {},
       connectionEmpty: {},
       sshOptionsShow: false,
       sslOptionsShow: false,
     }
   },
   components: {FileInput},
-  props: ['config', 'editMode'],
+  props: {
+    config: {
+      default: _ => new Array,
+    },
+    editMode: {
+      default: false,
+    },
+  },
   computed: {
     dialogTitle() {
       return this.editMode ? this.$t('message.edit_connection') :
@@ -156,10 +178,10 @@ export default {
     resetFields() {
       // edit connection mode
       if (this.editMode) {
-        this.sshOptionsShow = !!this.connectionRaw.sshOptions
-        this.sslOptionsShow = !!this.connectionRaw.sslOptions
+        this.sshOptionsShow = !!this.config.sshOptions
+        this.sslOptionsShow = !!this.config.sslOptions
         // recovery connection before edit
-        let connection = Object.assign({}, this.connectionEmpty, this.connectionRaw);
+        let connection = Object.assign({}, this.connectionEmpty, this.config);
         this.connection = JSON.parse(JSON.stringify(connection));
       }
       // new connection mode
@@ -183,12 +205,11 @@ export default {
         delete config.sslOptions;
       }
 
-      // config as new connectionRaw
-      this.connectionRaw = config;
-      storage.editConnectionByKey(config, this.oldKey);
+      const oldKey = storage.getConnectionKey(this.config);
+      storage.editConnectionByKey(config, oldKey);
 
       this.dialogVisible = false;
-      this.$emit('editConnectionFinished');
+      this.$emit('editConnectionFinished', config);
     },
   },
   mounted() {
@@ -197,10 +218,6 @@ export default {
 
     // edit mode
     if (this.editMode) {
-      // back up the raw connection for edit mode
-      this.connectionRaw = JSON.parse(JSON.stringify(this.config));
-
-      this.oldKey = storage.getConnectionKey(this.config);
       this.sslOptionsShow = !!this.config.sslOptions;
       this.sshOptionsShow = !!this.config.sshOptions;
 
@@ -231,3 +248,4 @@ export default {
     border-color: #7b95ad;
   }
 </style>
+

@@ -106,6 +106,8 @@ const ua = {
     copy: 'Копіювати',
     keys_to_be_deleted: 'Ключі для видалення',
     delete_all: 'Видалити все',
+    clear_cache: 'Oчистити кеш',
+    mark_color: 'Позначити колір',
   },
 };
 

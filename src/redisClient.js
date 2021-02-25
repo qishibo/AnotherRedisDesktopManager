@@ -1,6 +1,7 @@
 import Redis from 'ioredis';
 import tunnelssh from 'tunnel-ssh';
 import vue from '@/main.js';
+import {remote} from 'electron';
 const fs = require('fs');
 
 
@@ -38,8 +39,7 @@ export default {
       dstPort: port,
       localHost: '127.0.0.1',
       localPort: null, // set null to use available port in local machine
-      privateKey: sshOptions.privatekey ?
-                  fs.readFileSync(sshOptions.privatekey) : undefined,
+      privateKey: this.getFileContent(sshOptions.privatekey, sshOptions.privatekeybookmark),
       passphrase: sshOptions.passphrase ? sshOptions.passphrase : undefined,
       keepaliveInterval: 10000,
     };
@@ -194,9 +194,12 @@ export default {
 
   getTLSOptions(options) {
     return {
-      ca: options.ca ? fs.readFileSync(options.ca) : '',
-      key: options.key ? fs.readFileSync(options.key) : '',
-      cert: options.cert ? fs.readFileSync(options.cert) : '',
+      // ca: options.ca ? fs.readFileSync(options.ca) : '',
+      // key: options.key ? fs.readFileSync(options.key) : '',
+      // cert: options.cert ? fs.readFileSync(options.cert) : '',
+      ca: this.getFileContent(options.ca, options.cabookmark),
+      key: this.getFileContent(options.key, options.keybookmark),
+      cert: this.getFileContent(options.cert, options.certbookmark),
 
       checkServerIdentity: (servername, cert) => {
         // skip certificate hostname validation
@@ -218,4 +221,21 @@ export default {
     // reconnect after
     return Math.min(times * 200, 1000);
   },
+
+  getFileContent(file, bookmark = '') {
+    if (!file) {
+      return undefined;
+    }
+
+    // mac app store version, read through bookmark
+    if (bookmark) {
+      const bookmarkClose = remote.app.startAccessingSecurityScopedResource(bookmark);
+    }
+
+    const content = fs.readFileSync(file);
+    (typeof bookmarkClose == 'function') && bookmarkClose();
+
+    return content;
+  },
 };
+
