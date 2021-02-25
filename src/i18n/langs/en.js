@@ -107,6 +107,7 @@ const en = {
     keys_to_be_deleted: 'Keys To Be Deleted',
     delete_all: 'Delete All',
     clear_cache: 'Clear Cache',
+    mark_color: 'Mark Color',
   },
 };
 

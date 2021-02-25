@@ -37,6 +37,17 @@ export default {
     connections[newKey] = connection;
     this.setConnections(connections);
   },
+  editConnectionItem(connection, items = {}) {
+    const key = this.getConnectionKey(connection);
+    const connections = this.getConnections();
+
+    if (!connections[key]) {
+      return;
+    }
+
+    Object.assign(connections[key], items);
+    this.setConnections(connections);
+  },
   updateConnectionName(connection, connections) {
     let name = this.getConnectionName(connection);
 

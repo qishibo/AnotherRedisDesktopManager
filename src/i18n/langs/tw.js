@@ -107,6 +107,7 @@ const tw = {
     keys_to_be_deleted: '即將刪除的鍵',
     delete_all: '全部删除',
     clear_cache: '清除緩存',
+    mark_color: '標記顏色',
   },
 };
 

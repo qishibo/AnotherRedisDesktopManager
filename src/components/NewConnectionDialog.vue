@@ -215,7 +215,7 @@ export default {
       storage.editConnectionByKey(config, oldKey);
 
       this.dialogVisible = false;
-      this.$emit('editConnectionFinished');
+      this.$emit('editConnectionFinished', config);
     },
   },
   mounted() {
