@@ -107,6 +107,7 @@ const fr = {
     keys_to_be_deleted: 'Clés à supprimer',
     delete_all: 'Supprimer tout',
     clear_cache: 'Vider le cache',
+    mark_color: 'Couleur de la marque',
   },
 };
 
