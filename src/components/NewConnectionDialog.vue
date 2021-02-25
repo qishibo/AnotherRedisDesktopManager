@@ -150,7 +150,6 @@ export default {
           ca: '',
         }
       },
-      connectionRaw: {},
       connectionEmpty: {},
       sshOptionsShow: false,
       sslOptionsShow: false,
@@ -179,10 +178,10 @@ export default {
     resetFields() {
       // edit connection mode
       if (this.editMode) {
-        this.sshOptionsShow = !!this.connectionRaw.sshOptions
-        this.sslOptionsShow = !!this.connectionRaw.sslOptions
+        this.sshOptionsShow = !!this.config.sshOptions
+        this.sslOptionsShow = !!this.config.sslOptions
         // recovery connection before edit
-        let connection = Object.assign({}, this.connectionEmpty, this.connectionRaw);
+        let connection = Object.assign({}, this.connectionEmpty, this.config);
         this.connection = JSON.parse(JSON.stringify(connection));
       }
       // new connection mode
@@ -207,11 +206,6 @@ export default {
       }
 
       const oldKey = storage.getConnectionKey(this.config);
-      // fix key miss from raw format import first 20210224
-      // this.config.key && (config.key = this.config.key);
-
-      // config as new connectionRaw
-      this.connectionRaw = config;
       storage.editConnectionByKey(config, oldKey);
 
       this.dialogVisible = false;
@@ -224,9 +218,6 @@ export default {
 
     // edit mode
     if (this.editMode) {
-      // back up the raw connection for edit mode
-      this.connectionRaw = JSON.parse(JSON.stringify(this.config));
-
       this.sslOptionsShow = !!this.config.sslOptions;
       this.sshOptionsShow = !!this.config.sshOptions;
 

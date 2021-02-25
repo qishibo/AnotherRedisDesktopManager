@@ -45,6 +45,7 @@ export default {
       return;
     }
 
+    Object.assign(connection, items);
     Object.assign(connections[key], items);
     this.setConnections(connections);
   },
