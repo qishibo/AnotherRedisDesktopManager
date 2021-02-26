@@ -27,7 +27,7 @@
     </el-form-item>
 
     <!-- search match -->
-    <el-form-item class="search-item">
+    <!-- <el-form-item class="search-item">
       <el-row>
         <el-col :span="24">
           <el-input class="search-input" v-model="searchMatch" @keyup.enter.native="changeMatchMode()" :placeholder="$t('message.enter_to_search')" size="mini">
@@ -41,6 +41,28 @@
           </el-input>
         </el-col>
       </el-row>
+    </el-form-item> -->
+
+    <!-- autocomplete search input -->
+    <el-form-item class="search-item">
+      <el-autocomplete
+        class="search-input"
+        v-model="searchMatch"
+        @select="changeMatchMode"
+        @keyup.enter="changeMatchMode()"
+        :debounce="searchDebounce"
+        :fetch-suggestions="querySearch"
+        :placeholder="$t('message.enter_to_search')"
+        :trigger-on-focus="false"
+        :select-when-unmatched='true'>
+        <span slot="suffix">
+          <i class="el-input__icon search-icon" :class="searchIcon"  @click="changeMatchMode()"></i>
+
+          <el-tooltip effect="dark" :content="$t('message.exact_search')" placement="bottom">
+            <el-checkbox v-model="searchExact"></el-checkbox>
+          </el-tooltip>
+        </span>
+      </el-autocomplete>
     </el-form-item>
 
     <!-- new key dialog -->
@@ -79,6 +101,8 @@ export default {
       searchMatch: '',
       searchExact: false,
       searchIcon: 'el-icon-search',
+      searchHistory: new Set(),
+      searchDebounce: 100,
       newKeyDialog: false,
       newKeyName: '',
       selectedNewKeyType: 'string',
@@ -195,7 +219,27 @@ export default {
         return false;
       }
 
+      // prevent enter too fast but show candidate query
+      setTimeout(() => {
+        this.searchHistory.add(this.searchMatch);
+      }, this.searchDebounce + 100);
+
       this.$parent.$parent.$parent.$refs.keyList.refreshKeyList();
+    },
+    querySearch(input, cb) {
+      const items = [];
+
+      if (!this.searchHistory.size) {
+        return cb([]);
+      }
+
+      this.searchHistory.forEach(value => {
+        if (value.toLowerCase().indexOf(input.toLowerCase()) !== -1) {
+          items.push({value: value});
+        }
+      });
+
+      cb(items);
     },
   },
 }
@@ -216,6 +260,9 @@ export default {
   .connection-menu .search-item {
     margin-top: -10px;
     margin-bottom: 15px;
+  }
+  .connection-menu .search-input {
+    width: 100%;
   }
   .connection-menu .search-input .el-input__inner {
     padding-right: 43px;
