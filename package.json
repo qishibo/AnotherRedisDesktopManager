@@ -31,6 +31,7 @@
     "font-awesome": "^4.7.0",
     "ioredis": "^4.16.0",
     "php-serialize": "^4.0.2",
+    "rawproto": "^0.6.3",
     "splitargs": "0.0.7",
     "tunnel-ssh": "^4.1.4",
     "vue": "^2.5.2",

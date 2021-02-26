@@ -30,6 +30,7 @@ import ViewerJson from '@/components/ViewerJson';
 import ViewerBinary from '@/components/ViewerBinary';
 import ViewerUnserialize from '@/components/ViewerUnserialize';
 import ViewerMsgpack from '@/components/ViewerMsgpack';
+import ViewerProtobuf from '@/components/ViewerProtobuf';
 
 export default {
   data() {
@@ -41,13 +42,14 @@ export default {
         { value: 'ViewerBinary', text: 'Binary' },
         { value: 'ViewerMsgpack', text: 'Msgpack' },
         { value: 'ViewerUnserialize', text: 'Unserialize' },
+        { value: 'ViewerProtobuf', text: 'Protobuf' },
       ],
       selectStyle: {
         float: this.float,
       },
     };
   },
-  components: {ViewerText, ViewerJson, ViewerBinary, ViewerUnserialize, ViewerMsgpack},
+  components: {ViewerText, ViewerJson, ViewerBinary, ViewerUnserialize, ViewerMsgpack, ViewerProtobuf},
   props: {
     float: {default: 'right'},
     content: {default: () => Buffer.from('')},
