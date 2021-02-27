@@ -208,6 +208,10 @@ export default {
         tId => folderNodes[tId].fullName
       );
 
+      // #462 multi select mode just delete displayed keys,
+      // instead of scanning whole folder
+      rule.pattern = [];
+
       this.$bus.$emit('openDelBatch', this.client, this.config.connectionName, rule);
     },
     clickKey(key, event = null, newTab = false) {
