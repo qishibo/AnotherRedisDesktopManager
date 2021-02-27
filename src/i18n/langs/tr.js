@@ -108,6 +108,7 @@ const tr = {
     delete_all: 'Hepsini sil',
     clear_cache: 'önbelleği temizle',
     mark_color: 'Mark rengi',
+    key_no_permission: 'Dosya okuma izninin süresi doldu, lütfen anahtar dosyasını manuel olarak yeniden seçin',
   },
 };
 

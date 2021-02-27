@@ -108,6 +108,7 @@ const pt = {
     delete_all: 'Apagar Tudo',
     clear_cache: 'Limpar cache',
     mark_color: 'Cor da marca',
+    key_no_permission: 'A permissão de leitura do arquivo expirou, selecione novamente o arquivo de chave manualmente',
   },
 };
 

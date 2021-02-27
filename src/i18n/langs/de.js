@@ -108,6 +108,7 @@ const de = {
     delete_all: 'Alle löschen',
     clear_cache: 'Cache leeren',
     mark_color: 'Farbe markieren',
+    key_no_permission: 'Die Berechtigung zum Lesen von Dateien ist abgelaufen. Wählen Sie die Schlüsseldatei erneut manuell aus',
   },
 };
 
