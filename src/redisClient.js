@@ -227,15 +227,24 @@ export default {
       return undefined;
     }
 
-    // mac app store version, read through bookmark
-    if (bookmark) {
-      const bookmarkClose = remote.app.startAccessingSecurityScopedResource(bookmark);
+    try {
+      // mac app store version, read through bookmark
+      if (bookmark) {
+        const bookmarkClose = remote.app.startAccessingSecurityScopedResource(bookmark);
+      }
+
+      const content = fs.readFileSync(file);
+      (typeof bookmarkClose == 'function') && bookmarkClose();
+
+      return content;
     }
+    catch (e) {
+      // force alert
+      alert(vue.$t('message.key_no_permission') + `\n[${e.message}]`);
+      vue.$bus.$emit('closeConnection');
 
-    const content = fs.readFileSync(file);
-    (typeof bookmarkClose == 'function') && bookmarkClose();
-
-    return content;
+      return undefined;
+    }
   },
 };
 

@@ -108,6 +108,7 @@ const cn = {
     delete_all: '全部删除',
     clear_cache: '清除缓存',
     mark_color: '标记颜色',
+    key_no_permission: '文件读取权限已过期，请手动重新选择密钥文件',
   },
 };
 

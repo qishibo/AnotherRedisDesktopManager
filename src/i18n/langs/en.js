@@ -108,6 +108,7 @@ const en = {
     delete_all: 'Delete All',
     clear_cache: 'Clear Cache',
     mark_color: 'Mark Color',
+    key_no_permission: 'File read permission has expired, please reselect the key file manually',
   },
 };
 
