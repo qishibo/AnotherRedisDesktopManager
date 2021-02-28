@@ -109,6 +109,7 @@ const fr = {
     clear_cache: 'Vider le cache',
     mark_color: 'Couleur de la marque',
     key_no_permission: 'L\'autorisation de lecture de fichier a expiré, veuillez resélectionner le fichier de clé manuellement',
+    toggle_check_all: 'Tout sélectionner | Tout désélectionner',
   },
 };
 
