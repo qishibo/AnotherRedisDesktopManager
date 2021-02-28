@@ -79,7 +79,8 @@ const tr = {
     update_error: 'Güncelleştirme Başarısız',
     update_downloading: 'İndiriliyor...',
     update_download_progress: 'İndirme Durumu',
-    update_downloaded: 'Güncelleme İndirme Tamamlandı, Lütfen Uygulamanızı Yeniden Başlatın',
+    update_downloaded: 'Güncelleme İndirme Tamamlandı, Lütfen Uygulamanızı Yeniden Başlatın.\
+    [Tips]: Windows kullanıyorsanız, uygulamayı kapattıktan sonra masaüstü simgesinin normal duruma (yaklaşık 10 saniye) dönmesini bekleyin ve ardından yeniden açabilirsiniz',
     mac_not_support_auto_update: 'Mac Otomatik Güncellemeyi Desteklemez, Lütfen Manuel Olarak İndirin ve Yükleyin,\
     veya Yükleme Komutunu Çalıştırın "brew reinstall --cask another-redis-desktop-manager"',
     font_family: 'Yazı Tipi Ailesi',

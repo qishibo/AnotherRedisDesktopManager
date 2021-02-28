@@ -79,7 +79,8 @@ const fr = {
     update_error: 'Mise à jour échouée',
     update_downloading: 'Téléchargement...',
     update_download_progress: 'Téléchargement en cours',
-    update_downloaded: 'Téléchargement de la mise à jour terminé, redémarrez l\'application s\'il vous plaît',
+    update_downloaded: 'Téléchargement de la mise à jour terminé, redémarrez l\'application s\'il vous plaît.\
+    [Tips]: Si vous utilisez Windows, après avoir fermé l\'application, attendez que l\'icône du bureau soit actualisée à un état normal (environ 10 secondes), puis vous pouvez la rouvrir',
     mac_not_support_auto_update: 'Les Mac ne supportent pas les mises à jour automatique, vous pouvez télécharger et réinstaller manuellement,\
     ou lancer "brew reinstall --cask another-redis-desktop-manager"',
     font_family: 'Famille de polices',

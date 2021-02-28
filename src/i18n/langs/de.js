@@ -79,7 +79,8 @@ const de = {
     update_error: 'Aktualisierung fehlgeschlagen',
     update_downloading: 'Herunterladen ...',
     update_download_progress: 'Download Fortschritt',
-    update_downloaded: 'Update Download abgeschlossen, bitte starten Sie Ihre App neu',
+    update_downloaded: 'Update Download abgeschlossen, bitte starten Sie Ihre App neu.\
+    [Tips]: Wenn Sie Windows verwenden, warten Sie nach dem Schließen der App darauf, dass das Desktopsymbol auf einen normalen Zustand (ca. 10 Sekunden) aktualisiert wird, und öffnen Sie es dann erneut',
     mac_not_support_auto_update: 'Mac unterstützt keine automatische Aktualisierung, bitte manuell herunterladen und neu installieren,\
     or ausführen "brew reinstall --cask another-redis-desktop-manager"',
     font_family: 'Schrift-Familie',

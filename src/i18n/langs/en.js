@@ -79,7 +79,8 @@ const en = {
     update_error: 'Update Failed',
     update_downloading: 'Downloading...',
     update_download_progress: 'Download Progress',
-    update_downloaded: 'Update Download Completed, Restart Your App Please',
+    update_downloaded: 'Update Download Completed, Restart Your App Please.\
+    [Tips]: If you are using Windows, after closing the app, waiting the desktop icon to refresh to a normal state(about 10 seconds), and then you can reopen it',
     mac_not_support_auto_update: 'Mac Does Not Support Automatic Update, Please Manually Download And Reinstall,\
     Or Run "brew reinstall --cask another-redis-desktop-manager"',
     font_family: 'Font Family',
