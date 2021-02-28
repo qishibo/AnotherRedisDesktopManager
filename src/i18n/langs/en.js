@@ -109,6 +109,7 @@ const en = {
     clear_cache: 'Clear Cache',
     mark_color: 'Mark Color',
     key_no_permission: 'File read permission has expired, please reselect the key file manually',
+    toggle_check_all: 'Select all | Unselect all',
   },
 };
 
