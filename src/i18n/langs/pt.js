@@ -79,7 +79,8 @@ const pt = {
     update_error: 'Falha na atualização',
     update_downloading: 'Downloading...',
     update_download_progress: 'Download em progresso',
-    update_downloaded: 'Download de atualização concluído, reinicie seu aplicativo por favor',
+    update_downloaded: 'Download de atualização concluído, reinicie seu aplicativo por favor.\
+    [Tips]: Se você estiver usando o Windows, depois de fechar o aplicativo, aguarde o ícone da área de trabalho para atualizar para um estado normal (cerca de 10 segundos), e então você pode reabri-lo',
     mac_not_support_auto_update: 'Mac não suporta atualização automática, faça o download e reinstale manualmente, \
     Ou execute "brew reinstall --cask another-redis-desktop-manager"',
     font_family: 'Font Family',
@@ -109,6 +110,7 @@ const pt = {
     clear_cache: 'Limpar cache',
     mark_color: 'Cor da marca',
     key_no_permission: 'A permissão de leitura do arquivo expirou, selecione novamente o arquivo de chave manualmente',
+    toggle_check_all: 'Selecionar tudo | Desmarcar tudo',
   },
 };
 

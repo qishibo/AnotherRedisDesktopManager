@@ -2,10 +2,13 @@
   <div ref="treeWrapper" class='key-list-ztree'>
     <!-- multi operate -->
     <el-row class="batch-operate" :gutter="6">
-      <el-col :span="12">
+      <el-col :span="2">
+        <el-checkbox @change='toggleCheckAll' class='select-cancel-all' :title='$t("message.toggle_check_all")'></el-checkbox>
+      </el-col>
+      <el-col :span="11">
         <el-button @click='deleteBatch' type="danger" style="width: 100%" size="mini">{{ $t('el.upload.delete') }}</el-button>
       </el-col>
-      <el-col :span="12">
+      <el-col :span="11">
         <el-button @click="hideMultiSelect" type="primary" style="width: 100%" size="mini">{{ $t('el.messagebox.cancel') }}</el-button>
       </el-col>
     </el-row>
@@ -176,6 +179,9 @@ export default {
         }
       }
     },
+    toggleCheckAll(checked) {
+      this.ztreeObj.checkAllNodes(checked);
+    },
     deleteBatch() {
       let rule = {key: [], pattern: []};
       let folderNodes = {};
@@ -207,6 +213,10 @@ export default {
       rule.pattern = Object.keys(folderNodes).map(
         tId => folderNodes[tId].fullName
       );
+
+      // #462 multi select mode just delete displayed keys,
+      // instead of scanning whole folder
+      rule.pattern = [];
 
       this.$bus.$emit('openDelBatch', this.client, this.config.connectionName, rule);
     },
@@ -376,6 +386,10 @@ export default {
 }
 .key-list-ztree.show-checkbox .batch-operate {
   display: block;
+}
+
+.key-list-ztree .batch-operate .select-cancel-all {
+  padding: 3px 3px 3px 2px;
 }
 
 /* right menu style start */

@@ -275,10 +275,11 @@ export default {
     top: 54%;
   }
   .connection-menu .el-submenu [class^=el-icon-] {
-    font-size: 13px;
+    font-size: 12px;
     margin: 0px;
     width: auto;
-    color: grey;
+    /*color: grey;*/
+    vertical-align: baseline;
   }
 
   .connection-menu .el-submenu.is-opened {

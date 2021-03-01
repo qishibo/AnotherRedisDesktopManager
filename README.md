@@ -49,6 +49,7 @@ Download latest [AppImage](https://github.com/qishibo/AnotherRedisDesktopManager
 
 ## Feature Log
 
+- 2021-02-28: Connection Color Tag && Search History Support
 - 2021-02-03: Multiple Select\Delete && Msgpack Viewer Support
 - 2020-12-30: Tree View Support!!!
 - 2020-11-03: Binary View Support && SSH Passparse\Timeout Support

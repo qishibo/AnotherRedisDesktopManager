@@ -79,7 +79,8 @@ const cn = {
     update_error: '更新失败',
     update_downloading: '下载中...',
     update_download_progress: '下载进度',
-    update_downloaded: '更新下载完成，重启客户端生效',
+    update_downloaded: "更新下载完成，重启客户端生效.\
+    [Tips]: 如果您使用的是Windows，关闭软件后，请等待桌面图标刷新到正常状态(约10秒)，然后再重新打开即可",
     mac_not_support_auto_update: 'Mac暂时不支持自动更新，请手动下载后重新安装，或者执行\
     brew reinstall --cask another-redis-desktop-manager',
     font_family: '字体选择',
@@ -109,6 +110,7 @@ const cn = {
     clear_cache: '清除缓存',
     mark_color: '标记颜色',
     key_no_permission: '文件读取权限已过期，请手动重新选择密钥文件',
+    toggle_check_all: '全选 | 取消全选',
   },
 };
 

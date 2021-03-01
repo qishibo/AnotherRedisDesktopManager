@@ -79,7 +79,8 @@ const tw = {
     update_error: '更新失敗',
     update_downloading: '下載中...',
     update_download_progress: '下載進度',
-    update_downloaded: '更新下載完成，重啟用戶端生效',
+    update_downloaded: '更新下載完成，重啟用戶端生效.\
+    [Tips]: 如果您使用的是Windows，請在關閉應用程序後等待桌面圖標刷新到正常狀態（大約10秒），然後重新打開',
     mac_not_support_auto_update: 'Mac 暫時不支援自動更新，請手動下載後重新安裝，或者執行\
     brew reinstall --cask another-redis-desktop-manager',
     font_family: '字體選擇',
@@ -109,6 +110,7 @@ const tw = {
     clear_cache: '清除緩存',
     mark_color: '標記顏色',
     key_no_permission: '文件讀取權限已過期，請手動重新選擇密鑰文件',
+    toggle_check_all: '全選 | 取消全選',
   },
 };
 
