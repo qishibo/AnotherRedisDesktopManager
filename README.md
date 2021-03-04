@@ -1,13 +1,13 @@
 <img align="right" width="110" src="https://imgup.qii404.xyz/github/ardm-new-icon.png">
 
-# Another Redis DeskTop Manager
+# Another Redis Desktop Manager
 
 <hr/>
 
 > 🚀🚀🚀 A faster, better and more stable redis desktop manager, compatible with Linux, windows, mac. What's more, it won't crash when loading a large number of keys.
 
 [![MIT](https://img.shields.io/badge/license-MIT-000000.svg)](LICENSE)
-[![Download](https://img.shields.io/github/release/qishibo/AnotherRedisDeskTopManager.svg?label=Download)](https://github.com/qishibo/AnotherRedisDesktopManager/releases)
+[![Download](https://img.shields.io/github/release/qishibo/AnotherRedisDesktopManager.svg?label=Download)](https://github.com/qishibo/AnotherRedisDesktopManager/releases)
 [![Download Analysis](https://img.shields.io/badge/Download-Analysis-blue.svg)](https://qii404.me/github-release-statistics/?repo=/qishibo/AnotherRedisDesktopManager/)
 [![shiboooo](https://img.shields.io/badge/Weibo-@shiboooo-red.svg)](https://weibo.com/shiboooo?is_hot=1)
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fqishibo%2FAnotherRedisDesktopManager.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fqishibo%2FAnotherRedisDesktopManager?ref=badge_shield)
