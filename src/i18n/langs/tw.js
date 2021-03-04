@@ -81,8 +81,9 @@ const tw = {
     update_download_progress: '下載進度',
     update_downloaded: '更新下載完成，重啟用戶端生效.\
     [Tips]: 如果您使用的是Windows，請在關閉應用程序後等待桌面圖標刷新到正常狀態（大約10秒），然後重新打開',
-    mac_not_support_auto_update: 'Mac 暫時不支援自動更新，請手動下載後重新安裝，或者執行\
-    brew reinstall --cask another-redis-desktop-manager',
+    mac_not_support_auto_update: 'Mac 暫時不支援自動更新，請手動<a href="https://github.com/qishibo/AnotherRedisDesktopManager/releases">下載</a>後重新安裝，\
+    或者執行brew reinstall --cask another-redis-desktop-manager\
+    <br><br>🧡如果對您有用，您可以通過<a href="https://apps.apple.com/app/id1516451072">AppStore</a>贊助，AppStore會自動為您更新。',
     font_family: '字體選擇',
     font_faq_title: '字體設定說明',
     font_faq: '1. 可以設定多個字體<br>2. 字體選擇是有分先後順序的，建議首先選擇英文字體，然後再選擇中文字體<br>\

@@ -81,8 +81,9 @@ const en = {
     update_download_progress: 'Download Progress',
     update_downloaded: 'Update Download Completed, Restart Your App Please.\
     [Tips]: If you are using Windows, after closing the app, waiting the desktop icon to refresh to a normal state(about 10 seconds), and then you can reopen it',
-    mac_not_support_auto_update: 'Mac Does Not Support Automatic Update, Please Manually Download And Reinstall,\
-    Or Run "brew reinstall --cask another-redis-desktop-manager"',
+    mac_not_support_auto_update: 'Mac Does Not Support Automatic Update, Please Manually <a href="https://github.com/qishibo/AnotherRedisDesktopManager/releases">Download</a> And Reinstall,\
+    Or Run "brew reinstall --cask another-redis-desktop-manager"\
+    <br><br>🧡if it\'s useful to you ,you can sponsor through <a href="https://apps.apple.com/app/id1516451072">AppStore</a>, and AppStore will automatically update it for you.',
     font_family: 'Font Family',
     font_faq_title: 'Font Setting Instructions',
     font_faq: '1. Multiple fonts can be set<br>\
