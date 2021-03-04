@@ -81,8 +81,9 @@ const de = {
     update_download_progress: 'Download Fortschritt',
     update_downloaded: 'Update Download abgeschlossen, bitte starten Sie Ihre App neu.\
     [Tips]: Wenn Sie Windows verwenden, warten Sie nach dem Schließen der App darauf, dass das Desktopsymbol auf einen normalen Zustand (ca. 10 Sekunden) aktualisiert wird, und öffnen Sie es dann erneut',
-    mac_not_support_auto_update: 'Mac unterstützt keine automatische Aktualisierung, bitte manuell herunterladen und neu installieren,\
-    or ausführen "brew reinstall --cask another-redis-desktop-manager"',
+    mac_not_support_auto_update: 'Mac unterstützt keine automatische Aktualisierung, bitte manuell <a href="https://github.com/qishibo/AnotherRedisDesktopManager/releases">herunterladen</a> und neu installieren,\
+    or ausführen "brew reinstall --cask another-redis-desktop-manager"\
+    <br><br>🧡Wenn es für Sie nützlich ist, können Sie über den <a href="https://apps.apple.com/app/id1516451072">AppStore</a> sponsern, und der AppStore aktualisiert es automatisch für Sie.',
     font_family: 'Schrift-Familie',
     font_faq_title: 'Anweisungen zum Einstellen der Schriftart',
     font_faq: '1. Mehrere Schriftarten können eingestellt werden<br>\

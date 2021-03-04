@@ -94,8 +94,9 @@ export default {
         }
 
         this.$notify.error({
-          title: message,
-          duration: 0
+          message: message,
+          duration: 0,
+          dangerouslyUseHTMLString: true,
         });
       });
 
