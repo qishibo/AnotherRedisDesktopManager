@@ -112,6 +112,7 @@ const pt = {
     mark_color: 'Cor da marca',
     key_no_permission: 'A permissão de leitura do arquivo expirou, selecione novamente o arquivo de chave manualmente',
     toggle_check_all: 'Selecionar tudo | Desmarcar tudo',
+    select_lang: 'Selecione o idioma',
   },
 };
 

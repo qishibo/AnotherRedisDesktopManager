@@ -1,11 +1,16 @@
 <template>
   <!-- setting dialog -->
-  <el-dialog :title="$t('message.settings')" :visible.sync="settingDialog.visible">
+  <el-dialog :title="$t('message.settings')" :visible.sync="visible">
     <el-form label-position="top" size="mini">
 
       <!-- theme select-->
       <el-form-item :label="$t('message.dark_mode')">
         <el-switch v-model='darkMode' @change="changeTheme"></el-switch>
+      </el-form-item>
+
+      <!-- language select -->
+      <el-form-item :label="$t('message.select_lang')">
+        <LanguageSelector></LanguageSelector>
       </el-form-item>
 
       <!-- zoom page -->
@@ -91,7 +96,7 @@
     </el-form>
 
     <div slot="footer" class="dialog-footer">
-      <el-button @click="settingDialog.visible = false">{{ $t('el.messagebox.cancel') }}</el-button>
+      <el-button @click="visible = false">{{ $t('el.messagebox.cancel') }}</el-button>
       <el-button type="primary" @click="saveSettings">{{ $t('el.messagebox.confirm') }}</el-button>
     </div>
   </el-dialog>
@@ -100,10 +105,12 @@
 <script type="text/javascript">
 import storage from '@/storage.js';
 import { ipcRenderer } from 'electron';
+import LanguageSelector from '@/components/LanguageSelector';
 
 export default {
   data() {
     return {
+      visible: false,
       form: {fontFamily: '', zoomFactor: 1.0},
       importConnectionVisible: false,
       connectionFileContent: '',
@@ -114,16 +121,19 @@ export default {
       darkMode: localStorage.theme == 'dark',
     };
   },
-  props: ['settingDialog'],
+  components: {LanguageSelector},
   methods: {
-    showSettings() {
+    show() {
+      this.visible = true;
+    },
+    restoreSettings() {
       let settings = storage.getSetting();
       this.form = {...this.form, ...settings};
     },
     saveSettings() {
       storage.saveSettings(this.form);
 
-      this.settingDialog.visible = false;
+      this.visible = false;
       this.$bus.$emit('reloadSettings');
     },
     changeTheme() {
@@ -177,7 +187,7 @@ export default {
       let connections = storage.getConnections(true);
       connections = this.$util.base64Encode(JSON.stringify(connections));
       this.createAndDownloadFile('connections.ano', connections);
-      this.settingDialog.visible = false;
+      this.visible = false;
     },
     createAndDownloadFile(fileName, content) {
       const aTag = document.createElement('a');
@@ -218,7 +228,7 @@ export default {
     },
   },
   mounted() {
-    this.showSettings();
+    this.restoreSettings();
     this.bindGetAllFonts();
   },
 };
