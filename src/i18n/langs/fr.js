@@ -113,6 +113,7 @@ const fr = {
     key_no_permission: 'L\'autorisation de lecture de fichier a expiré, veuillez resélectionner le fichier de clé manuellement',
     toggle_check_all: 'Tout sélectionner | Tout désélectionner',
     select_lang: 'Choisir la langue',
+    clear_cache_tip: 'Lorsqu\'un problème survient avec le client, cette action supprime toutes les connexions et configurations pour récupérer le client',
   },
 };
 

@@ -113,6 +113,7 @@ const tr = {
     key_no_permission: 'Dosya okuma izninin süresi doldu, lütfen anahtar dosyasını manuel olarak yeniden seçin',
     toggle_check_all: 'Tümünü seç | Seçimini kaldır',
     select_lang: 'Dil Seçin',
+    clear_cache_tip: 'İstemcide bir sorun olduğunda, bu işlem istemciyi geri yüklemek için tüm bağlantıları ve yapılandırmaları silecektir',
   },
 };
 

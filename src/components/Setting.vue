@@ -64,7 +64,7 @@
       <el-form-item :label="$t('message.pre_version')" class='current-version'>
         <el-tag type="info">{{ appVersion }}</el-tag>
 
-        <a href="###" @click.stop.prevent="clearCache">{{ $t('message.clear_cache') }}</a>
+        <a href="###" @click.stop.prevent="clearCache" :title="$t('message.clear_cache_tip')">{{ $t('message.clear_cache') }}</a>
         <a href="###" @click.stop.prevent="checkUpdate">{{ $t('message.check_update') }}</a>
         <a href="https://github.com/qishibo/AnotherRedisDesktopManager/releases">{{ $t('message.manual_update') }}</a>
         <a href="https://github.com/qishibo/AnotherRedisDesktopManager/">{{ $t('message.project_home') }}</a>
