@@ -176,4 +176,7 @@ export default {
     min-width: 34px;
     display: inline-block;
   }
+  .cursor-pointer {
+    cursor: pointer;
+  }
 </style>

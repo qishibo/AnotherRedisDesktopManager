@@ -69,14 +69,18 @@ export default {
 </script>
 
 <style type="text/css">
-  .key-content-string .text-formated-container {
-    min-height: 252px;
-  }
-  .key-content-string .el-textarea textarea {
-    font-size: 14px;
+  .key-content-string .format-viewer-container {
+    min-height: calc(100vh - 253px);
   }
 
-  .key-content-string .format-viewer-container {
-    min-height: 296px;
+  /*text viewer box*/
+  .key-content-string .el-textarea textarea {
+    font-size: 14px;
+    height: calc(100vh - 286px);
+  }
+  /*not text viewer box, such as json*/
+  .key-content-string .text-formated-container {
+    box-sizing: border-box;
+    min-height: calc(100vh - 286px);
   }
 </style>

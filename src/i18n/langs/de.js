@@ -84,14 +84,14 @@ const de = {
     mac_not_support_auto_update: 'Mac unterstützt keine automatische Aktualisierung, bitte manuell <a href="https://github.com/qishibo/AnotherRedisDesktopManager/releases">herunterladen</a> und neu installieren,\
     or ausführen "brew reinstall --cask another-redis-desktop-manager"\
     <br><br>🧡Wenn es für Sie nützlich ist, können Sie über den <a href="https://apps.apple.com/app/id1516451072">AppStore</a> sponsern, und der AppStore aktualisiert es automatisch für Sie.',
-    font_family: 'Schrift-Familie',
+    font_family: 'Schrift familie',
     font_faq_title: 'Anweisungen zum Einstellen der Schriftart',
     font_faq: '1. Mehrere Schriftarten können eingestellt werden<br>\
     2. Die Auswahl der Schriftart ist geordnet. Es wird empfohlen, zuerst die englische Schriftart und dann die Schriftart in Ihrer Sprache zu wählen.<br>\
     3. Wenn die Systemschriftenliste in einigen Ausnahmefällen nicht geladen werden kann, können Sie den Namen der installierten Schrift manuell eingeben.',
     private_key_faq: 'RSA format private key is supported, which starts with <pre>-----BEGIN RSA PRIVATE KEY-----</pre>\
     beginnt mit <pre>-----BEGIN OPENSSH PRIVATE KEY-----</pre>Sie müssen das Format konvertieren mittels <pre>ssh-keygen -p -m pem -f ~/.ssh/id_rsa</pre>Dieser Vorgang hat keine Auswirkungen auf die vorherige Anmeldung mit privatem Schlüssel',
-    dark_mode: 'Dunkel-Modus',
+    dark_mode: 'Dunkel modus',
     load_more_keys: 'mehr laden',
     key_name: 'Schlüssel-Name',
     project_home: 'Projekt Home',
@@ -112,6 +112,7 @@ const de = {
     mark_color: 'Farbe markieren',
     key_no_permission: 'Die Berechtigung zum Lesen von Dateien ist abgelaufen. Wählen Sie die Schlüsseldatei erneut manuell aus',
     toggle_check_all: 'Alle auswählen | Alle abwählen',
+    select_lang: 'Sprache auswählen',
   },
 };
 

@@ -112,6 +112,7 @@ const tw = {
     mark_color: '標記顏色',
     key_no_permission: '文件讀取權限已過期，請手動重新選擇密鑰文件',
     toggle_check_all: '全選 | 取消全選',
+    select_lang: '選擇語言',
   },
 };
 

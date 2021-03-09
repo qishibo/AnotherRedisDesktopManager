@@ -112,6 +112,7 @@ const cn = {
     mark_color: '标记颜色',
     key_no_permission: '文件读取权限已过期，请手动重新选择密钥文件',
     toggle_check_all: '全选 | 取消全选',
+    select_lang: '选择语言',
   },
 };
 

@@ -1,26 +1,16 @@
 <template>
-  <div>
-    <!-- setting button -->
-    <el-button type="primary" icon="el-icon-setting" @click="settingDialog.visible = true" plain></el-button>
-
-    <!-- setting dialog -->
-    <Setting :settingDialog="settingDialog"></Setting>
-
-    <!-- language select -->
-    <el-select v-model="selectedLang" @change="changeLang" placeholder="Language">
-      <el-option
-        v-for="item in langItems"
-        :key="item.value"
-        :label="item.label"
-        :value="item.value">
-      </el-option>
-    </el-select>
-  </div>
+  <!-- language select -->
+  <el-select v-model="selectedLang" @change="changeLang" placeholder="Language">
+    <el-option
+      v-for="item in langItems"
+      :key="item.value"
+      :label="item.label"
+      :value="item.value">
+    </el-option>
+  </el-select>
 </template>
 
 <script type="text/javascript">
-import Setting from '@/components/Setting';
-
 export default {
   data() {
     return {
@@ -36,10 +26,8 @@ export default {
         { value: 'fr', label: 'Français' },
         { value: 'ua', label: 'Українською' }
       ],
-      settingDialog: { visible: false },
     };
   },
-  components: { Setting },
   methods: {
     changeLang(lang) {
       localStorage.lang = this.selectedLang;
