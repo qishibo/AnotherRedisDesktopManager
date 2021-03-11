@@ -30,6 +30,7 @@
     "element-ui": "^2.4.11",
     "font-awesome": "^4.7.0",
     "ioredis": "^4.16.0",
+    "json-bigint": "git+https://github.com/qishibo/json-bigint.git",
     "php-serialize": "^4.0.2",
     "splitargs": "0.0.7",
     "tunnel-ssh": "^4.1.4",
