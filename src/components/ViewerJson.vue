@@ -28,8 +28,10 @@ export default {
   computed: {
     newContent() {
       try {
-        // solve big int in json
-        let jsonSolved = this.content.toString().replace(/([\[:])?([\d\.]{15,})([,\}\]])/g, "$1\"$2\"$3");
+        // change bigint to string
+        let JSONbig = require('json-bigint')({storeAsString: true});
+        let jsonSolved = JSONbig.stringify(JSONbig.parse(this.content.toString()));
+
         return JSON.parse(jsonSolved);
       } catch (e) {
         return this.$t('message.json_format_failed');
