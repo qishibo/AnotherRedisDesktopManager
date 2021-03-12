@@ -281,6 +281,7 @@ export default {
     border-bottom: 0px;
     border-radius: 4px 4px 0 0;
     cursor: text;
+    height: calc(100vh - 160px);
   }
   .dark-mode #cli-content {
     color: #f7f7f7;
