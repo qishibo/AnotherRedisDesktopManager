@@ -32,7 +32,7 @@
     "ioredis": "^4.16.0",
     "json-bigint": "git+https://github.com/qishibo/json-bigint.git",
     "php-serialize": "^4.0.2",
-    "splitargs": "0.0.7",
+    "redis-splitargs": "git+https://github.com/qishibo/splitargs.git",
     "tunnel-ssh": "^4.1.4",
     "vue": "^2.5.2",
     "vue-i18n": "^8.7.0",

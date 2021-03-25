@@ -34,7 +34,7 @@
 
 <script type="text/javascript">
 import rawCommand from '@/rawCommand';
-import splitargs from 'splitargs';
+import splitargs from 'redis-splitargs';
 
 export default {
   data() {
