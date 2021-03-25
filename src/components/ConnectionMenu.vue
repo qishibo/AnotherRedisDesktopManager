@@ -85,6 +85,11 @@ export default {
       this.$emit('refreshConnection');
     },
     showEditConnection() {
+      // connection is cloesd, do not display confirm
+      if (!this.client) {
+        return this.$refs.editConnectionDialog.show();
+      }
+
       this.$confirm(
         this.$t('message.close_to_edit_connection'),
         { type: 'warning' },
