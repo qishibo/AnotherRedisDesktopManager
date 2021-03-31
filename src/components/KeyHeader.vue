@@ -8,6 +8,7 @@
           :value="$util.bufToString(keyName)"
           @change='changeKeyInput'
           @keyup.enter.native="renameKey"
+          :title="$t('message.click_enter_to_rename')"
           placeholder="KeyName">
           <span slot="prepend" class="key-detail-type">{{ keyType }}</span>
           <i class="el-icon-check el-input__icon cursor-pointer"
@@ -20,7 +21,7 @@
 
       <!-- key ttl -->
       <el-form-item>
-        <el-input v-model="keyTTL" @keyup.enter.native="ttlKey">
+        <el-input v-model="keyTTL" @keyup.enter.native="ttlKey" :title="$t('message.click_enter_to_ttl')">
           <span slot="prepend">TTL</span>
           <i class="el-icon-check el-input__icon cursor-pointer"
             slot="suffix"
