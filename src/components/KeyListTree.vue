@@ -142,8 +142,13 @@ export default {
           clipboard.writeText(this.rightClickNode.name);
           break;
         }
-        // del single key
+        // del single key["delete" in the key right menu]
         case 'delete': {
+          // del batch instead of single when multi operating
+          if (this.multiOperating) {
+            return this.deleteBatch();
+          }
+
           let keyBuffer = Buffer.from(this.rightClickNode.nameBuffer.data);
 
           this.client.del(keyBuffer).then((reply) => {

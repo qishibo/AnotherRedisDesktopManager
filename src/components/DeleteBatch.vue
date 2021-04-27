@@ -142,7 +142,7 @@ export default {
     margin-top: 10px;
   }
   .del-batch-key-list-ol {
-    min-height: calc(50vh);
+    min-height: calc(100vh - 272px);
     overflow: auto;
     padding-left: 10px;
     list-style-position: inside;
