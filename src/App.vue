@@ -209,6 +209,8 @@ button, input, textarea, .vjs__tree {
 
 .el-message-box .el-message-box__message {
   word-break: break-all;
+  overflow-y: auto;
+  max-height: 80vh;
 }
 
 #drag-resize-container {
