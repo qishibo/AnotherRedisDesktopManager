@@ -22,8 +22,9 @@
         :select-when-unmatched="true"
         :trigger-on-focus="false"
         popper-class="cli-console-suggestion"
-        @keyup.enter.native="consoleExec"
         ref="cliParams"
+        @select='$refs.cliParams.focus()'
+        @keyup.enter.native="consoleExec"
         @keyup.up.native="searchUp"
         @keyup.down.native="searchDown">
       </el-autocomplete>
@@ -34,6 +35,7 @@
 
 <script type="text/javascript">
 import rawCommand from '@/rawCommand';
+import cmdTips from '@/cmds';
 import splitargs from 'redis-splitargs';
 
 export default {
@@ -47,6 +49,11 @@ export default {
     };
   },
   props: ['client'],
+  computed: {
+    paramsTrim() {
+      return this.params.replace(/^\s+|\s+$/g, '');
+    },
+  },
   methods: {
     initShow() {
       this.$refs.cliParams.focus();
@@ -57,14 +64,17 @@ export default {
       this.scrollToBottom();
     },
     inputSuggestion(input, cb) {
-      if (!this.params) {
+      if (!this.paramsTrim) {
         cb([]);
         return;
       }
 
       const items = this.inputSuggestionItems.filter(function (item) {
-        return item.indexOf(input) !== -1;
+        return item.toLowerCase().indexOf(input.toLowerCase()) !== -1;
       });
+
+      // add cmd tips
+      this.addCMDTips(items);
 
       const suggestions = [...new Set(items)].map(function (item) {
         return {value: item};
@@ -72,8 +82,32 @@ export default {
 
       cb(suggestions);
     },
+    addCMDTips(items = []) {
+      const paramsArr = splitargs(this.paramsTrim);
+      const paramsLen = paramsArr.length;
+      const cmd = paramsArr[0].toUpperCase();
+
+      if (!cmd) {
+        return;
+      }
+
+      for (var i = cmdTips.length - 1; i >= 0; i--) {
+        // cmd with param such as 'hget hhh'
+        if (paramsLen > 1) {
+          if (cmdTips[i].split(' ')[0] === cmd) {
+            items.unshift(cmdTips[i]);
+          }
+        }
+        // cmd without param such as 'hget'
+        else {
+          if (cmdTips[i].startsWith(cmd)) {
+            items.unshift(cmdTips[i]); 
+          }
+        }
+      }
+    },
     consoleExec() {
-      const params = this.params.replace(/^\s+|\s+$/g, '');
+      const params = this.paramsTrim;
       const paramsArr = splitargs(params);
 
       this.params = '';
@@ -148,7 +182,7 @@ export default {
     execFinished(params) {
       const operate = params[0];
 
-      if (operate === 'select' && !isNaN(params[1])) {
+      if (operate.toLowerCase() === 'select' && !isNaN(params[1])) {
         this.$bus.$emit('changeDb', this.client, params[1]);
       }
     },
