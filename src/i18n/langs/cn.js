@@ -114,6 +114,7 @@ const cn = {
     toggle_check_all: '全选 | 取消全选',
     select_lang: '选择语言',
     clear_cache_tip: '当客户端出现问题时，该操作会删除所有连接和配置，用于恢复客户端',
+    detail: '详情',
   },
 };
 

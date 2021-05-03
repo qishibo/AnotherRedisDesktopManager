@@ -49,6 +49,7 @@ Download latest [AppImage](https://github.com/qishibo/AnotherRedisDesktopManager
 
 ## Feature Log
 
+- 2021-05-03: Stream Support
 - 2021-02-28: Connection Color Tag && Search History Support
 - 2021-02-03: Multiple Select\Delete && Msgpack Viewer Support
 - 2020-12-30: Tree View Support!!!
@@ -71,7 +72,7 @@ Download latest [AppImage](https://github.com/qishibo/AnotherRedisDesktopManager
 - 2019-01-08: Project Start
 
 
-## Dev Build Setup
+## Dev Build
 
 ### Linux Or Mac
 
@@ -90,7 +91,7 @@ npm install
 npm start
 
 
-# after the previous step is completed, open another tab, build up a desktop client
+# after the previous step is completed to 100%, open another tab, build up a desktop client
 npm run electron
 ```
 

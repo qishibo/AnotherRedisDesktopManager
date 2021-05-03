@@ -1,13 +1,13 @@
 <template>
   <div>
     <!-- </textarea> -->
-    <el-input type='textarea' :rows='textrows' :value='contentDisplay' @change="updateContent($event)"></el-input>
+    <el-input :disabled='disabled' type='textarea' :rows='textrows' :value='contentDisplay' @change="updateContent($event)"></el-input>
   </div>
 </template>
 
 <script type="text/javascript">
 export default {
-  props: ['content', 'contentVisible', 'textrows'],
+  props: ['content', 'contentVisible', 'textrows', 'disabled'],
   computed: {
     contentDisplay() {
       return this.$util.bufToString(this.content);
