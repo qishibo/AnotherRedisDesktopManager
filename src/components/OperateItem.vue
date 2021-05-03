@@ -108,6 +108,7 @@ export default {
       selectedNewKeyType: 'string',
       newKeyTypes: {
         String: 'string', Hash: 'hash', List: 'list', Set: 'set', Zset: 'zset',
+        Stream: 'stream',
       },
     };
   },
@@ -210,6 +211,9 @@ export default {
         }
         case 'zset': {
           return this.client.zadd(key, 0, 'New member');
+        }
+        case 'stream': {
+          return this.client.xadd(key, '*', 'New key', 'New value');
         }
       }
     },
