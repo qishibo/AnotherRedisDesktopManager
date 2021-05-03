@@ -114,6 +114,7 @@ const tw = {
     toggle_check_all: '全選 | 取消全選',
     select_lang: '選擇語言',
     clear_cache_tip: '如果客戶端出現問題，此操作將刪除所有連接和配置以恢復客戶端',
+    detail: '詳情',
   },
 };
 

@@ -114,6 +114,7 @@ const de = {
     toggle_check_all: 'Alle auswählen | Alle abwählen',
     select_lang: 'Sprache auswählen',
     clear_cache_tip: 'Wenn es ein Problem mit dem Client gibt, wird diese Operation alle Verbindungen und Konfigurationen löschen, um den Client wiederherzustellen',
+    detail: 'Detail',
   },
 };
 

@@ -19,6 +19,7 @@
       :content='content'
       :contentVisible='contentVisible'
       :textrows='textrows'
+      :disabled='disabled'
       @updateContent="$emit('update:content', $event)">
     </component>
   </div>
@@ -52,6 +53,7 @@ export default {
     float: {default: 'right'},
     content: {default: () => Buffer.from('')},
     textrows: {default: 6},
+    disabled: {type: Boolean, default: false},
   },
   computed: {
     contentVisible() {

@@ -1,13 +1,13 @@
 <template>
   <div>
     <!-- </textarea> -->
-    <el-input type='textarea' :rows='textrows' :value='binaryValue' @change="updateContent($event)"></el-input>
+    <el-input :disabled='disabled' type='textarea' :rows='textrows' :value='binaryValue' @change="updateContent($event)"></el-input>
   </div>
 </template>
 
 <script type="text/javascript">
 export default {
-  props: ['content', 'textrows'],
+  props: ['content', 'textrows', 'disabled'],
   computed: {
     binaryValue() {
       let binary = '';
