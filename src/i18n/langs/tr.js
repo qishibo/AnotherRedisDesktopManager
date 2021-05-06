@@ -115,6 +115,7 @@ const tr = {
     select_lang: 'Dil Seçin',
     clear_cache_tip: 'İstemcide bir sorun olduğunda, bu işlem istemciyi geri yüklemek için tüm bağlantıları ve yapılandırmaları silecektir',
     detail: 'Detay',
+    separator_tip: 'Ağaç görünümünün ayırıcısı, ağacı devre dışı bırakmak için boş olarak ayarlanır ve anahtarları liste olarak görüntüler',
   },
 };
 

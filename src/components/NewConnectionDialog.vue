@@ -19,7 +19,10 @@
       </el-form-item>
 
       <el-form-item label="Separator">
-        <el-input v-model="connection.separator" autocomplete="off" placeholder='Empty To Disable Tree View'></el-input>
+        <el-tooltip effect="dark">
+          <div slot="content">{{ $t('message.separator_tip') }}</div>
+          <el-input v-model="connection.separator" autocomplete="off" placeholder='Empty To Disable Tree View'></el-input>
+        </el-tooltip>
       </el-form-item>
 
       <el-form-item label="">

@@ -115,6 +115,7 @@ const cn = {
     select_lang: '选择语言',
     clear_cache_tip: '当客户端出现问题时，该操作会删除所有连接和配置，用于恢复客户端',
     detail: '详情',
+    separator_tip: '树状显示的分隔符，设置为空可以禁用树状图，直接以列表展示',
   },
 };
 

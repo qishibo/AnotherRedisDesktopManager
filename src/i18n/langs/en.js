@@ -115,6 +115,7 @@ const en = {
     select_lang: 'Select Language',
     clear_cache_tip: 'When there is a problem with the client, this operation will delete all the connections and configurations to recover the client',
     detail: 'Detail',
+    separator_tip: 'The separator of the tree view, set to empty to disable tree and display keys as list',
   },
 };
 

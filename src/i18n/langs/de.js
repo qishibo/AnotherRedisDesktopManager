@@ -115,6 +115,7 @@ const de = {
     select_lang: 'Sprache auswählen',
     clear_cache_tip: 'Wenn es ein Problem mit dem Client gibt, wird diese Operation alle Verbindungen und Konfigurationen löschen, um den Client wiederherzustellen',
     detail: 'Detail',
+    separator_tip: 'Das Trennzeichen der Baumansicht wird auf leer gesetzt, um den Baum zu deaktivieren und Schlüssel als Liste anzuzeigen',
   },
 };
 

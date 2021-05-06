@@ -115,6 +115,7 @@ const tw = {
     select_lang: '選擇語言',
     clear_cache_tip: '如果客戶端出現問題，此操作將刪除所有連接和配置以恢復客戶端',
     detail: '詳情',
+    separator_tip: '樹視圖的分隔符，設置為空可禁用樹並將鍵顯示為列表',
   },
 };
 

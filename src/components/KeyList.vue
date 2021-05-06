@@ -27,8 +27,10 @@ export default {
   data() {
     return {
       keyList: [],
-      keyListType: this.config.separator === '' ? 'KeyListNormal' : 'KeyListTree',
-      keysPageSize: this.keyListType === 'KeyListNormal' ? 200 : 400,
+      // keyListType: this.config.separator === '' ? 'KeyListNormal' : 'KeyListTree',
+      // keysPageSize: this.keyListType === 'KeyListNormal' ? 200 : 1000,
+      keyListType: 'KeyListTree',
+      keysPageSize: 500,
       searchPageSize: 10000,
       scanStreams: [],
       scanningCount: 0,
@@ -220,7 +222,7 @@ export default {
   watch: {
     config(newConfig) {
       // separator changes
-      this.keyListType = newConfig.separator === '' ? 'KeyListNormal' : 'KeyListTree';
+      // this.keyListType = newConfig.separator === '' ? 'KeyListNormal' : 'KeyListTree';
     },
   },
 }

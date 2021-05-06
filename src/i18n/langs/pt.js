@@ -115,6 +115,7 @@ const pt = {
     select_lang: 'Selecione o idioma',
     clear_cache_tip: 'Quando há um problema com o cliente, esta operação irá deletar todas as conexões e configurações para restaurar o cliente',
     detail: 'Detalhe',
+    separator_tip: 'O separador da visualização em árvore, definido como vazio para desativar a árvore e exibir as chaves como lista',
   },
 };
 

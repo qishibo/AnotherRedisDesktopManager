@@ -104,7 +104,7 @@ export default {
   props: ['client', 'config', 'keyList'],
   computed: {
     separator() {
-      return this.config.separator ? this.config.separator : ':';
+      return this.config.separator;
     }
   },
   methods: {
@@ -265,7 +265,9 @@ export default {
   watch: {
     keyList(newList) {
       this.treeRefresh(
-        this.$util.keysToTree(newList, this.separator, this.openStatus)
+        this.separator ? 
+        this.$util.keysToTree(newList, this.separator, this.openStatus) :
+        this.$util.keysToList(newList)
       );
 
       // only 1 key such as extract search, expand all

@@ -115,6 +115,7 @@ const fr = {
     select_lang: 'Choisir la langue',
     clear_cache_tip: 'Lorsqu\'un problème survient avec le client, cette action supprime toutes les connexions et configurations pour récupérer le client',
     detail: 'Détail',
+    separator_tip: 'Le séparateur de l\'arborescence, défini sur vide pour désactiver l\'arborescence et afficher les clés sous forme de liste',
   },
 };
 
