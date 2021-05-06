@@ -103,7 +103,7 @@ const tw = {
     page_zoom: '頁面縮放',
     scan_disabled: 'Scan命令執行異常（可能已被禁用），無法顯示key列表',
     key_type_not_support: '該類型暫不支持視覺化展示，請使用Console',
-    delete_folder: '刪除資料夾',
+    delete_folder: '掃描並刪除整個資料夾',
     multiple_select: '多項選擇',
     copy: '複製',
     keys_to_be_deleted: '即將刪除的鍵',

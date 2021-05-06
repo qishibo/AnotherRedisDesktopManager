@@ -103,7 +103,7 @@ const pt = {
     page_zoom: 'Zoom da página',
     scan_disabled: 'Exceção de execução do comando de scan (pode ter sido desativada), a lista de chaves não pode ser exibida',
     key_type_not_support: 'Visual display não é suportado para este tipo. Por favor, use console',
-    delete_folder: 'Apagar Pasta',
+    delete_folder: 'Verificar e excluir a pasta inteira',
     multiple_select: 'Múltiplos Seleccionar',
     copy: 'Copiar',
     keys_to_be_deleted: 'Chaves a serem apagadas',
