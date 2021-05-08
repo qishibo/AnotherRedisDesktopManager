@@ -116,6 +116,7 @@ const fr = {
     clear_cache_tip: 'Lorsqu\'un problème survient avec le client, cette action supprime toutes les connexions et configurations pour récupérer le client',
     detail: 'Détail',
     separator_tip: 'Le séparateur de l\'arborescence, défini sur vide pour désactiver l\'arborescence et afficher les clés sous forme de liste',
+    confirm_modify_unvisible_content: 'Le contenu contient des caractères invisibles, vous pouvez éditer en toute sécurité dans le "Hex View". Si continuer à modifier dans le "Text View" peut provoquer des erreurs de codage, assurez-vous de continuer?',
   },
 };
 

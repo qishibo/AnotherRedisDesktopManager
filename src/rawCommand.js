@@ -13,7 +13,7 @@ export default {
     const operation = params[0] ? params[0].toLowerCase() : '';
 
     return new Promise((resolve, reject) => {
-      client.call(operation, params.slice(1), (err, reply) => {
+      client.callBuffer(operation, params.slice(1), (err, reply) => {
         if (err) {
           reject(err);
         }

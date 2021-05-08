@@ -116,6 +116,7 @@ const pt = {
     clear_cache_tip: 'Quando há um problema com o cliente, esta operação irá deletar todas as conexões e configurações para restaurar o cliente',
     detail: 'Detalhe',
     separator_tip: 'O separador da visualização em árvore, definido como vazio para desativar a árvore e exibir as chaves como lista',
+    confirm_modify_unvisible_content: 'O conteúdo contém caracteres invisíveis, você pode editar com segurança no "Hex View". Se continuar a editar em "Text View" pode causar erros de codificação, quer continuar?',
   },
 };
 

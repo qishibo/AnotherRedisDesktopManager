@@ -116,6 +116,7 @@ const tw = {
     clear_cache_tip: '如果客戶端出現問題，此操作將刪除所有連接和配置以恢復客戶端',
     detail: '詳情',
     separator_tip: '樹視圖的分隔符，設置為空可禁用樹並將鍵顯示為列表',
+    confirm_modify_unvisible_content: '內容包含不可見的字符，您可以在Hex視圖中進行安全編輯。如果繼續在Text視圖中進行編輯可能會導致編碼錯誤，確定要繼續嗎？',
   },
 };
 

@@ -67,7 +67,13 @@ export default {
       }
     },
     refreshContent() {
-      this.$refs.keyContent && this.$refs.keyContent.initShow();
+      this.client.exists(this.redisKey).then(reply => {
+        if (!reply) {
+          return this.$message.error(this.$t('message.key_not_exists'));
+        }
+
+        this.$refs.keyContent && this.$refs.keyContent.initShow();
+      });
     },
   },
 };
