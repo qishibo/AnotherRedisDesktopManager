@@ -33,8 +33,8 @@
 
       <!-- del refresh key btn -->
       <el-form-item>
-        <el-button type="danger" @click="deleteKey" icon="el-icon-delete" ></el-button>
-        <el-button type="success" @click="refreshKey" icon="el-icon-refresh" ></el-button>
+        <el-button type="danger" @click="deleteKey" icon="el-icon-delete" :title="$t('el.upload.delete')"></el-button>
+        <el-button type="success" @click="refreshKey" icon="el-icon-refresh" :title="$t('message.refresh_connection')"></el-button>
       </el-form-item>
     </el-form>
   </div>

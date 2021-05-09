@@ -103,7 +103,7 @@ const de = {
     page_zoom: 'Seite vergrößern',
     scan_disabled: 'Ausnahme bei der Ausführung von Scan-Befehlen (kann deaktiviert worden sein), Schlüsselliste kann nicht angezeigt werden',
     key_type_not_support: 'Die visuelle Anzeige wird für diesen Typ wird nicht unterstützt. Bitte benutzen Sie die Konsole.',
-    delete_folder: 'Ordner entfernen',
+    delete_folder: 'Scannen und Löschen des gesamten Ordners',
     multiple_select: 'Mehrere Auswahl',
     copy: 'Kopieren',
     keys_to_be_deleted: 'Zu löschende Schlüssel',
@@ -115,6 +115,7 @@ const de = {
     select_lang: 'Sprache auswählen',
     clear_cache_tip: 'Wenn es ein Problem mit dem Client gibt, wird diese Operation alle Verbindungen und Konfigurationen löschen, um den Client wiederherzustellen',
     detail: 'Detail',
+    separator_tip: 'Das Trennzeichen der Baumansicht wird auf leer gesetzt, um den Baum zu deaktivieren und Schlüssel als Liste anzuzeigen',
   },
 };
 

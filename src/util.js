@@ -94,6 +94,14 @@ export default {
 
     return clone;
   },
+  keysToList(keys) {
+    return keys.map(key => {
+      return {
+        name: this.bufToString(key),
+        nameBuffer: key.toJSON(),
+      };
+    });
+  },
   keysToTree(keys, separator = ':', openStatus = {}) {
     let tree = {};
     keys.forEach(key => {

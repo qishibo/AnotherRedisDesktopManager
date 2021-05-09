@@ -10,12 +10,12 @@ export default {
   props: ['content', 'contentVisible', 'textrows', 'disabled'],
   computed: {
     contentDisplay() {
-      return this.content.toString();
+      return this.$util.bufToString(this.content);
     },
   },
   methods: {
     updateContent(value) {
-      let newContent = Buffer.from(value);
+      let newContent = this.$util.xToBuffer(value);
       this.$emit('updateContent', newContent);
     },
   },

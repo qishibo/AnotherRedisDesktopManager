@@ -103,7 +103,7 @@ const tw = {
     page_zoom: '頁面縮放',
     scan_disabled: 'Scan命令執行異常（可能已被禁用），無法顯示key列表',
     key_type_not_support: '該類型暫不支持視覺化展示，請使用Console',
-    delete_folder: '刪除資料夾',
+    delete_folder: '掃描並刪除整個資料夾',
     multiple_select: '多項選擇',
     copy: '複製',
     keys_to_be_deleted: '即將刪除的鍵',
@@ -115,6 +115,7 @@ const tw = {
     select_lang: '選擇語言',
     clear_cache_tip: '如果客戶端出現問題，此操作將刪除所有連接和配置以恢復客戶端',
     detail: '詳情',
+    separator_tip: '樹視圖的分隔符，設置為空可禁用樹並將鍵顯示為列表',
   },
 };
 
