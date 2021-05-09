@@ -4,6 +4,16 @@ import vue from '@/main.js';
 import {remote} from 'electron';
 const fs = require('fs');
 
+// fix ioredis hgetall key has been toString()
+Redis.Command.setReplyTransformer("hgetall", (result) => {
+  let arr = [];
+  for (let i = 0; i < result.length; i += 2) {
+    arr.push([result[i], result[i + 1]]);
+  }
+
+  return arr;
+});
+
 
 export default {
   createConnection(host, port, auth, config, promise = true) {

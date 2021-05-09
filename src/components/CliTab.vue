@@ -137,7 +137,7 @@ export default {
           return this.scrollToBottom('(error) ERR EXEC without MULTI');
         }
 
-        this.client.multi(this.multiQueue).exec((err, reply) => {
+        this.client.multi(this.multiQueue).execBuffer((err, reply) => {
           if (err) {
             this.content += `${err}\n`;
           }
@@ -210,14 +210,13 @@ export default {
     resolveResult(result) {
       let append = '';
 
-      if (result === null) {
-        append = `${null}\n`;
-      }
-      else if (typeof result === 'object' && !Buffer.isBuffer(result)) {
+      // list or dict
+      if (typeof result === 'object' && result !== null && !Buffer.isBuffer(result)) {
         const isArray = Array.isArray(result);
 
         for (const i in result) {
-          if (typeof result[i] === 'object' && result[i] !== null) {
+          // list or dict
+          if (typeof result[i] === 'object' && result[i] !== null && !Buffer.isBuffer(result[i])) {
             // fix ioredis pipline result such as [[null, "v1"], [null, "v2"]]
             // null is the result, and v1 is the value
             if (result[i][0] === null) {
@@ -227,14 +226,16 @@ export default {
               append += this.resolveResult(result[i]);
             }
           }
-
+          // string buffer null
           else {
-            append += `${(isArray ? '' : (`${i}\n`)) + result[i]}\n`;
+            append += (isArray ? '' : (this.$util.bufToString(i) + "\n")) + 
+                      this.$util.bufToString(result[i]) + "\n";
           }
         }
       }
+      // string buffer null
       else {
-        append = `${result}\n`;
+        append = this.$util.bufToString(result) + "\n";
       }
 
       return append;
