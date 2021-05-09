@@ -103,7 +103,7 @@ const tr = {
     page_zoom: 'Sayfa Yakınlaştırma',
     scan_disabled: 'Tarama komutu yürütme istisnası (devre dışı bırakılmış olabilir), anahtar listesi görüntülenemiyor',
     key_type_not_support: 'Görsel görüntüler bu tür için desteklenmiyor. Lütfen konsolu kullanın',
-    delete_folder: 'Klasörü Sil',
+    delete_folder: 'Tüm Klasörü Tara ve Sil',
     multiple_select: 'Çoklu Seçim',
     copy: 'Kopyala',
     keys_to_be_deleted: 'Silinecek Anahtarlar',
@@ -112,6 +112,11 @@ const tr = {
     mark_color: 'Mark rengi',
     key_no_permission: 'Dosya okuma izninin süresi doldu, lütfen anahtar dosyasını manuel olarak yeniden seçin',
     toggle_check_all: 'Tümünü seç | Seçimini kaldır',
+    select_lang: 'Dil Seçin',
+    clear_cache_tip: 'İstemcide bir sorun olduğunda, bu işlem istemciyi geri yüklemek için tüm bağlantıları ve yapılandırmaları silecektir',
+    detail: 'Detay',
+    separator_tip: 'Ağaç görünümünün ayırıcısı, ağacı devre dışı bırakmak için boş olarak ayarlanır ve anahtarları liste olarak görüntüler',
+    confirm_modify_unvisible_content: 'İçerik görünmez karakterler içeriyor, "Hex View" içinde güvenle düzenleyebilirsiniz. "Text View" de düzenlemeye devam etmek kodlama hatalarına neden oluyorsa, devam edeceğinizden emin misiniz?',
   },
 };
 

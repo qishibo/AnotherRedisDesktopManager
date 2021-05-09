@@ -103,7 +103,7 @@ const cn = {
     page_zoom: '页面缩放',
     scan_disabled: 'Scan命令执行异常（可能已被禁用），无法显示Key列表',
     key_type_not_support: '该类型暂不支持可视化展示，请使用命令行进行操作',
-    delete_folder: '删除文件夹',
+    delete_folder: '扫描并删除整个文件夹',
     multiple_select: '多项选择',
     copy: '复制',
     keys_to_be_deleted: '即将删除的键值',
@@ -112,6 +112,11 @@ const cn = {
     mark_color: '标记颜色',
     key_no_permission: '文件读取权限已过期，请手动重新选择密钥文件',
     toggle_check_all: '全选 | 取消全选',
+    select_lang: '选择语言',
+    clear_cache_tip: '当客户端出现问题时，该操作会删除所有连接和配置，用于恢复客户端',
+    detail: '详情',
+    separator_tip: '树状显示的分隔符，设置为空可以禁用树状图，直接以列表展示',
+    confirm_modify_unvisible_content: '内容中包含不可见字符，你可以在Hex视图中进行安全编辑。如果继续在Text视图中编辑可能会导致编码错误，确定继续么？',
   },
 };
 

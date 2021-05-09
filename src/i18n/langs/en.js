@@ -103,7 +103,7 @@ const en = {
     page_zoom: 'Page Zoom',
     scan_disabled: 'Scan command execution exception(may have been disabled), key list cannot be displayed',
     key_type_not_support: 'Visual display is not supported for this type. Please use console',
-    delete_folder: 'Delete Folder',
+    delete_folder: 'Scan And Delete Whole Folder',
     multiple_select: 'Multiple Select',
     copy: 'Copy',
     keys_to_be_deleted: 'Keys To Be Deleted',
@@ -112,6 +112,11 @@ const en = {
     mark_color: 'Mark Color',
     key_no_permission: 'File read permission has expired, please reselect the key file manually',
     toggle_check_all: 'Select all | Unselect all',
+    select_lang: 'Select Language',
+    clear_cache_tip: 'When there is a problem with the client, this operation will delete all the connections and configurations to recover the client',
+    detail: 'Detail',
+    separator_tip: 'The separator of the tree view, set to empty to disable tree and display keys as list',
+    confirm_modify_unvisible_content: 'The content contains invisible characters, you can edit safely in the "Hex View". If continuing to edit in the "Text View" may cause coding errors, sure to continue?',
   },
 };
 

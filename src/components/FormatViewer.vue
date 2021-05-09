@@ -19,6 +19,7 @@
       :content='content'
       :contentVisible='contentVisible'
       :textrows='textrows'
+      :disabled='disabled'
       @updateContent="$emit('update:content', $event)">
     </component>
   </div>
@@ -26,6 +27,7 @@
 
 <script type="text/javascript">
 import ViewerText from '@/components/ViewerText';
+import ViewerHex from '@/components/ViewerHex';
 import ViewerJson from '@/components/ViewerJson';
 import ViewerBinary from '@/components/ViewerBinary';
 import ViewerUnserialize from '@/components/ViewerUnserialize';
@@ -37,6 +39,7 @@ export default {
       selectedView: '',
       viewers: [
         { value: 'ViewerText', text: 'Text' },
+        { value: 'ViewerHex', text: 'Hex' },
         { value: 'ViewerJson', text: 'Json' },
         { value: 'ViewerBinary', text: 'Binary' },
         { value: 'ViewerMsgpack', text: 'Msgpack' },
@@ -47,11 +50,12 @@ export default {
       },
     };
   },
-  components: {ViewerText, ViewerJson, ViewerBinary, ViewerUnserialize, ViewerMsgpack},
+  components: {ViewerText, ViewerHex, ViewerJson, ViewerBinary, ViewerUnserialize, ViewerMsgpack},
   props: {
     float: {default: 'right'},
     content: {default: () => Buffer.from('')},
     textrows: {default: 6},
+    disabled: {type: Boolean, default: false},
   },
   computed: {
     contentVisible() {
@@ -68,12 +72,16 @@ export default {
 
       this.$nextTick(() => {
         if (!this.content) {
-          this.selectedView = 'ViewerText';
-          return;
+          return this.selectedView = 'ViewerText';
         }
 
+        // json
         if (this.$util.isJson(this.content)) {
           this.selectedView = 'ViewerJson';
+        }
+        // hex
+        else if (!this.contentVisible) {
+          this.selectedView = 'ViewerHex'
         }
         else {
           this.selectedView = 'ViewerText';

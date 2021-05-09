@@ -13,12 +13,16 @@ export default {
 
     return buf.equals(Buffer.from(buf.toString()));
   },
-  bufToString(buf) {
-    if (typeof buf == 'string') {
+  bufToString(buf, forceHex = false) {
+    // if (typeof buf == 'string') {
+    //   return buf;
+    // }
+
+    if (!Buffer.isBuffer(buf)) {
       return buf;
     }
 
-    if (this.bufVisible(buf)) {
+    if (!forceHex && this.bufVisible(buf)) {
       return buf.toString();
     }
 
@@ -93,6 +97,14 @@ export default {
     }
 
     return clone;
+  },
+  keysToList(keys) {
+    return keys.map(key => {
+      return {
+        name: this.bufToString(key),
+        nameBuffer: key.toJSON(),
+      };
+    });
   },
   keysToTree(keys, separator = ':', openStatus = {}) {
     let tree = {};

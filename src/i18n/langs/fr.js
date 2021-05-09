@@ -103,7 +103,7 @@ const fr = {
     page_zoom: 'Agrandir la page',
     scan_disabled: 'Exception d\'exécution de la commande Scan (peut avoir été désactivée), la liste des clés ne peut pas être affichée',
     key_type_not_support: 'L\'affichage visuel n\'est pas pris en charge pour ce type. Veuillez utiliser la console',
-    delete_folder: 'Supprimer le dossier',
+    delete_folder: 'Analyser et supprimer tout le dossier',
     multiple_select: 'Sélection multiple',
     copy: 'Copie',
     keys_to_be_deleted: 'Clés à supprimer',
@@ -112,6 +112,11 @@ const fr = {
     mark_color: 'Couleur de la marque',
     key_no_permission: 'L\'autorisation de lecture de fichier a expiré, veuillez resélectionner le fichier de clé manuellement',
     toggle_check_all: 'Tout sélectionner | Tout désélectionner',
+    select_lang: 'Choisir la langue',
+    clear_cache_tip: 'Lorsqu\'un problème survient avec le client, cette action supprime toutes les connexions et configurations pour récupérer le client',
+    detail: 'Détail',
+    separator_tip: 'Le séparateur de l\'arborescence, défini sur vide pour désactiver l\'arborescence et afficher les clés sous forme de liste',
+    confirm_modify_unvisible_content: 'Le contenu contient des caractères invisibles, vous pouvez éditer en toute sécurité dans le "Hex View". Si continuer à modifier dans le "Text View" peut provoquer des erreurs de codage, assurez-vous de continuer?',
   },
 };
 

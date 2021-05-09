@@ -103,7 +103,7 @@ const pt = {
     page_zoom: 'Zoom da página',
     scan_disabled: 'Exceção de execução do comando de scan (pode ter sido desativada), a lista de chaves não pode ser exibida',
     key_type_not_support: 'Visual display não é suportado para este tipo. Por favor, use console',
-    delete_folder: 'Apagar Pasta',
+    delete_folder: 'Verificar e excluir a pasta inteira',
     multiple_select: 'Múltiplos Seleccionar',
     copy: 'Copiar',
     keys_to_be_deleted: 'Chaves a serem apagadas',
@@ -112,6 +112,11 @@ const pt = {
     mark_color: 'Cor da marca',
     key_no_permission: 'A permissão de leitura do arquivo expirou, selecione novamente o arquivo de chave manualmente',
     toggle_check_all: 'Selecionar tudo | Desmarcar tudo',
+    select_lang: 'Selecione o idioma',
+    clear_cache_tip: 'Quando há um problema com o cliente, esta operação irá deletar todas as conexões e configurações para restaurar o cliente',
+    detail: 'Detalhe',
+    separator_tip: 'O separador da visualização em árvore, definido como vazio para desativar a árvore e exibir as chaves como lista',
+    confirm_modify_unvisible_content: 'O conteúdo contém caracteres invisíveis, você pode editar com segurança no "Hex View". Se continuar a editar em "Text View" pode causar erros de codificação, quer continuar?',
   },
 };
 

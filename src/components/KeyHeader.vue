@@ -8,6 +8,7 @@
           :value="$util.bufToString(keyName)"
           @change='changeKeyInput'
           @keyup.enter.native="renameKey"
+          :title="$t('message.click_enter_to_rename')"
           placeholder="KeyName">
           <span slot="prepend" class="key-detail-type">{{ keyType }}</span>
           <i class="el-icon-check el-input__icon cursor-pointer"
@@ -20,7 +21,7 @@
 
       <!-- key ttl -->
       <el-form-item>
-        <el-input v-model="keyTTL" @keyup.enter.native="ttlKey">
+        <el-input v-model="keyTTL" @keyup.enter.native="ttlKey" :title="$t('message.click_enter_to_ttl')">
           <span slot="prepend">TTL</span>
           <i class="el-icon-check el-input__icon cursor-pointer"
             slot="suffix"
@@ -32,8 +33,8 @@
 
       <!-- del refresh key btn -->
       <el-form-item>
-        <el-button type="danger" @click="deleteKey" icon="el-icon-delete" ></el-button>
-        <el-button type="success" @click="refreshKey" icon="el-icon-refresh" ></el-button>
+        <el-button type="danger" @click="deleteKey" icon="el-icon-delete" :title="$t('el.upload.delete')"></el-button>
+        <el-button type="success" @click="refreshKey" icon="el-icon-refresh" :title="$t('message.refresh_connection')"></el-button>
       </el-form-item>
     </el-form>
   </div>
@@ -175,5 +176,8 @@ export default {
     text-align: center;
     min-width: 34px;
     display: inline-block;
+  }
+  .cursor-pointer {
+    cursor: pointer;
   }
 </style>

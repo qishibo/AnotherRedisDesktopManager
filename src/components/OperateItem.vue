@@ -108,6 +108,7 @@ export default {
       selectedNewKeyType: 'string',
       newKeyTypes: {
         String: 'string', Hash: 'hash', List: 'list', Set: 'set', Zset: 'zset',
+        Stream: 'stream',
       },
     };
   },
@@ -200,16 +201,19 @@ export default {
           return this.client.set(key, '');
         }
         case 'hash': {
-          return this.client.hset(key, 'field', 'value');
+          return this.client.hset(key, 'New field', 'New value');
         }
         case 'list': {
-          return this.client.lpush(key, 'value');
+          return this.client.lpush(key, 'New member');
         }
         case 'set': {
-          return this.client.sadd(key, 'value');
+          return this.client.sadd(key, 'New member');
         }
         case 'zset': {
-          return this.client.zadd(key, 0, 'member');
+          return this.client.zadd(key, 0, 'New member');
+        }
+        case 'stream': {
+          return this.client.xadd(key, '*', 'New key', 'New value');
         }
       }
     },
