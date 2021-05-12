@@ -104,7 +104,7 @@ export default {
   props: ['client', 'config', 'keyList'],
   computed: {
     separator() {
-      return this.config.separator;
+      return this.config.separator === undefined ? ':' : this.config.separator;
     }
   },
   methods: {
