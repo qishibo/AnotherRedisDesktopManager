@@ -53,6 +53,14 @@ export default {
     paramsTrim() {
       return this.params.replace(/^\s+|\s+$/g, '');
     },
+    paramsArr() {
+      try {
+        return splitargs(this.paramsTrim);
+      }
+      catch(e) {
+        return [this.paramsTrim];
+      }
+    }
   },
   methods: {
     initShow() {
@@ -83,7 +91,7 @@ export default {
       cb(suggestions);
     },
     addCMDTips(items = []) {
-      const paramsArr = splitargs(this.paramsTrim);
+      const paramsArr = this.paramsArr;
       const paramsLen = paramsArr.length;
       const cmd = paramsArr[0].toUpperCase();
 
@@ -108,7 +116,7 @@ export default {
     },
     consoleExec() {
       const params = this.paramsTrim;
-      const paramsArr = splitargs(params);
+      const paramsArr = this.paramsArr;
 
       this.params = '';
       this.content += `> ${params}\n`;
@@ -153,7 +161,7 @@ export default {
 
       // multi enqueue
       if (Array.isArray(this.multiQueue)) {
-        this.multiQueue.push(['call', paramsArr[0], ...paramsArr.slice(1)]);
+        this.multiQueue.push(['callBuffer', paramsArr[0], ...paramsArr.slice(1)]);
         return this.scrollToBottom('QUEUED');
       }
 
