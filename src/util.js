@@ -74,6 +74,16 @@ export default {
 
     return false;
   },
+  isPHPSerialize(str) {
+    const phpSerialize = require('php-serialize');
+
+    try {
+      phpSerialize.unserialize(str);
+      return true;
+    }catch (e) {}
+
+    return false;
+  },
   base64Encode(str) {
     return (new Buffer(str, 'utf8')).toString('base64');
   },

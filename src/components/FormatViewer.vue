@@ -79,6 +79,10 @@ export default {
         if (this.$util.isJson(this.content)) {
           this.selectedView = 'ViewerJson';
         }
+        // php unserialize
+        else if (this.$util.isPHPSerialize(this.content)) {
+          this.selectedView = 'ViewerUnserialize';
+        }
         // hex
         else if (!this.contentVisible) {
           this.selectedView = 'ViewerHex'
