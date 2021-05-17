@@ -154,7 +154,6 @@ npm run pack:linux
 
 - Give me a star ⭐!
 - Through [OpenCollective](https://opencollective.com/AnotherRedisDesktopManager)
-- Through [Paypal](https://www.paypal.me/qii404)
 - If you are a Mac user, you can purchase this software from the [app store](https://apps.apple.com/app/id1516451072) to sponsor, and then let the app store automatically update it for you.
 
   [![app store](https://imgup.qii404.xyz/github/download_from_app_store.png)](https://apps.apple.com/app/id1516451072)
