@@ -100,6 +100,7 @@ const fr = {
     redis_status: 'Statut Redis',
     confirm_flush_db: 'Supprimer toutes les clés dans la base de données {db} ?',
     flushdb: 'Sauvegarde de la base de données',
+    flushdb_prompt: 'Entrer "{txt}"',
     info_disabled: 'Exception d\'exécution de la commande Info (peut avoir été désactivée), l\'info redis ne peut pas être affichée',
     page_zoom: 'Agrandir la page',
     scan_disabled: 'Exception d\'exécution de la commande Scan (peut avoir été désactivée), la liste des clés ne peut pas être affichée',

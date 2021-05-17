@@ -156,11 +156,14 @@ export default {
       }
 
       const preDB = this.client.condition ? this.client.condition.select : 0;
+      const inputTxt = 'yes';
+      const placeholder = this.$t('message.flushdb_prompt', {txt: inputTxt});
 
-      this.$confirm(
-        this.$t('message.confirm_flush_db', {db: preDB}),
-        {type: 'warning'}
-      ).then(() => {
+      this.$prompt(this.$t('message.confirm_flush_db', {db: preDB}), {
+        inputValidator: value => {return (value == inputTxt) ? true : placeholder},
+        inputPlaceholder: placeholder,
+      })
+      .then(value => {
         this.client.flushdb().then((reply) => {
           if (reply == 'OK') {
             this.$message.success({
@@ -171,7 +174,8 @@ export default {
             this.refreshConnection();
           }
         });
-      }).catch(() => {});
+      })
+      .catch(e => {});
     },
     changeColor(color) {
       this.$emit('changeColor', color);

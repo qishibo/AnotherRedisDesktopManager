@@ -100,6 +100,7 @@ const tr = {
     redis_status: 'Redis Bilgisi',
     confirm_flush_db: 'Db {db} içindeki tüm anahtarları silmek istiyor musunuz?',
     flushdb: 'DByi Temizle',
+    flushdb_prompt: 'Giriş "{txt}"',
     info_disabled: 'Bilgi komutu yürütme istisnası (devre dışı bırakılmış olabilir), yeniden bilgi gösterilemiyor',
     page_zoom: 'Sayfa Yakınlaştırma',
     scan_disabled: 'Tarama komutu yürütme istisnası (devre dışı bırakılmış olabilir), anahtar listesi görüntülenemiyor',

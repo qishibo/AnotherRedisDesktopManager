@@ -100,6 +100,7 @@ const de = {
     redis_status: 'Redis Info',
     confirm_flush_db: 'Bestätigen Sie, um alle Schlüssel in db ({db}) zu löschen ?',
     flushdb: 'Speichere Datenbank',
+    flushdb_prompt: 'Eingabe "{txt}"',
     info_disabled: 'Info-Befehlsausführungsausnahme (kann deaktiviert worden sein), Redis-Info kann nicht angezeigt werden',
     page_zoom: 'Seite vergrößern',
     scan_disabled: 'Ausnahme bei der Ausführung von Scan-Befehlen (kann deaktiviert worden sein), Schlüsselliste kann nicht angezeigt werden',

@@ -100,6 +100,7 @@ const pt = {
     redis_status: 'Informaçôes do Redis',
     confirm_flush_db: 'Confirme a exclusão de todas as chaves em db{db}?',
     flushdb: 'Flush DB',
+    flushdb_prompt: 'Entrada "{txt}"',
     info_disabled: 'Exceção de execução do comando de informação (pode ter sido desativado), as informações do redis não podem ser exibidas',
     page_zoom: 'Zoom da página',
     scan_disabled: 'Exceção de execução do comando de scan (pode ter sido desativada), a lista de chaves não pode ser exibida',

@@ -100,6 +100,7 @@ const tw = {
     redis_status: 'Redis訊息',
     confirm_flush_db: '確認刪除db{db}中的所有鍵值嗎？',
     flushdb: '刪除所有鍵',
+    flushdb_prompt: '輸入 "{txt}"',
     info_disabled: 'Info命令執行異常（可能已被禁用），無法顯示Redis訊息',
     page_zoom: '頁面縮放',
     scan_disabled: 'Scan命令執行異常（可能已被禁用），無法顯示key列表',
