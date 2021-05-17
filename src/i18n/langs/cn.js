@@ -72,6 +72,7 @@ const cn = {
     retry_too_many_times: '尝试重连次数过多，请检查Server状态',
     key_to_search: '输入关键字搜索',
     begin_update: '更新',
+    ignore_this_version: '忽略该版本',
     check_update: '检查更新',
     update_checking: '检查更新中, 请稍后...',
     update_available: '发现新版本',

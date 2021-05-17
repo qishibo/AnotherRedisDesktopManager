@@ -72,6 +72,7 @@ const de = {
     retry_too_many_times: 'Zu viele Versuche, die Verbindung wieder herzustellen. Bitte überprüfen Sie den Server-Status',
     key_to_search: 'Schlüsselwort-Suche',
     begin_update: 'Aktualisierung',
+    ignore_this_version: 'Ignoriere diese Version',
     check_update: 'Aktualisierung prüfen',
     update_checking: 'Nach Updates suchen ...',
     update_available: 'Neue Version gefunden',

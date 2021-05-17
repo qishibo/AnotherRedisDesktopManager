@@ -72,6 +72,7 @@ const pt = {
     retry_too_many_times: 'Muitas tentativas de reconectar. Verifique o status do servidor',
     key_to_search: 'Pesquisa por palavra-chave',
     begin_update: 'Atualizar',
+    ignore_this_version: 'Ignore esta versão',
     check_update: 'Checar atualização',
     update_checking: 'Procurando por atualizações existentes, espero um momento...',
     update_available: 'Nova versão encontrada',

@@ -72,6 +72,7 @@ const tr = {
     retry_too_many_times: 'Yeniden Bağlanmak İçin Çok Fazla Deneme Yapıldı. Lütfen Sunucu Durumunu Kontrol Edin',
     key_to_search: 'Anahtar Kelime Araması',
     begin_update: 'Güncelle',
+    ignore_this_version: 'Bu sürümü yok sayın',
     check_update: 'Güncellemeleri Denetlee',
     update_checking: 'Güncellemeler Kontrol Ediliyor, Birkaç Dakika Bekleyin ...',
     update_available: 'Yeni Sürüm Bulundu',

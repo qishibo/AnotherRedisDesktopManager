@@ -72,6 +72,7 @@ const fr = {
     retry_too_many_times: 'Trop de tentatives pour se reconnecter. Veuillez vérifier l\'état du serveur',
     key_to_search: 'Mot-clé de recherche',
     begin_update: 'Mise à jour',
+    ignore_this_version: 'Ignorer cette version',
     check_update: 'Vérifier la mise à jour',
     update_checking: 'Vérification des mises à jour, patientez...',
     update_available: 'Nouvelle version trouvée',

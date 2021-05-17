@@ -72,6 +72,7 @@ const tw = {
     retry_too_many_times: '嘗試重連次數過多，請檢查伺服器狀態',
     key_to_search: '輸入關鍵字搜尋',
     begin_update: '更新',
+    ignore_this_version: '忽略此版本',
     check_update: '檢查更新',
     update_checking: '檢查更新中, 請稍後...',
     update_available: '發現新版本',

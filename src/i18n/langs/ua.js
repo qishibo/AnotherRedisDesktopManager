@@ -72,6 +72,7 @@ const ua = {
     retry_too_many_times: 'Занадто багато спроб з`єднатись. Будь ласка, перевірте стан сервера',
     key_to_search: 'Пошук за ключовими словами',
     begin_update: 'Оновити',
+    ignore_this_version: 'Ігнорувати цю версію',
     check_update: 'Перевірити оновлення',
     update_checking: 'Перевірка оновлень, будь ласка, чекайте ...',
     update_available: 'Знайдена нова версія',

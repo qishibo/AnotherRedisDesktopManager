@@ -72,6 +72,7 @@ const en = {
     retry_too_many_times: 'Too Many Attempts To Reconnect. Please Check The Server Status',
     key_to_search: 'Keyword Search',
     begin_update: 'Update',
+    ignore_this_version: 'Ignore this version',
     check_update: 'Check Update',
     update_checking: 'Checking For Updates, Wait A Moment...',
     update_available: 'New Version Found',
