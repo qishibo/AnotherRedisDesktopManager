@@ -30,7 +30,7 @@ export default {
       try {
         // change bigint to string
         let JSONbig = require('json-bigint')({storeAsString: true});
-        let jsonSolved = JSONbig.stringify(JSONbig.parse(this.content.toString()));
+        let jsonSolved = JSONbig.stringify(JSONbig.parse(this.content));
 
         return JSON.parse(jsonSolved);
       } catch (e) {

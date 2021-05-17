@@ -29,7 +29,7 @@ export default {
   computed: {
     newContent() {
       try {
-        return unserialize(this.content.toString());
+        return unserialize(this.content);
       } catch (e) {
         return this.$t('message.php_unserialize_format_failed');
       }
