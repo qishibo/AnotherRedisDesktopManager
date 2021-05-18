@@ -14,7 +14,7 @@
       class='load-more-keys'
       :disabled='scanMoreDisabled'
       @click='refreshKeyList(false)'>
-      {{ $t('message.load_more_keys') }}
+      {{ $t('message.load_more_keys') }} {{ this.getKeysPerSize() }} keys
     </el-button>
   </div>
 </template>
@@ -30,7 +30,6 @@ export default {
       // keyListType: this.config.separator === '' ? 'KeyListNormal' : 'KeyListTree',
       // keysPageSize: this.keyListType === 'KeyListNormal' ? 200 : 1000,
       keyListType: 'KeyListTree',
-      keysPageSize: 500,
       searchPageSize: 10000,
       scanStreams: [],
       scanningCount: 0,
@@ -96,10 +95,11 @@ export default {
       let nodes = this.client.nodes ? this.client.nodes('master') : [this.client];
       this.scanningCount = nodes.length;
 
+      let keysPageSize = this.getKeysPerSize();
       nodes.map(node => {
         let scanOption = {
           match: this.getMatchMode(),
-          count: this.keysPageSize,
+          count: keysPageSize,
         }
 
         // scan count is bigger when in search mode
@@ -112,7 +112,7 @@ export default {
           this.onePageList = this.onePageList.concat(keys);
 
           // scan once reaches page size
-          if (this.onePageList.length >= this.keysPageSize) {
+          if (this.onePageList.length >= keysPageSize) {
             // temp stop
             stream.pause();
             // search input icon recover
@@ -218,6 +218,9 @@ export default {
         }
       }
     },
+    getKeysPerSize() {
+      return this.$storage.getSetting('keysPerSize') ? this.$storage.getSetting('keysPerSize') : 500;
+    }
   },
   watch: {
     config(newConfig) {

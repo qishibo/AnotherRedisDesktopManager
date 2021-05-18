@@ -60,6 +60,16 @@
         </el-select>
       </el-form-item>
 
+      <!-- Keys per Size -->
+      <el-form-item :label="$t('message.keys_per_size')">
+        <el-input-number
+          size="mini"
+          :min=1
+          :step=100
+          v-model='form.keysPerSize'>
+        </el-input-number>
+      </el-form-item>
+
       <!-- current version -->
       <el-form-item :label="$t('message.pre_version')" class='current-version'>
         <el-tag type="info">{{ appVersion }}</el-tag>
@@ -106,12 +116,13 @@
 import storage from '@/storage.js';
 import { ipcRenderer } from 'electron';
 import LanguageSelector from '@/components/LanguageSelector';
+import VueNumeric from 'vue-numeric';
 
 export default {
   data() {
     return {
       visible: false,
-      form: {fontFamily: '', zoomFactor: 1.0},
+      form: {fontFamily: '', zoomFactor: 1.0, keysPerSize: 500},
       importConnectionVisible: false,
       connectionFileContent: '',
       appVersion: (new URL(window.location.href)).searchParams.get('version'),
@@ -121,7 +132,7 @@ export default {
       darkMode: localStorage.theme == 'dark',
     };
   },
-  components: {LanguageSelector},
+  components: {LanguageSelector, VueNumeric},
   methods: {
     show() {
       this.visible = true;

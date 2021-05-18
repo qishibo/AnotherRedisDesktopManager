@@ -119,6 +119,7 @@ const cn = {
     detail: '详情',
     separator_tip: '树状显示的分隔符，设置为空可以禁用树状图，直接以列表展示',
     confirm_modify_unvisible_content: '内容中包含不可见字符，你可以在Hex视图中进行安全编辑。如果继续在Text视图中编辑可能会导致编码错误，确定继续么？',
+    keys_per_size: '按键数',
   },
 };
 
