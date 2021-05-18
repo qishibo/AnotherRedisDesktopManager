@@ -24,7 +24,8 @@ export default {
         { value: 'pt', label: 'Português' },
         { value: 'de', label: 'Deutsch' },
         { value: 'fr', label: 'Français' },
-        { value: 'ua', label: 'Українською' }
+        { value: 'ua', label: 'Українською' },
+        { value: 'it', label: 'Italiano' }
       ],
     };
   },
