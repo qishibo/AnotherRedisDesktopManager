@@ -119,6 +119,7 @@ const de = {
     detail: 'Detail',
     separator_tip: 'Das Trennzeichen der Baumansicht wird auf leer gesetzt, um den Baum zu deaktivieren und Schlüssel als Liste anzuzeigen',
     confirm_modify_unvisible_content: 'Der Inhalt enthält unsichtbare Zeichen, die Sie sicher in der "Hex View" bearbeiten können. Wenn die weitere Bearbeitung im "Text View" zu Codierungsfehlern führen kann, fahren Sie sicher fort?',
+    keys_per_size: 'Anzahl der Schlüssel',
   },
 };
 

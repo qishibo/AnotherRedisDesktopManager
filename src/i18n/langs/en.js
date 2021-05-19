@@ -119,6 +119,7 @@ const en = {
     detail: 'Detail',
     separator_tip: 'The separator of the tree view, set to empty to disable tree and display keys as list',
     confirm_modify_unvisible_content: 'The content contains invisible characters, you can edit safely in the "Hex View". If continuing to edit in the "Text View" may cause coding errors, sure to continue?',
+    keys_per_size: 'Number of keys',
   },
 };
 
