@@ -68,6 +68,13 @@ export default {
       this.tabs = this.tabs.filter((tab) => {
         return tab.client.options.connectionName != connectionName;
       });
+
+      // still tabs left, solve selecting which tab
+      if (this.tabs.length) {
+        // previous selected left, do not change
+        let filteredTab = this.tabs.filter(tab => tab.name == this.selectedTabName);
+        !filteredTab.length && (this.selectedTabName = this.tabs[0].name);
+      }
     });
   },
   methods: {

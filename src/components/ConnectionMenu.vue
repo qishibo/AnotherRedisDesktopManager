@@ -94,7 +94,7 @@ export default {
         this.$t('message.close_to_edit_connection'),
         { type: 'warning' },
       ).then(() => {
-        this.$bus.$emit('closeConnection');
+        this.$bus.$emit('closeConnection', this.config.connectionName);
         this.$refs.editConnectionDialog.show();
       }).catch(() => {});
     },
@@ -103,7 +103,7 @@ export default {
         this.$t('message.close_to_connection'),
         { type: 'warning' },
       ).then(() => {
-        this.$bus.$emit('closeConnection');
+        this.$bus.$emit('closeConnection', this.config.connectionName);
       }).catch(() => {});
     },
     editConnectionFinished(newConfig) {
