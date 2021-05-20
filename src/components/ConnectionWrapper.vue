@@ -25,6 +25,7 @@
       <KeyList
         ref='keyList'
         :config="config"
+        :globalSettings='globalSettings'
         :client='client'>
       </KeyList>
     </el-submenu>
@@ -43,7 +44,7 @@ export default {
       client: null,
     };
   },
-  props: ['config'],
+  props: ['config', 'globalSettings'],
   components: {ConnectionMenu, OperateItem, KeyList},
   created() {
     this.$bus.$on('closeConnection', (connectionName = false) => {

@@ -119,7 +119,8 @@ const it = {
     detail: 'Dettaglio',
     separator_tip: 'Il separatore della vista ad albero, impostato su vuoto per disabilitare l\'albero e visualizzare i tasti come elenco',
     confirm_modify_unvisible_content: 'Il contenuto contiene caratteri invisibili, puoi modificare in sicurezza nella "Hex View". Se continuare a modificare nella "Text View" può causare errori di codifica, continuare?',
-    keys_per_size: 'Numero di chiavi',
+    keys_per_loading: 'Numero di chiavi',
+    keys_per_loading_tip: 'Il numero di chiavi caricate ogni volta. Un\'impostazione troppo grande potrebbe influire sulle prestazioni',
   },
 };
 

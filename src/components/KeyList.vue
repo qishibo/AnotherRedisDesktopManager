@@ -14,7 +14,7 @@
       class='load-more-keys'
       :disabled='scanMoreDisabled'
       @click='refreshKeyList(false)'>
-      {{ $t('message.load_more_keys') }} {{ this.getKeysPerSize() }} keys
+      {{ $t('message.load_more_keys') }}
     </el-button>
   </div>
 </template>
@@ -39,8 +39,14 @@ export default {
       firstPageFinished: false,
     };
   },
-  props: ['client', 'config'],
+  props: ['client', 'config', 'globalSettings'],
   components: {KeyListTree, KeyListNormal},
+  computed: {
+    keysPageSize() {
+      let keysPageSize = parseInt(this.globalSettings['keysPageSize']);
+      return keysPageSize ? keysPageSize : 500;
+    },
+  },
   created() {
     // add or remove key from key list directly
     this.$bus.$on('refreshKeyList', (client, key = '', type = 'del') => {
@@ -95,11 +101,10 @@ export default {
       let nodes = this.client.nodes ? this.client.nodes('master') : [this.client];
       this.scanningCount = nodes.length;
 
-      let keysPageSize = this.getKeysPerSize();
       nodes.map(node => {
         let scanOption = {
           match: this.getMatchMode(),
-          count: keysPageSize,
+          count: this.keysPageSize,
         }
 
         // scan count is bigger when in search mode
@@ -112,7 +117,7 @@ export default {
           this.onePageList = this.onePageList.concat(keys);
 
           // scan once reaches page size
-          if (this.onePageList.length >= keysPageSize) {
+          if (this.onePageList.length >= this.keysPageSize) {
             // temp stop
             stream.pause();
             // search input icon recover
@@ -218,14 +223,20 @@ export default {
         }
       }
     },
-    getKeysPerSize() {
-      return this.$storage.getSetting('keysPerSize') ? this.$storage.getSetting('keysPerSize') : 500;
-    }
   },
   watch: {
     config(newConfig) {
       // separator changes
       // this.keyListType = newConfig.separator === '' ? 'KeyListNormal' : 'KeyListTree';
+    },
+    globalSettings(newSetting, oldSetting) {
+      if (!this.client) {
+        return;
+      }
+      // keys number changed, reload scan streams
+      if (newSetting.keysPageSize != oldSetting.keysPageSize) {
+        this.refreshKeyList();
+      }
     },
   },
 }
