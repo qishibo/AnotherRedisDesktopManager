@@ -108,7 +108,7 @@ const it = {
     delete_folder: 'Scansiona ed elimina l\'intera cartella',
     multiple_select: 'Selezione multipla',
     copy: 'Copia',
-    copy_success: 'Copia con successo',
+    copy_success: 'Copia realizzata con successo',
     keys_to_be_deleted: 'Chiavi da eliminare',
     delete_all: 'Cancella Tutto',
     clear_cache: 'Cancella cache',
