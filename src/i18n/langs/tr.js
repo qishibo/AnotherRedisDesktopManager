@@ -108,6 +108,7 @@ const tr = {
     delete_folder: 'Tüm Klasörü Tara ve Sil',
     multiple_select: 'Çoklu Seçim',
     copy: 'Kopyala',
+    copy_success: 'Başarıyla kopyalayın',
     keys_to_be_deleted: 'Silinecek Anahtarlar',
     delete_all: 'Hepsini sil',
     clear_cache: 'önbelleği temizle',

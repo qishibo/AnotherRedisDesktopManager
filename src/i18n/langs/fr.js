@@ -108,6 +108,7 @@ const fr = {
     delete_folder: 'Analyser et supprimer tout le dossier',
     multiple_select: 'Sélection multiple',
     copy: 'Copie',
+    copy_success: 'Copier avec succès',
     keys_to_be_deleted: 'Clés à supprimer',
     delete_all: 'Supprimer tout',
     clear_cache: 'Vider le cache',

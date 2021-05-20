@@ -9,6 +9,7 @@
         :value="item.value">
       </el-option>
     </el-select>
+    <span @click='copyContent' :title='$t("message.copy")' class='el-icon-document formater-copy-icon'></span>
     <span v-if='!contentVisible' class='formater-binary-tag'>[Hex]</span>
     <span class='formater-binary-tag'>Size: {{ $util.humanFileSize(buffSize) }}</span>
     <br>
@@ -92,6 +93,11 @@ export default {
         }
       });
     },
+    copyContent() {
+      const clipboard = require('electron').clipboard;
+      clipboard.writeText(this.content.toString());
+      this.$message.success(this.$t('message.copy_success'));
+    },
   },
 }
 </script>
@@ -145,5 +151,9 @@ export default {
     /*padding-left: 5px;*/
     color: #7ab3ef;
     font-size: 80%;
+  }
+  .formater-copy-icon {
+    color: #7ab3ef;
+    cursor: pointer;
   }
 </style>

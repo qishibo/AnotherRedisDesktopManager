@@ -108,6 +108,7 @@ const tw = {
     delete_folder: '掃描並刪除整個資料夾',
     multiple_select: '多項選擇',
     copy: '複製',
+    copy_success: '複製成功',
     keys_to_be_deleted: '即將刪除的鍵',
     delete_all: '全部删除',
     clear_cache: '清除緩存',

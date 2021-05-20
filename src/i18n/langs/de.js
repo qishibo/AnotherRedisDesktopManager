@@ -108,6 +108,7 @@ const de = {
     delete_folder: 'Scannen und Löschen des gesamten Ordners',
     multiple_select: 'Mehrere Auswahl',
     copy: 'Kopieren',
+    copy_success: 'Erfolgreich kopieren',
     keys_to_be_deleted: 'Zu löschende Schlüssel',
     delete_all: 'Alle löschen',
     clear_cache: 'Cache leeren',

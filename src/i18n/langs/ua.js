@@ -108,6 +108,7 @@ const ua = {
     delete_folder: 'Сканувати та видаляти цілу папку',
     multiple_select: 'Вибрати кілька',
     copy: 'Копіювати',
+    copy_success: 'Копіювання успішно',
     keys_to_be_deleted: 'Ключі для видалення',
     delete_all: 'Видалити все',
     clear_cache: 'Oчистити кеш',

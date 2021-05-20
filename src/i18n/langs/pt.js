@@ -108,6 +108,7 @@ const pt = {
     delete_folder: 'Verificar e excluir a pasta inteira',
     multiple_select: 'Múltiplas Seleções',
     copy: 'Copiar',
+    copy_success: 'Copiar com sucesso',
     keys_to_be_deleted: 'Chaves a serem apagadas',
     delete_all: 'Apagar Tudo',
     clear_cache: 'Limpar cache',

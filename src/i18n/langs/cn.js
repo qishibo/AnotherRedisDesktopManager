@@ -108,6 +108,7 @@ const cn = {
     delete_folder: '扫描并删除整个文件夹',
     multiple_select: '多项选择',
     copy: '复制',
+    copy_success: '复制成功',
     keys_to_be_deleted: '即将删除的键值',
     delete_all: '全部删除',
     clear_cache: '清除缓存',

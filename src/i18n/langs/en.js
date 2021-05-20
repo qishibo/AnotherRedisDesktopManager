@@ -108,6 +108,7 @@ const en = {
     delete_folder: 'Scan And Delete Whole Folder',
     multiple_select: 'Multiple Select',
     copy: 'Copy',
+    copy_success: 'Copy success',
     keys_to_be_deleted: 'Keys To Be Deleted',
     delete_all: 'Delete All',
     clear_cache: 'Clear Cache',
