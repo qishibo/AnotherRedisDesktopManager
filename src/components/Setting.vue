@@ -27,6 +27,27 @@
         </el-input-number>
       </el-form-item>
 
+      <!-- keys per loading -->
+      <el-form-item>
+        <el-input-number
+          size="mini"
+          placeholder='500'
+          :min=10
+          :max=10000
+          :step=50
+          v-model='form.keysPageSize'>
+        </el-input-number>
+        <span slot="label">
+          {{ $t('message.keys_per_loading') }}
+          <el-popover
+            :content="$t('message.keys_per_loading_tip')"
+            placement="top-start"
+            trigger="hover">
+            <i slot="reference" class="el-icon-question"></i>
+          </el-popover>
+        </span>
+      </el-form-item>
+
       <!-- export connections -->
       <el-form-item :label="$t('message.config_connections')">
         <el-button icon="el-icon-upload2" @click="exportConnection">{{ $t('message.export') }}</el-button>
@@ -111,7 +132,7 @@ export default {
   data() {
     return {
       visible: false,
-      form: {fontFamily: '', zoomFactor: 1.0},
+      form: {fontFamily: '', zoomFactor: 1.0, keysPageSize: 500},
       importConnectionVisible: false,
       connectionFileContent: '',
       appVersion: (new URL(window.location.href)).searchParams.get('version'),
@@ -121,7 +142,7 @@ export default {
       darkMode: localStorage.theme == 'dark',
     };
   },
-  components: {LanguageSelector},
+  components: { LanguageSelector },
   methods: {
     show() {
       this.visible = true;
@@ -134,7 +155,7 @@ export default {
       storage.saveSettings(this.form);
 
       this.visible = false;
-      this.$bus.$emit('reloadSettings');
+      this.$bus.$emit('reloadSettings', Object.assign({}, this.form));
     },
     changeTheme() {
       const themeName = this.darkMode ? 'dark' : 'chalk';

@@ -4,6 +4,7 @@
       v-for="item of connections"
       :key="item.key ? item.key : item.connectionName"
       :index="item.connectionName"
+      :globalSettings="globalSettings"
       :config='item'>
     </ConnectionWrapper>
   </div>
@@ -17,12 +18,16 @@ export default {
   data() {
     return {
       connections: [],
+      globalSettings: this.$storage.getSetting(),
     };
   },
   components: {ConnectionWrapper},
   created() {
     this.$bus.$on('refreshConnections', () => {
       this.initConnections();
+    });
+    this.$bus.$on('reloadSettings', settings => {
+      this.globalSettings = settings;
     });
   },
   methods: {

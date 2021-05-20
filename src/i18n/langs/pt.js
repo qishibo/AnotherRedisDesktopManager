@@ -119,6 +119,8 @@ const pt = {
     detail: 'Detalhe',
     separator_tip: 'O separador da visualização em árvore, definido como vazio para desativar a árvore e exibir as chaves como lista',
     confirm_modify_unvisible_content: 'O conteúdo contém caracteres invisíveis, você pode editar com segurança no "Hex View". Se continuar a editar em "Text View" pode causar erros de codificação, deseja continuar?',
+    keys_per_loading: 'Número de chaves',
+    keys_per_loading_tip: 'O número de chaves carregadas a cada vez. A configuração muito grande pode afetar o desempenho',
   },
 };
 

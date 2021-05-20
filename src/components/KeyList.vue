@@ -30,7 +30,6 @@ export default {
       // keyListType: this.config.separator === '' ? 'KeyListNormal' : 'KeyListTree',
       // keysPageSize: this.keyListType === 'KeyListNormal' ? 200 : 1000,
       keyListType: 'KeyListTree',
-      keysPageSize: 500,
       searchPageSize: 10000,
       scanStreams: [],
       scanningCount: 0,
@@ -40,8 +39,14 @@ export default {
       firstPageFinished: false,
     };
   },
-  props: ['client', 'config'],
+  props: ['client', 'config', 'globalSettings'],
   components: {KeyListTree, KeyListNormal},
+  computed: {
+    keysPageSize() {
+      let keysPageSize = parseInt(this.globalSettings['keysPageSize']);
+      return keysPageSize ? keysPageSize : 500;
+    },
+  },
   created() {
     // add or remove key from key list directly
     this.$bus.$on('refreshKeyList', (client, key = '', type = 'del') => {
@@ -223,6 +228,15 @@ export default {
     config(newConfig) {
       // separator changes
       // this.keyListType = newConfig.separator === '' ? 'KeyListNormal' : 'KeyListTree';
+    },
+    globalSettings(newSetting, oldSetting) {
+      if (!this.client) {
+        return;
+      }
+      // keys number changed, reload scan streams
+      if (newSetting.keysPageSize != oldSetting.keysPageSize) {
+        this.refreshKeyList();
+      }
     },
   },
 }
