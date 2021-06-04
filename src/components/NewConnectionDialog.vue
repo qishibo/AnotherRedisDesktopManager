@@ -141,7 +141,7 @@ export default {
         sshOptions: {
           host: '',
           port: 22,
-          username: '',
+          username: 'root',
           password: '',
           privatekey: '',
           passphrase: '',
