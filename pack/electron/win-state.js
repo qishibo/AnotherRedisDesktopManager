@@ -36,6 +36,7 @@ const winState = {
         y: winBounds.y,
         width: winBounds.width,
         height: winBounds.height,
+        maximized: win.isMaximized(),
       }
 
       return state;
