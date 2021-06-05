@@ -31,6 +31,10 @@ function createWindow() {
     },
   });
 
+  if (lastWinStage.maximized) {
+    mainWindow.maximize();
+  }
+
   winState.watchClose(mainWindow);
 
   // and load the index.html of the app.
