@@ -1,7 +1,46 @@
 <template>
-  <el-dialog :title="dialogTitle" :visible.sync="dialogVisible" :append-to-body='true' :close-on-click-modal='false' class='new-connection-dailog'>
+  <el-dialog :title="dialogTitle" :visible.sync="dialogVisible" :append-to-body='true' :close-on-click-modal='false' class='new-connection-dailog' width='90%'>
     <!-- redis connection form -->
     <el-form :label-position="labelPosition" label-width="90px">
+      <el-row :gutter=20>
+        <el-col :span=12>
+
+          <el-form-item label="Host">
+            <el-input v-model="connection.host" autocomplete="off" placeholder="127.0.0.1"></el-input>
+          </el-form-item>
+
+          <el-form-item label="Username">
+            <el-input v-model="connection.username" autocomplete="off"></el-input>
+          </el-form-item>
+
+          <el-form-item label="Name">
+            <el-input v-model="connection.name" autocomplete="off"></el-input>
+          </el-form-item>
+
+        </el-col>
+        <el-col :span=12>
+          <el-form-item label="Port">
+            <el-input type='number' v-model="connection.port" autocomplete="off" placeholder="6379"></el-input>
+          </el-form-item>
+
+
+          <el-form-item label="Password">
+            <el-input v-model="connection.auth" type='password' autocomplete="off"></el-input>
+          </el-form-item>
+
+          <el-form-item label="Separator">
+            <el-tooltip effect="dark">
+              <div slot="content">{{ $t('message.separator_tip') }}</div>
+              <el-input v-model="connection.separator" autocomplete="off" placeholder='Empty To Disable Tree View'></el-input>
+            </el-tooltip>
+          </el-form-item>
+        </el-col>
+      </el-row>
+<!--
+      <el-form-item label="Name">
+        <el-input v-model="connection.name" autocomplete="off"></el-input>
+      </el-form-item>
+
       <el-form-item label="Host">
         <el-input v-model="connection.host" autocomplete="off" placeholder="127.0.0.1"></el-input>
       </el-form-item>
@@ -10,12 +49,12 @@
         <el-input type='number' v-model="connection.port" autocomplete="off" placeholder="6379"></el-input>
       </el-form-item>
 
-      <el-form-item label="Auth">
-        <el-input v-model="connection.auth" type='password' autocomplete="off"></el-input>
+      <el-form-item label="User">
+        <el-input v-model="connection.username" autocomplete="off"></el-input>
       </el-form-item>
 
-      <el-form-item label="Name">
-        <el-input v-model="connection.name" autocomplete="off"></el-input>
+      <el-form-item label="Auth">
+        <el-input v-model="connection.auth" type='password' autocomplete="off"></el-input>
       </el-form-item>
 
       <el-form-item label="Separator">
@@ -23,10 +62,10 @@
           <div slot="content">{{ $t('message.separator_tip') }}</div>
           <el-input v-model="connection.separator" autocomplete="off" placeholder='Empty To Disable Tree View'></el-input>
         </el-tooltip>
-      </el-form-item>
+      </el-form-item> -->
 
       <el-form-item label="">
-        <el-checkbox v-model="sshOptionsShow">SSH Tunnel</el-checkbox>
+        <el-checkbox v-model="sshOptionsShow">SSH</el-checkbox>
         <el-checkbox v-model="sslOptionsShow">SSL</el-checkbox>
         <!-- <el-checkbox v-model="connection.sentinel">Sentinel</el-checkbox> -->
         <el-checkbox v-model="connection.cluster">
@@ -128,12 +167,13 @@ export default {
   data() {
     return {
       dialogVisible: false,
-      labelPosition: 'left',
+      labelPosition: 'top',
       oldKey: '',
       connection: {
         host: '',
         port: '',
         auth: '',
+        username: '',
         name: '',
         separator: ':',
         cluster: false,

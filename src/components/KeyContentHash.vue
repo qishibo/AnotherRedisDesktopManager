@@ -55,6 +55,9 @@
         show-overflow-tooltip
         label="Value"
         >
+        <template slot-scope="scope">
+          {{$util.cutString(scope.row.valueDisplay, 1000)}}
+        </template>
       </el-table-column>
 
       <el-table-column label="Operation">
