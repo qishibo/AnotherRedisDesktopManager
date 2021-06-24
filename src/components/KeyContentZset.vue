@@ -44,16 +44,17 @@
         sortable
         resizable
         label="Score"
-        width=150
-        >
+        width=150>
       </el-table-column>
       <el-table-column
-        prop="memberDisplay"
+        prop="member"
         resizable
         sortable
         show-overflow-tooltip
-        label="Member"
-        >
+        label="Member">
+        <template slot-scope="scope">
+          {{ $util.cutString($util.bufToString(scope.row.member), 1000) }}
+        </template>
       </el-table-column>
 
       <el-table-column label="Operation">
@@ -138,7 +139,7 @@ export default {
     initTotal() {
       this.client.zcard(this.redisKey).then((reply) => {
         this.total = reply;
-      });
+      }).catch(e => {});
     },
     resetTable() {
       this.zsetData = [];
@@ -157,6 +158,10 @@ export default {
         this.zsetData = resetTable ? zsetData : this.zsetData.concat(zsetData);
         (zsetData.length < this.pageSize) && (this.loadMoreDisable = true);
         this.loadingIcon = '';
+      }).catch(e => {
+        this.loadingIcon = '';
+        this.loadMoreDisable = true;
+        this.$message.error(e.message);
       });
     },
     getListScan() {
@@ -194,6 +199,12 @@ export default {
         this.loadingIcon = '';
         this.loadMoreDisable = true;
       });
+
+      this.scanStream.on('error', e => {
+        this.loadingIcon = '';
+        this.loadMoreDisable = true;
+        this.$message.error(e.message);
+      });
     },
     solveList(list) {
       if (!list) {
@@ -206,7 +217,7 @@ export default {
         zsetData.push({
           score: Number(list[i + 1]),
           member: list[i],
-          memberDisplay: this.$util.bufToString(list[i]),
+          // memberDisplay: this.$util.bufToString(list[i]),
         });
       }
 

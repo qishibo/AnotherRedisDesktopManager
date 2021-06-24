@@ -37,11 +37,14 @@
         width="150">
       </el-table-column>
       <el-table-column
-        prop="valueDisplay"
+        prop="value"
         resizable
         sortable
         show-overflow-tooltip
         label="Value">
+        <template slot-scope="scope">
+          {{ $util.cutString($util.bufToString(scope.row.value), 1000) }}
+        </template>
       </el-table-column>
 
       <el-table-column label="Operation">
@@ -108,13 +111,17 @@ export default {
         for (const i of reply) {
           listData.push({
             value: i,
-            valueDisplay: this.$util.bufToString(i),
+            // valueDisplay: this.$util.bufToString(i),
           });
         }
 
         this.listData = resetTable ? listData : this.listData.concat(listData);
         (listData.length < this.pageSize) && (this.loadMoreDisable = true);
         this.loadingIcon = '';
+      }).catch(e => {
+        this.loadingIcon = '';
+        this.loadMoreDisable = true;
+        this.$message.error(e.message);
       });
 
       // total lines
@@ -123,7 +130,7 @@ export default {
     initTotal() {
       this.client.llen(this.redisKey).then((reply) => {
         this.total = reply;
-      });
+      }).catch(e => {});
     },
     resetTable() {
       this.listData = [];

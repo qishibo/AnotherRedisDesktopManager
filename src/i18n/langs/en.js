@@ -122,6 +122,16 @@ const en = {
     confirm_modify_unvisible_content: 'The content contains invisible characters, you can edit safely in the "Hex View". If continuing to edit in the "Text View" may cause coding errors, sure to continue?',
     keys_per_loading: 'Load Number',
     keys_per_loading_tip: 'The number of keys loaded each time. Setting too large may affect performance',
+    host: 'Host',
+    port: 'Port',
+    username: 'Username',
+    password: 'Password',
+    connection_name: 'Connection Name',
+    separator: 'Separator',
+    timeout: 'Timeout',
+    private_key: 'Private Key',
+    public_key: 'Public Key',
+    authority: 'Authority',
   },
 };
 

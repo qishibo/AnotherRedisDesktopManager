@@ -122,6 +122,16 @@ const it = {
     confirm_modify_unvisible_content: 'Il contenuto contiene caratteri invisibili, puoi modificare in sicurezza nella "Hex View". Se continuare a modificare nella "Text View" può causare errori di codifica, continuare?',
     keys_per_loading: 'Numero di chiavi',
     keys_per_loading_tip: 'Il numero di chiavi caricate ogni volta. Un\'impostazione troppo grande potrebbe influire sulle prestazioni',
+    host: 'Indirizzo',
+    port: 'Porta',
+    username: 'Nome utente',
+    password: 'Parola d\'ordine',
+    connection_name: 'Nome personalizzato',
+    separator: 'Delimitatore',
+    timeout: 'Tempo scaduto',
+    private_key: 'Chiave privata',
+    public_key: 'Chiave pubblica',
+    authority: 'Autorità',
   },
 };
 

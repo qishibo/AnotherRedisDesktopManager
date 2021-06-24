@@ -41,20 +41,24 @@
         width="150">
       </el-table-column>
       <el-table-column
-        prop="keyDisplay"
+        prop="key"
         sortable
         resizable
         label="Key"
-        width=150
-        >
+        width=150>
+        <template slot-scope="scope">
+          {{ $util.bufToString(scope.row.key) }}
+        </template>
       </el-table-column>
       <el-table-column
-        prop="valueDisplay"
+        prop="value"
         resizable
         sortable
         show-overflow-tooltip
-        label="Value"
-        >
+        label="Value">
+        <template slot-scope="scope">
+          {{ $util.cutString($util.bufToString(scope.row.value), 1000) }}
+        </template>
       </el-table-column>
 
       <el-table-column label="Operation">
@@ -137,7 +141,7 @@ export default {
     initTotal() {
       this.client.hlen(this.redisKey).then((reply) => {
         this.total = reply;
-      });
+      }).catch(e => {});
     },
     resetTable() {
       this.hashData = [];
@@ -160,9 +164,9 @@ export default {
         for (let i = 0; i < reply.length; i += 2) {
           hashData.push({
             key: reply[i],
-            keyDisplay: this.$util.bufToString(reply[i]),
+            // keyDisplay: this.$util.bufToString(reply[i]),
             value: reply[i + 1],
-            valueDisplay: this.$util.bufToString(reply[i + 1]),
+            // valueDisplay: this.$util.bufToString(reply[i + 1]),
           });
         }
 
@@ -178,6 +182,12 @@ export default {
       this.scanStream.on('end', () => {
         this.loadingIcon = '';
         this.loadMoreDisable = true;
+      });
+
+      this.scanStream.on('error', e => {
+        this.loadingIcon = '';
+        this.loadMoreDisable = true;
+        this.$message.error(e.message);
       });
     },
     getScanMatch() {

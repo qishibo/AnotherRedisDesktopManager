@@ -196,6 +196,8 @@ export default {
 
       this.client.exists(match).then((reply) => {
         this.keyList = (reply === 1) ? [Buffer.from(match)] : [];
+      }).catch(e => {
+        this.$message.error(e.message);
       });
 
       this.scanMoreDisabled = true;

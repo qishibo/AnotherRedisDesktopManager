@@ -37,11 +37,14 @@
         width="150">
       </el-table-column>
       <el-table-column
-        prop="valueDisplay"
+        prop="value"
         resizable
         sortable
         show-overflow-tooltip
         label="Value">
+        <template slot-scope="scope">
+          {{ $util.cutString($util.bufToString(scope.row.value), 1000) }}
+        </template>
       </el-table-column>
 
       <el-table-column label="Operation">
@@ -123,7 +126,7 @@ export default {
     initTotal() {
       this.client.scard(this.redisKey).then((reply) => {
         this.total = reply;
-      });
+      }).catch(e => {});
     },
     resetTable() {
       this.setData = [];
@@ -146,7 +149,7 @@ export default {
         for (const i of reply) {
           setData.push({
             value: i,
-            valueDisplay: this.$util.bufToString(i),
+            // valueDisplay: this.$util.bufToString(i),
           });
         }
 
@@ -162,6 +165,12 @@ export default {
       this.scanStream.on('end', () => {
         this.loadingIcon = '';
         this.loadMoreDisable = true;
+      });
+
+      this.scanStream.on('error', e => {
+        this.loadingIcon = '';
+        this.loadMoreDisable = true;
+        this.$message.error(e.message);
       });
     },
     getScanMatch() {
