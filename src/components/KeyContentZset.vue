@@ -44,16 +44,17 @@
         sortable
         resizable
         label="Score"
-        width=150
-        >
+        width=150>
       </el-table-column>
       <el-table-column
-        prop="memberDisplay"
+        prop="member"
         resizable
         sortable
         show-overflow-tooltip
-        label="Member"
-        >
+        label="Member">
+        <template slot-scope="scope">
+          {{ $util.cutString($util.bufToString(scope.row.member), 1000) }}
+        </template>
       </el-table-column>
 
       <el-table-column label="Operation">
@@ -216,7 +217,7 @@ export default {
         zsetData.push({
           score: Number(list[i + 1]),
           member: list[i],
-          memberDisplay: this.$util.bufToString(list[i]),
+          // memberDisplay: this.$util.bufToString(list[i]),
         });
       }
 
