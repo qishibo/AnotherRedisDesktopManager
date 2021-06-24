@@ -138,7 +138,7 @@ export default {
     initTotal() {
       this.client.zcard(this.redisKey).then((reply) => {
         this.total = reply;
-      });
+      }).catch(e => {});
     },
     resetTable() {
       this.zsetData = [];
@@ -157,6 +157,10 @@ export default {
         this.zsetData = resetTable ? zsetData : this.zsetData.concat(zsetData);
         (zsetData.length < this.pageSize) && (this.loadMoreDisable = true);
         this.loadingIcon = '';
+      }).catch(e => {
+        this.loadingIcon = '';
+        this.loadMoreDisable = true;
+        this.$message.error(e.message);
       });
     },
     getListScan() {
@@ -193,6 +197,12 @@ export default {
       this.scanStream.on('end', () => {
         this.loadingIcon = '';
         this.loadMoreDisable = true;
+      });
+
+      this.scanStream.on('error', e => {
+        this.loadingIcon = '';
+        this.loadMoreDisable = true;
+        this.$message.error(e.message);
       });
     },
     solveList(list) {

@@ -3,32 +3,32 @@
     <!-- redis connection form -->
     <el-form :label-position="labelPosition" label-width="90px">
       <el-row :gutter=20>
+        <!-- left col -->
         <el-col :span=12>
-
-          <el-form-item label="Host">
+          <el-form-item :label="$t('message.host')" required>
             <el-input v-model="connection.host" autocomplete="off" placeholder="127.0.0.1"></el-input>
           </el-form-item>
 
-          <el-form-item label="Username">
-            <el-input v-model="connection.username" autocomplete="off"></el-input>
-          </el-form-item>
-
-          <el-form-item label="Name">
-            <el-input v-model="connection.name" autocomplete="off"></el-input>
-          </el-form-item>
-
-        </el-col>
-        <el-col :span=12>
-          <el-form-item label="Port">
-            <el-input type='number' v-model="connection.port" autocomplete="off" placeholder="6379"></el-input>
-          </el-form-item>
-
-
-          <el-form-item label="Password">
+          <el-form-item :label="$t('message.password')">
             <el-input v-model="connection.auth" type='password' autocomplete="off"></el-input>
           </el-form-item>
 
-          <el-form-item label="Separator">
+          <el-form-item :label="$t('message.connection_name')">
+            <el-input v-model="connection.name" autocomplete="off"></el-input>
+          </el-form-item>
+        </el-col>
+
+        <!-- right col -->
+        <el-col :span=12>
+          <el-form-item :label="$t('message.port')" required>
+            <el-input type='number' v-model="connection.port" autocomplete="off" placeholder="6379"></el-input>
+          </el-form-item>
+
+          <el-form-item :label="$t('message.username')">
+            <el-input v-model="connection.username" placeholder='ACL in Redis >= 6.0' autocomplete="off"></el-input>
+          </el-form-item>
+
+          <el-form-item :label="$t('message.separator')">
             <el-tooltip effect="dark">
               <div slot="content">{{ $t('message.separator_tip') }}</div>
               <el-input v-model="connection.separator" autocomplete="off" placeholder='Empty To Disable Tree View'></el-input>
@@ -36,34 +36,8 @@
           </el-form-item>
         </el-col>
       </el-row>
-<!--
-      <el-form-item label="Name">
-        <el-input v-model="connection.name" autocomplete="off"></el-input>
-      </el-form-item>
 
-      <el-form-item label="Host">
-        <el-input v-model="connection.host" autocomplete="off" placeholder="127.0.0.1"></el-input>
-      </el-form-item>
-
-      <el-form-item label="Port">
-        <el-input type='number' v-model="connection.port" autocomplete="off" placeholder="6379"></el-input>
-      </el-form-item>
-
-      <el-form-item label="User">
-        <el-input v-model="connection.username" autocomplete="off"></el-input>
-      </el-form-item>
-
-      <el-form-item label="Auth">
-        <el-input v-model="connection.auth" type='password' autocomplete="off"></el-input>
-      </el-form-item>
-
-      <el-form-item label="Separator">
-        <el-tooltip effect="dark">
-          <div slot="content">{{ $t('message.separator_tip') }}</div>
-          <el-input v-model="connection.separator" autocomplete="off" placeholder='Empty To Disable Tree View'></el-input>
-        </el-tooltip>
-      </el-form-item> -->
-
+      <!-- other operation -->
       <el-form-item label="">
         <el-checkbox v-model="sshOptionsShow">SSH</el-checkbox>
         <el-checkbox v-model="sslOptionsShow">SSL</el-checkbox>
@@ -75,81 +49,96 @@
             {{ $t('message.cluster_faq') }}
           </el-popover>
         </el-checkbox>
-
       </el-form-item>
+    </el-form>
 
-      <!-- ssh connection form -->
-      <el-form v-if="sshOptionsShow" v-show="sshOptionsShow" label-width="90px">
-        <fieldset>
-          <legend>SSH Tunnel</legend>
-        </fieldset>
+    <!-- ssh connection form -->
+    <el-form v-if="sshOptionsShow" v-show="sshOptionsShow" label-position='top' label-width="90px">
+      <fieldset>
+        <legend>SSH Tunnel</legend>
+      </fieldset>
 
-        <el-form-item label="Host">
-          <el-input v-model="connection.sshOptions.host" autocomplete="off"></el-input>
-        </el-form-item>
+      <el-row :gutter=20>
+        <!-- left col -->
+        <el-col :span=12>
+          <el-form-item :label="$t('message.host')" required>
+            <el-input v-model="connection.sshOptions.host" autocomplete="off"></el-input>
+          </el-form-item>
 
-        <el-form-item label="Port">
-          <el-input type='number' v-model="connection.sshOptions.port" autocomplete="off"></el-input>
-        </el-form-item>
+          <el-form-item :label="$t('message.username')" required>
+            <el-input v-model="connection.sshOptions.username" autocomplete="off"></el-input>
+          </el-form-item>
 
-        <el-form-item label="Username">
-          <el-input v-model="connection.sshOptions.username" autocomplete="off"></el-input>
-        </el-form-item>
+          <el-form-item :label="$t('message.private_key')">
+            <el-tooltip effect="dark">
+              <div slot="content" v-html="$t('message.private_key_faq')"></div>
+              <FileInput
+                :file.sync='connection.sshOptions.privatekey'
+                :bookmark.sync='connection.sshOptions.privatekeybookmark'
+                placeholder='SSH Private Key'>
+              </FileInput>
+            </el-tooltip>
+          </el-form-item>
 
-        <el-form-item label="Password">
-          <el-input v-model="connection.sshOptions.password" type='password' autocomplete="off"></el-input>
-        </el-form-item>
+          <el-form-item label="Passphrase">
+            <el-input v-model="connection.sshOptions.passphrase" type='password' autocomplete="off" placeholder='Passphrase for Private Key'></el-input>
+          </el-form-item>
+        </el-col>
 
-        <el-form-item label="PrivateKey">
-          <el-tooltip effect="dark">
-            <div slot="content" v-html="$t('message.private_key_faq')"></div>
+        <!-- right col -->
+        <el-col :span=12>
+          <el-form-item :label="$t('message.port')" required>
+            <el-input type='number' v-model="connection.sshOptions.port" autocomplete="off"></el-input>
+          </el-form-item>
+
+          <el-form-item :label="$t('message.password')">
+            <el-input v-model="connection.sshOptions.password" type='password' autocomplete="off"></el-input>
+          </el-form-item>
+
+          <el-form-item :label="$t('message.timeout')">
+            <el-input type='number' v-model="connection.sshOptions.timeout" autocomplete="off" placeholder='SSH Timeout (Seconds)'></el-input>
+          </el-form-item>
+        </el-col>
+      </el-row>
+    </el-form>
+
+    <!-- SSL connection form -->
+    <el-form v-if="sslOptionsShow" v-show="sslOptionsShow" label-position='top' label-width="90px">
+      <fieldset>
+        <legend>SSL</legend>
+      </fieldset>
+
+      <el-row :gutter=20>
+        <!-- left col -->
+        <el-col :span=12>
+          <el-form-item :label="$t('message.private_key')">
             <FileInput
-              :file.sync='connection.sshOptions.privatekey'
-              :bookmark.sync='connection.sshOptions.privatekeybookmark'
-              placeholder='SSH Private Key'>
-            </FileInput>
-          </el-tooltip>
-        </el-form-item>
+              :file.sync='connection.sslOptions.key'
+              :bookmark.sync='connection.sslOptions.keybookmark'
+              placeholder='SSL Private Key Pem (key)'>
+              </FileInput>
+          </el-form-item>
 
-        <el-form-item label="Passphrase">
-          <el-input v-model="connection.sshOptions.passphrase" type='password' autocomplete="off"></el-input>
-        </el-form-item>
+          <el-form-item :label="$t('message.authority')">
+            <FileInput
+              :file.sync='connection.sslOptions.ca'
+              :bookmark.sync='connection.sslOptions.cabookmark'
+              placeholder='SSL Certificate Authority (CA)'>
+              </FileInput>
+          </el-form-item>
+        </el-col>
 
-        <el-form-item label="Timeout">
-          <el-input type='number' v-model="connection.sshOptions.timeout" autocomplete="off" placeholder='SSH Timeout (Seconds)'></el-input>
-        </el-form-item>
-      </el-form>
-
-      <!-- SSL connection form -->
-      <el-form v-if="sslOptionsShow" v-show="sslOptionsShow" label-width="90px">
-        <fieldset>
-          <legend>SSL</legend>
-        </fieldset>
-
-        <el-form-item label="PrivateKey">
-          <FileInput
-            :file.sync='connection.sslOptions.key'
-            :bookmark.sync='connection.sslOptions.keybookmark'
-            placeholder='SSL Private Key Pem (key)'>
-            </FileInput>
-        </el-form-item>
-
-        <el-form-item label="PublicKey">
-          <FileInput
-            :file.sync='connection.sslOptions.cert'
-            :bookmark.sync='connection.sslOptions.certbookmark'
-            placeholder='SSL Public Key Pem (cert)'>
-            </FileInput>
-        </el-form-item>
-
-        <el-form-item label="Authority">
-          <FileInput
-            :file.sync='connection.sslOptions.ca'
-            :bookmark.sync='connection.sslOptions.cabookmark'
-            placeholder='SSL Certificate Authority (CA)'>
-            </FileInput>
-        </el-form-item>
-      </el-form>
+        <!-- right col -->
+        <el-col :span=12>
+          <el-form-item :label="$t('message.public_key')">
+            <FileInput
+              :file.sync='connection.sslOptions.cert'
+              :bookmark.sync='connection.sslOptions.certbookmark'
+              placeholder='SSL Public Key Pem (cert)'>
+              </FileInput>
+          </el-form-item>
+        </el-col>
+      </el-row>
     </el-form>
 
     <div slot="footer" class="dialog-footer">
@@ -272,13 +261,17 @@ export default {
 }
 </script>
 
-<style type="text/css" scoped>
+<style type="text/css">
   .new-connection-dailog .el-checkbox {
     margin-left: 0;
     margin-right: 15px;
   }
 
-  fieldset {
+  .new-connection-dailog .el-dialog {
+    max-width: 900px;
+  }
+
+  .new-connection-dailog fieldset {
     border-width: 2px 0 0 0;
     border-color: #fff;
     font-weight: bold;
@@ -286,7 +279,7 @@ export default {
     font-size: 105%;
     margin-bottom: 3px;
   }
-  .dark-mode fieldset {
+  .dark-mode .new-connection-dailog fieldset {
     color: #416586;
     border-color: #7b95ad;
   }

@@ -61,6 +61,8 @@ export default {
 
       client.ttl(key).then((reply) => {
         this.keyTTL = reply;
+      }).catch(e => {
+        this.$message.error('TTL Error: ' + e.message);
       });
     },
     changeKeyInput(keyInput) {
@@ -122,10 +124,7 @@ export default {
             this.$bus.$emit('clickedKey', this.client, this.keyName);
           }
         }).catch(e => {
-          this.$message.error({
-            message: e.message,
-            duration: 3000,
-          });
+          this.$message.error('Rename Error: ' + e.message);
         });
       }).catch(() => {});
     },
@@ -158,6 +157,8 @@ export default {
             this.$bus.$emit('removePreTab');
           }
         }
+      }).catch(e => {
+        this.$message.error('Expire Error: ' + e.message);
       });
     },
     refreshKeyList(key, type = 'del') {

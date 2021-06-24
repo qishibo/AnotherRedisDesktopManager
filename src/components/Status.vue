@@ -236,6 +236,9 @@ export default {
             duration: 3000,
           });
         }
+        else {
+          this.$message.error(e.message)
+        }
       });
     },
     refreshInit() {

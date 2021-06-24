@@ -122,6 +122,16 @@ const tw = {
     confirm_modify_unvisible_content: '內容包含不可見的字符，您可以在Hex視圖中進行安全編輯。如果繼續在Text視圖中進行編輯可能會導致編碼錯誤，確定要繼續嗎？',
     keys_per_loading: '加載數量',
     keys_per_loading_tip: '每次加載的key數量, 設置太大的話可能會影響使用性能',
+    host: '地址',
+    port: '端口',
+    username: '用戶名',
+    password: '密碼',
+    connection_name: '連接名稱',
+    separator: '分隔符',
+    timeout: '超時',
+    private_key: '私鑰',
+    public_key: '公鑰',
+    authority: '授權',
   },
 };
 

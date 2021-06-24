@@ -123,7 +123,7 @@ export default {
     initTotal() {
       this.client.scard(this.redisKey).then((reply) => {
         this.total = reply;
-      });
+      }).catch(e => {});
     },
     resetTable() {
       this.setData = [];
@@ -162,6 +162,12 @@ export default {
       this.scanStream.on('end', () => {
         this.loadingIcon = '';
         this.loadMoreDisable = true;
+      });
+
+      this.scanStream.on('error', e => {
+        this.loadingIcon = '';
+        this.loadMoreDisable = true;
+        this.$message.error(e.message);
       });
     },
     getScanMatch() {

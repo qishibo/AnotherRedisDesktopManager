@@ -122,6 +122,16 @@ const pt = {
     confirm_modify_unvisible_content: 'O conteúdo contém caracteres invisíveis, você pode editar com segurança no "Hex View". Se continuar a editar em "Text View" pode causar erros de codificação, deseja continuar?',
     keys_per_loading: 'Número de chaves',
     keys_per_loading_tip: 'O número de chaves carregadas a cada vez. A configuração muito grande pode afetar o desempenho',
+    host: 'Morada',
+    port: 'Porta',
+    username: 'Nome do usuário',
+    password: 'Senha',
+    connection_name: 'Nome personalizado',
+    separator: 'Separador',
+    timeout: 'Tempo esgotado',
+    private_key: 'Chave privada',
+    public_key: 'Chave pública',
+    authority: 'Autorização',
   },
 };
 

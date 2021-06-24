@@ -115,6 +115,10 @@ export default {
         this.listData = resetTable ? listData : this.listData.concat(listData);
         (listData.length < this.pageSize) && (this.loadMoreDisable = true);
         this.loadingIcon = '';
+      }).catch(e => {
+        this.loadingIcon = '';
+        this.loadMoreDisable = true;
+        this.$message.error(e.message);
       });
 
       // total lines
@@ -123,7 +127,7 @@ export default {
     initTotal() {
       this.client.llen(this.redisKey).then((reply) => {
         this.total = reply;
-      });
+      }).catch(e => {});
     },
     resetTable() {
       this.listData = [];

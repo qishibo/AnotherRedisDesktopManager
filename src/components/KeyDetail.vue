@@ -73,6 +73,8 @@ export default {
         }
 
         this.$refs.keyContent && this.$refs.keyContent.initShow();
+      }).catch(e => {
+        this.$message.error('Exists Error: ' + e.message);
       });
     },
   },

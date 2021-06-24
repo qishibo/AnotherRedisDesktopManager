@@ -122,6 +122,16 @@ const tr = {
     confirm_modify_unvisible_content: 'İçerik görünmez karakterler içeriyor, "Hex View" içinde güvenle düzenleyebilirsiniz. "Text View" de düzenlemeye devam etmek kodlama hatalarına neden oluyorsa, devam edeceğinizden emin misiniz?',
     keys_per_loading: 'Anahtar Sayısı',
     keys_per_loading_tip: 'Her seferinde yüklenen anahtar sayısı. Çok büyük ayarlamak performansı etkileyebilir',
+    host: 'Adres',
+    port: 'Liman',
+    username: 'Kullanıcı adı',
+    password: 'Parola',
+    connection_name: 'Özel ad',
+    separator: 'Ayırıcı',
+    timeout: 'Zaman aşımı',
+    private_key: 'Özel anahtar',
+    public_key: 'Genel anahtar',
+    authority: 'Yetki',
   },
 };
 

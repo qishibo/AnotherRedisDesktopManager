@@ -29,7 +29,7 @@
     "@ztree/ztree_v3": "^3.5.46",
     "element-ui": "^2.4.11",
     "font-awesome": "^4.7.0",
-    "ioredis": "^4.16.0",
+    "ioredis": "^4.27.0",
     "json-bigint": "git+https://github.com/qishibo/json-bigint.git",
     "php-serialize": "^4.0.2",
     "redis-splitargs": "git+https://github.com/qishibo/splitargs.git",

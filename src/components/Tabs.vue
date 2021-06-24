@@ -140,6 +140,8 @@ export default {
         }
 
         this.addTab(this.initKeyTabItem(client, key, type), newTab);
+      }).catch(e => {
+        this.$message.error('Type Error: ' + e.message);
       });
     },
     initKeyTabItem(client, key, type) {

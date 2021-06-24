@@ -140,7 +140,7 @@ export default {
     initTotal() {
       this.client.hlen(this.redisKey).then((reply) => {
         this.total = reply;
-      });
+      }).catch(e => {});
     },
     resetTable() {
       this.hashData = [];
@@ -181,6 +181,12 @@ export default {
       this.scanStream.on('end', () => {
         this.loadingIcon = '';
         this.loadMoreDisable = true;
+      });
+
+      this.scanStream.on('error', e => {
+        this.loadingIcon = '';
+        this.loadMoreDisable = true;
+        this.$message.error(e.message);
       });
     },
     getScanMatch() {

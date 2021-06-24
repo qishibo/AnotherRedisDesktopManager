@@ -122,6 +122,16 @@ const de = {
     confirm_modify_unvisible_content: 'Der Inhalt enthält unsichtbare Zeichen, die Sie sicher in der "Hex View" bearbeiten können. Wenn die weitere Bearbeitung im "Text View" zu Codierungsfehlern führen kann, fahren Sie sicher fort?',
     keys_per_loading: 'Anzahl der Schlüssel',
     keys_per_loading_tip: 'Die Anzahl der Schlüssel, die jedes Mal geladen werden. Eine zu große Einstellung kann die Leistung beeinträchtigen',
+    host: 'Adresse',
+    port: 'Hafen',
+    username: 'Nutzername',
+    password: 'Passwort',
+    connection_name: 'Benutzerdefinierter Name',
+    separator: 'Separator',
+    timeout: 'Auszeit',
+    private_key: 'Privat Schlüssel',
+    public_key: 'Öffentlicher Schlüssel',
+    authority: 'Genehmigung',
   },
 };
 
