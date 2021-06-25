@@ -64,12 +64,19 @@ export default {
   },
   methods: {
     initShow() {
-      this.$refs.cliParams.focus();
+      this.$nextTick(() => {
+        this.$refs.cliParams.focus();
+      });
       this.initCliContent();
     },
     initCliContent() {
       this.content += `> ${this.client.options.connectionName} connected!\n`;
       this.scrollToBottom();
+    },
+    tabClick() {
+      this.$nextTick(() => {
+        this.$refs.cliParams.focus();
+      });
     },
     inputSuggestion(input, cb) {
       if (!this.paramsTrim) {

@@ -21,7 +21,6 @@
       </el-main>
     </el-container>
 
-    <ScrollToTop dom=".el-main"></ScrollToTop>
     <UpdateCheck></UpdateCheck>
   </el-container>
 </template>
@@ -29,7 +28,6 @@
 <script>
 import Aside from '@/Aside';
 import Tabs from '@/components/Tabs';
-import ScrollToTop from '@/components/ScrollToTop';
 import UpdateCheck from '@/components/UpdateCheck';
 
 export default {
@@ -47,7 +45,7 @@ export default {
     // restore side bar width
     this.restoreSideBarWidth();
   },
-  components: {Aside, Tabs, ScrollToTop, UpdateCheck},
+  components: {Aside, Tabs, UpdateCheck},
   methods: {
     bindSideBarDrag() {
       const that = this;
@@ -198,13 +196,16 @@ button, input, textarea, .vjs__tree {
   height: 100%;
   width: 100% !important;
   border-right: 1px solid #e4e0e0;
+  overflow: hidden;
 }
 /*fix right container imdraggable*/
 .right-main-container {
   width: 10%;
 }
 .right-main-container .main-tabs-container {
-  padding-top: 10px;
+  overflow-y: hidden;
+  padding-top: 2px;
+  padding-right: 4px;
 }
 
 .el-message-box .el-message-box__message {

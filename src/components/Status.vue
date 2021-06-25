@@ -126,8 +126,8 @@
           :data="DBKeys"
           stripe>
           <el-table-column
-            fixed
             prop="db"
+            sortable
             label="DB">
           </el-table-column>
           <el-table-column
@@ -142,9 +142,11 @@
             label="Expires"
             :sort-method="sortByExpires">
           </el-table-column>
+          <!-- avg_ttl: tooltip can't be removed!, or the table's height will change -->
           <el-table-column
             sortable
             prop="avg_ttl"
+            :show-overflow-tooltip='true'
             label="Avg TTL"
             :sort-method="sortByTTL">
           </el-table-column>
@@ -166,12 +168,13 @@
           :data="AllRedisInfo"
           stripe>
           <el-table-column
-            fixed
             prop="key"
+            sortable
             label="Key">
           </el-table-column>
           <el-table-column
             prop="value"
+            :show-overflow-tooltip='true'
             label="Value">
           </el-table-column>
         </el-table>
@@ -179,10 +182,13 @@
     </el-col>
   </el-row>
 
+  <ScrollToTop parentNum='1'></ScrollToTop>
 </div>
 </template>
 
 <script>
+import ScrollToTop from '@/components/ScrollToTop';
+
 export default {
   data() {
     return {
@@ -194,6 +200,7 @@ export default {
     };
   },
   props: ['client'],
+  components: { ScrollToTop },
   computed: {
     DBKeys() {
       const dbs = [];
@@ -305,5 +312,13 @@ export default {
   }
   .server-status-text{
     color: #43b50b;
+  }
+
+  /*fix table height changes[scrollTop changes] when tab toggled*/
+  .status-card .el-table__header-wrapper{
+      height: 50px;
+  }
+  .status-card .el-table__body-wrapper{
+      /*height: calc(100% - 50px) !important;*/
   }
 </style>
