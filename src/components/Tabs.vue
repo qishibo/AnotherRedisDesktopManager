@@ -1,6 +1,5 @@
 <template>
-<div>
-  <el-tabs v-model="selectedTabName" type="card" closable @tab-remove="removeTab">
+  <el-tabs class='tabs-container' v-model="selectedTabName" type="card" closable @tab-remove="removeTab" @tab-click="tabClick">
     <el-tab-pane
       v-for="(item) in tabs"
       :key="item.name"
@@ -9,13 +8,13 @@
         <i :class="iconNameByComponent(item.component)"></i>
         <span>{{ item.label }}</span>
       </span>
-      <Status :client='item.client' v-if="item.component === 'status'"></Status>
-      <CliTab :client='item.client' v-else-if="item.component === 'cli'"></CliTab>
-      <DeleteBatch :client='item.client' v-else-if="item.component === 'delbatch'" :rule="item.rule"></DeleteBatch>
-      <KeyDetail :client='item.client' v-else :redisKey="item.redisKey" :keyType="item.keyType"></KeyDetail>
+
+      <Status v-if="item.component === 'status'" :client='item.client' class='tab-content-wrappe'></Status>
+      <CliTab v-else-if="item.component === 'cli'" :client='item.client' class='tab-content-wrappe'></CliTab>
+      <DeleteBatch v-else-if="item.component === 'delbatch'" :client='item.client' :rule="item.rule" class='tab-content-wrappe'></DeleteBatch>
+      <KeyDetail v-else :client='item.client' :redisKey="item.redisKey" :keyType="item.keyType" class='tab-content-wrappe'></KeyDetail>
     </el-tab-pane>
   </el-tabs>
-</div>
 </template>
 
 <script>
@@ -92,6 +91,11 @@ export default {
 
       nextSelectTab && (this.selectedTabName = nextSelectTab.name);
       this.tabs = this.tabs.filter(tab => tab.name !== removeName);
+    },
+    tabClick(tab, event) {
+      if (tab.$children && tab.$children[0] && (typeof tab.$children[0].tabClick == 'function')) {
+        tab.$children[0].tabClick();
+      };
     },
     addStatusTab(client, tabName, newTab = true) {
       const newTabItem = {
@@ -210,3 +214,13 @@ export default {
   },
 };
 </script>
+
+<style type="text/css">
+  .tab-content-wrappe {
+    height: calc(100vh - 100px);
+    overflow-x: hidden;
+    overflow-y: auto;
+    padding-right: 7px;
+    padding-bottom: 20px;
+  }
+</style>
