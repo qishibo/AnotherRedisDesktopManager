@@ -2,7 +2,7 @@
   <div>
     <el-form :inline="true">
       <!-- key name -->
-      <el-form-item>
+      <el-col :span=12 class='key-header-item key-name-input'>
         <el-input
           ref="keyNameInput"
           :value="$util.bufToString(keyName)"
@@ -17,11 +17,14 @@
             @click="renameKey">
           </i>
         </el-input>
-      </el-form-item>
+      </el-col>
 
       <!-- key ttl -->
-      <el-form-item>
-        <el-input v-model="keyTTL" @keyup.enter.native="ttlKey" :title="$t('message.click_enter_to_ttl')">
+      <el-col :span=6 class='key-header-item key-ttl-input'>
+        <el-input
+          v-model="keyTTL"
+          @keyup.enter.native="ttlKey"
+          :title="$t('message.click_enter_to_ttl')">
           <span slot="prepend">TTL</span>
           <i class="el-icon-check el-input__icon cursor-pointer"
             slot="suffix"
@@ -29,13 +32,13 @@
             @click="ttlKey">
           </i>
         </el-input>
-      </el-form-item>
+      </el-col>
 
-      <!-- del refresh key btn -->
-      <el-form-item>
+      <!-- del & refresh btn -->
+      <el-col :span=6 class='key-header-item key-header-btn-con'>
         <el-button type="danger" @click="deleteKey" icon="el-icon-delete" :title="$t('el.upload.delete')"></el-button>
         <el-button type="success" @click="refreshKey" icon="el-icon-refresh" :title="$t('message.refresh_connection')"></el-button>
-      </el-form-item>
+      </el-col>
     </el-form>
   </div>
 </template>
@@ -180,5 +183,22 @@ export default {
   }
   .cursor-pointer {
     cursor: pointer;
+  }
+
+  .key-header-item {
+    padding-right: 15px;
+    margin-bottom: 10px;
+  }
+
+  .key-header-item.key-name-input {
+    min-width: 317px;
+    max-width: 650;
+  }
+  .key-header-item.key-ttl-input {
+    min-width: 200px;
+    max-width: 400px;
+  }
+  .key-header-item.key-header-btn-con {
+    width: 130px;
   }
 </style>
