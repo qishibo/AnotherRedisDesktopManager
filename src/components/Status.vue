@@ -22,7 +22,7 @@
     <!-- server -->
     <el-col :span="8">
       <el-card class="box-card">
-        <div slot="header" class="clearfix">
+        <div slot="header">
           <i class="fa fa-server"></i>
           <span>{{ $t('message.server') }}</span>
         </div>
@@ -53,7 +53,7 @@
     <!-- memory row -->
     <el-col :span="8">
       <el-card class="box-card">
-        <div slot="header" class="clearfix">
+        <div slot="header">
           <i class="fa fa-microchip"></i>
           <span>{{ $t('message.memory') }}</span>
         </div>
@@ -84,7 +84,7 @@
     <!-- stats row -->
     <el-col :span="8">
       <el-card class="box-card">
-        <div slot="header" class="clearfix">
+        <div slot="header">
           <i class="fa fa-thermometer-three-quarters"></i>
           <span>{{ $t('message.stats') }}</span>
         </div>
@@ -117,7 +117,7 @@
   <el-row class="status-card">
     <el-col>
       <el-card class="box-card">
-        <div slot="header" class="clearfix">
+        <div slot="header">
           <i class="fa fa-bar-chart"></i>
           <span>{{ $t('message.key_statistics') }}</span>
         </div>
@@ -159,9 +159,12 @@
   <el-row class="status-card">
     <el-col>
       <el-card class="box-card">
-        <div slot="header" class="clearfix">
+        <div slot="header">
           <i class="fa fa-info-circle"></i>
           <span>{{ $t('message.all_redis_info') }}</span>
+          <!-- search input -->
+          <el-input v-model='allInfoFilter' size='mini' suffix-icon="el-icon-search" class='status-filter-input'>
+          </el-input>
         </div>
 
         <el-table
@@ -197,6 +200,7 @@ export default {
       refreshInterval: 2000,
       connectionStatus: {},
       statusConnection: null,
+      allInfoFilter: '',
     };
   },
   props: ['client'],
@@ -223,9 +227,21 @@ export default {
     },
     AllRedisInfo() {
       const infos = [];
+      const filter = this.allInfoFilter.toLowerCase();
 
-      for (const i in this.connectionStatus) {
-        infos.push({ key: i, value: this.connectionStatus[i] });
+      // filter mode
+      if (filter) {
+        for (const i in this.connectionStatus) {
+          if (i.includes(filter)) {
+            infos.push({ key: i, value: this.connectionStatus[i] });
+          }
+        }
+      }
+      // all info
+      else {
+        for (const i in this.connectionStatus) {
+          infos.push({ key: i, value: this.connectionStatus[i] });
+        }
       }
 
       return infos;
@@ -312,6 +328,10 @@ export default {
   }
   .server-status-text{
     color: #43b50b;
+  }
+  .status-filter-input {
+    float: right;
+    width: 100px;
   }
 
   /*fix table height changes[scrollTop changes] when tab toggled*/
