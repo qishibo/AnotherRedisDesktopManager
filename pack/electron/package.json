@@ -20,7 +20,7 @@
       "output": "build-apps",
       "buildResources": "./"
     },
-    "electronVersion": "8.2.0",
+    "electronVersion": "11.4.9",
     "files": [
       "!static/js/*.map",
       "!static/css/*.map"
@@ -55,7 +55,7 @@
       "type": "development",
       "category": "public.app-category.developer-tools",
       "target": [
-        "dmg", "mas"
+        "dmg"
       ],
       "extendInfo": {
         "ElectronTeamID": "68JN8DV835"

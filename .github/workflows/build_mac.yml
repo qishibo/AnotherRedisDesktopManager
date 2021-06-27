@@ -22,6 +22,7 @@ jobs:
     - run: npm ci
     - run: npm run pack:prepare
     - run: npm run pack:mac:publish
+    # - run: npm run pack:macm1:publish
       env:
         GH_TOKEN: ${{secrets.GH_TOKEN}}
         CSC_LINK: ${{secrets.CSC_LINK}}
