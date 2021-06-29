@@ -273,9 +273,9 @@ export default {
         }
 
         // node to be checked
-        const checkedNode = this.ztreeObj.getNodeByTId(node.tId);
+        // const checkedNode = this.ztreeObj.getNodeByTId(node.tId);
         // if the tId changes, use this line to find previous checked node
-        // const checkedNode = this.ztreeObj.getNodesByParam('name', node.name)[0];
+        const checkedNode = this.ztreeObj.getNodesByParam('name', node.name)[0];
         checkedNode && this.ztreeObj.checkNode(checkedNode, true, true);
       }
     },
