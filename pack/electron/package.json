@@ -6,7 +6,7 @@
   "private": true,
   "main": "electron-main.js",
   "dependencies": {
-    "electron-updater": "^4.0.6",
+    "electron-updater": "^4.3.8",
     "font-list": "^1.2.11"
   },
   "repository": "github:qishibo/AnotherRedisDesktopManager",
@@ -14,7 +14,7 @@
     "appId": "me.qii404.another-redis-desktop-manager",
     "productName": "Another Redis Desktop Manager",
     "artifactName": "${productName}.${version}.${ext}",
-    "copyright": "Copyright © 2020 qii404.me",
+    "copyright": "Copyright © 2021 qii404.me",
     "asar": true,
     "directories": {
       "output": "build-apps",
