@@ -28,6 +28,8 @@ function createWindow() {
     autoHideMenuBar: true,
     webPreferences: {
       nodeIntegration: true,
+      // add this to keep 'remote' module avaiable. Tips: it will be removed in electron 14
+      enableRemoteModule: true,
     },
   });
 
