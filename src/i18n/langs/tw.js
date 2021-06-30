@@ -132,6 +132,8 @@ const tw = {
     private_key: '私鑰',
     public_key: '公鑰',
     authority: '授權',
+    redis_node_password: 'Redis節點密碼',
+    master_group_name: 'Master組名',
   },
 };
 

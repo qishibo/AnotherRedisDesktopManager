@@ -132,6 +132,8 @@ const it = {
     private_key: 'Chiave privata',
     public_key: 'Chiave pubblica',
     authority: 'Autorità',
+    redis_node_password: 'Password del nodo Redis',
+    master_group_name: 'Nome del gruppo Master',
   },
 };
 
