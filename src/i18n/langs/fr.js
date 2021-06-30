@@ -132,6 +132,8 @@ const fr = {
     private_key: 'Clé privée',
     public_key: 'Clé publique',
     authority: 'Autorité',
+    redis_node_password: 'Mot de passe du nœud Redis',
+    master_group_name: 'Nom du groupe Master',
   },
 };
 

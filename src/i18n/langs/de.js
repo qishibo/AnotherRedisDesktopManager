@@ -132,6 +132,8 @@ const de = {
     private_key: 'Privat Schlüssel',
     public_key: 'Öffentlicher Schlüssel',
     authority: 'Genehmigung',
+    redis_node_password: 'Passwort des Redis-Knotens',
+    master_group_name: 'Name der Gruppe Master',
   },
 };
 

@@ -251,7 +251,7 @@ export default {
       }
     },
     treeRefresh(nodes) {
-      // this.ztreeObj && this.ztreeObj.destroy();
+      this.ztreeObj && this.ztreeObj.destroy();
       // folder keep in front
       this.$util.sortNodes(nodes);
 

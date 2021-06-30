@@ -41,7 +41,7 @@
       <el-form-item label="">
         <el-checkbox v-model="sshOptionsShow">SSH</el-checkbox>
         <el-checkbox v-model="sslOptionsShow">SSL</el-checkbox>
-        <!-- <el-checkbox v-model="connection.sentinel">Sentinel</el-checkbox> -->
+        <el-checkbox v-model="sentinelOptionsShow">Sentinel</el-checkbox>
         <el-checkbox v-model="connection.cluster">
           Cluster
           <el-popover trigger="hover">
@@ -141,6 +141,29 @@
       </el-row>
     </el-form>
 
+    <!-- Sentinel connection form -->
+    <el-form v-if="sentinelOptionsShow" v-show="sentinelOptionsShow" label-position='top' label-width="90px">
+      <fieldset>
+        <legend>Sentinel</legend>
+      </fieldset>
+
+      <el-row :gutter=20>
+        <!-- left col -->
+        <el-col :span=12>
+          <el-form-item :label="$t('message.redis_node_password')">
+            <el-input type='password' v-model="connection.sentinelOptions.nodePassword" autocomplete="off" placeholder='Redis Node Password'></el-input>
+          </el-form-item>
+        </el-col>
+
+        <!-- right col -->
+        <el-col :span=12>
+          <el-form-item :label="$t('message.master_group_name')" required>
+            <el-input v-model="connection.sentinelOptions.masterName" autocomplete="off" placeholder='Master Group Name'></el-input>
+          </el-form-item>
+        </el-col>
+      </el-row>
+    </el-form>
+
     <div slot="footer" class="dialog-footer">
       <el-button @click="dialogVisible = false">{{ $t('el.messagebox.cancel') }}</el-button>
       <el-button type="primary" @click="editConnection">{{ $t('el.messagebox.confirm') }}</el-button>
@@ -166,7 +189,6 @@ export default {
         name: '',
         separator: ':',
         cluster: false,
-        // sentinel: false,
         sshOptions: {
           host: '',
           port: 22,
@@ -180,11 +202,16 @@ export default {
           key: '',
           cert: '',
           ca: '',
-        }
+        },
+        sentinelOptions: {
+          masterName: 'mymaster',
+          nodePassword: '',
+        },
       },
       connectionEmpty: {},
       sshOptionsShow: false,
       sslOptionsShow: false,
+      sentinelOptionsShow: false,
     }
   },
   components: {FileInput},
@@ -212,6 +239,7 @@ export default {
       if (this.editMode) {
         this.sshOptionsShow = !!this.config.sshOptions
         this.sslOptionsShow = !!this.config.sslOptions
+        this.sentinelOptionsShow = !!this.config.sentinelOptions
         // recovery connection before edit
         let connection = Object.assign({}, this.connectionEmpty, this.config);
         this.connection = JSON.parse(JSON.stringify(connection));
@@ -220,6 +248,7 @@ export default {
       else {
         this.sshOptionsShow = false;
         this.sslOptionsShow = false;
+        this.sentinelOptionsShow = false;
         this.connection = JSON.parse(JSON.stringify(this.connectionEmpty));
       }
     },
@@ -237,6 +266,10 @@ export default {
         delete config.sslOptions;
       }
 
+      if (!this.sentinelOptionsShow || !config.sentinelOptions.masterName) {
+        delete config.sentinelOptions;
+      }
+
       const oldKey = storage.getConnectionKey(this.config);
       storage.editConnectionByKey(config, oldKey);
 
@@ -252,6 +285,7 @@ export default {
     if (this.editMode) {
       this.sslOptionsShow = !!this.config.sslOptions;
       this.sshOptionsShow = !!this.config.sshOptions;
+      this.sentinelOptionsShow = !!this.config.sentinelOptions;
 
       this.connection = Object.assign({}, this.connection, this.config);
     }

@@ -132,6 +132,8 @@ const cn = {
     private_key: '私钥',
     public_key: '公钥',
     authority: '授权',
+    redis_node_password: 'Redis节点密码',
+    master_group_name: 'Master组名称',
   },
 };
 
