@@ -242,7 +242,7 @@ export default {
           message: reply ? this.$t('message.add_success') : this.$t('message.modify_success'),
           duration: 1000,
         });
-      });
+      }).catch(e => {this.$message.error(e.message);});
     },
     deleteLine(row) {
       this.$confirm(
@@ -261,7 +261,7 @@ export default {
 
             this.initShow();
           }
-        });
+        }).catch(e => {this.$message.error(e.message);});
       }).catch(() => {});
     },
   },

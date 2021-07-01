@@ -97,7 +97,7 @@ export default {
               duration: 1000,
             });
           }
-        });
+        }).catch(e => {this.$message.error(e.message);});
       }).catch(() => {});
     },
     renameKey(e) {

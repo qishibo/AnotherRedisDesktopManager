@@ -191,6 +191,8 @@ export default {
       promise.then(() => {
         this.$bus.$emit('refreshKeyList', this.client, key, 'add');
         this.$bus.$emit('clickedKey', this.client, key, true);
+      }).catch(e => {
+        this.$message.error(e.message);
       });
 
       this.newKeyDialog = false;

@@ -173,7 +173,7 @@ export default {
 
             this.refreshConnection();
           }
-        });
+        }).catch(e => {this.$message.error(e.message);});
       })
       .catch(e => {});
     },
