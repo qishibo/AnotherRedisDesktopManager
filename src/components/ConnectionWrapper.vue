@@ -75,6 +75,11 @@ export default {
       // new connection, not ready
       if (client.status != 'ready') {
         client.on('ready', () => {
+          if (client.readyInited) {
+            return;
+          }
+
+          client.readyInited = true;
           // open status tab
           this.$bus.$emit('openStatus', client, this.config.connectionName);
 
