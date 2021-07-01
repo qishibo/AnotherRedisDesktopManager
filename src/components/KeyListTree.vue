@@ -163,7 +163,7 @@ export default {
             else {
               this.$message.error(this.$t('message.delete_failed'));
             }
-          });
+          }).catch(e => {this.$message.error(e.message);});
           break;
         }
         // select multiple
