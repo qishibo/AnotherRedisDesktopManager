@@ -253,12 +253,14 @@ export default {
         this.connectionStatus = this.initStatus(reply);
       }).catch((e) => {
         // info command may be disabled
-        if (e.message.includes("ERR unknown command")) {
+        if (e.message.includes("unknown command")) {
           this.$message.error({
             message: this.$t('message.info_disabled'),
             duration: 3000,
           });
         }
+        // no auth not show
+        else if (e.message.includes('NOAUTH')) {}
         else {
           this.$message.error(e.message)
         }

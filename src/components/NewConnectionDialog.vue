@@ -255,6 +255,10 @@ export default {
     editConnection() {
       const config = JSON.parse(JSON.stringify(this.connection));
 
+      if (this.sentinelOptionsShow && config.cluster) {
+        return this.$message.error('Sentinel & Cluster cannot be checked together!');
+      }
+
       !config.host && (config.host = '127.0.0.1');
       !config.port && (config.port = 6379);
 
