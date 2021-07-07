@@ -22,7 +22,7 @@
     <!-- server -->
     <el-col :span="8">
       <el-card class="box-card">
-        <div slot="header" class="clearfix">
+        <div slot="header">
           <i class="fa fa-server"></i>
           <span>{{ $t('message.server') }}</span>
         </div>
@@ -53,7 +53,7 @@
     <!-- memory row -->
     <el-col :span="8">
       <el-card class="box-card">
-        <div slot="header" class="clearfix">
+        <div slot="header">
           <i class="fa fa-microchip"></i>
           <span>{{ $t('message.memory') }}</span>
         </div>
@@ -84,7 +84,7 @@
     <!-- stats row -->
     <el-col :span="8">
       <el-card class="box-card">
-        <div slot="header" class="clearfix">
+        <div slot="header">
           <i class="fa fa-thermometer-three-quarters"></i>
           <span>{{ $t('message.stats') }}</span>
         </div>
@@ -117,7 +117,7 @@
   <el-row class="status-card">
     <el-col>
       <el-card class="box-card">
-        <div slot="header" class="clearfix">
+        <div slot="header">
           <i class="fa fa-bar-chart"></i>
           <span>{{ $t('message.key_statistics') }}</span>
         </div>
@@ -126,8 +126,8 @@
           :data="DBKeys"
           stripe>
           <el-table-column
-            fixed
             prop="db"
+            sortable
             label="DB">
           </el-table-column>
           <el-table-column
@@ -142,9 +142,11 @@
             label="Expires"
             :sort-method="sortByExpires">
           </el-table-column>
+          <!-- avg_ttl: tooltip can't be removed!, or the table's height will change -->
           <el-table-column
             sortable
             prop="avg_ttl"
+            :show-overflow-tooltip='true'
             label="Avg TTL"
             :sort-method="sortByTTL">
           </el-table-column>
@@ -157,21 +159,25 @@
   <el-row class="status-card">
     <el-col>
       <el-card class="box-card">
-        <div slot="header" class="clearfix">
+        <div slot="header">
           <i class="fa fa-info-circle"></i>
           <span>{{ $t('message.all_redis_info') }}</span>
+          <!-- search input -->
+          <el-input v-model='allInfoFilter' size='mini' suffix-icon="el-icon-search" class='status-filter-input'>
+          </el-input>
         </div>
 
         <el-table
           :data="AllRedisInfo"
           stripe>
           <el-table-column
-            fixed
             prop="key"
+            sortable
             label="Key">
           </el-table-column>
           <el-table-column
             prop="value"
+            :show-overflow-tooltip='true'
             label="Value">
           </el-table-column>
         </el-table>
@@ -179,10 +185,13 @@
     </el-col>
   </el-row>
 
+  <ScrollToTop parentNum='1'></ScrollToTop>
 </div>
 </template>
 
 <script>
+import ScrollToTop from '@/components/ScrollToTop';
+
 export default {
   data() {
     return {
@@ -191,9 +200,11 @@ export default {
       refreshInterval: 2000,
       connectionStatus: {},
       statusConnection: null,
+      allInfoFilter: '',
     };
   },
   props: ['client'],
+  components: { ScrollToTop },
   computed: {
     DBKeys() {
       const dbs = [];
@@ -216,9 +227,21 @@ export default {
     },
     AllRedisInfo() {
       const infos = [];
+      const filter = this.allInfoFilter.toLowerCase();
 
-      for (const i in this.connectionStatus) {
-        infos.push({ key: i, value: this.connectionStatus[i] });
+      // filter mode
+      if (filter) {
+        for (const i in this.connectionStatus) {
+          if (i.includes(filter)) {
+            infos.push({ key: i, value: this.connectionStatus[i] });
+          }
+        }
+      }
+      // all info
+      else {
+        for (const i in this.connectionStatus) {
+          infos.push({ key: i, value: this.connectionStatus[i] });
+        }
       }
 
       return infos;
@@ -230,12 +253,14 @@ export default {
         this.connectionStatus = this.initStatus(reply);
       }).catch((e) => {
         // info command may be disabled
-        if (e.message.includes("ERR unknown command")) {
+        if (e.message.includes("unknown command")) {
           this.$message.error({
             message: this.$t('message.info_disabled'),
             duration: 3000,
           });
         }
+        // no auth not show
+        else if (e.message.includes('NOAUTH')) {}
         else {
           this.$message.error(e.message)
         }
@@ -305,5 +330,17 @@ export default {
   }
   .server-status-text{
     color: #43b50b;
+  }
+  .status-filter-input {
+    float: right;
+    width: 100px;
+  }
+
+  /*fix table height changes[scrollTop changes] when tab toggled*/
+  .status-card .el-table__header-wrapper{
+      height: 50px;
+  }
+  .status-card .el-table__body-wrapper{
+      /*height: calc(100% - 50px) !important;*/
   }
 </style>

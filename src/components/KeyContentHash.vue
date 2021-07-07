@@ -88,6 +88,8 @@
         {{ $t('message.load_more_keys') }}
       </el-button>
     </div>
+
+    <ScrollToTop></ScrollToTop>
   </div>
 </template>
 
@@ -95,6 +97,7 @@
 import PaginationTable from '@/components/PaginationTable';
 import FormatViewer from '@/components/FormatViewer';
 import InputBinary from '@/components/InputBinary';
+import ScrollToTop from '@/components/ScrollToTop';
 
 export default {
   data() {
@@ -113,7 +116,7 @@ export default {
       loadMoreDisable: false,
     };
   },
-  components: {PaginationTable, FormatViewer, InputBinary},
+  components: {PaginationTable, FormatViewer, InputBinary, ScrollToTop},
   props: ['client', 'redisKey'],
   computed: {
     dialogTitle() {
@@ -239,7 +242,7 @@ export default {
           message: reply ? this.$t('message.add_success') : this.$t('message.modify_success'),
           duration: 1000,
         });
-      });
+      }).catch(e => {this.$message.error(e.message);});
     },
     deleteLine(row) {
       this.$confirm(
@@ -258,7 +261,7 @@ export default {
 
             this.initShow();
           }
-        });
+        }).catch(e => {this.$message.error(e.message);});
       }).catch(() => {});
     },
   },

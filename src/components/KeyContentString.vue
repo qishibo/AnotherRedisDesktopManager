@@ -15,11 +15,14 @@
   <el-form-item>
     <el-button type="primary" @click="execSave">{{ $t('message.save') }}</el-button>
   </el-form-item>
+
+  <ScrollToTop parentNum='4'></ScrollToTop>
 </el-form>
 </template>
 
 <script>
 import FormatViewer from '@/components/FormatViewer';
+import ScrollToTop from '@/components/ScrollToTop';
 
 export default {
   data() {
@@ -29,7 +32,7 @@ export default {
     };
   },
   props: ['client', 'redisKey'],
-  components: { FormatViewer },
+  components: { FormatViewer, ScrollToTop },
   methods: {
     initShow() {
       this.client.getBuffer(this.redisKey).then((reply) => {
@@ -59,6 +62,8 @@ export default {
             duration: 1000,
           });
         }
+      }).catch(e => {
+        this.$message.error(e.message);
       });
     },
   },

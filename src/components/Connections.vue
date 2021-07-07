@@ -7,12 +7,15 @@
       :globalSettings="globalSettings"
       :config='item'>
     </ConnectionWrapper>
+
+    <ScrollToTop parentNum='1' :posRight='false'></ScrollToTop>
   </div>
 </template>
 
 <script type="text/javascript">
 import storage from '@/storage.js';
 import ConnectionWrapper from '@/components/ConnectionWrapper';
+import ScrollToTop from '@/components/ScrollToTop';
 
 export default {
   data() {
@@ -21,7 +24,7 @@ export default {
       globalSettings: this.$storage.getSetting(),
     };
   },
-  components: {ConnectionWrapper},
+  components: {ConnectionWrapper, ScrollToTop},
   created() {
     this.$bus.$on('refreshConnections', () => {
       this.initConnections();

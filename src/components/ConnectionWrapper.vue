@@ -75,6 +75,11 @@ export default {
       // new connection, not ready
       if (client.status != 'ready') {
         client.on('ready', () => {
+          if (client.readyInited) {
+            return;
+          }
+
+          client.readyInited = true;
           // open status tab
           this.$bus.$emit('openStatus', client, this.config.connectionName);
 
@@ -126,6 +131,7 @@ export default {
           this.$message.error({
             message: 'Redis Client On Error: ' + error + ' Config right?',
             duration: 3000,
+            customClass: 'redis-on-error-message'
           });
 
           this.$bus.$emit('closeConnection');
@@ -171,5 +177,10 @@ export default {
     border-left: 5px solid var(--menu-color);
     border-radius: 4px 0 0 4px;
     padding-left: 3px;
+  }
+
+  /*this error shows first*/
+  .redis-on-error-message {
+    z-index:9999 !important;
   }
 </style>

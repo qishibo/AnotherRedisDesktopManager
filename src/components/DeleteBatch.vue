@@ -121,6 +121,10 @@ export default {
             else {
               this.$message.error(this.$t('message.delete_failed'));
             }
+          }).catch(e => {
+            this.loadingScan = false;
+            this.loadingDelete = false;
+            this.$message.error(e.message);
           });
         }
       }

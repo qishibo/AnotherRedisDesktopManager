@@ -1,6 +1,6 @@
 <template>
   <transition name="bounce">
-    <div class="to-top-container" @click="scrollToTop" v-if="toTopShow">
+    <div class="to-top-container" :style='style' @click="scrollToTop" v-if="toTopShow">
       <i class="el-icon-to-top el-icon-arrow-up"></i>
     </div>
   </transition>
@@ -16,7 +16,21 @@
         minShowHeight: 500,
       };
     },
-    props: ['dom'],
+    computed: {
+      style() {
+        let style = {right: '50px'};
+
+        if (!this.posRight) {
+          style.right = 'inherit';
+        }
+
+        return style;
+      },
+    },
+    props: {
+      parentNum: {default: 3},
+      posRight: {default: true},
+    },
     methods: {
       handleScroll() {
         this.scrollTop = this.realDom.scrollTop;
@@ -56,8 +70,22 @@
       }
     },
     mounted() {
-      this.$nextTick(function () {
-        this.realDom = document.querySelector(this.dom);
+      this.$nextTick(() => {
+        let vueCom = this.$parent;
+
+        for (let i = 0; i < this.parentNum - 1; i++) {
+          if (!vueCom.$parent) {
+            return;
+          }
+
+          vueCom = vueCom.$parent;
+        }
+
+        this.realDom = vueCom.$el;
+
+        if (!this.realDom) {
+          return;
+        }
         this.realDom.addEventListener('scroll', this.handleScroll, true);
       });
     },
@@ -71,7 +99,7 @@
   .to-top-container {
     background-color: #409eff;
     position: fixed;
-    right: 50px;
+    /*right: 50px;*/
     bottom: 30px;
     width: 40px;
     height: 40px;

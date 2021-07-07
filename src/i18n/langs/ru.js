@@ -132,6 +132,8 @@ const ru = {
     private_key: 'Закрытый ключ',
     public_key: 'Открытый ключ',
     authority: 'Авторизация',
+    redis_node_password: 'Пароль узла Redis',
+    master_group_name: 'Master Имя группы',
   },
 };
 

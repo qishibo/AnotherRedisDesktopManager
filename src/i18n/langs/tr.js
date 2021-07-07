@@ -132,6 +132,8 @@ const tr = {
     private_key: 'Özel anahtar',
     public_key: 'Genel anahtar',
     authority: 'Yetki',
+    redis_node_password: 'Redis düğüm şifresi',
+    master_group_name: 'Master Grubunun Adı',
   },
 };
 

@@ -132,6 +132,8 @@ const ua = {
     private_key: 'Приватний ключ',
     public_key: 'Відкритий ключ',
     authority: 'Авторизація',
+    redis_node_password: 'Пароль вузла Redis',
+    master_group_name: 'Назва групи Master',
   },
 };
 

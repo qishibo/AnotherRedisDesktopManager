@@ -49,6 +49,8 @@ Download latest [AppImage](https://github.com/qishibo/AnotherRedisDesktopManager
 
 ## Feature Log
 
+- 2021-06-30: Sentinel Support!!
+- 2021-06-24: ACL Support
 - 2021-05-03: Stream Support && Cli Command Tips Support
 - 2021-02-28: Connection Color Tag && Search History Support
 - 2021-02-03: Multiple Select\Delete && Msgpack Viewer Support

@@ -243,9 +243,11 @@ export default {
       }
     },
     clearCache() {
-      localStorage.clear();
-      this.$message.success(this.$t('message.delete_success'));
-      window.location.reload();
+      this.$confirm(this.$t('message.clear_cache_tip')).then(() => {
+        localStorage.clear();
+        this.$message.success(this.$t('message.delete_success'));
+        window.location.reload();
+      }).catch(e => {});
     },
   },
   mounted() {

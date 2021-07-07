@@ -21,6 +21,11 @@ jobs:
         node-version: ${{ matrix.node-version }}
     - run: npm ci
     - run: npm run pack:prepare
+    - run: npm run pack:macm1:publish
+      env:
+        GH_TOKEN: ${{secrets.GH_TOKEN}}
+        CSC_LINK: ${{secrets.CSC_LINK}}
+        CSC_KEY_PASSWORD: ${{secrets.CSC_KEY_PASSWORD}}
     - run: npm run pack:mac:publish
       env:
         GH_TOKEN: ${{secrets.GH_TOKEN}}
