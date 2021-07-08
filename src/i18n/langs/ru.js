@@ -134,6 +134,7 @@ const ru = {
     authority: 'Авторизация',
     redis_node_password: 'Пароль узла Redis',
     master_group_name: 'Master Имя группы',
+    command_log: 'Бревно',
   },
 };
 

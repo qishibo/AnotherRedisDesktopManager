@@ -134,6 +134,7 @@ const it = {
     authority: 'Autorità',
     redis_node_password: 'Password del nodo Redis',
     master_group_name: 'Nome del gruppo Master',
+    command_log: 'Accedi',
   },
 };
 

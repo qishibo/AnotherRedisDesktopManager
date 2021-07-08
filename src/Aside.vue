@@ -3,7 +3,8 @@
     <div>
       <!-- new connection button -->
       <div class="aside-top-container">
-        <el-button class='aside-setting-btn' type="primary" icon="el-icon-setting" @click="$refs.settingDialog.show()" plain></el-button>
+        <el-button class='aside-setting-btn' type="primary" icon="el-icon-time" @click="$refs.commandLogDialog.show()" :title='$t("message.command_log")' plain></el-button>
+        <el-button class='aside-setting-btn' type="primary" icon="el-icon-setting" @click="$refs.settingDialog.show()" :title='$t("message.settings")' plain></el-button>
 
         <div class="aside-new-connection-container">
           <el-button class="aside-new-connection-btn" type="info" @click="addNewConnection" icon="el-icon-circle-plus">{{ $t('message.new_connection') }}</el-button>
@@ -17,6 +18,9 @@
       </NewConnectionDialog>
 
       <Setting ref="settingDialog"></Setting>
+
+      <!-- redis command logs -->
+      <CommandLog ref='commandLogDialog'></CommandLog>
     </div>
 
     <!-- connection list -->
@@ -28,12 +32,13 @@
 import Setting from '@/components/Setting';
 import Connections from '@/components/Connections';
 import NewConnectionDialog from '@/components/NewConnectionDialog';
+import CommandLog from '@/components/CommandLog';
 
 export default {
   data() {
     return {};
   },
-  components: { Connections, NewConnectionDialog, Setting },
+  components: { Connections, NewConnectionDialog, Setting, CommandLog },
   methods: {
     editConnectionFinished() {
       this.$refs.connections.initConnections();
@@ -50,10 +55,12 @@ export default {
     margin-right: 8px;
   }
   .aside-top-container .aside-new-connection-container {
-    margin-right: 56px;
+    margin-right: 109px;
   }
   .aside-new-connection-container .aside-new-connection-btn {
     width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
   .aside-top-container .aside-setting-btn {
     float: right;

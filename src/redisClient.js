@@ -2,7 +2,21 @@ import Redis from 'ioredis';
 import tunnelssh from 'tunnel-ssh';
 import vue from '@/main.js';
 import {remote} from 'electron';
+
 const fs = require('fs');
+const { sendCommand } = Redis.prototype;
+
+// redis command log
+Redis.prototype.sendCommand = async function (...options) {
+  const start = performance.now();
+  const response = await sendCommand.call(this, ...options);
+  const cost = performance.now() - start;
+
+  const record = {time: new Date(), connectionName: this.options.connectionName, command: options[0], cost: cost};
+  vue.$bus.$emit('commandLog', record);
+
+  return response;
+}
 
 // fix ioredis hgetall key has been toString()
 Redis.Command.setReplyTransformer("hgetall", (result) => {

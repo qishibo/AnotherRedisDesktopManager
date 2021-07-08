@@ -134,6 +134,7 @@ const cn = {
     authority: '授权',
     redis_node_password: 'Redis节点密码',
     master_group_name: 'Master组名称',
+    command_log: '日志',
   },
 };
 
