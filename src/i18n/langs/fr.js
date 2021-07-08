@@ -134,6 +134,7 @@ const fr = {
     authority: 'Autorité',
     redis_node_password: 'Mot de passe du nœud Redis',
     master_group_name: 'Nom du groupe Master',
+    command_log: 'Enregistrer',
   },
 };
 

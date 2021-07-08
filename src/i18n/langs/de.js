@@ -134,6 +134,7 @@ const de = {
     authority: 'Genehmigung',
     redis_node_password: 'Passwort des Redis-Knotens',
     master_group_name: 'Name der Gruppe Master',
+    command_log: 'Log',
   },
 };
 

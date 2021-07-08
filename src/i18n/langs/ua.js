@@ -134,6 +134,7 @@ const ua = {
     authority: 'Авторизація',
     redis_node_password: 'Пароль вузла Redis',
     master_group_name: 'Назва групи Master',
+    command_log: 'Журнал',
   },
 };
 

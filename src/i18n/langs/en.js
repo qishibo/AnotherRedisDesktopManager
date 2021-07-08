@@ -134,6 +134,7 @@ const en = {
     authority: 'Authority',
     redis_node_password: 'Redis Node Password',
     master_group_name: 'Master Group Name',
+    command_log: 'Log',
   },
 };
 

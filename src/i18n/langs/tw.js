@@ -134,6 +134,7 @@ const tw = {
     authority: '授權',
     redis_node_password: 'Redis節點密碼',
     master_group_name: 'Master組名',
+    command_log: '日誌',
   },
 };
 

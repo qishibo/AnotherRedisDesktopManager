@@ -8,18 +8,14 @@ const { sendCommand } = Redis.prototype;
 
 // redis command log
 Redis.prototype.sendCommand = async function (...options) {
+  const start = performance.now();
   const response = await sendCommand.call(this, ...options);
-  const command = options[0];
-  const argsToStore = [];
+  const cost = performance.now() - start;
 
-  for (let item of command.args) {
-    argsToStore.push(item.length > 100 ? (item.slice(0, 100) + '...') : item.toString());
-  }
+  const record = {time: new Date(), connectionName: this.options.connectionName, command: options[0], cost: cost};
+  vue.$bus.$emit('commandLog', record);
 
-  const record = `${new Date().toLocaleString()} [${this.options.connectionName}]: ${command.name} ${argsToStore.join(' ')}`;
-  console.log(record);
-
-  return response
+  return response;
 }
 
 // fix ioredis hgetall key has been toString()
