@@ -135,6 +135,7 @@ const en = {
     redis_node_password: 'Redis Node Password',
     master_group_name: 'Master Group Name',
     command_log: 'Log',
+    sentinel_faq: 'You can choose one of multiple sentinels. Please fill in the sentinel configuration for the address, port and password. The Redis node password is the password of the Master node monitored by the sentinel.',
   },
 };
 
