@@ -135,6 +135,7 @@ const fr = {
     redis_node_password: 'Mot de passe du nœud Redis',
     master_group_name: 'Nom du groupe Master',
     command_log: 'Enregistrer',
+    sentinel_faq: 'Vous pouvez choisir l\'une des plusieurs sentinelles. Veuillez remplir la configuration de la sentinelle pour l\'adresse, le port et le mot de passe. Le mot de passe du nœud Redis est le mot de passe du nœud maître surveillé par la sentinelle.',
   },
 };
 

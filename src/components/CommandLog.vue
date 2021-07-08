@@ -77,7 +77,7 @@ export default {
     /*color: #f7f7f7;*/
   }
   .command-log-ul .command-con-name {
-    color: #9d9b9b;
+    color: #7a7a7a;
   }
   .dark-mode .command-log-ul .command-con-name {
     color: #b4b3b3;
@@ -86,7 +86,7 @@ export default {
     font-weight: bold;
   }
   .command-log-ul .command-args {
-    color: #9d9b9b;
+    color: #7a7a7a;
     font-size: 95%;
   }
   .dark-mode .command-log-ul .command-args {

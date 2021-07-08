@@ -135,6 +135,7 @@ const tw = {
     redis_node_password: 'Redis節點密碼',
     master_group_name: 'Master組名',
     command_log: '日誌',
+    sentinel_faq: '您可以選擇多個哨兵之一。 地址、端口、密碼請填寫哨兵配置。 Redis節點密碼是sentinel監控的Master節點的密碼。',
   },
 };
 

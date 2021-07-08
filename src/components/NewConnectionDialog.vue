@@ -41,7 +41,13 @@
       <el-form-item label="">
         <el-checkbox v-model="sshOptionsShow">SSH</el-checkbox>
         <el-checkbox v-model="sslOptionsShow">SSL</el-checkbox>
-        <el-checkbox v-model="sentinelOptionsShow">Sentinel</el-checkbox>
+        <el-checkbox v-model="sentinelOptionsShow">
+          Sentinel
+          <el-popover trigger="hover">
+            <i slot="reference" class="el-icon-question"></i>
+            {{ $t('message.sentinel_faq') }}
+          </el-popover>
+        </el-checkbox>
         <el-checkbox v-model="connection.cluster">
           Cluster
           <el-popover trigger="hover">
