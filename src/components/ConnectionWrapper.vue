@@ -42,6 +42,8 @@ export default {
   data() {
     return {
       client: null,
+      pingTimer: null,
+      pingInterval: 10000, // ms
     };
   },
   props: ['config', 'globalSettings'],
@@ -82,6 +84,7 @@ export default {
           client.readyInited = true;
           // open status tab
           this.$bus.$emit('openStatus', client, this.config.connectionName);
+          this.startPingInterval();
 
           this.initShow();
           callback && callback();
@@ -104,6 +107,9 @@ export default {
       this.$refs.connectionMenu.close(this.config.connectionName);
       this.$bus.$emit('removeAllTab', connectionName);
 
+      // clear ping interval
+      clearInterval(this.pingTimer);
+
       // reset operateItem items
       this.$refs.operateItem && this.$refs.operateItem.resetStatus();
       // reset keyList items
@@ -111,6 +117,14 @@ export default {
 
       this.client && this.client.quit && this.client.quit();
       this.client = null;
+
+    },
+    startPingInterval() {
+      this.pingTimer = setInterval(() => {
+        this.client && this.client.ping().then(reply => {}).catch(e => {
+          // this.$message.error('Ping Error: ' + e.message);
+        });
+      }, this.pingInterval);
     },
     getRedisClient(config) {
       // ssh client
