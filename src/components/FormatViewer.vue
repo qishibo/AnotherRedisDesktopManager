@@ -1,6 +1,6 @@
 <template>
   <div class="format-viewer-container">
-    <el-select v-model="selectedView" class='format-selector' :style='selectStyle' size='mini' placeholder='Text'>
+    <el-select v-model="selectedView" :disabled='overSize' class='format-selector' :style='selectStyle' size='mini' placeholder='Text'>
       <span slot="prefix" class="fa fa-sitemap"></span>
       <el-option
         v-for="item in viewers"
@@ -33,6 +33,7 @@ import ViewerJson from '@/components/ViewerJson';
 import ViewerBinary from '@/components/ViewerBinary';
 import ViewerUnserialize from '@/components/ViewerUnserialize';
 import ViewerMsgpack from '@/components/ViewerMsgpack';
+import ViewerOverSize from '@/components/ViewerOverSize';
 
 export default {
   data() {
@@ -49,9 +50,10 @@ export default {
       selectStyle: {
         float: this.float,
       },
+      overSizeBytes: 20971520, // 20MB
     };
   },
-  components: {ViewerText, ViewerHex, ViewerJson, ViewerBinary, ViewerUnserialize, ViewerMsgpack},
+  components: {ViewerText, ViewerHex, ViewerJson, ViewerBinary, ViewerUnserialize, ViewerMsgpack, ViewerOverSize},
   props: {
     float: {default: 'right'},
     content: {default: () => Buffer.from('')},
@@ -60,10 +62,18 @@ export default {
   },
   computed: {
     contentVisible() {
+      // for better performance, oversize doesn't care visible.
+      if (this.overSize) {
+        return true;
+      }
+
       return this.$util.bufVisible(this.content);
     },
     buffSize() {
       return Buffer.byteLength(this.content);
+    },
+    overSize() {
+      return this.buffSize > this.overSizeBytes;
     },
   },
   methods: {
@@ -74,6 +84,10 @@ export default {
       this.$nextTick(() => {
         if (!this.content) {
           return this.selectedView = 'ViewerText';
+        }
+
+        if (this.overSize) {
+          return this.selectedView = 'ViewerOverSize';
         }
 
         // json
