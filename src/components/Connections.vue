@@ -16,6 +16,8 @@
 import storage from '@/storage.js';
 import ConnectionWrapper from '@/components/ConnectionWrapper';
 import ScrollToTop from '@/components/ScrollToTop';
+import Sortable from 'sortablejs';
+
 
 export default {
   data() {
@@ -45,10 +47,27 @@ export default {
       }
 
       this.connections = slovedConnections;
-    }
+    },
+    sortOrder() {
+      const dragWrapper = document.querySelector(".connections-list ");
+      Sortable.create(dragWrapper, {
+        // handle: '.connection-name',
+        onEnd: e => {
+          const newIndex = e.newIndex;
+          const oldIndex = e.oldIndex;
+          // change in connections
+          const currentRow = this.connections.splice(oldIndex, 1)[0];
+          this.connections.splice(newIndex, 0, currentRow);
+          // store
+          this.$storage.reOrderAndStore(this.connections);
+        }
+      });
+    },
   },
   mounted() {
     this.initConnections();
+    this.sortOrder();
+
   },
 };
 </script>

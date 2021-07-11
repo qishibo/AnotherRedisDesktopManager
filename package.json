@@ -34,6 +34,7 @@
     "json-bigint": "git+https://github.com/qishibo/json-bigint.git",
     "php-serialize": "^4.0.2",
     "redis-splitargs": "git+https://github.com/qishibo/splitargs.git",
+    "sortablejs": "^1.14.0",
     "tunnel-ssh": "^4.1.4",
     "vue": "^2.5.2",
     "vue-i18n": "^8.7.0",

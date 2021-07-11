@@ -34,6 +34,11 @@ export default {
     const newKey = this.getConnectionKey(connection, true);
     connection.key = newKey;
 
+    // new added has no order, add it. do not add when edit mode
+    if (!oldKey && isNaN(connection.order)) {
+      connection.order = Object.keys(connections).length;
+    }
+
     connections[newKey] = connection;
     this.setConnections(connections);
   },
@@ -93,11 +98,30 @@ export default {
   },
   sortConnections(connections) {
     connections.sort(function(a, b) {
+      // drag ordered
+      if (a.order && b.order) {
+        return a.order <= b.order ? -1 : 1;
+      }
+
+      // no ordered, by key
       if (a.key && b.key) {
         return a.key < b.key ? -1 : 1;
       }
 
       return a.key ? 1 : (b.key ? -1 : 0);
     });
+  },
+  reOrderAndStore(connections = []) {
+    let newConnections = {};
+
+    for (const index in connections) {
+      let connection = connections[index];
+      connection.order = index;
+      newConnections[this.getConnectionKey(connection, true)] = connection;
+    }
+
+    this.setConnections(newConnections);
+
+    return newConnections;
   },
 };
