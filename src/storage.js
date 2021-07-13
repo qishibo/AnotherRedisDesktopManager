@@ -99,8 +99,8 @@ export default {
   sortConnections(connections) {
     connections.sort(function(a, b) {
       // drag ordered
-      if (a.order && b.order) {
-        return a.order <= b.order ? -1 : 1;
+      if (!isNaN(a.order) && !isNaN(b.order)) {
+        return parseInt(a.order) <= parseInt(b.order) ? -1 : 1;
       }
 
       // no ordered, by key

@@ -52,6 +52,8 @@ export default {
       const dragWrapper = document.querySelector(".connections-list ");
       Sortable.create(dragWrapper, {
         // handle: '.connection-name',
+        animation: 400,
+        direction: 'vertical',
         onEnd: e => {
           const newIndex = e.newIndex;
           const oldIndex = e.oldIndex;
