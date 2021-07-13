@@ -121,7 +121,7 @@ export default {
     width: 122px;
   }
   .format-selector .el-input__inner {
-    height: 22px;
+    height: 22px !important;
   }
 
   .text-formated-container {

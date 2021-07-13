@@ -31,8 +31,13 @@ export default {
 
 <style type="text/css">
   .size-too-large-viewer .el-alert {
-    margin: 10px 0;
+    margin: 3px 0 8px 0;
     color: #f56c6c;
     background-color: #f9dbdb;
+  }
+
+  /*text viewer box*/
+  .key-content-string .size-too-large-viewer .el-textarea textarea {
+    height: calc(100vh - 462px);
   }
 </style>
