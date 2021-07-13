@@ -17,6 +17,7 @@
         class="input-suggestion"
         autocomplete="off"
         v-model="params"
+        :debounce='10'
         :fetch-suggestions="inputSuggestion"
         :placeholder="$t('message.enter_to_exec')"
         :select-when-unmatched="true"
