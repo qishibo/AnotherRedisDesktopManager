@@ -136,6 +136,7 @@ const it = {
     master_group_name: 'Nome del gruppo Master',
     command_log: 'Accedi',
     sentinel_faq: 'Puoi scegliere una delle molteplici sentinelle. Si prega di compilare la configurazione sentinella per l\'indirizzo, la porta e la password. La password del nodo Redis è la password del nodo Master monitorato dalla sentinella.',
+    hotkey: 'Tasto di scelta rapida',
   },
 };
 

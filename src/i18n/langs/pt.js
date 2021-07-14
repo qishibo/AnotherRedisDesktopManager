@@ -136,6 +136,7 @@ const pt = {
     master_group_name: 'Nome do Grupo Master',
     command_log: 'Registro',
     sentinel_faq: 'Você pode escolher uma das várias sentinelas. Preencha a configuração da sentinela para o endereço, porta e senha. A senha do nó Redis é a senha do nó mestre monitorado pela sentinela.',
+    hotkey: 'Tecla de Atalho',
   },
 };
 

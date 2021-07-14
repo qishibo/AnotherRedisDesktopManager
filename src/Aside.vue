@@ -21,6 +21,8 @@
 
       <!-- redis command logs -->
       <CommandLog ref='commandLogDialog'></CommandLog>
+      <!-- hot key tips dialog -->
+      <HotKeys></HotKeys>
     </div>
 
     <!-- connection list -->
@@ -33,12 +35,13 @@ import Setting from '@/components/Setting';
 import Connections from '@/components/Connections';
 import NewConnectionDialog from '@/components/NewConnectionDialog';
 import CommandLog from '@/components/CommandLog';
+import HotKeys from '@/components/HotKeys';
 
 export default {
   data() {
     return {};
   },
-  components: { Connections, NewConnectionDialog, Setting, CommandLog },
+  components: { Connections, NewConnectionDialog, Setting, CommandLog, HotKeys },
   methods: {
     editConnectionFinished() {
       this.$refs.connections.initConnections();
