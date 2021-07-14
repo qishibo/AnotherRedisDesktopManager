@@ -1,5 +1,5 @@
 // Modules to control application life and create native browser window
-const { app, BrowserWindow, Menu } = require('electron');
+const { app, BrowserWindow, Menu, ipcMain } = require('electron');
 const fontManager = require('./font-manager');
 const winState = require('./win-state');
 
@@ -83,6 +83,21 @@ app.on('activate', () => {
   // dock icon is clicked and there are no other windows open.
   if (mainWindow === null) {
     createWindow();
+  }
+});
+
+// hide window
+ipcMain.on('hideWindow',function() {
+  mainWindow && mainWindow.hide();
+});
+// minimize window
+ipcMain.on('minimizeWindow',function() {
+  mainWindow && mainWindow.minimize();
+});
+// toggle maximize
+ipcMain.on('toggleMaximize',function() {
+  if (mainWindow) {
+    mainWindow.isMaximized() ? mainWindow.restore() : mainWindow.maximize();
   }
 });
 

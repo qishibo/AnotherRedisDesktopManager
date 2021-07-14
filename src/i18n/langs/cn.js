@@ -136,6 +136,7 @@ const cn = {
     master_group_name: 'Master组名称',
     command_log: '日志',
     sentinel_faq: '多个哨兵任选其一即可，地址、端口、密码请填写哨兵配置，Redis节点密码为哨兵监听的Master节点密码',
+    hotkey: '快捷键',
   },
 };
 
