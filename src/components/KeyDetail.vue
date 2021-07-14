@@ -8,6 +8,7 @@
         :redisKey="redisKey"
         :keyType="keyType"
         @refreshContent='refreshContent'
+        :hotKeyScope='hotKeyScope'
         class="key-header-info">
       </KeyHeader>
 
@@ -17,6 +18,7 @@
         :is="componentName"
         :client='client'
         :redisKey="redisKey"
+        :hotKeyScope='hotKeyScope'
         class="key-content-container">
       </component>
     </el-container>
@@ -36,7 +38,7 @@ export default {
   data() {
     return {};
   },
-  props: ['client', 'redisKey', 'keyType'],
+  props: ['client', 'redisKey', 'keyType', 'hotKeyScope'],
   components: {
     KeyHeader, KeyContentString, KeyContentHash, KeyContentSet, KeyContentZset,
     KeyContentList, KeyContentStream,

@@ -32,6 +32,7 @@
     "font-awesome": "^4.7.0",
     "ioredis": "^4.27.0",
     "json-bigint": "git+https://github.com/qishibo/json-bigint.git",
+    "keymaster": "^1.6.2",
     "php-serialize": "^4.0.2",
     "redis-splitargs": "git+https://github.com/qishibo/splitargs.git",
     "sortablejs": "^1.14.0",

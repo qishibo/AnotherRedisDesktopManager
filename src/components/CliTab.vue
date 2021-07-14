@@ -49,7 +49,7 @@ export default {
       multiQueue: null,
     };
   },
-  props: ['client'],
+  props: ['client', 'hotKeyScope'],
   computed: {
     paramsTrim() {
       return this.params.replace(/^\s+|\s+$/g, '');
@@ -80,6 +80,9 @@ export default {
       });
     },
     inputSuggestion(input, cb) {
+      // tmp store cb
+      this.cb = cb;
+
       if (!this.paramsTrim) {
         cb([]);
         return;
@@ -295,9 +298,21 @@ export default {
 
       return false;
     },
+    initShortcut() {
+      this.$shortcut.bind('ctrl+c', this.hotKeyScope, () => {
+        this.params = '';
+        this.scrollToBottom('> ^C');
+        // close the tips
+        (typeof this.cb == 'function') && this.cb([]);
+      });
+      this.$shortcut.bind('ctrl+l, ⌘+l', this.hotKeyScope, () => {
+        this.content = '';
+      });
+    },
   },
   mounted() {
     this.initShow();
+    this.initShortcut();
   }
 };
 </script>
