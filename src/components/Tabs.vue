@@ -9,10 +9,10 @@
         <span>{{ item.label }}</span>
       </span>
 
-      <Status v-if="item.component === 'status'" :client='item.client' class='tab-content-wrappe'></Status>
-      <CliTab v-else-if="item.component === 'cli'" :client='item.client' class='tab-content-wrappe'></CliTab>
-      <DeleteBatch v-else-if="item.component === 'delbatch'" :client='item.client' :rule="item.rule" class='tab-content-wrappe'></DeleteBatch>
-      <KeyDetail v-else :client='item.client' :redisKey="item.redisKey" :keyType="item.keyType" class='tab-content-wrappe'></KeyDetail>
+      <Status v-if="item.component === 'status'" :client='item.client' class='tab-content-wrappe' :hotKeyScope='item.name'></Status>
+      <CliTab v-else-if="item.component === 'cli'" :client='item.client' class='tab-content-wrappe' :hotKeyScope='item.name'></CliTab>
+      <DeleteBatch v-else-if="item.component === 'delbatch'" :client='item.client' :rule="item.rule" class='tab-content-wrappe' :hotKeyScope='item.name'></DeleteBatch>
+      <KeyDetail v-else :client='item.client' :redisKey="item.redisKey" :keyType="item.keyType" class='tab-content-wrappe' :hotKeyScope='item.name'></KeyDetail>
     </el-tab-pane>
   </el-tabs>
 </template>
@@ -91,8 +91,13 @@ export default {
 
       nextSelectTab && (this.selectedTabName = nextSelectTab.name);
       this.tabs = this.tabs.filter(tab => tab.name !== removeName);
+
+      this.$shortcut.deleteScope(removeName);
+      this.$shortcut.setScope(this.selectedTabName);
     },
     tabClick(tab, event) {
+      this.$shortcut.setScope(this.selectedTabName);
+
       if (tab.$children && tab.$children[0] && (typeof tab.$children[0].tabClick == 'function')) {
         tab.$children[0].tabClick();
       };
@@ -199,6 +204,7 @@ export default {
       }
 
       this.selectedTabName = newTabItem.name;
+      this.$shortcut.setScope(this.selectedTabName);
     },
     iconNameByComponent(component) {
       const map = {
@@ -211,6 +217,17 @@ export default {
 
       return icon ? icon : 'fa fa-key';
     },
+    initShortcut() {
+      this.$shortcut.bind('ctrl+w', () => {
+        const closeWindow = !this.tabs.length;
+        this.removeTab(this.selectedTabName);
+
+        return closeWindow;
+      });
+    },
+  },
+  mounted() {
+    this.initShortcut();
   },
 };
 </script>

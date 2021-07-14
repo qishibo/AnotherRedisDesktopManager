@@ -6,10 +6,13 @@ import i18n from './i18n/i18n';
 import bus from './bus';
 import util from './util';
 import storage from './storage';
+import shortcut from './shortcut';
+
 
 Vue.prototype.$bus = bus;
 Vue.prototype.$util = util;
 Vue.prototype.$storage = storage;
+Vue.prototype.$shortcut = shortcut;
 
 Vue.use(ElementUI, { size: 'small' });
 Vue.config.productionTip = false;

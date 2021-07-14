@@ -47,6 +47,12 @@ export default {
       this.$refs.newConnectionDialog.show();
     },
   },
+  mounted() {
+    this.$shortcut.bind('ctrl+n', () => {
+      this.$refs.newConnectionDialog.show();
+      return false;
+    });
+  },
 };
 </script>
 

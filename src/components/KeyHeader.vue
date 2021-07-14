@@ -36,8 +36,8 @@
 
       <!-- del & refresh btn -->
       <el-col :span=6 class='key-header-item key-header-btn-con'>
-        <el-button type="danger" @click="deleteKey" icon="el-icon-delete" :title="$t('el.upload.delete')"></el-button>
-        <el-button type="success" @click="refreshKey" icon="el-icon-refresh" :title="$t('message.refresh_connection')"></el-button>
+        <el-button ref='deleteBtn' type="danger" @click="deleteKey" icon="el-icon-delete" :title="$t('el.upload.delete')+' Crtl+x'"></el-button>
+        <el-button ref='refreshBtn' type="success" @click="refreshKey" icon="el-icon-refresh" :title="$t('message.refresh_connection')+' Ctrl+r / F5'"></el-button>
       </el-col>
     </el-form>
   </div>
@@ -52,7 +52,7 @@ export default {
       binary: false,
     };
   },
-  props: ['client', 'redisKey', 'keyType'],
+  props: ['client', 'redisKey', 'keyType', 'hotKeyScope'],
   methods: {
     initShow() {
       const key = this.redisKey;
@@ -167,9 +167,25 @@ export default {
     refreshKeyList(key, type = 'del') {
       this.$bus.$emit('refreshKeyList', this.client, key, type);
     },
+    initShortcut() {
+      // refresh
+      this.$shortcut.bind('ctrl+r, f5', this.hotKeyScope, () => {
+        // make input blur first
+        this.$refs.deleteBtn.$el.focus();
+        this.refreshKey();
+
+        return false;
+      });
+      // delete
+      this.$shortcut.bind('ctrl+x', this.hotKeyScope, () => {
+        this.deleteKey();
+        return false;
+      });
+    },
   },
   mounted() {
     this.initShow();
+    this.initShortcut();
   },
 };
 </script>

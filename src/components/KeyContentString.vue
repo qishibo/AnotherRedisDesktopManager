@@ -13,7 +13,7 @@
 
   <!-- save btn -->
   <el-form-item>
-    <el-button type="primary" @click="execSave">{{ $t('message.save') }}</el-button>
+    <el-button ref='saveBtn' type="primary" @click="execSave" title='Ctrl+s'>{{ $t('message.save') }}</el-button>
   </el-form-item>
 
   <ScrollToTop parentNum='4'></ScrollToTop>
@@ -31,7 +31,7 @@ export default {
       binary: false,
     };
   },
-  props: ['client', 'redisKey'],
+  props: ['client', 'redisKey', 'hotKeyScope'],
   components: { FormatViewer, ScrollToTop },
   methods: {
     initShow() {
@@ -66,9 +66,19 @@ export default {
         this.$message.error(e.message);
       });
     },
+    initShortcut() {
+      this.$shortcut.bind('ctrl+s', this.hotKeyScope, () => {
+        // make input blur to fill the new value
+        this.$refs.saveBtn.$el.focus();
+        this.execSave();
+
+        return false;
+      });
+    },
   },
   mounted() {
     this.initShow();
+    this.initShortcut();
   },
 };
 </script>

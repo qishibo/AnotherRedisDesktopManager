@@ -203,7 +203,7 @@ export default {
       allInfoFilter: '',
     };
   },
-  props: ['client'],
+  props: ['client', 'hotKeyScope'],
   components: { ScrollToTop },
   computed: {
     DBKeys() {
@@ -304,10 +304,17 @@ export default {
 
       return lines;
     },
+    initShortcut() {
+      this.$shortcut.bind('ctrl+r, f5', this.hotKeyScope, () => {
+        this.initShow();
+        return false;
+      });
+    },
   },
   mounted() {
     this.initShow();
     this.refreshInit();
+    this.initShortcut();
   },
   beforeDestroy() {
     // clear interval when tab is closed
