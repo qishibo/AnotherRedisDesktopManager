@@ -305,7 +305,7 @@ export default {
       return lines;
     },
     initShortcut() {
-      this.$shortcut.bind('ctrl+r, f5', this.hotKeyScope, () => {
+      this.$shortcut.bind('ctrl+r, ⌘+r, f5', this.hotKeyScope, () => {
         this.initShow();
         return false;
       });

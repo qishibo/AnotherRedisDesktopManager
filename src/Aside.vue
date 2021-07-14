@@ -3,11 +3,11 @@
     <div>
       <!-- new connection button -->
       <div class="aside-top-container">
-        <el-button class='aside-setting-btn' type="primary" icon="el-icon-time" @click="$refs.commandLogDialog.show()" :title='$t("message.command_log")' plain></el-button>
-        <el-button class='aside-setting-btn' type="primary" icon="el-icon-setting" @click="$refs.settingDialog.show()" :title='$t("message.settings")' plain></el-button>
+        <el-button class='aside-setting-btn' type="primary" icon="el-icon-time" @click="$refs.commandLogDialog.show()" :title='$t("message.command_log")+" Ctrl+g"' plain></el-button>
+        <el-button class='aside-setting-btn' type="primary" icon="el-icon-setting" @click="$refs.settingDialog.show()" :title='$t("message.settings")+" Ctrl+,"' plain></el-button>
 
         <div class="aside-new-connection-container">
-          <el-button class="aside-new-connection-btn" type="info" @click="addNewConnection" icon="el-icon-circle-plus">{{ $t('message.new_connection') }}</el-button>
+          <el-button class="aside-new-connection-btn" type="info" @click="addNewConnection" icon="el-icon-circle-plus" :title='$t("message.new_connection")+" Ctrl+n"'>{{ $t('message.new_connection') }}</el-button>
         </div>
       </div>
 
@@ -46,12 +46,30 @@ export default {
     addNewConnection() {
       this.$refs.newConnectionDialog.show();
     },
+    initShortcut() {
+      // new connection
+      this.$shortcut.bind('ctrl+n, ⌘+n', () => {
+        this.$refs.newConnectionDialog.show();
+        return false;
+      });
+      // settings
+      this.$shortcut.bind('ctrl+,', () => {
+        this.$refs.settingDialog.show();
+        return false;
+      });
+      this.$shortcut.bind('⌘+,', () => {
+        this.$refs.settingDialog.show();
+        return false;
+      });
+      // logs
+      this.$shortcut.bind('ctrl+g, ⌘+g', () => {
+        this.$refs.commandLogDialog.show();
+        return false;
+      });
+    },
   },
   mounted() {
-    this.$shortcut.bind('ctrl+n', () => {
-      this.$refs.newConnectionDialog.show();
-      return false;
-    });
+    this.initShortcut();
   },
 };
 </script>

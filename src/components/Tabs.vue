@@ -176,6 +176,7 @@ export default {
       // if exists, select directly
       if (exists) {
         this.selectedTabName = newTabItem.name;
+        this.$shortcut.setScope(this.selectedTabName);
         return;
       }
 
@@ -218,7 +219,7 @@ export default {
       return icon ? icon : 'fa fa-key';
     },
     initShortcut() {
-      this.$shortcut.bind('ctrl+w', () => {
+      this.$shortcut.bind('ctrl+w, ⌘+w', () => {
         const closeWindow = !this.tabs.length;
         this.removeTab(this.selectedTabName);
 

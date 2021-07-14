@@ -169,7 +169,7 @@ export default {
     },
     initShortcut() {
       // refresh
-      this.$shortcut.bind('ctrl+r, f5', this.hotKeyScope, () => {
+      this.$shortcut.bind('ctrl+r, ⌘+r, f5', this.hotKeyScope, () => {
         // make input blur first
         this.$refs.deleteBtn.$el.focus();
         this.refreshKey();
@@ -177,7 +177,7 @@ export default {
         return false;
       });
       // delete
-      this.$shortcut.bind('ctrl+x', this.hotKeyScope, () => {
+      this.$shortcut.bind('ctrl+x, ⌘+x', this.hotKeyScope, () => {
         this.deleteKey();
         return false;
       });

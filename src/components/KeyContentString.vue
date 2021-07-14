@@ -67,7 +67,7 @@ export default {
       });
     },
     initShortcut() {
-      this.$shortcut.bind('ctrl+s', this.hotKeyScope, () => {
+      this.$shortcut.bind('ctrl+s, ⌘+s', this.hotKeyScope, () => {
         // make input blur to fill the new value
         this.$refs.saveBtn.$el.focus();
         this.execSave();

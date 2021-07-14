@@ -130,7 +130,7 @@ export default {
       }
     },
     initShortcut() {
-      this.$shortcut.bind('ctrl+r, f5', this.hotKeyScope, () => {
+      this.$shortcut.bind('ctrl+r, ⌘+r, f5', this.hotKeyScope, () => {
         this.initKeys();
         return false;
       });

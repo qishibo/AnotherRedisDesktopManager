@@ -36,6 +36,8 @@ export default {
         time: record.time.toTimeString().substr(0, 8),
         connectionName: record.connectionName,
       });
+
+      this.scrollToBottom();
     });
   },
   methods: {
@@ -43,6 +45,9 @@ export default {
       this.visible = true;
     },
     openDialog() {
+      this.scrollToBottom();
+    },
+    scrollToBottom() {
       const dom = this.$refs.commandLogUl;
 
       this.$nextTick(() => {

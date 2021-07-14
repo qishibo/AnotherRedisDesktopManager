@@ -305,7 +305,7 @@ export default {
         // close the tips
         (typeof this.cb == 'function') && this.cb([]);
       });
-      this.$shortcut.bind('ctrl+l', this.hotKeyScope, () => {
+      this.$shortcut.bind('ctrl+l, ⌘+l', this.hotKeyScope, () => {
         this.content = '';
       });
     },
