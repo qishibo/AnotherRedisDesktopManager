@@ -51,7 +51,7 @@ export default {
     sortOrder() {
       const dragWrapper = document.querySelector(".connections-list ");
       Sortable.create(dragWrapper, {
-        // handle: '.connection-name',
+        handle: '.el-submenu__title',
         animation: 400,
         direction: 'vertical',
         onEnd: e => {

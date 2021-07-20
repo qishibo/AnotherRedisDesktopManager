@@ -108,8 +108,7 @@ export default {
       });
     },
     copyContent() {
-      const clipboard = require('electron').clipboard;
-      clipboard.writeText(this.content.toString());
+      this.$util.copyToClipboard(this.content);
       this.$message.success(this.$t('message.copy_success'));
     },
   },

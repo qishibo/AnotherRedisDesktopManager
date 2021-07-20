@@ -68,8 +68,9 @@
 
       <el-table-column label="Operation">
         <template slot-scope="scope">
-          <el-button type="text" @click="showEditDialog(scope.row)" icon="el-icon-view" :title="$t('message.detail')" circle></el-button>
-          <el-button type="text" @click="deleteLine(scope.row)" icon="el-icon-delete" :title="$t('el.upload.delete')" circle></el-button>
+          <el-button type="text" @click="$util.copyToClipboard(JSON.stringify(scope.row.content))" icon="el-icon-document" :title="$t('message.copy')"></el-button>
+          <el-button type="text" @click="showEditDialog(scope.row)" icon="el-icon-view" :title="$t('message.detail')"></el-button>
+          <el-button type="text" @click="deleteLine(scope.row)" icon="el-icon-delete" :title="$t('el.upload.delete')"></el-button>
         </template>
       </el-table-column>
     </el-table>

@@ -175,4 +175,8 @@ export default {
       return a.children ? -1 : (b.children ? 1 : 0);
     });
   },
+  copyToClipboard(text) {
+    const clipboard = require('electron').clipboard;
+    clipboard.writeText(text ? text.toString() : '');
+  },
 };
