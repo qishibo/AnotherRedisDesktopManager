@@ -26,6 +26,13 @@
           @keyup.enter.native="ttlKey"
           :title="$t('message.click_enter_to_ttl')">
           <span slot="prepend">TTL</span>
+          <!-- remove expire -->
+          <i class="el-icon-close el-input__icon cursor-pointer"
+            slot="suffix"
+            :title="$t('message.persist')"
+            @click="persistKet">
+          </i>
+          <!-- save ttl -->
           <i class="el-icon-check el-input__icon cursor-pointer"
             slot="suffix"
             :title="$t('message.click_enter_to_ttl')"
@@ -162,6 +169,14 @@ export default {
         }
       }).catch(e => {
         this.$message.error('Expire Error: ' + e.message);
+      });
+    },
+    persistKet() {
+      this.client.persist(this.redisKey).then(() => {
+        this.initShow();
+        this.$message.success(this.$t('message.modify_success'));
+      }).catch(e => {
+        this.$message.error('Persist Error: ' + e.message);
       });
     },
     refreshKeyList(key, type = 'del') {

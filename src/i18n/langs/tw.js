@@ -137,6 +137,7 @@ const tw = {
     command_log: '日誌',
     sentinel_faq: '您可以選擇多個哨兵之一。 地址、端口、密碼請填寫哨兵配置。 Redis節點密碼是sentinel監控的Master節點的密碼。',
     hotkey: '熱鍵',
+    persist: '刪除過期時間',
   },
 };
 

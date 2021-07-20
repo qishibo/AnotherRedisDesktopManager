@@ -137,6 +137,7 @@ const tr = {
     command_log: 'Günlük',
     sentinel_faq: 'Birden fazla nöbetçiden birini seçebilirsiniz. Lütfen adres, bağlantı noktası ve parola için sentinel yapılandırmasını doldurun. Redis düğüm parolası, nöbetçi tarafından izlenen Ana düğümün parolasıdır.',
     hotkey: 'Kısayol Tuşu',
+    persist: 'Bitiş Süresini Kaldır',
   },
 };
 
