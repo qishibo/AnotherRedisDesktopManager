@@ -142,7 +142,7 @@ export default {
             }).catch(e => {reject(e);});
 
           });
-          
+
           client.on('error', e => {reject(e);});
         }
 

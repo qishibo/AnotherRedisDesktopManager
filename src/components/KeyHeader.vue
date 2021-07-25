@@ -202,6 +202,9 @@ export default {
     this.initShow();
     this.initShortcut();
   },
+  beforeDestroy() {
+    this.$shortcut.deleteScope(this.hotKeyScope);
+  },
 };
 </script>
 

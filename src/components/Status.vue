@@ -319,6 +319,7 @@ export default {
   beforeDestroy() {
     // clear interval when tab is closed
     clearInterval(this.refreshTimer);
+    this.$shortcut.deleteScope(this.hotKeyScope);
   },
 };
 </script>

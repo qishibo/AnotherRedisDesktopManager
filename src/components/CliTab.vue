@@ -120,7 +120,7 @@ export default {
         // cmd without param such as 'hget'
         else {
           if (cmdTips[i].startsWith(cmd)) {
-            items.unshift(cmdTips[i]); 
+            items.unshift(cmdTips[i]);
           }
         }
       }
@@ -247,7 +247,7 @@ export default {
           }
           // string buffer null
           else {
-            append += (isArray ? '' : (this.$util.bufToString(i) + "\n")) + 
+            append += (isArray ? '' : (this.$util.bufToString(i) + "\n")) +
                       this.$util.bufToString(result[i]) + "\n";
           }
         }
@@ -313,7 +313,10 @@ export default {
   mounted() {
     this.initShow();
     this.initShortcut();
-  }
+  },
+  beforeDestroy() {
+    this.$shortcut.deleteScope(this.hotKeyScope);
+  },
 };
 </script>
 

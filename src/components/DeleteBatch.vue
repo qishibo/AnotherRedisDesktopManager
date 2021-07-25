@@ -139,7 +139,10 @@ export default {
   mounted() {
     this.initKeys();
     this.initShortcut();
-  }
+  },
+  beforeDestroy() {
+    this.$shortcut.deleteScope(this.hotKeyScope);
+  },
 };
 </script>
 
