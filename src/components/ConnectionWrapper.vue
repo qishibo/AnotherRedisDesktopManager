@@ -176,6 +176,9 @@ export default {
   mounted() {
     this.setColor(this.config.color, false);
   },
+  beforeDestroy() {
+    this.closeConnection(this.config.connectionName);
+  },
 }
 </script>
 
