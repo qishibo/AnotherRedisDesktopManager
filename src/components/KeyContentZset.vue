@@ -15,7 +15,7 @@
             <el-input v-model="editLineItem.score" autocomplete="off"></el-input>
           </el-form-item>
           <el-form-item label="Member">
-            <FormatViewer ref='formatViewer' :content.sync='editLineItem.member'></FormatViewer>
+            <FormatViewer ref='formatViewer' :redisKey.sync="redisKey" :redisKeyField.sync="editLineItem.key" :content.sync='editLineItem.member'></FormatViewer>
           </el-form-item>
         </el-form>
 

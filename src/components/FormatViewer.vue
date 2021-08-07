@@ -1,12 +1,12 @@
 <template>
   <div class="format-viewer-container">
-    <el-select v-model="selectedView" :disabled='overSize' class='format-selector' :style='selectStyle' size='mini' placeholder='Text'>
+    <el-select v-model="selectedText" :disabled='overSize' @change="selectedChange" class='format-selector' :style='selectStyle' size='mini' placeholder='Text'>
       <span slot="prefix" class="fa fa-sitemap"></span>
       <el-option
         v-for="item in viewers"
-        :key="item.value"
+        :key="item.text"
         :label="item.text"
-        :value="item.value">
+        :value="item.text">
       </el-option>
     </el-select>
     <span @click='copyContent' :title='$t("message.copy")' class='el-icon-document formater-copy-icon'></span>
@@ -18,15 +18,19 @@
       ref='viewer'
       :is='selectedView'
       :content='content'
+      :name="selectedText"
       :contentVisible='contentVisible'
       :textrows='textrows'
       :disabled='disabled'
+      :redisKey="redisKey"
+      :redisKeyField="redisKeyField"
       @updateContent="$emit('update:content', $event)">
     </component>
   </div>
 </template>
 
 <script type="text/javascript">
+import storage from '@/storage.js';
 import ViewerText from '@/components/ViewerText';
 import ViewerHex from '@/components/ViewerHex';
 import ViewerJson from '@/components/ViewerJson';
@@ -34,11 +38,13 @@ import ViewerBinary from '@/components/ViewerBinary';
 import ViewerUnserialize from '@/components/ViewerUnserialize';
 import ViewerMsgpack from '@/components/ViewerMsgpack';
 import ViewerOverSize from '@/components/ViewerOverSize';
+import ViewerCustom from '@/components/ViewerCustom';
 
 export default {
   data() {
     return {
       selectedView: '',
+      selectedText: '',
       viewers: [
         { value: 'ViewerText', text: 'Text' },
         { value: 'ViewerHex', text: 'Hex' },
@@ -53,11 +59,14 @@ export default {
       overSizeBytes: 20971520, // 20MB
     };
   },
-  components: {ViewerText, ViewerHex, ViewerJson, ViewerBinary, ViewerUnserialize, ViewerMsgpack, ViewerOverSize},
+  components: {ViewerText, ViewerHex, ViewerJson, ViewerBinary, ViewerUnserialize, ViewerMsgpack, ViewerOverSize, ViewerCustom},
   props: {
     float: {default: 'right'},
     content: {default: () => Buffer.from('')},
+    name: {default: ''},
     textrows: {default: 6},
+    redisKey:  {default: ''},
+    redisKeyField:  {default: ''},
     disabled: {type: Boolean, default: false},
   },
   computed: {
@@ -66,7 +75,6 @@ export default {
       if (this.overSize) {
         return true;
       }
-
       return this.$util.bufVisible(this.content);
     },
     buffSize() {
@@ -75,6 +83,12 @@ export default {
     overSize() {
       return this.buffSize > this.overSizeBytes;
     },
+  },
+  mounted() {
+    const settings = storage.getSetting();
+    settings.formatters.forEach( (formatter) => {
+      this.viewers.push({ value: 'ViewerCustom', text: formatter.name });
+    });
   },
   methods: {
     autoFormat() {
@@ -90,6 +104,10 @@ export default {
           return this.selectedView = 'ViewerOverSize';
         }
 
+        if (this.selectedText !== '') {
+          return this.selectedView = 'ViewerCustom';
+        }
+        
         // json
         if (this.$util.isJson(this.content)) {
           this.selectedView = 'ViewerJson';
@@ -100,7 +118,7 @@ export default {
         }
         // hex
         else if (!this.contentVisible) {
-          this.selectedView = 'ViewerHex'
+          this.selectedView = 'ViewerHex';
         }
         else {
           this.selectedView = 'ViewerText';
@@ -111,8 +129,15 @@ export default {
       this.$util.copyToClipboard(this.content);
       this.$message.success(this.$t('message.copy_success'));
     },
+    selectedChange(text) {
+      this.viewers.forEach((v) => {
+        if (v.text === text) {
+          this.selectedView = v.value;
+        }
+      });
+    },
   },
-}
+};
 </script>
 
 <style type="text/css">

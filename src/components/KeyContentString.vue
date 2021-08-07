@@ -6,6 +6,7 @@
       ref='formatViewer'
       :content.sync='content'
       :binary='binary'
+      :redisKey.sync="redisKey"
       float=''
       :textrows=12>
     </FormatViewer>
