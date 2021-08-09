@@ -108,7 +108,7 @@ export default {
     saveSetting() {
       const settings = storage.getSetting();
       settings.formatters = this.formatters;
-      storage.saveSettings(settings);
+      this.$bus.$emit('saveSettings', settings);
     },
   },
 };

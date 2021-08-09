@@ -262,6 +262,12 @@ export default {
     this.restoreSettings();
     this.bindGetAllFonts();
   },
+  created() {
+    this.$bus.$on('saveSettings', (settings) => {
+      this.form.formatters = settings.formatters;
+      storage.saveSettings(this.form);
+    });
+  },
 };
 </script>
 
