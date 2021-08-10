@@ -24,7 +24,7 @@
           </el-form-item>
 
           <el-form-item label="Value (JSON format)">
-            <FormatViewer :disabled='!!beforeEditItem.contentString' ref='formatViewer' :content.sync='editLineItem.contentString'></FormatViewer>
+            <FormatViewer :redisKey.sync="redisKey" :redisKeyField.sync="editLineItem.key" :disabled='!!beforeEditItem.contentString' ref='formatViewer' :content.sync='editLineItem.contentString'></FormatViewer>
           </el-form-item>
         </el-form>
 

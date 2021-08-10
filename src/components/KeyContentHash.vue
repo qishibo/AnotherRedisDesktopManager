@@ -16,7 +16,7 @@
           </el-form-item>
 
           <el-form-item label="Value">
-            <FormatViewer ref='formatViewer' :content.sync='editLineItem.value'></FormatViewer>
+            <FormatViewer ref='formatViewer' :redisKey.sync="redisKey" :redisKeyField.sync="editLineItem.key" :content.sync='editLineItem.value'></FormatViewer>
           </el-form-item>
         </el-form>
 

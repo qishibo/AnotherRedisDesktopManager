@@ -12,7 +12,7 @@
       <el-dialog :title="dialogTitle" :visible.sync="editDialog" @open='openDialog' :close-on-click-modal='false'>
         <el-form>
           <el-form-item label="Value">
-            <FormatViewer ref='formatViewer' :content.sync='editLineItem.value'></FormatViewer>
+            <FormatViewer ref='formatViewer' :redisKey.sync="redisKey" :redisKeyField.sync="editLineItem.key" :content.sync='editLineItem.value'></FormatViewer>
           </el-form-item>
         </el-form>
 

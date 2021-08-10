@@ -138,6 +138,12 @@ const pt = {
     sentinel_faq: 'Você pode escolher uma das várias sentinelas. Preencha a configuração da sentinela para o endereço, porta e senha. A senha do nó Redis é a senha do nó mestre monitorado pela sentinela.',
     hotkey: 'Tecla de Atalho',
     persist: 'Remover o tempo de expiração',
+    custom_formatter: 'Formatador',
+    custom_add_formatter: 'Adicionar formatador',
+    custom_edit_formatter: 'Editar formatador',
+    editar: 'Editar',
+    delete: 'Delete',
+    new: 'novo',
   },
 };
 
