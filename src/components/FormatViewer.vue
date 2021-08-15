@@ -133,10 +133,8 @@ export default {
     changeViewer(viewer) {
       this.selectedView = viewer;
       this.viewerComponent = this.viewersMap[viewer];
-      console.log('change viewer: ' + this.viewerComponent);
     },
     addCustomFormatter(a, b) {
-      console.log('adding...');
       this.$bus.$emit('addCustomFormatter');
       this.autoFormat();
     },
