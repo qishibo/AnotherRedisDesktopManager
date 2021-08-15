@@ -21,11 +21,6 @@ export default {
       visible: false,
     };
   },
-  created() {
-    this.$bus.$on('openHotkeysDialog', () => {
-      this.show();
-    });
-  },
   computed: {
     keys() {
       return [

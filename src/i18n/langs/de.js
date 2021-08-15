@@ -138,12 +138,10 @@ const de = {
     sentinel_faq: 'Sie können einen von mehreren Sentinels auswählen. Bitte geben Sie die Sentinel-Konfiguration für Adresse, Port und Passwort ein. Das Redis-Knoten-Passwort ist das Passwort des vom Sentinel überwachten Master-Knotens.',
     hotkey: 'Hotkey',
     persist: 'Ablaufzeit entfernen',
-    custom_formatter: 'Formatierer',
-    custom_add_formatter: 'Hinzufügen formatierer',
-    custom_edit_formatter: 'Bearbeiten formatierer',
+    custom_formatter: 'Benutzerdefinierter Formatierer',
     edit: 'Bearbeiten',
-    delete: 'Löschen',
-    new: 'Neu',
+    new: 'Hinzufügen',
+    custom: 'Anpassen',
   },
 };
 

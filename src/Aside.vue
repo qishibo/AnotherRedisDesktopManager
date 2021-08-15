@@ -17,12 +17,14 @@
         ref="newConnectionDialog">
       </NewConnectionDialog>
 
+      <!-- user settings -->
       <Setting ref="settingDialog"></Setting>
 
       <!-- redis command logs -->
       <CommandLog ref='commandLogDialog'></CommandLog>
       <!-- hot key tips dialog -->
-      <HotKeys></HotKeys>
+      <HotKeys ref='hotKeysDialog'></HotKeys>
+      <!-- custom shell formatter -->
       <CustomFormatter></CustomFormatter>
     </div>
 

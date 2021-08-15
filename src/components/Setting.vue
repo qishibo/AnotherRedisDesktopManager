@@ -85,7 +85,6 @@
       <el-form-item :label="$t('message.pre_version')" class='current-version'>
         <el-tag type="info">{{ appVersion }}</el-tag>
 
-        <a href="###" @click.stop.prevent="showCustomFormat">{{ $t('message.custom_formatter') }}</a>
         <a href="###" @click.stop.prevent="showHotkeys">{{ $t('message.hotkey') }}</a>
         <a href="###" @click.stop.prevent="clearCache">{{ $t('message.clear_cache') }}</a>
         <a href="###" @click.stop.prevent="checkUpdate">{{ $t('message.check_update') }}</a>
@@ -134,7 +133,7 @@ export default {
   data() {
     return {
       visible: false,
-      form: {fontFamily: '', zoomFactor: 1.0, keysPageSize: 500, formatters: []},
+      form: {fontFamily: '', zoomFactor: 1.0, keysPageSize: 500},
       importConnectionVisible: false,
       connectionFileContent: '',
       appVersion: (new URL(window.location.href)).searchParams.get('version'),
@@ -252,21 +251,12 @@ export default {
       }).catch(e => {});
     },
     showHotkeys() {
-      this.$bus.$emit('openHotkeysDialog');
-    },
-    showCustomFormat() {
-      this.$bus.$emit('openCustomFormatDialog');
+      this.$parent.$refs.hotKeysDialog.show();
     },
   },
   mounted() {
     this.restoreSettings();
     this.bindGetAllFonts();
-  },
-  created() {
-    this.$bus.$on('saveSettings', (settings) => {
-      this.form.formatters = settings.formatters;
-      storage.saveSettings(this.form);
-    });
   },
 };
 </script>

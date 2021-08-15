@@ -138,12 +138,10 @@ const tr = {
     sentinel_faq: 'Birden fazla nöbetçiden birini seçebilirsiniz. Lütfen adres, bağlantı noktası ve parola için sentinel yapılandırmasını doldurun. Redis düğüm parolası, nöbetçi tarafından izlenen Ana düğümün parolasıdır.',
     hotkey: 'Kısayol Tuşu',
     persist: 'Bitiş Süresini Kaldır',
-    custom_formatter: 'Biçimlendirici',
-    custom_add_formatter: 'Biçimlendirici ekle',
-    custom_edit_formatter: 'Biçimlendiriciyi düzenle',
+    custom_formatter: 'Özel Biçimlendirici',
     edit: 'Düzenle',
-    delete: 'Sil',
-    new: 'yeni',
+    new: 'Ekle',
+    custom: 'Özelleştirmek',
   },
 };
 
