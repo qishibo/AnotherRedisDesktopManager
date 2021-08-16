@@ -138,6 +138,10 @@ const en = {
     sentinel_faq: 'You can choose one of multiple sentinels. Please fill in the sentinel configuration for the address, port and password. The Redis node password is the password of the Master node monitored by the sentinel.',
     hotkey: 'Hot Key',
     persist: 'Remove Expire Time',
+    custom_formatter: 'Custom Formatter',
+    edit: 'Edit',
+    new: 'New',
+    custom: 'Customize',
   },
 };
 

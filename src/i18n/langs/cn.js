@@ -138,6 +138,10 @@ const cn = {
     sentinel_faq: '多个哨兵任选其一即可，地址、端口、密码请填写哨兵配置，Redis节点密码为哨兵监听的Master节点密码',
     hotkey: '快捷键',
     persist: '持久化',
+    custom_formatter: '自定义格式化',
+    edit: '编辑',
+    new: '新增',
+    custom: '自定义',
   },
 };
 

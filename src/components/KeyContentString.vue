@@ -6,6 +6,7 @@
       ref='formatViewer'
       :content.sync='content'
       :binary='binary'
+      :redisKey='redisKey'
       float=''
       :textrows=12>
     </FormatViewer>
@@ -37,7 +38,7 @@ export default {
     initShow() {
       this.client.getBuffer(this.redisKey).then((reply) => {
         this.content = reply;
-        this.$refs.formatViewer.autoFormat();
+        // this.$refs.formatViewer.autoFormat();
       });
     },
     execSave() {

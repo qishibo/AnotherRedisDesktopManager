@@ -3,10 +3,16 @@
     <el-select v-model="selectedView" :disabled='overSize' class='format-selector' :style='selectStyle' size='mini' placeholder='Text'>
       <span slot="prefix" class="fa fa-sitemap"></span>
       <el-option
-        v-for="item in viewers"
-        :key="item.value"
+        v-for="item of viewers"
+        :key="item.text"
         :label="item.text"
-        :value="item.value">
+        :value="item.text">
+      </el-option>
+      <!-- add custom -->
+      <el-option
+        @click.native.stop.prevent='addCustomFormatter'
+        value='addCustomFormatter'>
+        <el-button type='text' icon="el-icon-edit-outline">{{$t('message.custom')}}</el-button>
       </el-option>
     </el-select>
     <span @click='copyContent' :title='$t("message.copy")' class='el-icon-document formater-copy-icon'></span>
@@ -16,17 +22,21 @@
 
     <component
       ref='viewer'
-      :is='selectedView'
+      :is='viewerComponent'
       :content='content'
+      :name="selectedView"
       :contentVisible='contentVisible'
       :textrows='textrows'
       :disabled='disabled'
-      @updateContent="$emit('update:content', $event)">
+      :redisKey="redisKey"
+      :dataMap="dataMap"
+      @updateContent="updateContent">
     </component>
   </div>
 </template>
 
 <script type="text/javascript">
+import storage from '@/storage';
 import ViewerText from '@/components/ViewerText';
 import ViewerHex from '@/components/ViewerHex';
 import ViewerJson from '@/components/ViewerJson';
@@ -34,11 +44,13 @@ import ViewerBinary from '@/components/ViewerBinary';
 import ViewerUnserialize from '@/components/ViewerUnserialize';
 import ViewerMsgpack from '@/components/ViewerMsgpack';
 import ViewerOverSize from '@/components/ViewerOverSize';
+import ViewerCustom from '@/components/ViewerCustom';
 
 export default {
   data() {
     return {
-      selectedView: '',
+      viewerComponent: 'ViewerText',
+      selectedView: 'Text',
       viewers: [
         { value: 'ViewerText', text: 'Text' },
         { value: 'ViewerHex', text: 'Hex' },
@@ -51,14 +63,18 @@ export default {
         float: this.float,
       },
       overSizeBytes: 20971520, // 20MB
+      manualUpdate: false,
     };
   },
-  components: {ViewerText, ViewerHex, ViewerJson, ViewerBinary, ViewerUnserialize, ViewerMsgpack, ViewerOverSize},
+  components: {ViewerText, ViewerHex, ViewerJson, ViewerBinary, ViewerUnserialize, ViewerMsgpack, ViewerOverSize, ViewerCustom},
   props: {
     float: {default: 'right'},
     content: {default: () => Buffer.from('')},
+    name: {default: ''},
     textrows: {default: 6},
     disabled: {type: Boolean, default: false},
+    redisKey:  {default: () => Buffer.from('')},
+    dataMap: {type: Object, default: () => {}},
   },
   computed: {
     contentVisible() {
@@ -66,7 +82,6 @@ export default {
       if (this.overSize) {
         return true;
       }
-
       return this.$util.bufVisible(this.content);
     },
     buffSize() {
@@ -75,44 +90,105 @@ export default {
     overSize() {
       return this.buffSize > this.overSizeBytes;
     },
+    viewersMap() {
+      // add oversize tmp
+      let map = {OverSize: 'ViewerOverSize'};
+
+      this.viewers.forEach(item => {
+        map[item.text] = item.value;
+      });
+
+      return map;
+    },
+  },
+  created() {
+    this.$bus.$on('refreshViewers', () => {
+      this.removeCustom();
+      this.loadCustomViewers();
+    });
+  },
+  watch: {
+    content() {
+      // do not auto format while user editting
+      if (this.manualUpdate) {
+        return this.manualUpdate = false;
+      }
+
+      this.autoFormat();
+    },
+    selectedView(viewer) {
+      // custom viewer com may same, force change
+      this.viewerComponent = '';
+      this.$nextTick(() => {
+        this.viewerComponent = this.viewersMap[viewer];
+      });
+    },
   },
   methods: {
+    // update by user edit
+    updateContent(content) {
+      this.manualUpdate = true;
+      this.$emit('update:content', content);
+    },
+    changeViewer(viewer) {
+      this.selectedView = viewer;
+      this.viewerComponent = this.viewersMap[viewer];
+    },
+    addCustomFormatter(a, b) {
+      this.$bus.$emit('addCustomFormatter');
+      this.autoFormat();
+    },
     autoFormat() {
-      // reload each viewer
-      this.selectedView = '';
+      if (!this.content || !this.content.length) {
+        return this.changeViewer('Text');
+      }
 
-      this.$nextTick(() => {
-        if (!this.content) {
-          return this.selectedView = 'ViewerText';
-        }
+      if (this.overSize) {
+        return this.changeViewer('OverSize');
+      }
 
-        if (this.overSize) {
-          return this.selectedView = 'ViewerOverSize';
-        }
-
-        // json
-        if (this.$util.isJson(this.content)) {
-          this.selectedView = 'ViewerJson';
-        }
-        // php unserialize
-        else if (this.$util.isPHPSerialize(this.content)) {
-          this.selectedView = 'ViewerUnserialize';
-        }
-        // hex
-        else if (!this.contentVisible) {
-          this.selectedView = 'ViewerHex'
-        }
-        else {
-          this.selectedView = 'ViewerText';
-        }
-      });
+      // json
+      if (this.$util.isJson(this.content)) {
+        return this.changeViewer('Json');
+      }
+      // php unserialize
+      else if (this.$util.isPHPSerialize(this.content)) {
+        return this.changeViewer('Unserialize');
+      }
+      // hex
+      else if (!this.contentVisible) {
+        return this.changeViewer('Hex');
+      }
+      else {
+        return this.changeViewer('Text');
+      }
     },
     copyContent() {
       this.$util.copyToClipboard(this.content);
       this.$message.success(this.$t('message.copy_success'));
     },
+    loadCustomViewers() {
+      const formatters = storage.getCustomFormatter();
+
+      if (!formatters || !formatters.length) {
+        return;
+      }
+
+      formatters.forEach(formatter => {
+        this.viewers.push({value: 'ViewerCustom', text: formatter.name, type: 'custom'});
+      });
+    },
+    removeCustom() {
+      this.viewers = this.viewers.filter(item => {
+        return item.type !== 'custom';
+      });
+    },
   },
-}
+  mounted() {
+    this.autoFormat();
+    this.loadCustomViewers();
+  },
+};
 </script>
 
 <style type="text/css">

@@ -17,12 +17,15 @@
         ref="newConnectionDialog">
       </NewConnectionDialog>
 
+      <!-- user settings -->
       <Setting ref="settingDialog"></Setting>
 
       <!-- redis command logs -->
       <CommandLog ref='commandLogDialog'></CommandLog>
       <!-- hot key tips dialog -->
-      <HotKeys></HotKeys>
+      <HotKeys ref='hotKeysDialog'></HotKeys>
+      <!-- custom shell formatter -->
+      <CustomFormatter></CustomFormatter>
     </div>
 
     <!-- connection list -->
@@ -36,12 +39,13 @@ import Connections from '@/components/Connections';
 import NewConnectionDialog from '@/components/NewConnectionDialog';
 import CommandLog from '@/components/CommandLog';
 import HotKeys from '@/components/HotKeys';
+import CustomFormatter from '@/components/CustomFormatter';
 
 export default {
   data() {
     return {};
   },
-  components: { Connections, NewConnectionDialog, Setting, CommandLog, HotKeys },
+  components: { Connections, NewConnectionDialog, Setting, CommandLog, HotKeys, CustomFormatter },
   methods: {
     editConnectionFinished() {
       this.$refs.connections.initConnections();

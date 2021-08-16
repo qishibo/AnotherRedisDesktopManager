@@ -138,6 +138,10 @@ const fr = {
     sentinel_faq: 'Vous pouvez choisir l\'une des plusieurs sentinelles. Veuillez remplir la configuration de la sentinelle pour l\'adresse, le port et le mot de passe. Le mot de passe du nœud Redis est le mot de passe du nœud maître surveillé par la sentinelle.',
     hotkey: 'Touche de raccourci',
     persist: 'Supprimer l\'heure d\'expiration',
+    custom_formatter: 'Formateur personnalisé',
+    edit: 'Éditer',
+    new: 'Ajouter',
+    custom: 'Personnaliser',
   },
 };
 

@@ -9,6 +9,23 @@ export default {
     settings = JSON.stringify(settings);
     return localStorage.setItem('settings', settings);
   },
+  getCustomFormatter(name = '') {
+    let formatters = localStorage.getItem('customFormatters');
+    formatters = formatters ? JSON.parse(formatters) : [];
+
+    if (!name) {
+      return formatters;
+    }
+
+    for (let line of formatters) {
+      if (line.name === name) {
+        return line;
+      }
+    }
+  },
+  saveCustomFormatters(formatters = []) {
+    return localStorage.setItem('customFormatters', JSON.stringify(formatters));
+  },
   addConnection(connection) {
     this.editConnectionByKey(connection, '');
   },

@@ -24,7 +24,7 @@
           </el-form-item>
 
           <el-form-item label="Value (JSON format)">
-            <FormatViewer :disabled='!!beforeEditItem.contentString' ref='formatViewer' :content.sync='editLineItem.contentString'></FormatViewer>
+            <FormatViewer :redisKey="redisKey" :dataMap="editLineItem" :disabled='!!beforeEditItem.contentString' ref='formatViewer' :content.sync='editLineItem.contentString'></FormatViewer>
           </el-form-item>
         </el-form>
 
@@ -176,9 +176,9 @@ export default {
       this.loadMoreDisable = false;
     },
     openDialog() {
-      this.$nextTick(() => {
-        this.$refs.formatViewer.autoFormat();
-      });
+      // this.$nextTick(() => {
+      //   this.$refs.formatViewer.autoFormat();
+      // });
     },
     showEditDialog(row) {
       this.editLineItem = row;

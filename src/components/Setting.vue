@@ -251,7 +251,7 @@ export default {
       }).catch(e => {});
     },
     showHotkeys() {
-      this.$bus.$emit('openHotkeysDialog');
+      this.$parent.$refs.hotKeysDialog.show();
     },
   },
   mounted() {
