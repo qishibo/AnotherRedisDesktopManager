@@ -70,7 +70,6 @@ export default {
   props: {
     float: {default: 'right'},
     content: {default: () => Buffer.from('')},
-    name: {default: ''},
     textrows: {default: 6},
     disabled: {type: Boolean, default: false},
     redisKey:  {default: () => Buffer.from('')},
@@ -134,7 +133,7 @@ export default {
       this.selectedView = viewer;
       this.viewerComponent = this.viewersMap[viewer];
     },
-    addCustomFormatter(a, b) {
+    addCustomFormatter() {
       this.$bus.$emit('addCustomFormatter');
       this.autoFormat();
     },
@@ -154,6 +153,10 @@ export default {
       // php unserialize
       else if (this.$util.isPHPSerialize(this.content)) {
         return this.changeViewer('Unserialize');
+      }
+      // msgpack
+      else if (this.$util.isMsgpack(this.content)) {
+        return this.changeViewer('Msgpack');
       }
       // hex
       else if (!this.contentVisible) {

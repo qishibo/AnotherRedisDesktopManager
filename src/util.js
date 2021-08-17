@@ -84,6 +84,20 @@ export default {
 
     return false;
   },
+  isMsgpack(buf) {
+    const decode = require('@msgpack/msgpack').decode;
+    try {
+      const result = decode(buf);
+      if (typeof result === 'object') {
+        return true;
+      }
+    }
+    catch (e) {
+      return false;
+    }
+
+    return false;
+  },
   base64Encode(str) {
     return (new Buffer(str, 'utf8')).toString('base64');
   },
