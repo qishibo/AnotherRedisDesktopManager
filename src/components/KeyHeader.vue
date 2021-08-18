@@ -4,6 +4,7 @@
       <!-- key name -->
       <el-col :span=12 class='key-header-item key-name-input'>
         <el-input
+          style="width: 600px"
           ref="keyNameInput"
           :value="$util.bufToString(keyName)"
           @change='changeKeyInput'

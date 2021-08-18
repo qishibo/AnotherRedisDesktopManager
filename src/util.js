@@ -98,6 +98,18 @@ export default {
 
     return false;
   },
+  BrotliDecompress(str) {
+    const decompress = require('brotli/decompress');
+    try {
+      var decompressed = decompress(str);
+      var json = String.fromCharCode.apply(String, decompressed);
+      return json;
+    }catch (e) {}
+    return null;
+  },
+  isBrotliSerialize(str) {
+    return this.BrotliDecompress(str) !== null;
+  },
   base64Encode(str) {
     return (new Buffer(str, 'utf8')).toString('base64');
   },

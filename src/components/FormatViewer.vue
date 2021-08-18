@@ -42,6 +42,7 @@ import ViewerHex from '@/components/ViewerHex';
 import ViewerJson from '@/components/ViewerJson';
 import ViewerBinary from '@/components/ViewerBinary';
 import ViewerUnserialize from '@/components/ViewerUnserialize';
+import ViewerBrotli from '@/components/ViewerBrotli';
 import ViewerMsgpack from '@/components/ViewerMsgpack';
 import ViewerOverSize from '@/components/ViewerOverSize';
 import ViewerCustom from '@/components/ViewerCustom';
@@ -58,6 +59,7 @@ export default {
         { value: 'ViewerBinary', text: 'Binary' },
         { value: 'ViewerMsgpack', text: 'Msgpack' },
         { value: 'ViewerUnserialize', text: 'Unserialize' },
+        { value: 'ViewerBrotli', text: 'Brotli' },
       ],
       selectStyle: {
         float: this.float,
@@ -66,7 +68,7 @@ export default {
       manualUpdate: false,
     };
   },
-  components: {ViewerText, ViewerHex, ViewerJson, ViewerBinary, ViewerUnserialize, ViewerMsgpack, ViewerOverSize, ViewerCustom},
+  components: {ViewerText, ViewerHex, ViewerJson, ViewerBinary, ViewerUnserialize, ViewerMsgpack, ViewerOverSize, ViewerCustom, ViewerBrotli},
   props: {
     float: {default: 'right'},
     content: {default: () => Buffer.from('')},
@@ -157,6 +159,10 @@ export default {
       // msgpack
       else if (this.$util.isMsgpack(this.content)) {
         return this.changeViewer('Msgpack');
+      }
+      // Brotli unserialize
+      else if (this.$util.isBrotliSerialize(this.content)) {
+        return this.changeViewer('Brotli');
       }
       // hex
       else if (!this.contentVisible) {
