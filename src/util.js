@@ -98,6 +98,17 @@ export default {
 
     return false;
   },
+  brotliToString(buf) {
+    const decompress = require('brotli/decompress');
+    try {
+      let decompressed = decompress(buf);
+      return Buffer.from(decompressed).toString();
+    }catch (e) {
+      return false;
+    }
+
+    return false;
+  },
   base64Encode(str) {
     return (new Buffer(str, 'utf8')).toString('base64');
   },
