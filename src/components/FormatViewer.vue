@@ -15,7 +15,7 @@
         <el-button type='text' icon="el-icon-edit-outline">{{$t('message.custom')}}</el-button>
       </el-option>
     </el-select>
-    <span @click='copyContent' :title='$t("message.copy")' class='el-icon-document formater-copy-icon'></span>
+    <span @click='copyContent' :title='$t("message.copy")' class='el-icon-document formater-copy-icon'>{{$t("message.copy")}}</span>
     <span v-if='!contentVisible' class='formater-binary-tag'>[Hex]</span>
     <span class='formater-binary-tag'>Size: {{ $util.humanFileSize(buffSize) }}</span>
     <br>
@@ -161,7 +161,7 @@ export default {
         return this.changeViewer('Msgpack');
       }
       // Brotli unserialize
-      else if (this.$util.isBrotliSerialize(this.content)) {
+      else if (this.$util.brotliToString(this.content)) {
         return this.changeViewer('Brotli');
       }
       // hex
@@ -173,7 +173,11 @@ export default {
       }
     },
     copyContent() {
-      this.$util.copyToClipboard(this.content);
+      let content = (typeof this.$refs.viewer.copyContent == 'function') ?
+                    this.$refs.viewer.copyContent() :
+                    this.content;
+
+      this.$util.copyToClipboard(content);
       this.$message.success(this.$t('message.copy_success'));
     },
     loadCustomViewers() {
@@ -253,5 +257,6 @@ export default {
   .formater-copy-icon {
     color: #7ab3ef;
     cursor: pointer;
+    font-size: 80%;
   }
 </style>

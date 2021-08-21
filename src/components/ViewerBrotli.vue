@@ -1,7 +1,6 @@
 <template>
 <div class="text-formated-container">
   <div class="collapse-container">
-    <el-button class="copy-btn" type="text" @click="copy">{{ $t('message.copy') }}</el-button>
     <el-button class="collapse-btn" type="text" @click="toggleCollapse">{{ $t('message.' + collapseText) }}</el-button>
   </div>
   <JsonViewer
@@ -28,15 +27,20 @@ export default {
   props: ['content'],
   computed: {
     newContent() {
+      if (this.$util.isJson(this.brotliStr)) {
+        let JSONbig = require('json-bigint')({storeAsString: true});
+        let jsonSolved = JSONbig.stringify(JSONbig.parse(this.brotliStr));
+        
+        return JSON.parse(jsonSolved);
+      }
+
+      return this.brotliStr;
+    },
+    brotliStr() {
       try {
-          var json = this.$util.BrotliDecompress(this.content);
-          let JSONbig = require('json-bigint')({storeAsString: true});
-          let jsonSolved = JSONbig.stringify(JSONbig.parse(json));
-          
-          return JSON.parse(jsonSolved);
-          
-      } catch (e) {
-        return this.$t(e.message);
+        return this.$util.brotliToString(this.content);
+      } catch(e) {
+        return 'Brotli Parse Failed: ' + e.message;
       }
     },
   },
@@ -51,10 +55,8 @@ export default {
         this.show = true;
       });
     },
-
-    copy() {
-      const clipboard = require('electron').clipboard;
-      clipboard.writeText(this.$util.BrotliDecompress(this.content));
+    copyContent() {
+      return this.brotliStr;
     }
   },
 }
