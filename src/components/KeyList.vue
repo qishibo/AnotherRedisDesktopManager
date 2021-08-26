@@ -68,6 +68,9 @@ export default {
     initShow() {
       this.refreshKeyList();
     },
+    setDb(db) {
+      (this.client.condition.select != db) && this.client.select(db);
+    },
     refreshKeyList(resetKeyList = true) {
       // reset previous list, not append mode
       resetKeyList && this.resetKeyList();

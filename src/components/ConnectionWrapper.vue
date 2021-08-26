@@ -18,6 +18,7 @@
       <!-- db search operate -->
       <OperateItem
         ref='operateItem'
+        :config="config"
         :client='client'>
       </OperateItem>
 
@@ -55,8 +56,17 @@ export default {
   },
   methods: {
     initShow() {
+      this.initLastSelectedDb();
       this.$refs.operateItem.initShow();
       this.$refs.keyList.initShow();
+    },
+    initLastSelectedDb() {
+      let db = parseInt(localStorage.getItem('lastSelectedDb_' + this.config.connectionName));
+
+      if (db > 0) {
+        this.$refs.keyList.setDb(db);
+        this.$refs.operateItem.setDb(db);
+      }
     },
     openConnection(callback = false) {
       // search input loading status

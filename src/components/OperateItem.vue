@@ -112,7 +112,7 @@ export default {
       },
     };
   },
-  props: ['client'],
+  props: ['client', 'config'],
   created() {
     this.$bus.$on('changeDb', (client, dbIndex) => {
       if (client != this.client) {
@@ -125,6 +125,9 @@ export default {
   methods: {
     initShow() {
       this.initDatabaseSelect();
+    },
+    setDb(db) {
+      this.selectedDbIndex = db;
     },
     initDatabaseSelect() {
       this.client.config('get', 'databases').then((reply) => {
@@ -166,6 +169,8 @@ export default {
       this.client.select(this.selectedDbIndex)
       .then(() => {
         this.$parent.$parent.$parent.$refs.keyList.refreshKeyList();
+        // store the last selected db
+        localStorage.setItem('lastSelectedDb_' + this.config.connectionName, this.selectedDbIndex);
       })
       // select is not allowed in cluster mode
       .catch(e => {
