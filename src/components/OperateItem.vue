@@ -9,7 +9,7 @@
             <el-option
               v-for="index in dbs"
               :key="index"
-              :label="'DB' + index"
+              :label="`DB${index}` + (dbKeysCount[index] ? ` [${dbKeysCount[index]}]` : '')"
               :value="index">
             </el-option>
             <!-- <span slot="prefix" class="fa fa-sitemap" style="font-size: 80%"></span> -->
@@ -110,6 +110,7 @@ export default {
         String: 'string', Hash: 'hash', List: 'list', Set: 'set', Zset: 'zset',
         Stream: 'stream',
       },
+      dbKeysCount: {},
     };
   },
   props: ['client', 'config'],
@@ -132,27 +133,38 @@ export default {
     initDatabaseSelect() {
       this.client.config('get', 'databases').then((reply) => {
         this.dbs = [...Array(parseInt(reply[1])).keys()];
+        this.getDatabasesFromInfo();
       }).catch((e) => {
         // config command may be renamed
         this.dbs =  [...Array(16).keys()];
         // read dbs from info
-        this.getDatabasesFromInfo();
+        this.getDatabasesFromInfo(true);
       });
     },
-    getDatabasesFromInfo() {
+    getDatabasesFromInfo(guessMaxDb = false) {
       if (!this.client) {
         return;
       }
 
+      this.dbKeysCount = {};
       this.client.info().then((info) => {
-        try{
-          let lastDB = info.trim().split('\n').pop().match(/db(\d+)/)[1];
-          lastDB = parseInt(lastDB);
+        let keyspace = info.split('# Keyspace')[1].trim().split("\n");
+        let keyCount = [];
+        
+        for (const line of keyspace) {
+          keyCount = line.match(/db(\d+)\:keys=(\d+)/);
+          keyCount && this.$set(this.dbKeysCount, keyCount[1], keyCount[2]);
+        }
 
-          if (lastDB > 16) {
-            this.dbs = [...Array(lastDB + 1).keys()];
-          }
-        }catch (e) {};
+        if (!guessMaxDb || !keyCount || !keyCount[1]) {
+          return;
+        }
+        // max/last db which exists keys
+        const maxDb = parseInt(keyCount[1]);
+
+        if (maxDb > 16) {
+          this.dbs = [...Array(maxDb + 1).keys()];
+        }
       }).catch(() => {});
     },
     resetStatus() {

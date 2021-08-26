@@ -47,7 +47,7 @@
           </span>
           <FileInput
             :file.sync='formatter.command'
-            placeholder='Command'>
+            placeholder='/bin/bash'>
           </FileInput>
         </el-form-item>
 
