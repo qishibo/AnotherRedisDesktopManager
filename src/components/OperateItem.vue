@@ -9,8 +9,12 @@
             <el-option
               v-for="index in dbs"
               :key="index"
-              :label="`DB${index}` + (dbKeysCount[index] ? ` [${dbKeysCount[index]}]` : '')"
+              :label="`DB${index}`"
               :value="index">
+              <span>
+                {{`DB${index}`}}
+                <span class="db-select-key-count" v-if="dbKeysCount[index]">[{{dbKeysCount[index]}}]</span>
+              </span>
             </el-option>
             <!-- <span slot="prefix" class="fa fa-sitemap" style="font-size: 80%"></span> -->
           </el-select>
@@ -271,6 +275,10 @@ export default {
 <style type="text/css">
   .connection-menu .db-select {
     width: 100%;
+  }
+  .el-select-dropdown__item .db-select-key-count {
+    color: #a9a9ab;
+    font-size: 82%;
   }
   /*fix el-select height different from el-input*/
   .connection-menu .db-select .el-input__inner {
