@@ -299,12 +299,12 @@ export default {
       return false;
     },
     initShortcut() {
-      this.$shortcut.bind('ctrl+c', this.hotKeyScope, () => {
-        this.params = '';
-        this.scrollToBottom('> ^C');
-        // close the tips
-        (typeof this.cb == 'function') && this.cb([]);
-      });
+      // this.$shortcut.bind('ctrl+c', this.hotKeyScope, () => {
+      //   this.params = '';
+      //   this.scrollToBottom('> ^C');
+      //   // close the tips
+      //   (typeof this.cb == 'function') && this.cb([]);
+      // });
       this.$shortcut.bind('ctrl+l, ⌘+l', this.hotKeyScope, () => {
         this.content = '';
       });

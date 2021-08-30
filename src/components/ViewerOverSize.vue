@@ -38,6 +38,6 @@ export default {
 
   /*text viewer box*/
   .key-content-string .size-too-large-viewer .el-textarea textarea {
-    height: calc(100vh - 462px);
+    height: calc(100vh - 345px);
   }
 </style>

@@ -55,7 +55,7 @@ const readCMD = [
   'PSUBSCRIBE pattern [pattern ...]',
   'PTTL key',
   'PUNSUBSCRIBE [pattern ...]',
-  'QUIT',
+  // 'QUIT',
   'RANDOMKEY',
   'ROLE',
   'SCAN cursor [MATCH pattern] [COUNT count]',

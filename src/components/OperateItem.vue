@@ -281,9 +281,9 @@ export default {
     font-size: 82%;
   }
   /*fix el-select height different from el-input*/
-  .connection-menu .db-select .el-input__inner {
+  .connection-menu .db-select .el-input__inner, .connection-menu .new-key-btn {
     /*margin-top: 0.5px;*/
-    height: 30.5px;
+    height: 28px;
   }
   .connection-menu .new-key-btn {
     width: 100%;

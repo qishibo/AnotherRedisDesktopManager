@@ -37,7 +37,7 @@ export default {
         connectionName: record.connectionName,
       });
 
-      this.scrollToBottom();
+      this.visible && this.scrollToBottom();
     });
   },
   methods: {
@@ -48,9 +48,8 @@ export default {
       this.scrollToBottom();
     },
     scrollToBottom() {
-      const dom = this.$refs.commandLogUl;
-
       this.$nextTick(() => {
+        const dom = this.$refs.commandLogUl;
         dom && (dom.scrollTop = dom.scrollHeight);
       });
     },

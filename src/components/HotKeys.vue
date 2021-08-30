@@ -31,7 +31,7 @@ export default {
         {key: 'Ctrl + r / ⌘ + r / F5', desc: this.$t('message.refresh_connection') + ' [Key tab, Info tab]'},
         {key: 'Ctrl + x / ⌘ + x', desc: this.$t('el.upload.delete') + ' [Key tab]'},
         {key: 'Ctrl + s / ⌘ + s', desc: this.$t('message.save') + ' [Key tab]'},
-        {key: 'Ctrl + c / ⌘ + c', desc: 'Ctrl + c [Console tab]'},
+        // {key: 'Ctrl + c / ⌘ + c', desc: 'Ctrl + c [Console tab]'},
         {key: 'Ctrl + l / ⌘ + l', desc: this.$t('message.clean_up') + ' [Console tab]'},
         {key: 'Ctrl / ⌘ + click key', desc: this.$t('message.open_new_tab')},
         {key: 'Ctrl + ? / ⌘ + ?', desc: this.$t('message.hotkey') + ' Tips'},
