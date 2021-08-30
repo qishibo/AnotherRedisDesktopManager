@@ -49,6 +49,7 @@ Download latest [AppImage](https://github.com/qishibo/AnotherRedisDesktopManager
 
 ## Feature Log
 
+- 2021-08-30: Execution log Support && Add Hot Keys
 - 2021-08-16: Custom Formatter View Support!
 - 2021-06-30: Sentinel Support!!
 - 2021-06-24: ACL Support
