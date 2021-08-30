@@ -2,7 +2,7 @@
   "name": "another-redis-desktop-manager",
   "version": "1.4.9",
   "description": "A faster, better and more stable redis desktop manager.",
-  "author": "qii404.me",
+  "author": "Another",
   "private": true,
   "main": "electron-main.js",
   "dependencies": {
