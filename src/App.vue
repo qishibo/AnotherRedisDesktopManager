@@ -1,5 +1,5 @@
 <template>
-  <el-container class="wrap-container">
+  <el-container class="wrap-container" spellcheck="false">
     <!-- left aside draggable container -->
     <div class="aside-drag-container" :style="{width: sideWidth + 'px'}">
       <!-- connections -->
