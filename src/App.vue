@@ -122,7 +122,7 @@ export default {
   },
   mounted() {
     setTimeout(() => {
-      this.$bus.$emit('update-check');
+      // this.$bus.$emit('update-check');
     }, 2000);
 
     this.reloadSettings();
