@@ -28,6 +28,8 @@ export default {
         {key: 'Ctrl + , / ⌘ + ,', desc: this.$t('message.settings')},
         {key: 'Ctrl + g / ⌘ + g', desc: this.$t('message.command_log')},
         {key: 'Ctrl + w / ⌘ + w', desc: this.$t('message.close') + ' Tab'},
+        {key: 'Ctrl + [h/m] / ⌘ + [h/m]', desc: this.$t('message.minimize_window')},
+        {key: 'Ctrl + Enter / ⌘ + Enter', desc: this.$t('message.maximize_window')},
         {key: 'Ctrl + r / ⌘ + r / F5', desc: this.$t('message.refresh_connection') + ' [Key tab, Info tab]'},
         {key: 'Ctrl + x / ⌘ + x', desc: this.$t('el.upload.delete') + ' [Key tab]'},
         {key: 'Ctrl + s / ⌘ + s', desc: this.$t('message.save') + ' [Key tab]'},

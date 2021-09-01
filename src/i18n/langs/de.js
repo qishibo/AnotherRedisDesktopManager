@@ -142,6 +142,8 @@ const de = {
     edit: 'Bearbeiten',
     new: 'Hinzufügen',
     custom: 'Anpassen',
+    minimize_window: 'Fenster ausblenden',
+    maximize_window: 'Fenster maximieren',
   },
 };
 

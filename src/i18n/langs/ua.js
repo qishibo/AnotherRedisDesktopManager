@@ -142,6 +142,8 @@ const ua = {
     edit: 'Pедагувати',
     new: 'Додати',
     custom: 'Hалаштувати',
+    minimize_window: 'Сховати вікно',
+    maximize_window: 'Розгорнути вікно',
   },
 };
 

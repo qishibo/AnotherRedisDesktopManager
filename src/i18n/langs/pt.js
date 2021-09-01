@@ -142,6 +142,8 @@ const pt = {
     editar: 'Editar',
     new: 'Adicionar',
     custom: 'Customizar',
+    minimize_window: 'Ocultar janela',
+    maximize_window: 'Maximize a janela',
   },
 };
 

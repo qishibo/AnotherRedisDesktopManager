@@ -142,6 +142,8 @@ const en = {
     edit: 'Edit',
     new: 'New',
     custom: 'Customize',
+    minimize_window: 'Hide Window',
+    maximize_window: 'Maximize window',
   },
 };
 

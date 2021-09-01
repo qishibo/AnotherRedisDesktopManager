@@ -142,6 +142,8 @@ const tr = {
     edit: 'Düzenle',
     new: 'Ekle',
     custom: 'Özelleştirmek',
+    minimize_window: 'Pencereyi gizle',
+    maximize_window: 'Pencereyi büyüt',
   },
 };
 
