@@ -31,20 +31,20 @@ Download latest [AppImage](https://github.com/qishibo/AnotherRedisDesktopManager
 <!--
 > If **Mac** warning `Another Desktop Manager can't be opened because it is from an unidentified developer`. Open `Settings->Security` and click **`Open Anyway`**
 
-![can't be opened because it is from an unidentified developer](https://imgup.qii404.xyz/mac-warning.png)
+![can't be opened because it is from an unidentified developer](https://cdn.jsdelivr.net/gh/qishibo/img/1630655841115-mac-warning.png)
 
-![Settings->Security Open Anyway](https://imgup.qii404.xyz/blog/5d11c4feeaf6f.jpg)
+![Settings->Security Open Anyway](https://cdn.jsdelivr.net/gh/qishibo/img/1630655842331-5d11c4feeaf6f.jpg)
 -->
 
 ## Enjoy!
 
-![redis status dark](https://imgup.qii404.xyz/github/20210901/win/status.png)
+![redis status dark](https://cdn.jsdelivr.net/gh/qishibo/img/1630655843497-status.png)
 
-![redis key hash dark](https://imgup.qii404.xyz/github/20210901/win/str.png)
+![redis key hash dark](https://cdn.jsdelivr.net/gh/qishibo/img/1630655844559-str.png)
 
-![redis console dark](https://imgup.qii404.xyz/github/20210901/win/cli.png)
+![redis console dark](https://cdn.jsdelivr.net/gh/qishibo/img/1630655846107-cli.png)
 
-![redis exec log](https://imgup.qii404.xyz/github/20210901/win/log.png)
+![redis exec log](https://cdn.jsdelivr.net/gh/qishibo/img/1630655847740-log.png)
 
 
 ## Feature Log
