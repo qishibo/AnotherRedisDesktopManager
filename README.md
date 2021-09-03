@@ -1,4 +1,4 @@
-<img align="right" width="110" src="https://imgup.qii404.xyz/github/ardm-new-icon.png">
+<img align="right" width="110" src="https://cdn.jsdelivr.net/gh/qishibo/img/202109031653244.png">
 
 # Another Redis Desktop Manager
 
@@ -26,7 +26,7 @@ Download latest [AppImage](https://github.com/qishibo/AnotherRedisDesktopManager
 - Download latest [dmg](https://github.com/qishibo/AnotherRedisDesktopManager/releases) package from [release](https://github.com/qishibo/AnotherRedisDesktopManager/releases) [or [gitee](https://gitee.com/qishibo/AnotherRedisDesktopManager/releases) in China], double click to install.
 - Or by **brew**: `brew install --cask another-redis-desktop-manager`
 - Or **sponsor** by app store, It's not free, and I will be very grateful to you.
-<br/>[![app store](https://imgup.qii404.xyz/github/download_from_app_store.png)](https://apps.apple.com/app/id1516451072)
+<br/>[![app store](https://cdn.jsdelivr.net/gh/qishibo/img/202109031654242.png)](https://apps.apple.com/app/id1516451072)
 
 <!--
 > If **Mac** warning `Another Desktop Manager can't be opened because it is from an unidentified developer`. Open `Settings->Security` and click **`Open Anyway`**
@@ -160,10 +160,10 @@ npm run pack:linux
 - Through [OpenCollective](https://opencollective.com/AnotherRedisDesktopManager)
 - If you are a Mac user, you can purchase this software from the [app store](https://apps.apple.com/app/id1516451072) to sponsor, and then let the app store automatically update it for you.
 
-  [![app store](https://imgup.qii404.xyz/github/download_from_app_store.png)](https://apps.apple.com/app/id1516451072)
+  [![app store](https://cdn.jsdelivr.net/gh/qishibo/img/202109031654242.png)](https://apps.apple.com/app/id1516451072)
 - Wechat sponsor code
 
-  <img width="150px" src="https://imgup.qii404.xyz/github/wechat_sponsor_code.jpg" />
+  <img width="150px" src="https://cdn.jsdelivr.net/gh/qishibo/img/202109031655807.jpeg" />
 
 
 ## Contributors
