@@ -192,7 +192,7 @@ export default {
         return false;
       });
       // delete
-      this.$shortcut.bind('ctrl+x, ⌘+x', this.hotKeyScope, () => {
+      this.$shortcut.bind('ctrl+d, ⌘+d', this.hotKeyScope, () => {
         this.deleteKey();
         return false;
       });

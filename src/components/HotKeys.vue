@@ -31,7 +31,7 @@ export default {
         {key: 'Ctrl + [h/m] / ⌘ + [h/m]', desc: this.$t('message.minimize_window')},
         {key: 'Ctrl + Enter / ⌘ + Enter', desc: this.$t('message.maximize_window')},
         {key: 'Ctrl + r / ⌘ + r / F5', desc: this.$t('message.refresh_connection') + ' [Key tab, Info tab]'},
-        {key: 'Ctrl + x / ⌘ + x', desc: this.$t('el.upload.delete') + ' [Key tab]'},
+        {key: 'Ctrl + d / ⌘ + d', desc: this.$t('el.upload.delete') + ' [Key tab]'},
         {key: 'Ctrl + s / ⌘ + s', desc: this.$t('message.save') + ' [Key tab]'},
         // {key: 'Ctrl + c / ⌘ + c', desc: 'Ctrl + c [Console tab]'},
         {key: 'Ctrl + l / ⌘ + l', desc: this.$t('message.clean_up') + ' [Console tab]'},
