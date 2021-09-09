@@ -142,7 +142,8 @@ const en = {
     edit: 'Edit',
     new: 'New',
     custom: 'Customize',
-    minimize_window: 'Hide Window',
+    hide_window: 'Hide Window',
+    minimize_window: 'Minimize window',
     maximize_window: 'Maximize window',
   },
 };

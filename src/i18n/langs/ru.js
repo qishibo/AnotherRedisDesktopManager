@@ -142,7 +142,8 @@ const ru = {
     edit: 'Редактировать',
     new: 'Добавлять',
     custom: 'Настроить',
-    minimize_window: 'Скрыть окно',
+    hide_window: 'Скрыть окно',
+    minimize_window: 'Свернуть окно',
     maximize_window: 'Развернуть окно',
   },
 };

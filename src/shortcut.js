@@ -12,8 +12,14 @@ keymaster('ctrl+r, ⌘+r', e => {
 });
 
 // minimize window
-keymaster('ctrl+h, ctrl+m, ⌘+h, ⌘+m', e => {
+keymaster('ctrl+h, ctrl+m, ⌘+m', e => {
   ipcRenderer.send('minimizeWindow');
+  return false;
+});
+
+// hide window on mac
+(process.platform === 'darwin') && keymaster('⌘+h', e => {
+  ipcRenderer.send('hideWindow');
   return false;
 });
 

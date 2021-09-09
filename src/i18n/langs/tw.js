@@ -142,7 +142,8 @@ const tw = {
     edit: '編輯',
     new: '新增',
     custom: '自定義',
-    minimize_window: '隱藏窗口',
+    hide_window: '隱藏窗口',
+    minimize_window: '最小化窗口',
     maximize_window: '最大化窗口',
   },
 };

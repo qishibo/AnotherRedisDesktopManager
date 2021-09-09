@@ -142,7 +142,8 @@ const tr = {
     edit: 'Düzenle',
     new: 'Ekle',
     custom: 'Özelleştirmek',
-    minimize_window: 'Pencereyi gizle',
+    hide_window: 'Pencereyi gizle',
+    minimize_window: 'Pencereleri küçültür',
     maximize_window: 'Pencereyi büyüt',
   },
 };

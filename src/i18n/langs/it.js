@@ -142,7 +142,8 @@ const it = {
     edit: 'Modifica',
     new: 'Aggiungere',
     custom: 'Personalizzare',
-    minimize_window: 'Nascondi finestra',
+    hide_window: 'Nascondi finestra',
+    minimize_window: 'Riduci finestra',
     maximize_window: 'Massimizza finestra',
   },
 };

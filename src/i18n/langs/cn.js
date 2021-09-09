@@ -142,7 +142,8 @@ const cn = {
     edit: '编辑',
     new: '新增',
     custom: '自定义',
-    minimize_window: '隐藏窗口',
+    hide_window: '隐藏窗口',
+    minimize_window: '最小化窗口',
     maximize_window: '最大化窗口',
   },
 };
