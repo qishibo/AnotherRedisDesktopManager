@@ -12,7 +12,7 @@
         :config="config"
         :client='client'
         @changeColor='setColor'
-        @refreshConnection='openConnection()'>
+        @refreshConnection='openConnection(false, true)'>
       </ConnectionMenu>
 
       <!-- db search operate -->
@@ -45,6 +45,7 @@ export default {
       client: null,
       pingTimer: null,
       pingInterval: 10000, // ms
+      lastSelectedDb: 0,
     };
   },
   props: ['config', 'globalSettings'],
@@ -56,24 +57,24 @@ export default {
   },
   methods: {
     initShow() {
-      this.initLastSelectedDb();
       this.$refs.operateItem.initShow();
       this.$refs.keyList.initShow();
     },
     initLastSelectedDb() {
       let db = parseInt(localStorage.getItem('lastSelectedDb_' + this.config.connectionName));
 
-      if (db > 0) {
-        this.$refs.keyList.setDb(db);
-        this.$refs.operateItem.setDb(db);
+      if (db > 0 && this.lastSelectedDb != db) {
+        this.lastSelectedDb = db;
+        this.$refs.operateItem && this.$refs.operateItem.setDb(db);
       }
     },
-    openConnection(callback = false) {
-      // search input loading status
-      this.$refs.operateItem.searchIcon = 'el-icon-loading';
+    openConnection(callback = false, forceOpen = false) {
+      // recovery last selected db
+      this.initLastSelectedDb();
 
+      // opened, do nothing
       if (this.client) {
-        return this.afterOpenConnection(this.client, callback);
+        return forceOpen ? this.afterOpenConnection(this.client, callback) : false;
       }
 
       // create a new client
@@ -137,6 +138,10 @@ export default {
       }, this.pingInterval);
     },
     getRedisClient(config) {
+      if (this.lastSelectedDb > 0) {
+        config.db = this.lastSelectedDb;
+      }
+
       // ssh client
       if (config.sshOptions) {
         var clientPromise = redisClient.createSSHConnection(

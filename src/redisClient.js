@@ -164,6 +164,7 @@ export default {
       enableReadyCheck: false,
       connectionName: config.connectionName ? config.connectionName : null,
       password: auth,
+      db: config.db ? config.db : undefined,
       // ACL support
       username: config.username ? config.username : undefined,
       tls: config.sslOptions ? this.getTLSOptions(config.sslOptions) : undefined,
