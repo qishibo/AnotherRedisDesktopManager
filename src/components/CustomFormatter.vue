@@ -1,13 +1,13 @@
 <template>
-  <el-dialog :title="$t('message.custom_formatter')" :visible.sync="visible" width='60%' append-to-body>
+  <el-dialog :title="$t('message.custom_formatter')" :visible.sync="visible" append-to-body width='60%'>
     <!-- new formatter btn -->
     <el-button size="mini" @click="addDialog=true">+ {{ $t('message.new') }}</el-button>
     <!-- formatter list -->
     <el-table :data='formatters'>
       <el-table-column
+        label="Name"
         prop="name"
-        width="120"
-        label="Name">
+        width="120">
       </el-table-column>
       <el-table-column
         label="Formatter">
@@ -19,16 +19,16 @@
         label="Operation"
         width="90">
         <template slot-scope="scope">
-          <el-button type="text" @click="removeFormatter(scope.$index)" icon="el-icon-delete"></el-button>
-          <el-button type="text" @click="showEditDialog(scope.row)" icon="el-icon-edit-outline"></el-button>
+          <el-button icon="el-icon-delete" type="text" @click="removeFormatter(scope.$index)"></el-button>
+          <el-button icon="el-icon-edit-outline" type="text" @click="showEditDialog(scope.row)"></el-button>
         </template>
       </el-table-column>
     </el-table>
 
     <!-- new formatter dialog -->
-    <el-dialog :visible.sync="addDialog" :close-on-click-modal='false'
-               :title="!editMode ? $t('message.new') : $t('message.edit')" @closed='reset'
-               append-to-body>
+    <el-dialog :close-on-click-modal='false' :title="!editMode ? $t('message.new') : $t('message.edit')"
+               :visible.sync="addDialog" append-to-body
+               @closed='reset'>
       <el-form label-position="top" size="mini">
         <el-form-item label="Name" required>
           <el-input v-model='formatter.name'></el-input>
@@ -67,6 +67,10 @@
                   <tr>
                     <td>[String]</td>
                     <td><el-tag>{VALUE}</el-tag></td>
+                  </tr>
+                  <tr>
+                    <td>[String]</td>
+                    <td><el-tag>{HEX}</el-tag></td>
                   </tr>
                   <tr>
                     <td>[Hash]</td>

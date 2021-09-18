@@ -1,6 +1,6 @@
 <template>
   <div class="text-formated-container">
-    <p :title="fullCommand" class="command-preview">{{previewCommand}}</p>
+    <p :title="fullCommand" class="command-preview">{{ previewCommand }}</p>
 
     <div class="collapse-container">
       <el-button class="collapse-btn" type="text" @click="toggleCollapse">{{
@@ -11,8 +11,8 @@
 
     <JsonViewer
       v-if='show'
-      :value="newContent"
-      :expand-depth="previousDeep">
+      :expand-depth="previousDeep"
+      :value="newContent">
     </JsonViewer>
   </div>
 </template>
@@ -68,8 +68,8 @@ export default {
         return false;
       }
 
-      const command = formatter.command;
-      const params = formatter.params;
+      const { command } = formatter;
+      const { params } = formatter;
       const paramsReplaced = this.replaceTemplate(params);
 
       return `${command} ${paramsReplaced}`;
@@ -81,19 +81,15 @@ export default {
 
       const dataMap = this.dataMap ? this.dataMap : {};
       const mapObj = {
-        "{KEY}": this.redisKey,
+        '{KEY}': this.redisKey,
         // "{VALUE}": this.content,
-        "{FIELD}": dataMap.key,
-        "{SCORE}": dataMap.score,
-        "{MEMBER}": dataMap.member,
+        '{FIELD}': dataMap.key,
+        '{SCORE}': dataMap.score,
+        '{MEMBER}': dataMap.member,
       };
 
-      const re = new RegExp(Object.keys(mapObj).join("|"), "gi");
-      const replaced = params.replace(re, matched => {
-        return mapObj[matched];
-      });
-
-      return replaced;
+      const re = new RegExp(Object.keys(mapObj).join('|'), 'gi');
+      return params.replace(re, matched => mapObj[matched]);
     },
     execCommand() {
       if (!this.content || !this.content.length) {
@@ -106,19 +102,22 @@ export default {
         return this.execResult = 'Command Error, Check Config!';
       }
 
-      // in case of long content
-      this.previewCommand = command.replace(
-        "{VALUE}",
-        this.$util.cutString(this.content.toString(), this.previewContentMax)
+      this.fullCommand = command.replace(
+        '{VALUE}',
+        this.content,
+      ).replace(
+        '{HEX}',
+        Buffer.from(this.content).toString('hex'),
       );
-      this.fullCommand = command.replace("{VALUE}", this.content);
+
+      // in case of long content
+      this.previewCommand = this.$util.cutString(this.fullCommand, this.previewContentMax);
 
       try {
         shell.exec(this.fullCommand, (e, stdout, stderr) => {
           if (e || stderr) {
             this.execResult = `${e.message.trim()}\n${stdout.trim()}\n${stderr.trim()}`;
-          }
-          else {
+          } else {
             this.execResult = stdout.trim();
           }
         });
@@ -134,8 +133,8 @@ export default {
 </script>
 
 <style type="text/css">
-  .text-formated-container .command-preview {
-    color: #9798a7;
-    word-break: break-word;
-  }
+.text-formated-container .command-preview {
+  color: #9798a7;
+  word-break: break-word;
+}
 </style>
