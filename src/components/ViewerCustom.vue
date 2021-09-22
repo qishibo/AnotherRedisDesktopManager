@@ -97,6 +97,7 @@ export default {
       }
 
       const command = this.getCommand();
+      const hexStr  = this.content.toString('hex');
 
       if (!command) {
         return this.execResult = 'Command Error, Check Config!';
@@ -107,11 +108,17 @@ export default {
         this.content,
       ).replace(
         '{HEX}',
-        Buffer.from(this.content).toString('hex'),
+        hexStr,
       );
 
-      // in case of long content
-      this.previewCommand = this.$util.cutString(this.fullCommand, this.previewContentMax);
+      // in case of long content in template
+      this.previewCommand = command.replace(
+        '{VALUE}',
+        this.$util.cutString(this.content.toString(), this.previewContentMax),
+      ).replace(
+        '{HEX}',
+        this.$util.cutString(hexStr, this.previewContentMax),
+      );
 
       try {
         shell.exec(this.fullCommand, (e, stdout, stderr) => {

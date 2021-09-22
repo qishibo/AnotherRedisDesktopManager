@@ -42,7 +42,7 @@
               title="Command"
               trigger="hover">
               <i slot="reference" class="el-icon-question"></i>
-              <p>Executable file, such as  <el-tag>/bin/bash</el-tag>, <el-tag>/bin/node</el-tag>, <el-tag>/xxx.sh</el-tag>, <el-tag>/xxx.php</el-tag>, make sure it is executable</p>
+              <p>Executable file, such as  <el-tag>/bin/bash</el-tag>, <el-tag>/bin/node</el-tag>, <el-tag>xxx.sh</el-tag>, <el-tag>xxx.php</el-tag>, make sure it is executable</p>
             </el-popover>
           </span>
           <FileInput
@@ -62,15 +62,11 @@
               <p>
                 Command params, such as "--key
                 <el-tag>{KEY}</el-tag> --value <el-tag>{VALUE}</el-tag>"<hr>
-                <b>Template variables will be replaced:</b>
+                <b>Template variables to be replaced:</b>
                 <table>
                   <tr>
                     <td>[String]</td>
                     <td><el-tag>{VALUE}</el-tag></td>
-                  </tr>
-                  <tr>
-                    <td>[String]</td>
-                    <td><el-tag>{HEX}</el-tag></td>
                   </tr>
                   <tr>
                     <td>[Hash]</td>
@@ -89,6 +85,9 @@
                     <td><el-tag>{SCORE}</el-tag> <el-tag>{MEMBER}</el-tag></td>
                   </tr>
                 </table>
+                <hr>
+                If your value is unvisible, you can pass <el-tag>{HEX}</el-tag> instead of <el-tag>{VALUE}</el-tag><br>
+                then hex such as <i>68656c6c6f20776f726c64</i> will be passed
               </p>
             </el-popover>
           </span>
