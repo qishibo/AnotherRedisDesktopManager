@@ -133,7 +133,9 @@ export default {
       });
     },
     setProgressBar(percent) {
-      this.downloadProcessShow && this.$set(this.$refs.downloadProgressBar, 'percentage', percent);
+      this.downloadProcessShow && 
+      this.$refs.downloadProgressBar && 
+      this.$set(this.$refs.downloadProgressBar, 'percentage', percent);
     },
     resetDownloadProcess() {
       this.updateChecking = false;
