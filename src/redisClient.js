@@ -35,7 +35,7 @@ export default {
     let client = null;
 
     if (forceStandalone) {
-      client = new Redis(port, host, options);
+      client = new Redis(options);
     }
 
     // sentinel redis
@@ -52,7 +52,7 @@ export default {
 
     // standalone redis
     else {
-      client = new Redis(port, host, options);
+      client = new Redis(options);
     }
 
     if (promise) {
@@ -159,6 +159,10 @@ export default {
 
   getRedisOptions(host, port, auth, config) {
     return {
+      // add additional host+port to options for "::1"
+      host: host,
+      port: port,
+
       connectTimeout: 30000,
       retryStrategy: (times) => {return this.retryStragety(times, {host, port})},
       enableReadyCheck: false,
@@ -181,6 +185,7 @@ export default {
       retryStrategy: (times) => {return this.retryStragety(times, {host, port})},
       enableReadyCheck: false,
       connectionName: config.connectionName ? config.connectionName : null,
+      db: config.db ? config.db : undefined,
       // ACL support
       username: config.username ? config.username : undefined,
       tls: config.sslOptions ? this.getTLSOptions(config.sslOptions) : undefined,
