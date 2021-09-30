@@ -22,7 +22,7 @@ Download latest [exe](https://github.com/qishibo/AnotherRedisDesktopManager/rele
 
 - Download latest [AppImage](https://github.com/qishibo/AnotherRedisDesktopManager/releases) package from [release](https://github.com/qishibo/AnotherRedisDesktopManager/releases) [or [gitee](https://gitee.com/qishibo/AnotherRedisDesktopManager/releases) in China], `chmod +x`, double click to run.
  - Or by **snap**: `sudo snap install another-redis-desktop-manager`
- **Tips**: Run `sudo snap connect another-redis-desktop-manager:ssh-keys` if you want to use private-key in ~/.ssh.
+ **Tips**: If permission denied when selecting private key, run `sudo snap connect another-redis-desktop-manager:ssh-keys` to give access to ~/.ssh folder.
 <br/>[![Get it from the Snap Store](https://snapcraft.io/static/images/badges/en/snap-store-black.svg)](https://snapcraft.io/another-redis-desktop-manager)
 
 
