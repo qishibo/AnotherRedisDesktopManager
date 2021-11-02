@@ -49,6 +49,8 @@ export default {
         this.content
       ).then((reply) => {
         if (reply === 'OK') {
+          // for compatibility, use expire instead of setex
+          this.setTTL();
           this.initShow()
 
           this.$message.success({
@@ -66,6 +68,15 @@ export default {
       }).catch(e => {
         this.$message.error(e.message);
       });
+    },
+    setTTL () {
+      const ttl = parseInt(this.$parent.$parent.$refs.keyHeader.keyTTL);
+
+      if (ttl > 0) {
+        this.client.expire(this.redisKey, ttl).catch(e => {
+          this.$message.error('Expire Error: ' + e.message);
+        }).then(reply => {});
+      }
     },
     initShortcut() {
       this.$shortcut.bind('ctrl+s, ⌘+s', this.hotKeyScope, () => {
