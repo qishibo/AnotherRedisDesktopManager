@@ -145,6 +145,7 @@ const ru = {
     hide_window: 'Скрыть окно',
     minimize_window: 'Свернуть окно',
     maximize_window: 'Развернуть окно',
+    load_all_keys: 'загрузить все',
   },
 };
 

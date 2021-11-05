@@ -145,6 +145,7 @@ const de = {
     hide_window: 'Fenster ausblenden',
     minimize_window: 'Fenster minimieren',
     maximize_window: 'Fenster maximieren',
+    load_all_keys: 'alle laden',
   },
 };
 

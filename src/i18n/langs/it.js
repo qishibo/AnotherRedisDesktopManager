@@ -145,6 +145,7 @@ const it = {
     hide_window: 'Nascondi finestra',
     minimize_window: 'Riduci finestra',
     maximize_window: 'Massimizza finestra',
+    load_all_keys: 'carica tutto',
   },
 };
 

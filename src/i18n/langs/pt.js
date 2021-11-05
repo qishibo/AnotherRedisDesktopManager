@@ -145,6 +145,7 @@ const pt = {
     hide_window: 'Ocultar janela',
     minimize_window: 'Minimize a janela',
     maximize_window: 'Maximize a janela',
+    load_all_keys: 'carregar todos',
   },
 };
 

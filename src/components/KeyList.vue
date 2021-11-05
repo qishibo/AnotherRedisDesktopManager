@@ -7,15 +7,25 @@
       :client="client"
       :keyList="keyList">
     </component>
+      <!-- load more -->
+      <div class='buttonsWrapper'>
+        <el-button
+          ref='scanMoreBtn'
+          class='load-more-keys'
+          :disabled='scanMoreDisabled'
+          @click='refreshKeyList(false)'>
+          {{ $t('message.load_more_keys') }}
+        </el-button>
 
-    <!-- load more -->
-    <el-button
-      ref='scanMoreBtn'
-      class='load-more-keys'
-      :disabled='scanMoreDisabled'
-      @click='refreshKeyList(false)'>
-      {{ $t('message.load_more_keys') }}
-    </el-button>
+        <!-- load all -->
+        <el-button
+          ref='scanAllBtn'
+          class='load-more-keys'
+          type= 'danger'
+          @click='loadAllKeys()'>
+          {{ $t('message.load_all_keys') }}
+        </el-button>
+      </div>
   </div>
 </template>
 
@@ -27,8 +37,6 @@ export default {
   data() {
     return {
       keyList: [],
-      // keyListType: this.config.separator === '' ? 'KeyListNormal' : 'KeyListTree',
-      // keysPageSize: this.keyListType === 'KeyListNormal' ? 200 : 1000,
       keyListType: 'KeyListTree',
       searchPageSize: 10000,
       scanStreams: [],
@@ -99,15 +107,19 @@ export default {
         }
       }
     },
-    initScanStreamsAndScan() {
-      // this.client.nodes: cluster
+    loadAllKeys(){
+      this.$parent.$parent.$parent.$refs.operateItem.searchIcon = 'el-icon-loading';
+      this.initScanStreamsAndScan(true);
+    },
+    initScanStreamsAndScan(loadAll = false) {
       let nodes = this.client.nodes ? this.client.nodes('master') : [this.client];
       this.scanningCount = nodes.length;
 
+      let keysPageSize = loadAll ? 50000 : this.keysPageSize;
       nodes.map(node => {
         let scanOption = {
           match: this.getMatchMode(),
-          count: this.keysPageSize,
+          count: keysPageSize,
         }
 
         // scan count is bigger when in search mode
@@ -120,7 +132,7 @@ export default {
           this.onePageList = this.onePageList.concat(keys);
 
           // scan once reaches page size
-          if (this.onePageList.length >= this.keysPageSize) {
+          if (this.onePageList.length >= keysPageSize && loadAll === false) {
             // temp stop
             stream.pause();
             // search input icon recover
@@ -269,5 +281,8 @@ export default {
     width: 100%;
     font-size: 75%;
     line-height: 1px;
+  }
+  .buttonsWrapper {
+    display: flex;
   }
 </style>
