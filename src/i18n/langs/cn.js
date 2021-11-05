@@ -145,6 +145,7 @@ const cn = {
     hide_window: '隐藏窗口',
     minimize_window: '最小化窗口',
     maximize_window: '最大化窗口',
+    load_all_keys: '加载所有',
   },
 };
 

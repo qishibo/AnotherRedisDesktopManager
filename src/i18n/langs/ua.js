@@ -145,6 +145,7 @@ const ua = {
     hide_window: 'Сховати вікно',
     minimize_window: 'Згорнути вікно',
     maximize_window: 'Розгорнути вікно',
+    load_all_keys: 'завантажити все',
   },
 };
 

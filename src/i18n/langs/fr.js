@@ -145,6 +145,7 @@ const fr = {
     hide_window: 'Masquer la fenêtre',
     minimize_window: 'Réduire la fenêtre',
     maximize_window: 'Agrandir la fenêtre',
+    load_all_keys: 'tout charger',
   },
 };
 

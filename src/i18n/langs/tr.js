@@ -145,6 +145,7 @@ const tr = {
     hide_window: 'Pencereyi gizle',
     minimize_window: 'Pencereleri küçültür',
     maximize_window: 'Pencereyi büyüt',
+    load_all_keys: 'hepsini yükle',
   },
 };
 
