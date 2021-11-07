@@ -146,6 +146,7 @@ const ru = {
     minimize_window: 'Свернуть окно',
     maximize_window: 'Развернуть окно',
     load_all_keys: 'загрузить все',
+    can_load_all_keys: 'Кнопка включения для загрузки всех ключей',
   },
 };
 

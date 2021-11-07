@@ -146,6 +146,7 @@ const tw = {
     minimize_window: '最小化窗口',
     maximize_window: '最大化窗口',
     load_all_keys: '加載所有',
+    can_load_all_keys: '啟用按鈕以加載所有鍵',
   },
 };
 

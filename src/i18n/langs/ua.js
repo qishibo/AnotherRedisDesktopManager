@@ -146,6 +146,7 @@ const ua = {
     minimize_window: 'Згорнути вікно',
     maximize_window: 'Розгорнути вікно',
     load_all_keys: 'завантажити все',
+    can_load_all_keys: 'Кнопка «Увімкнути», щоб завантажити всі ключі',
   },
 };
 

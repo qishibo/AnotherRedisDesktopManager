@@ -146,6 +146,7 @@ const en = {
     minimize_window: 'Minimize window',
     maximize_window: 'Maximize window',
     load_all_keys: 'load all',
+    can_load_all_keys: 'Enable button to load all keys',
   },
 };
 

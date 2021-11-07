@@ -146,6 +146,7 @@ const tr = {
     minimize_window: 'Pencereleri küçültür',
     maximize_window: 'Pencereyi büyüt',
     load_all_keys: 'hepsini yükle',
+    can_load_all_keys: 'Tüm anahtarları yüklemek için etkinleştir düğmesi',
   },
 };
 
