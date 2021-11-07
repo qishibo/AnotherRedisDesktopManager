@@ -145,7 +145,8 @@ const pt = {
     hide_window: 'Ocultar janela',
     minimize_window: 'Minimize a janela',
     maximize_window: 'Maximize a janela',
-    load_all_keys: 'carregar todos',
+    load_all_keys: 'carregar todas',
+    can_load_all_keys: 'Habilite o botão para carregar todas as chaves',
   },
 };
 

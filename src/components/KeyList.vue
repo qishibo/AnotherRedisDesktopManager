@@ -22,7 +22,8 @@
           ref='scanAllBtn'
           class='load-more-keys'
           type= 'danger'
-          @click='loadAllKeys()'>
+          @click='loadAllKeys()'
+          v-show='canLoadAllKeys'>
           {{ $t('message.load_all_keys') }}
         </el-button>
       </div>
@@ -53,6 +54,9 @@ export default {
     keysPageSize() {
       let keysPageSize = parseInt(this.globalSettings['keysPageSize']);
       return keysPageSize ? keysPageSize : 500;
+    },
+    canLoadAllKeys(){
+        return this.globalSettings['canLoadAllKeys'];
     },
   },
   created() {

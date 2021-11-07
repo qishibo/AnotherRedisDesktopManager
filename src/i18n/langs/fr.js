@@ -146,6 +146,7 @@ const fr = {
     minimize_window: 'Réduire la fenêtre',
     maximize_window: 'Agrandir la fenêtre',
     load_all_keys: 'tout charger',
+    can_load_all_keys: 'Activer le bouton pour charger toutes les clés',
   },
 };
 

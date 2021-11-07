@@ -46,6 +46,7 @@
             <i slot="reference" class="el-icon-question"></i>
           </el-popover>
         </span>
+        <el-switch v-model='form.canLoadAllKeys'></el-switch> {{ $t('message.can_load_all_keys') }}
       </el-form-item>
 
       <!-- export connections -->
@@ -133,7 +134,7 @@ export default {
   data() {
     return {
       visible: false,
-      form: {fontFamily: '', zoomFactor: 1.0, keysPageSize: 500},
+      form: {fontFamily: '', zoomFactor: 1.0, keysPageSize: 500, canLoadAllKeys: false},
       importConnectionVisible: false,
       connectionFileContent: '',
       appVersion: (new URL(window.location.href)).searchParams.get('version'),

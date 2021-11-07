@@ -146,6 +146,7 @@ const cn = {
     minimize_window: '最小化窗口',
     maximize_window: '最大化窗口',
     load_all_keys: '加载所有',
+    can_load_all_keys: '启用按钮以加载所有键',
   },
 };
 

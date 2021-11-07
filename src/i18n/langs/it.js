@@ -146,6 +146,7 @@ const it = {
     minimize_window: 'Riduci finestra',
     maximize_window: 'Massimizza finestra',
     load_all_keys: 'carica tutto',
+    can_load_all_keys: 'Abilita pulsante per caricare tutte le chiavi',
   },
 };
 

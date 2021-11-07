@@ -146,6 +146,7 @@ const de = {
     minimize_window: 'Fenster minimieren',
     maximize_window: 'Fenster maximieren',
     load_all_keys: 'alle laden',
+    can_load_all_keys: 'Schaltfläche aktivieren, um alle Schlüssel zu laden',
   },
 };
 
