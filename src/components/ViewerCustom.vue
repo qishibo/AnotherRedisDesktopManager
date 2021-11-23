@@ -1,40 +1,24 @@
 <template>
-  <div class="text-formated-container">
+  <JsonEditor ref='editor' :content='newContent' class='viewer-custom-editor'>
     <p :title="fullCommand" class="command-preview">{{ previewCommand }}</p>
-
-    <div class="collapse-container">
-      <el-button class="collapse-btn" type="text" @click="toggleCollapse">{{
-          $t('message.' + collapseText)
-        }}
-      </el-button>
-    </div>
-
-    <JsonViewer
-      v-if='show'
-      :expand-depth="previousDeep"
-      :value="newContent">
-    </JsonViewer>
-  </div>
+  </JsonEditor>
 </template>
 
 <script type="text/javascript">
 import storage from '@/storage';
 import shell from 'child_process';
-import JsonViewer from 'vue-json-viewer';
+import JsonEditor from '@/components/JsonEditor';
 
 export default {
   data() {
     return {
-      show: true,
-      previousDeep: 3,
-      collapseText: 'collapse_all',
       execResult: '',
       fullCommand: '',
       previewCommand: '',
-      previewContentMax: 300,
+      previewContentMax: 100,
     };
   },
-  components: { JsonViewer },
+  components: { JsonEditor },
   props: ['content', 'name', 'dataMap', 'redisKey'],
   computed: {
     newContent() {
@@ -51,16 +35,6 @@ export default {
     },
   },
   methods: {
-    toggleCollapse() {
-      this.previousDeep = this.previousDeep ? 0 : Infinity;
-      this.collapseText = this.previousDeep ? 'collapse_all' : 'expand_all';
-
-      // reload json tree
-      this.show = false;
-      this.$nextTick(() => {
-        this.show = true;
-      });
-    },
     getCommand() {
       const formatter = storage.getCustomFormatter(this.name);
 
@@ -143,5 +117,9 @@ export default {
 .text-formated-container .command-preview {
   color: #9798a7;
   word-break: break-word;
+}
+
+.key-content-string .text-formated-container.viewer-custom-editor #monaco-editor-con {
+  height: calc(100vh - 379px);
 }
 </style>

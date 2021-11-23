@@ -53,6 +53,15 @@ export default {
 
     return Buffer.from(result, 'hex');
   },
+  bufToBinary(buf) {
+    let binary = '';
+
+    for (let item of buf) {
+        binary += item.toString(2).padStart(8, 0);
+    }
+
+    return binary;
+  },
   binaryStringToBuffer(str) {
     const groups = str.match(/[01]{8}/g);
     const numbers = groups.map(binary => parseInt(binary, 2))
@@ -92,20 +101,25 @@ export default {
         return true;
       }
     }
-    catch (e) {
-      return false;
-    }
+    catch (e) {}
 
     return false;
+  },
+  isBrotli(buf) {
+    const str = this.brotliToString(buf);
+
+    return typeof str === 'string';
   },
   brotliToString(buf) {
     const decompress = require('brotli/decompress');
     try {
+      // unit8array
       let decompressed = decompress(buf);
-      return Buffer.from(decompressed).toString();
-    }catch (e) {
-      return false;
-    }
+      
+      if ((typeof decompressed === 'object') && decompressed.length) {
+        return Buffer.from(decompressed).toString();
+      }
+    }catch (e) {}
 
     return false;
   },
@@ -203,5 +217,30 @@ export default {
   copyToClipboard(text) {
     const clipboard = require('electron').clipboard;
     clipboard.writeText(text ? text.toString() : '');
+  },
+  debounce(func, wait, immediate = false, context = null) {
+    let timeout, result;
+
+    const debounced = function() {
+      const args = arguments;
+      timeout && clearTimeout(timeout);
+
+      const later = function() {
+        timeout = null;
+        if (!immediate) result = func.apply(context, args);
+      };
+
+      const callNow = immediate && !timeout;
+      timeout = setTimeout(later, wait);
+      if (callNow) result = func.apply(context, args);
+
+      return result;
+    }
+    debounced.cancel = function() {
+      clearTimeout(timeout);
+      timeout = null;
+    };
+
+    return debounced;
   },
 };
