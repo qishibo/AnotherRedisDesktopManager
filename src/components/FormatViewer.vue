@@ -29,8 +29,7 @@
       :textrows='textrows'
       :disabled='disabled'
       :redisKey="redisKey"
-      :dataMap="dataMap"
-      @updateContent="updateContent">
+      :dataMap="dataMap">
     </component>
   </div>
 </template>
@@ -65,7 +64,6 @@ export default {
         float: this.float,
       },
       overSizeBytes: 20971520, // 20MB
-      manualUpdate: false,
     };
   },
   components: {ViewerText, ViewerHex, ViewerJson, ViewerBinary, ViewerUnserialize, ViewerMsgpack, ViewerOverSize, ViewerCustom, ViewerBrotli},
@@ -110,11 +108,6 @@ export default {
   },
   watch: {
     content() {
-      // do not auto format while user editting
-      if (this.manualUpdate) {
-        return this.manualUpdate = false;
-      }
-
       this.autoFormat();
     },
     selectedView(viewer) {
@@ -126,10 +119,12 @@ export default {
     },
   },
   methods: {
-    // update by user edit
-    updateContent(content) {
-      this.manualUpdate = true;
-      this.$emit('update:content', content);
+    getContent() {
+      if (typeof this.$refs.viewer.getContent === 'function') {
+        return this.$refs.viewer.getContent();
+      }
+
+      return this.content;
     },
     changeViewer(viewer) {
       this.selectedView = viewer;
@@ -160,8 +155,8 @@ export default {
       else if (this.$util.isMsgpack(this.content)) {
         return this.changeViewer('Msgpack');
       }
-      // Brotli unserialize
-      else if (this.$util.brotliToString(this.content)) {
+      // brotli unserialize
+      else if (this.$util.isBrotli(this.content)) {
         return this.changeViewer('Brotli');
       }
       // hex

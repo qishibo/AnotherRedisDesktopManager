@@ -5,7 +5,7 @@
   "author": "qii404",
   "private": true,
   "scripts": {
-    "dev": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
+    "dev": "webpack serve --mode development --progress --config build/webpack.dev.conf.js",
     "start": "npm run dev",
     "build": "node build/build.js",
     "electron": "cross-env NODE_ENV=dev node_modules/.bin/electron pack/electron",
@@ -34,13 +34,13 @@
     "ioredis": "^4.27.0",
     "json-bigint": "git+https://github.com/qishibo/json-bigint.git",
     "keymaster": "^1.6.2",
+    "monaco-editor": "^0.30.1",
     "php-serialize": "^4.0.2",
     "redis-splitargs": "git+https://github.com/qishibo/splitargs.git",
     "sortablejs": "^1.14.0",
     "tunnel-ssh": "^4.1.4",
     "vue": "^2.5.2",
-    "vue-i18n": "^8.7.0",
-    "vue-json-viewer": "git+https://github.com/qishibo/vue-json-viewer.git"
+    "vue-i18n": "^8.7.0"
   },
   "devDependencies": {
     "asar": "^1.0.0",
@@ -70,8 +70,9 @@
     "file-loader": "^1.1.4",
     "font-list": "^1.2.11",
     "friendly-errors-webpack-plugin": "^1.6.1",
-    "html-webpack-plugin": "^2.30.1",
+    "html-webpack-plugin": "^4.5.2",
     "js-yaml": ">=3.13.1",
+    "monaco-editor-webpack-plugin": "^6.0.0",
     "node-notifier": "^5.1.2",
     "optimize-css-assets-webpack-plugin": "^3.2.0",
     "ora": "^1.2.0",
@@ -84,12 +85,13 @@
     "shelljs": "^0.7.6",
     "uglifyjs-webpack-plugin": "^1.1.1",
     "url-loader": "^0.5.8",
-    "vue-loader": "^13.3.0",
+    "vue-loader": "^15.9.8",
     "vue-style-loader": "^3.0.1",
     "vue-template-compiler": "^2.5.2",
-    "webpack": "^3.6.0",
+    "webpack": "^4.46.0",
     "webpack-bundle-analyzer": "^2.9.0",
-    "webpack-dev-server": "^2.9.1",
+    "webpack-cli": "^4.9.1",
+    "webpack-dev-server": "^3.11.2",
     "webpack-merge": "^4.1.0"
   },
   "engines": {

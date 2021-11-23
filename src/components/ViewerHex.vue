@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- </textarea> -->
-    <el-input :disabled='disabled' type='textarea' :rows='textrows' :value='contentDisplay' @change="updateContent($event)"></el-input>
+    <el-input ref='textInput' :disabled='disabled' type='textarea' :rows='textrows' :value='contentDisplay'></el-input>
   </div>
 </template>
 
@@ -13,10 +13,18 @@ export default {
       return this.$util.bufToString(this.content);
     },
   },
+  watch: {
+    content() {
+      // refresh
+      this.$nextTick(() => {
+        this.$refs.textInput.$refs.textarea.value = this.contentDisplay;
+      });
+    },
+  },
   methods: {
-    updateContent(value) {
-      let newContent = this.$util.xToBuffer(value);
-      this.$emit('updateContent', newContent);
+    getContent() {
+      const content = this.$refs.textInput.$refs.textarea.value;
+      return this.$util.xToBuffer(content);
     },
   },
 }

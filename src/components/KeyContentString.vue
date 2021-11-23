@@ -4,7 +4,7 @@
   <el-form-item>
     <FormatViewer
       ref='formatViewer'
-      :content.sync='content'
+      :content='content'
       :binary='binary'
       :redisKey='redisKey'
       float=''
@@ -42,11 +42,16 @@ export default {
       });
     },
     execSave() {
-      const key = this.redisKey;
+      const content = this.$refs.formatViewer.getContent();
+
+      // viewer check failed, do not save
+      if (content === false) {
+        return;
+      }
 
       this.client.set(
-        key,
-        this.content
+        this.redisKey,
+        content
       ).then((reply) => {
         if (reply === 'OK') {
           // for compatibility, use expire instead of setex
@@ -81,7 +86,7 @@ export default {
     initShortcut() {
       this.$shortcut.bind('ctrl+s, ⌘+s', this.hotKeyScope, () => {
         // make input blur to fill the new value
-        this.$refs.saveBtn.$el.focus();
+        // this.$refs.saveBtn.$el.focus();
         this.execSave();
 
         return false;
@@ -104,6 +109,10 @@ export default {
   .key-content-string .el-textarea textarea {
     font-size: 14px;
     height: calc(100vh - 286px);
+  }
+  /*json in monaco editor*/
+  .key-content-string #monaco-editor-con {
+    height: calc(100vh - 331px);
   }
   /*not text viewer box, such as json*/
   .key-content-string .text-formated-container {
