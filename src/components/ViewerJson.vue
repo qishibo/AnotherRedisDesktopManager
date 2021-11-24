@@ -1,5 +1,5 @@
 <template>
-  <JsonEditor ref='editor' :content='newContent' :readOnly='false'></JsonEditor>
+  <JsonEditor ref='editor' :content='newContent' :readOnly='disabled||false'></JsonEditor>
 </template>
 
 <script type="text/javascript">
@@ -7,7 +7,7 @@ import JsonEditor from '@/components/JsonEditor';
 const JSONbig = require('json-bigint')({storeAsString: true});
 
 export default {
-  props: ['content'],
+  props: ['content', 'disabled'],
   components: {JsonEditor},
   computed: {
     newContent() {
