@@ -15,7 +15,7 @@
             <el-input v-model="editLineItem.score" autocomplete="off"></el-input>
           </el-form-item>
           <el-form-item label="Member">
-            <FormatViewer ref='formatViewer' :redisKey="redisKey" :dataMap="editLineItem" :content.sync='editLineItem.member'></FormatViewer>
+            <FormatViewer ref='formatViewer' :redisKey="redisKey" :dataMap="editLineItem" :content='editLineItem.member'></FormatViewer>
           </el-form-item>
         </el-form>
 
@@ -244,21 +244,23 @@ export default {
       const key = this.redisKey;
       const client = this.client;
       const before = this.beforeEditItem;
-      const after = this.editLineItem;
 
-      this.editDialog = false;
+      const afterScore = this.editLineItem.score;
+      const afterMember = this.$refs.formatViewer.getContent();
 
-      if (!after.member || isNaN(after.score)) {
+      if (!afterMember || isNaN(afterScore)) {
         return;
       }
 
+      this.editDialog = false;
+
       client.zadd(
         key,
-        after.score,
-        after.member
+        afterScore,
+        afterMember
       ).then((reply) => {
         // edit key member changed
-        if (before.member && !before.member.equals(after.member)) {
+        if (before.member && !before.member.equals(afterMember)) {
           client.zrem(
             key,
             before.member

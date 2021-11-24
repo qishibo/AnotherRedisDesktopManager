@@ -12,7 +12,7 @@
       <el-dialog :title="dialogTitle" :visible.sync="editDialog" @open='openDialog' :close-on-click-modal='false'>
         <el-form>
           <el-form-item label="Value">
-            <FormatViewer ref='formatViewer' :redisKey="redisKey" :dataMap="editLineItem" :content.sync='editLineItem.value'></FormatViewer>
+            <FormatViewer ref='formatViewer' :redisKey="redisKey" :dataMap="editLineItem" :content='editLineItem.value'></FormatViewer>
           </el-form-item>
         </el-form>
 
@@ -158,17 +158,22 @@ export default {
       const key = this.redisKey;
       const client = this.client;
       const before = this.beforeEditItem;
-      const after = this.editLineItem;
+      const afterValue = this.$refs.formatViewer.getContent();
 
-      this.editDialog = false;
-
-      if (!after.value || (before.value && before.value.equals(after.value))) {
+      if (!afterValue) {
         return;
       }
 
+      // not changed
+      if (before.value && before.value.equals(afterValue)) {
+        return this.editDialog = false;
+      }
+
+      this.editDialog = false;
+
       client.rpush(
         key,
-        after.value
+        afterValue
       ).then((reply) => {
         // reply return list length if success
         if (reply > 0) {

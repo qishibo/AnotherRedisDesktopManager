@@ -16,7 +16,7 @@
           </el-form-item>
 
           <el-form-item label="Value">
-            <FormatViewer ref='formatViewer' :redisKey="redisKey" :dataMap="editLineItem" :content.sync='editLineItem.value'></FormatViewer>
+            <FormatViewer ref='formatViewer' :redisKey="redisKey" :dataMap="editLineItem" :content='editLineItem.value'></FormatViewer>
           </el-form-item>
         </el-form>
 
@@ -211,21 +211,23 @@ export default {
       const key = this.redisKey;
       const client = this.client;
       const before = this.beforeEditItem;
-      const after = this.editLineItem;
 
-      this.editDialog = false;
+      const afterKey = this.editLineItem.key;
+      const afterValue = this.$refs.formatViewer.getContent();
 
-      if (!after.key || !after.value) {
+      if (!afterKey || !afterValue) {
         return;
       }
 
+      this.editDialog = false;
+
       client.hset(
         key,
-        after.key,
-        after.value
+        afterKey,
+        afterValue
       ).then((reply) => {
         // edit key && key changed
-        if (before.key && !before.key.equals(after.key)) {
+        if (before.key && !before.key.equals(afterKey)) {
           client.hdel(
             key,
             before.key
