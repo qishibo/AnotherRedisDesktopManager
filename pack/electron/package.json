@@ -23,7 +23,8 @@
     "electronVersion": "11.4.9",
     "files": [
       "!static/js/*.map",
-      "!static/css/*.map"
+      "!static/css/*.map",
+      "!*.map"
     ],
     "publish": [{
       "provider": "github",
