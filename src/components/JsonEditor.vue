@@ -94,7 +94,7 @@ export default {
         fontFamily: this.$storage.getFontFamily(),
         showFoldingControls: 'always',
         // auto layout, performance cost
-        // automaticLayout: true,
+        automaticLayout: true,
         wordWrap: 'on',
         // long text indent when wrapped
         wrappingIndent: 'indent',
@@ -122,12 +122,12 @@ export default {
       }
     );
 
-    window.addEventListener("resize", this.onResize);
+    // window.addEventListener("resize", this.onResize);
     // this.monacoEditor.getAction('editor.foldLevel3').run();
     // this.monacoEditor.getAction('editor.action.formatDocument').run();
   },
   destroyed() {
-    window.removeEventListener("resize", this.onResize);
+    // window.removeEventListener("resize", this.onResize);
     this.monacoEditor.dispose();
     this.$bus.$off('fontInited', this.changeFont);
   },
