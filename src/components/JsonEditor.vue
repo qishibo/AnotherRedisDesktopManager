@@ -24,6 +24,11 @@ export default {
     content: {type: Array|String, default: () => {}},
     readOnly: {type: Boolean, default: true},
   },
+  created() {
+    // listen font family change and reset options
+    // to avoid cursor offset
+    this.$bus.$on('fontInited', this.changeFont);
+  },
   computed: {
     newContentStr() {
       if (typeof this.content === 'string') {
@@ -65,6 +70,11 @@ export default {
 
       this.resizeDebounce();
     },
+    changeFont(fontFamily) {
+      this.monacoEditor && this.monacoEditor.updateOptions({
+        fontFamily: fontFamily,
+      });
+    },
   },
 
   mounted() {
@@ -79,6 +89,9 @@ export default {
         cursorStyle: this.readOnly ? 'underline-thin' : 'line',
         lineNumbers: 'off',
         contextmenu: false,
+        // set fontsize and family to avoid cursor offset
+        fontSize: 14,
+        fontFamily: this.$storage.getFontFamily(),
         showFoldingControls: 'always',
         // auto layout, performance cost
         // automaticLayout: true,
@@ -115,6 +128,8 @@ export default {
   },
   destroyed() {
     window.removeEventListener("resize", this.onResize);
+    this.monacoEditor.dispose();
+    this.$bus.$off('fontInited', this.changeFont);
   },
 }
 </script>
