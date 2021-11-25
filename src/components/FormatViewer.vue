@@ -214,26 +214,8 @@ export default {
     line-height: 1.5;
     border-radius: 5px;
   }
-  .text-formated-container * {
-    font-family: inherit !important;
-  }
   .dark-mode .text-formated-container {
     border-color: #7f8ea5;
-  }
-
-  /*json tree*/
-  .dark-mode .jv-container.jv-light {
-    background: none;
-  }
-  .dark-mode .jv-container.jv-light .jv-key {
-    color: #ebebec;
-  }
-  .dark-mode .jv-container.jv-light .jv-item.jv-array,
-  .dark-mode .jv-container.jv-light .jv-item.jv-object {
-    color: #b6b6b9;
-  }
-  .dark-mode .jv-container.jv-light .jv-ellipsis {
-    background: #c5c5c5;
   }
 
   .collapse-container {

@@ -9,6 +9,20 @@ export default {
     settings = JSON.stringify(settings);
     return localStorage.setItem('settings', settings);
   },
+  getFontFamily() {
+    let fontFamily = this.getSetting('fontFamily');
+
+    // set to default font-family
+    if (
+      !fontFamily || !fontFamily.length ||
+      fontFamily.toString() === 'Default Initial'
+    ) {
+      fontFamily = ['-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Helvetica',
+      'Arial', 'sans-serif','Microsoft YaHei', 'Apple Color Emoji', 'Segoe UI Emoji'];
+    }
+
+    return fontFamily.map(line => {return `"${line}"`}).join(',');
+  },
   getCustomFormatter(name = '') {
     let formatters = localStorage.getItem('customFormatters');
     formatters = formatters ? JSON.parse(formatters) : [];

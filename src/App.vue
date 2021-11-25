@@ -98,19 +98,10 @@ export default {
       this.initZoom();
     },
     initFont() {
-      let fontFamily = this.$storage.getSetting('fontFamily');
-
-      // set to default font-family
-      if (
-        !fontFamily || !fontFamily.length ||
-        fontFamily.toString() === 'Default Initial'
-      ) {
-        fontFamily = ['-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Helvetica',
-        'Arial', 'sans-serif','Microsoft YaHei', 'Apple Color Emoji', 'Segoe UI Emoji'];
-      }
-
-      document.body.style.fontFamily =
-        fontFamily.map((line) => {return `"${line}"`}).join(',');
+      const fontFamily = this.$storage.getFontFamily();
+      document.body.style.fontFamily = fontFamily;
+      // tell monaco editor
+      this.$bus.$emit('fontInited', fontFamily);
     },
     initZoom() {
       let zoomFactor = this.$storage.getSetting('zoomFactor');
