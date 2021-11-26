@@ -51,6 +51,9 @@
         "AppImage"
       ]
     },
+    "snap": {
+      "plugs": ["default", "ssh-keys"]
+    },
     "mac": {
       "icon": "icons/icon.icns",
       "type": "development",
