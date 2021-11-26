@@ -14,6 +14,7 @@ const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 
 const VueLoaderPlugin = require('vue-loader/lib/plugin');
 const MonacoWebpackPlugin = require('monaco-editor-webpack-plugin');
+// const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 
 const env = require('../config/prod.env')
 
@@ -36,8 +37,10 @@ const webpackConfig = merge(baseWebpackConfig, {
     chunkFilename: utils.assetsPath('js/[id].[chunkhash].js')
   },
   plugins: [
+    // show bundle analysis if need
+    // new BundleAnalyzerPlugin(),
     new VueLoaderPlugin(),
-    new MonacoWebpackPlugin({languages: ['json']}),
+    new MonacoWebpackPlugin({languages: ['json'], features: []}),
     // http://vuejs.github.io/vue-loader/en/workflow/production.html
     // new webpack.DefinePlugin({
     //   'process.env': env
@@ -154,18 +157,13 @@ const webpackConfig = merge(baseWebpackConfig, {
     ],
     splitChunks: {
       chunks: 'all',
-      cacheGroups: {
-        // commons: {
-        //   name: 'commons',
-        //   chunks: 'initial',
-        //   minChunks: 2
-        // },
-        commons: {
-          test: /[\\/]node_modules[\\/]/,
-          name: 'vendors',
-          chunks: 'all',
-        },
-      }
+      // cacheGroups: {
+      //   commons: {
+      //     test: /[\\/]node_modules[\\/]/,
+      //     name: 'vendors',
+      //     chunks: 'all',
+      //   },
+      // }
     }
   },
 })

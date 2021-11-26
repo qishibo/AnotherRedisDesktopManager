@@ -50,7 +50,7 @@ const devWebpackConfig = merge(baseWebpackConfig, {
   },
   plugins: [
     new VueLoaderPlugin(),
-    new MonacoWebpackPlugin(),
+    new MonacoWebpackPlugin({languages: ['json'], features: []}),
     // new webpack.DefinePlugin({
     //   'process.env': require('../config/dev.env')
     // }),
