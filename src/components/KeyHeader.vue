@@ -43,7 +43,7 @@
 
       <!-- del & refresh btn -->
       <el-col :span=6 class='key-header-item key-header-btn-con'>
-        <el-button ref='deleteBtn' type="danger" @click="deleteKey" icon="el-icon-delete" :title="$t('el.upload.delete')+' Crtl+x'"></el-button>
+        <el-button ref='deleteBtn' type="danger" @click="deleteKey" icon="el-icon-delete" :title="$t('el.upload.delete')+' Ctrl+d'"></el-button>
         <el-button ref='refreshBtn' type="success" @click="refreshKey" icon="el-icon-refresh" :title="$t('message.refresh_connection')+' Ctrl+r / F5'"></el-button>
       </el-col>
     </el-form>
