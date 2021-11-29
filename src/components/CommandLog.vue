@@ -27,9 +27,14 @@ export default {
   },
   created() {
     this.$bus.$on('commandLog', record => {
+      // hide ping
+      if (record.command.name === 'ping') {
+        return;
+      }
+
       this.logs.push({
         name: record.command.name,
-        args: record.command.args.map(item => {
+        args: (record.command.name === 'auth') ? '***' : record.command.args.map(item => {
           return item.length > 100 ? (item.slice(0, 100) + '...') : item.toString();
         }).join(' '),
         cost: record.cost.toFixed(2),

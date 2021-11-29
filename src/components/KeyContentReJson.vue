@@ -36,10 +36,9 @@ export default {
   components: { FormatViewer, ScrollToTop },
   methods: {
     initShow() {
-      this.client.getBuffer(this.redisKey).then((reply) => {
+      this.client.callBuffer('JSON.GET', [this.redisKey]).then(reply => {
         this.content = reply;
-        // this.$refs.formatViewer.autoFormat();
-      });
+      })
     },
     execSave() {
       const content = this.$refs.formatViewer.getContent();
@@ -49,12 +48,12 @@ export default {
         return;
       }
 
-      this.client.set(
-        this.redisKey,
-        content
-      ).then((reply) => {
+      if (!this.$util.isJson(content)) {
+        return this.$message.error(this.$t('message.json_format_failed'));
+      }
+
+      this.client.call('JSON.SET', [this.redisKey, '.', content]).then(reply => {
         if (reply === 'OK') {
-          // for compatibility, use expire instead of setex
           this.setTTL();
           this.initShow()
 

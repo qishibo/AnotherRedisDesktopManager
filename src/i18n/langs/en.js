@@ -76,7 +76,7 @@ const en = {
     check_update: 'Check Update',
     update_checking: 'Checking For Updates, Wait A Moment...',
     update_available: 'New Version Found',
-    update_not_available: 'Your App Is The Latest',
+    update_not_available: 'Your version is up to date',
     update_error: 'Update Failed',
     update_downloading: 'Downloading...',
     update_download_progress: 'Download Progress',
@@ -142,6 +142,9 @@ const en = {
     edit: 'Edit',
     new: 'New',
     custom: 'Customize',
+    hide_window: 'Hide Window',
+    minimize_window: 'Minimize window',
+    maximize_window: 'Maximize window',
   },
 };
 

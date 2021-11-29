@@ -23,8 +23,8 @@
             <InputBinary :disabled='!!beforeEditItem.contentString' :content.sync="editLineItem.id"></InputBinary>
           </el-form-item>
 
-          <el-form-item label="Value (JSON format)">
-            <FormatViewer :redisKey="redisKey" :dataMap="editLineItem" :disabled='!!beforeEditItem.contentString' ref='formatViewer' :content.sync='editLineItem.contentString'></FormatViewer>
+          <el-form-item label="Value (JSON kv format)">
+            <FormatViewer :redisKey="redisKey" :dataMap="editLineItem" :disabled='!!beforeEditItem.contentString' ref='formatViewer' :content='editLineItem.contentString'></FormatViewer>
           </el-form-item>
         </el-form>
 
@@ -186,18 +186,19 @@ export default {
       this.editDialog = true;
     },
     editLine() {
-      const after = this.editLineItem
+      const afterId = this.editLineItem.id
+      const afterValue = this.$refs.formatViewer.getContent();
 
-      if (!after.id || !after.contentString) {
+      if (!afterId || !afterValue) {
         return;
       }
 
-      if (!this.$util.isJson(after.contentString)) {
+      if (!this.$util.isJson(afterValue)) {
         return this.$message.error(this.$t('message.json_format_failed'));
       }
 
       let mapList = [];
-      let jsonObj = JSON.parse(after.contentString);
+      let jsonObj = JSON.parse(afterValue);
 
       for (let k in jsonObj) {
         mapList.push(...[k, jsonObj[k]]);
@@ -205,7 +206,7 @@ export default {
 
       this.client.xadd(
         this.redisKey,
-        after.id,
+        afterId,
         mapList
       ).then((reply) => {
         // reply is id

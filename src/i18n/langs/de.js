@@ -142,6 +142,9 @@ const de = {
     edit: 'Bearbeiten',
     new: 'Hinzufügen',
     custom: 'Anpassen',
+    hide_window: 'Fenster ausblenden',
+    minimize_window: 'Fenster minimieren',
+    maximize_window: 'Fenster maximieren',
   },
 };
 

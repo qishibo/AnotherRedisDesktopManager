@@ -397,6 +397,7 @@ export default {
 /*folder keys count*/
 .ztree .key-list-count {
   color: #848a90;
+  float: right;
 }
 .dark-mode .ztree .key-list-count {
   color: #a3a6ad;

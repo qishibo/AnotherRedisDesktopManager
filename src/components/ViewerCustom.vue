@@ -1,40 +1,24 @@
 <template>
-  <div class="text-formated-container">
-    <p :title="fullCommand" class="command-preview">{{previewCommand}}</p>
-
-    <div class="collapse-container">
-      <el-button class="collapse-btn" type="text" @click="toggleCollapse">{{
-          $t('message.' + collapseText)
-        }}
-      </el-button>
-    </div>
-
-    <JsonViewer
-      v-if='show'
-      :value="newContent"
-      :expand-depth="previousDeep">
-    </JsonViewer>
-  </div>
+  <JsonEditor ref='editor' :content='newContent' class='viewer-custom-editor'>
+    <p :title="fullCommand" class="command-preview">{{ previewCommand }}</p>
+  </JsonEditor>
 </template>
 
 <script type="text/javascript">
 import storage from '@/storage';
 import shell from 'child_process';
-import JsonViewer from 'vue-json-viewer';
+import JsonEditor from '@/components/JsonEditor';
 
 export default {
   data() {
     return {
-      show: true,
-      previousDeep: 3,
-      collapseText: 'collapse_all',
       execResult: '',
       fullCommand: '',
       previewCommand: '',
-      previewContentMax: 300,
+      previewContentMax: 100,
     };
   },
-  components: { JsonViewer },
+  components: { JsonEditor },
   props: ['content', 'name', 'dataMap', 'redisKey'],
   computed: {
     newContent() {
@@ -51,16 +35,6 @@ export default {
     },
   },
   methods: {
-    toggleCollapse() {
-      this.previousDeep = this.previousDeep ? 0 : Infinity;
-      this.collapseText = this.previousDeep ? 'collapse_all' : 'expand_all';
-
-      // reload json tree
-      this.show = false;
-      this.$nextTick(() => {
-        this.show = true;
-      });
-    },
     getCommand() {
       const formatter = storage.getCustomFormatter(this.name);
 
@@ -68,8 +42,8 @@ export default {
         return false;
       }
 
-      const command = formatter.command;
-      const params = formatter.params;
+      const { command } = formatter;
+      const { params } = formatter;
       const paramsReplaced = this.replaceTemplate(params);
 
       return `${command} ${paramsReplaced}`;
@@ -81,19 +55,15 @@ export default {
 
       const dataMap = this.dataMap ? this.dataMap : {};
       const mapObj = {
-        "{KEY}": this.redisKey,
+        '{KEY}': this.redisKey,
         // "{VALUE}": this.content,
-        "{FIELD}": dataMap.key,
-        "{SCORE}": dataMap.score,
-        "{MEMBER}": dataMap.member,
+        '{FIELD}': dataMap.key,
+        '{SCORE}': dataMap.score,
+        '{MEMBER}': dataMap.member,
       };
 
-      const re = new RegExp(Object.keys(mapObj).join("|"), "gi");
-      const replaced = params.replace(re, matched => {
-        return mapObj[matched];
-      });
-
-      return replaced;
+      const re = new RegExp(Object.keys(mapObj).join('|'), 'gi');
+      return params.replace(re, matched => mapObj[matched]);
     },
     execCommand() {
       if (!this.content || !this.content.length) {
@@ -101,24 +71,34 @@ export default {
       }
 
       const command = this.getCommand();
+      const hexStr  = this.content.toString('hex');
 
       if (!command) {
         return this.execResult = 'Command Error, Check Config!';
       }
 
-      // in case of long content
-      this.previewCommand = command.replace(
-        "{VALUE}",
-        this.$util.cutString(this.content.toString(), this.previewContentMax)
+      this.fullCommand = command.replace(
+        '{VALUE}',
+        this.content,
+      ).replace(
+        '{HEX}',
+        hexStr,
       );
-      this.fullCommand = command.replace("{VALUE}", this.content);
+
+      // in case of long content in template
+      this.previewCommand = command.replace(
+        '{VALUE}',
+        this.$util.cutString(this.content.toString(), this.previewContentMax),
+      ).replace(
+        '{HEX}',
+        this.$util.cutString(hexStr, this.previewContentMax),
+      );
 
       try {
         shell.exec(this.fullCommand, (e, stdout, stderr) => {
           if (e || stderr) {
             this.execResult = `${e.message.trim()}\n${stdout.trim()}\n${stderr.trim()}`;
-          }
-          else {
+          } else {
             this.execResult = stdout.trim();
           }
         });
@@ -134,8 +114,12 @@ export default {
 </script>
 
 <style type="text/css">
-  .text-formated-container .command-preview {
-    color: #9798a7;
-    word-break: break-word;
-  }
+.text-formated-container .command-preview {
+  color: #9798a7;
+  word-break: break-word;
+}
+
+.key-content-string .text-formated-container.viewer-custom-editor #monaco-editor-con {
+  height: calc(100vh - 379px);
+}
 </style>

@@ -142,6 +142,9 @@ const fr = {
     edit: 'Éditer',
     new: 'Ajouter',
     custom: 'Personnaliser',
+    hide_window: 'Masquer la fenêtre',
+    minimize_window: 'Réduire la fenêtre',
+    maximize_window: 'Agrandir la fenêtre',
   },
 };
 

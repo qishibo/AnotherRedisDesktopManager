@@ -18,6 +18,7 @@
         autocomplete="off"
         v-model="params"
         :debounce='10'
+        :disabled='subscribeMode'
         :fetch-suggestions="inputSuggestion"
         :placeholder="$t('message.enter_to_exec')"
         :select-when-unmatched="true"
@@ -31,6 +32,8 @@
       </el-autocomplete>
     </el-form-item>
   </el-form>
+
+  <el-button v-if='subscribeMode' @click='stopSubscribe' type='danger' class='stop-subscribe'>Stop Subscribe</el-button>
 </div>
 </template>
 
@@ -47,6 +50,7 @@ export default {
       historyIndex: 0,
       inputSuggestionItems: [],
       multiQueue: null,
+      subscribeMode: false,
     };
   },
   props: ['client', 'hotKeyScope'],
@@ -63,15 +67,41 @@ export default {
       }
     }
   },
+  created() {
+    this.$bus.$on('changeDb', (client, dbIndex) => {
+      if (!this.anoClient || client.options.connectionName != this.anoClient.options.connectionName) {
+        return;
+      }
+
+      if (this.anoClient.condition.select == dbIndex) {
+        return;
+      }
+
+      this.anoClient.select(dbIndex);
+    });
+  },
   methods: {
     initShow() {
+      if (!this.client) {
+        return;
+      }
+
+      // copy to another client
+      this.anoClient = this.client.duplicate();
+      // bind subscribe messages
+      this.bindSubscribeMessage();
+
+      this.anoClient.on('ready', () => {
+        !this.anoClient.cliInited && this.initCliContent();
+        this.anoClient.cliInited = true;
+      });
+
       this.$nextTick(() => {
         this.$refs.cliParams.focus();
       });
-      this.initCliContent();
     },
     initCliContent() {
-      this.content += `> ${this.client.options.connectionName} connected!\n`;
+      this.content += `> ${this.anoClient.options.connectionName} connected!\n`;
       this.scrollToBottom();
     },
     tabClick() {
@@ -125,6 +155,28 @@ export default {
         }
       }
     },
+    bindSubscribeMessage() {
+      // bind subscribe message
+      this.anoClient.on('message', (channel, message) => {
+        this.scrollToBottom(`\n${channel}\n${message}`);
+      });
+
+      // bind psubscribe message
+      this.anoClient.on('pmessage', (pattern, channel, message) => {
+        this.scrollToBottom(`\n${pattern}\n${channel}\n${message}`);
+      });
+    },
+    stopSubscribe() {
+      this.subscribeMode = false;
+      const subSet = this.anoClient.condition.subscriber.set;
+
+      if (!subSet) {
+        return;
+      }
+
+      Object.keys(subSet.subscribe).length && this.anoClient.unsubscribe();
+      Object.keys(subSet.psubscribe).length && this.anoClient.punsubscribe();
+    },
     consoleExec() {
       const params = this.paramsTrim;
       const paramsArr = this.paramsArr;
@@ -156,7 +208,7 @@ export default {
           return this.scrollToBottom('(error) ERR EXEC without MULTI');
         }
 
-        this.client.multi(this.multiQueue).execBuffer((err, reply) => {
+        this.anoClient.multi(this.multiQueue).execBuffer((err, reply) => {
           if (err) {
             this.content += `${err}\n`;
           }
@@ -176,8 +228,13 @@ export default {
         return this.scrollToBottom('QUEUED');
       }
 
+      // subscribe command
+      if (/subscribe/.test(paramsArr[0].toLowerCase())) {
+        this.subscribeMode = true;
+      }
+
       // normal command
-      let promise = rawCommand.exec(this.client, paramsArr);
+      let promise = rawCommand.exec(this.anoClient, paramsArr);
 
       // exec error
       if (typeof promise == 'string') {
@@ -202,7 +259,7 @@ export default {
       const operate = params[0];
 
       if (operate.toLowerCase() === 'select' && !isNaN(params[1])) {
-        this.$bus.$emit('changeDb', this.client, params[1]);
+        this.$bus.$emit('changeDb', this.anoClient, params[1]);
       }
     },
     scrollToBottom(append = '') {
@@ -315,6 +372,7 @@ export default {
     this.initShortcut();
   },
   beforeDestroy() {
+    this.anoClient && this.anoClient.quit && this.anoClient.quit();
     this.$shortcut.deleteScope(this.hotKeyScope);
   },
 };
@@ -355,5 +413,11 @@ export default {
   .dark-mode #cli-content {
     color: #f7f7f7;
     background: #324148;
+  }
+
+  .stop-subscribe {
+    position: fixed;
+    right: 30px;
+    bottom: 104px;
   }
 </style>
