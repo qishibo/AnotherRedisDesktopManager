@@ -14,6 +14,7 @@
 <script type="text/javascript">
 // import * as monaco from 'monaco-editor';
 import * as monaco from 'monaco-editor/esm/vs/editor/editor.api';
+const JSONbig = require('json-bigint')({useNativeBigInt: false});
 
 export default {
   data() {
@@ -35,8 +36,8 @@ export default {
       if (typeof this.content === 'string') {
         return this.content;
       }
-      
-      return JSON.stringify(this.content, null, 4);
+
+      return JSONbig.stringify(this.content, null, 4);
     },
   },
   watch: {
@@ -56,7 +57,7 @@ export default {
         return false;
       }
 
-      return Buffer.from(JSON.stringify(JSON.parse(content), null, 0));
+      return Buffer.from(JSONbig.stringify(JSONbig.parse(content), null, 0));
     },
     toggleCollapse() {
       this.collapseText == 'expand_all' ? this.monacoEditor.trigger('fold', 'editor.unfoldAll') :

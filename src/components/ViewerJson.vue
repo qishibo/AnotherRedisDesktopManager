@@ -4,7 +4,7 @@
 
 <script type="text/javascript">
 import JsonEditor from '@/components/JsonEditor';
-const JSONbig = require('json-bigint')({storeAsString: true});
+const JSONbig = require('json-bigint')({useNativeBigInt: false});
 
 export default {
   props: ['content', 'disabled'],
@@ -12,7 +12,6 @@ export default {
   computed: {
     newContent() {
       try {
-        // change bigint to string
         return JSONbig.parse(this.content);
       } catch (e) {
         // parse failed, return raw content to edit instead of error
