@@ -61,7 +61,7 @@ export default {
       }
 
       (type == 'del') && this.removeKeyFromKeyList(key);
-      (type == 'add') && this.keyList.push(key);
+      (type == 'add') && this.addKeyToKeyList(key);
     });
   },
   methods: {
@@ -227,6 +227,20 @@ export default {
           break;
         }
       }
+    },
+    addKeyToKeyList(key) {
+      if (!this.keyList) {
+        return false;
+      }
+
+      for (let i in this.keyList) {
+        if (this.keyList[i].equals(key)) {
+          // exists already
+          return;
+        }
+      }
+
+      this.keyList.push(key);
     },
   },
   watch: {
