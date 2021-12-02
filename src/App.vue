@@ -209,13 +209,13 @@ button, input, textarea, .vjs__tree {
   position: absolute;
   /*height: 100%;*/
   width: 10px;
-  right: -5px;
+  right: -12px;
   top: 0px;
 }
 #drag-resize-pointer {
   position: fixed;
   height: 100%;
-  width: 18px;
+  width: 13px;
   cursor: col-resize;
 }
 #drag-resize-pointer::after {

@@ -398,6 +398,7 @@ export default {
 .ztree .key-list-count {
   color: #848a90;
   float: right;
+  line-height: 22px;
 }
 .dark-mode .ztree .key-list-count {
   color: #a3a6ad;
