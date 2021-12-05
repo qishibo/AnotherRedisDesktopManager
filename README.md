@@ -13,7 +13,9 @@
 [![shiboooo](https://img.shields.io/badge/Weibo-@shiboooo-blue.svg)](https://weibo.com/shiboooo?is_hot=1)
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fqishibo%2FAnotherRedisDesktopManager.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fqishibo%2FAnotherRedisDesktopManager?ref=badge_shield)
 
-#### [简体中文](https://github.com/zurmokeeper/AnotherRedisDesktopManager/blob/master/README.zh-CN.md)
+
+[简体中文](README.zh-CN.md)
+
 
 ## Windows
 
