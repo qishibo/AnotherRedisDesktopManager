@@ -138,9 +138,8 @@ export default {
       }, this.pingInterval);
     },
     getRedisClient(config) {
-      if (this.lastSelectedDb > 0) {
-        config.db = this.lastSelectedDb;
-      }
+      // select db
+      config.db = this.lastSelectedDb;
 
       // ssh client
       if (config.sshOptions) {

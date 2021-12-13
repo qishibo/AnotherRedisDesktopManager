@@ -256,10 +256,18 @@ export default {
       });
     },
     execFinished(params) {
-      const operate = params[0];
+      const operate = params[0].toLowerCase();
 
-      if (operate.toLowerCase() === 'select' && !isNaN(params[1])) {
+      if (operate === 'select' && !isNaN(params[1])) {
         this.$bus.$emit('changeDb', this.anoClient, params[1]);
+      }
+
+      // operate may add new key, refresh left key list
+      if (['hmset', 'hset', 'lpush', 'rpush', 'set', 'sadd', 'zadd', 'xadd'].includes(operate)) {
+        this.$bus.$emit('refreshKeyList', this.client, Buffer.from(params[1]), 'add');
+      }
+      if (['del'].includes(operate)) {
+        this.$bus.$emit('refreshKeyList', this.client, Buffer.from(params[1]), 'del');
       }
     },
     scrollToBottom(append = '') {
