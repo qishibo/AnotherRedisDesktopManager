@@ -18,10 +18,10 @@ keymaster('ctrl+h, ctrl+m, ⌘+m', e => {
 });
 
 // hide window on mac
-(process.platform === 'darwin') && keymaster('⌘+h', e => {
-  ipcRenderer.send('hideWindow');
-  return false;
-});
+// (process.platform === 'darwin') && keymaster('⌘+h', e => {
+//   ipcRenderer.send('hideWindow');
+//   return false;
+// });
 
 // toggle maximize
 keymaster('ctrl+enter, ⌘+enter', e => {
