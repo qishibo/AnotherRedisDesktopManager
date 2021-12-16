@@ -43,6 +43,8 @@ export default {
 
       for (const item of connections) {
         item.connectionName = storage.getConnectionName(item);
+        // fix history bug, prevent db into config
+        delete item.db;
         slovedConnections.push(item);
       }
 

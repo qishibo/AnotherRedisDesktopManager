@@ -138,18 +138,20 @@ export default {
       }, this.pingInterval);
     },
     getRedisClient(config) {
+      // prevent changing back to raw config, such as config.db
+      const configCopy = JSON.parse(JSON.stringify(config));
       // select db
-      config.db = this.lastSelectedDb;
+      configCopy.db = this.lastSelectedDb;
 
       // ssh client
-      if (config.sshOptions) {
+      if (configCopy.sshOptions) {
         var clientPromise = redisClient.createSSHConnection(
-          config.sshOptions, config.host, config.port, config.auth, config);
+          configCopy.sshOptions, configCopy.host, configCopy.port, configCopy.auth, configCopy);
       }
       // normal client
       else {
         var clientPromise = redisClient.createConnection(
-          config.host, config.port, config.auth, config);
+          configCopy.host, configCopy.port, configCopy.auth, configCopy);
       }
 
       clientPromise.then((client) => {
