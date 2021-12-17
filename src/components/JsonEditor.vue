@@ -149,7 +149,7 @@ export default {
 
 <style type="text/css">
   .text-formated-container #monaco-editor-con {
-    min-height: 150px;
+    min-height: calc(100vh - 580px);
     max-height: 100vh;
     clear: both;
     overflow: hidden;
