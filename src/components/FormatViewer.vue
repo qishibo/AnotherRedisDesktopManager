@@ -75,7 +75,7 @@ export default {
   props: {
     float: {default: 'right'},
     content: {default: () => Buffer.from('')},
-    textrows: {default: 6},
+    textrows: {default: 30},
     disabled: {type: Boolean, default: false},
     redisKey:  {default: () => Buffer.from('')},
     dataMap: {type: Object, default: () => {}},
