@@ -40,7 +40,8 @@
     "sortablejs": "^1.14.0",
     "tunnel-ssh": "^4.1.4",
     "vue": "^2.5.2",
-    "vue-i18n": "^8.7.0"
+    "vue-i18n": "^8.7.0",
+    "zlib": "^1.0.5"
   },
   "devDependencies": {
     "asar": "^1.0.0",

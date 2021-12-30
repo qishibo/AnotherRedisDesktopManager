@@ -145,6 +145,7 @@ const en = {
     hide_window: 'Hide Window',
     minimize_window: 'Minimize window',
     maximize_window: 'Maximize window',
+    unserialize: 'Unserialize Content'
   },
 };
 
