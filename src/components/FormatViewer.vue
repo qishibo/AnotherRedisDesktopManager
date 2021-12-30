@@ -42,6 +42,7 @@ import ViewerJson from '@/components/ViewerJson';
 import ViewerBinary from '@/components/ViewerBinary';
 import ViewerUnserialize from '@/components/ViewerUnserialize';
 import ViewerBrotli from '@/components/ViewerBrotli';
+import ViewerZlib from '@/components/ViewerZlib';
 import ViewerMsgpack from '@/components/ViewerMsgpack';
 import ViewerOverSize from '@/components/ViewerOverSize';
 import ViewerCustom from '@/components/ViewerCustom';
@@ -59,6 +60,7 @@ export default {
         { value: 'ViewerMsgpack', text: 'Msgpack' },
         { value: 'ViewerUnserialize', text: 'Unserialize' },
         { value: 'ViewerBrotli', text: 'Brotli' },
+        { value: 'ViewerZlib', text: 'Uncompress zlib' },
       ],
       selectStyle: {
         float: this.float,
@@ -66,7 +68,7 @@ export default {
       overSizeBytes: 20971520, // 20MB
     };
   },
-  components: {ViewerText, ViewerHex, ViewerJson, ViewerBinary, ViewerUnserialize, ViewerMsgpack, ViewerOverSize, ViewerCustom, ViewerBrotli},
+  components: {ViewerText, ViewerHex, ViewerJson, ViewerBinary, ViewerUnserialize, ViewerMsgpack, ViewerOverSize, ViewerCustom, ViewerBrotli, ViewerZlib},
   props: {
     float: {default: 'right'},
     content: {default: () => Buffer.from('')},
