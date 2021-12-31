@@ -4,7 +4,6 @@
 
 <script type="text/javascript">
 import JsonEditor from '@/components/JsonEditor';
-const decompress = require('brotli/decompress');
 
 export default {
   components: {JsonEditor},

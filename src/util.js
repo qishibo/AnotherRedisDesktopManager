@@ -111,15 +111,16 @@ export default {
     return typeof str === 'string';
   },
   brotliToString(buf) {
-    const decompress = require('brotli/decompress');
+    const zlib = require('zlib');
+    
     try {
-      // unit8array
-      let decompressed = decompress(buf);
-      
-      if ((typeof decompressed === 'object') && decompressed.length) {
-        return Buffer.from(decompressed).toString();
+      const decompressed = zlib.brotliDecompressSync(buf);
+
+      if (Buffer.isBuffer(decompressed) && decompressed.length) {
+        return decompressed.toString();
       }
-    }catch (e) {}
+    }
+    catch (e) {}
 
     return false;
   },
