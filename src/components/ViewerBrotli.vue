@@ -23,7 +23,7 @@ export default {
       return 'Brotli Parse Failed!';
     },
     brotliStr() {
-      return this.$util.brotliToString(this.content);
+      return this.$util.zippedToString(this.content, 'brotli');
     },
   },
   methods: {

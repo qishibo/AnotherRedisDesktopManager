@@ -106,15 +106,21 @@ export default {
     return false;
   },
   isBrotli(buf) {
-    const str = this.brotliToString(buf);
-
-    return typeof str === 'string';
+    return typeof this.zippedToString(buf, 'brotli') === 'string'
   },
-  brotliToString(buf) {
-    const zlib = require('zlib');
-    
+  isZip(buf) {
+    return typeof this.zippedToString(buf, 'zip') === 'string';
+  },
+  zippedToString(buf, type = 'zip') {
+    const zlib   = require('zlib');
+    const funMap = {
+      // unzip will automatically detect Gzip or Deflate header
+      'zip': 'unzipSync',
+      'brotli': 'brotliDecompressSync',
+    };
+
     try {
-      const decompressed = zlib.brotliDecompressSync(buf);
+      const decompressed = zlib[funMap[type]](buf);
 
       if (Buffer.isBuffer(decompressed) && decompressed.length) {
         return decompressed.toString();

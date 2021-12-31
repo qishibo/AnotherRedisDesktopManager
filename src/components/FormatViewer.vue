@@ -162,6 +162,10 @@ export default {
       else if (this.$util.isBrotli(this.content)) {
         return this.changeViewer('Brotli');
       }
+      // unzip
+      else if (this.$util.isZip(this.content)) {
+        return this.changeViewer('Unzip');
+      }
       // hex
       else if (!this.contentVisible) {
         return this.changeViewer('Hex');

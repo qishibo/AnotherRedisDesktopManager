@@ -4,7 +4,6 @@
 
 <script type="text/javascript">
 import JsonEditor from '@/components/JsonEditor';
-const zlib = require('zlib');
 
 export default {
   components: {JsonEditor},
@@ -24,13 +23,7 @@ export default {
       return 'Zlib Unzip Parse Failed!';
     },
     formatStr() {
-      try {
-        // unzip will automatically detect Gzip or Deflate header
-        return zlib.unzipSync(this.content).toString()
-      }
-      catch (e) {}
-
-      return false;
+      return this.$util.zippedToString(this.content, 'zip');
     },
   },
   methods: {
