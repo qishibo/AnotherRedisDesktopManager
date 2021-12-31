@@ -21,7 +21,7 @@ export default {
         return formatStr;
       }
 
-      return 'Zlib Unzip Parse Failed';
+      return 'Zlib Unzip Parse Failed!';
     },
     formatStr() {
       try {
