@@ -59,6 +59,10 @@ export default {
 
       return Buffer.from(JSONbig.stringify(JSONbig.parse(content), null, 0));
     },
+    getRawContent(returnBuf = false) {
+      const content = this.monacoEditor.getValue();
+      return returnBuf ? Buffer.from(content) : content;
+    },
     toggleCollapse() {
       this.collapseText == 'expand_all' ? this.monacoEditor.trigger('fold', 'editor.unfoldAll') :
                                           this.monacoEditor.trigger('fold', 'editor.foldAll');
