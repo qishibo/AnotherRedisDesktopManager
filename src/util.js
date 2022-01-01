@@ -95,9 +95,10 @@ export default {
   },
   isMsgpack(buf) {
     const decode = require('@msgpack/msgpack').decode;
+
     try {
       const result = decode(buf);
-      if (typeof result === 'object') {
+      if (['object', 'string'].includes(typeof result)) {
         return true;
       }
     }
@@ -108,14 +109,19 @@ export default {
   isBrotli(buf) {
     return typeof this.zippedToString(buf, 'brotli') === 'string'
   },
-  isZip(buf) {
-    return typeof this.zippedToString(buf, 'zip') === 'string';
+  isGzip(buf) {
+    return typeof this.zippedToString(buf, 'gzip') === 'string';
   },
-  zippedToString(buf, type = 'zip') {
+  isDeflate(buf) {
+    return typeof this.zippedToString(buf, 'deflate') === 'string';
+  },
+  zippedToString(buf, type = 'unzip') {
     const zlib   = require('zlib');
     const funMap = {
       // unzip will automatically detect Gzip or Deflate header
-      'zip': 'unzipSync',
+      'unzip': 'unzipSync',
+      'gzip': 'gunzipSync',
+      'deflate': 'inflateSync',
       'brotli': 'brotliDecompressSync',
     };
 
