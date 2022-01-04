@@ -1,4 +1,4 @@
-<img align="right" width="110" src="https://cdn.jsdelivr.net/gh/qishibo/img/202109031653244.png">
+<img align="right" width="120" src="https://cdn.jsdelivr.net/gh/qishibo/img/ano-square-icon-128.png">
 
 # Another Redis Desktop Manager 
 
@@ -58,6 +58,7 @@
 
 ## Feature Log
 
+- 2022-01-01: Brotli\Gzip\Deflate Support && RedisJSON Support
 - 2021-11-26: JSON Editable && Subscribe Support
 - 2021-08-30: Execution log Support && Add Hot Keys
 - 2021-08-16: Custom Formatter View Support!
@@ -171,7 +172,7 @@ npm run pack:linux
 - If you are a Mac user, you can purchase this software from the [app store](https://apps.apple.com/app/id1516451072) to sponsor, and then let the app store automatically update it for you.
 
   [![app store](https://cdn.jsdelivr.net/gh/qishibo/img/202109031654242.png)](https://apps.apple.com/app/id1516451072)
-- Wechat sponsor code
+- Wechat sponsor code [Sponsor me a cup of coffee ☕]
 
   <img width="150px" src="https://cdn.jsdelivr.net/gh/qishibo/img/202109031655807.jpeg" />
 

@@ -1,4 +1,4 @@
-<img align="right" width="110" src="https://cdn.jsdelivr.net/gh/qishibo/img/202109031653244.png">
+<img align="right" width="120" src="https://cdn.jsdelivr.net/gh/qishibo/img/ano-square-icon-128.png">
 
 # Another Redis Desktop Manager
 
@@ -54,6 +54,7 @@
 
 ## 里程碑
 
+- 2022-01-01: Brotli\Gzip\Deflate 解压缩支持 && RedisJSON 支持
 - 2021-11-26: JSON可编辑 && Subscribe支持
 - 2021-08-30: 命令执行日志 && 快捷键
 - 2021-08-16: 自定义文本视图
@@ -171,7 +172,7 @@ npm run pack:linux
 - 如果你是Mac用户, 也可以通过从[App Store](https://apps.apple.com/app/id1516451072)购买来赞助, 然后应用商店会为你自动更新
 
   [![app store](https://cdn.jsdelivr.net/gh/qishibo/img/202109031654242.png)](https://apps.apple.com/app/id1516451072)
-- 微信赞助码 [觉得好用就赞助一杯咖啡]
+- 微信赞助码 [觉得好用，赞助一袋大白兔🐇奶糖!]
 
   <img width="150px" src="https://cdn.jsdelivr.net/gh/qishibo/img/202109031655807.jpeg" />
 

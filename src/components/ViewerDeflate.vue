@@ -21,16 +21,16 @@ export default {
         return formatStr;
       }
 
-      return 'Zlib Brotli Parse Failed!';
+      return 'Zlib Deflate Parse Failed!';
     },
     formatStr() {
-      return this.$util.zippedToString(this.content, 'brotli');
+      return this.$util.zippedToString(this.content, 'deflate');
     },
   },
   methods: {
     getContent() {
       const content = this.$refs.editor.getRawContent(true);
-      return zlib.brotliCompressSync(content);
+      return zlib.deflateSync(content);
     },
     copyContent() {
       return this.formatStr;

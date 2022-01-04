@@ -30,9 +30,13 @@ Redis.Command.setReplyTransformer("hgetall", (result) => {
 
 
 export default {
-  createConnection(host, port, auth, config, promise = true, forceStandalone = false) {
+  createConnection(host, port, auth, config, promise = true, forceStandalone = false, removeDb = false) {
     let options = this.getRedisOptions(host, port, auth, config);
     let client = null;
+
+    if (removeDb) {
+      delete options.db;
+    }
 
     if (forceStandalone) {
       client = new Redis(options);
@@ -100,7 +104,8 @@ export default {
 
         // sentinel mode
         if (configRaw.sentinelOptions) {
-          let client = this.createConnection(listenAddress.address, listenAddress.port, auth, configRaw, false, true);
+          // this is a sentinel connection, remove db
+          let client = this.createConnection(listenAddress.address, listenAddress.port, auth, configRaw, false, true, true);
 
           client.on('ready', () => {
             client.call('sentinel', 'get-master-addr-by-name', configRaw.sentinelOptions.masterName).then(reply => {

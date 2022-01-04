@@ -42,6 +42,8 @@ import ViewerJson from '@/components/ViewerJson';
 import ViewerBinary from '@/components/ViewerBinary';
 import ViewerUnserialize from '@/components/ViewerUnserialize';
 import ViewerBrotli from '@/components/ViewerBrotli';
+import ViewerGzip from '@/components/ViewerGzip';
+import ViewerDeflate from '@/components/ViewerDeflate';
 import ViewerMsgpack from '@/components/ViewerMsgpack';
 import ViewerOverSize from '@/components/ViewerOverSize';
 import ViewerCustom from '@/components/ViewerCustom';
@@ -59,6 +61,8 @@ export default {
         { value: 'ViewerMsgpack', text: 'Msgpack' },
         { value: 'ViewerUnserialize', text: 'Unserialize' },
         { value: 'ViewerBrotli', text: 'Brotli' },
+        { value: 'ViewerGzip', text: 'Gzip' },
+        { value: 'ViewerDeflate', text: 'Deflate' },
       ],
       selectStyle: {
         float: this.float,
@@ -66,7 +70,8 @@ export default {
       overSizeBytes: 20971520, // 20MB
     };
   },
-  components: {ViewerText, ViewerHex, ViewerJson, ViewerBinary, ViewerUnserialize, ViewerMsgpack, ViewerOverSize, ViewerCustom, ViewerBrotli},
+  components: {ViewerText, ViewerHex, ViewerJson, ViewerBinary, ViewerUnserialize, ViewerMsgpack,
+    ViewerOverSize, ViewerCustom, ViewerBrotli, ViewerGzip, ViewerDeflate},
   props: {
     float: {default: 'right'},
     content: {default: () => Buffer.from('')},
@@ -158,6 +163,14 @@ export default {
       // brotli unserialize
       else if (this.$util.isBrotli(this.content)) {
         return this.changeViewer('Brotli');
+      }
+      // gzip
+      else if (this.$util.isGzip(this.content)) {
+        return this.changeViewer('Gzip');
+      }
+      // deflate
+      else if (this.$util.isDeflate(this.content)) {
+        return this.changeViewer('Deflate');
       }
       // hex
       else if (!this.contentVisible) {

@@ -21,16 +21,16 @@ export default {
         return formatStr;
       }
 
-      return 'Zlib Brotli Parse Failed!';
+      return 'Zlib Gzip Parse Failed!';
     },
     formatStr() {
-      return this.$util.zippedToString(this.content, 'brotli');
+      return this.$util.zippedToString(this.content, 'gzip');
     },
   },
   methods: {
     getContent() {
       const content = this.$refs.editor.getRawContent(true);
-      return zlib.brotliCompressSync(content);
+      return zlib.gzipSync(content);
     },
     copyContent() {
       return this.formatStr;

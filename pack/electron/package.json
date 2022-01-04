@@ -1,6 +1,6 @@
 {
   "name": "another-desktop-manager",
-  "version": "1.5.0",
+  "version": "1.5.1",
   "description": "A faster, better and more stable redis desktop manager.",
   "author": "Another",
   "private": true,
@@ -33,7 +33,7 @@
       "releaseType": "prerelease"
     }],
     "win": {
-      "icon": "icons/icon.png",
+      "icon": "icons/icon.ico",
       "target": [
         "nsis"
       ]
@@ -45,7 +45,7 @@
       "allowElevation": false
     },
     "linux": {
-      "icon": "icons/",
+      "icon": "icons/icon.png",
       "category": "Utility",
       "target": [
         "AppImage"
@@ -55,7 +55,7 @@
       "plugs": ["default", "ssh-keys"]
     },
     "mac": {
-      "icon": "icons/icon.icns",
+      "icon": "icons/icon.png",
       "type": "development",
       "category": "public.app-category.developer-tools",
       "target": [

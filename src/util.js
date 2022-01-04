@@ -95,9 +95,10 @@ export default {
   },
   isMsgpack(buf) {
     const decode = require('@msgpack/msgpack').decode;
+
     try {
       const result = decode(buf);
-      if (typeof result === 'object') {
+      if (['object', 'string'].includes(typeof result)) {
         return true;
       }
     }
@@ -106,20 +107,32 @@ export default {
     return false;
   },
   isBrotli(buf) {
-    const str = this.brotliToString(buf);
-
-    return typeof str === 'string';
+    return typeof this.zippedToString(buf, 'brotli') === 'string'
   },
-  brotliToString(buf) {
-    const decompress = require('brotli/decompress');
+  isGzip(buf) {
+    return typeof this.zippedToString(buf, 'gzip') === 'string';
+  },
+  isDeflate(buf) {
+    return typeof this.zippedToString(buf, 'deflate') === 'string';
+  },
+  zippedToString(buf, type = 'unzip') {
+    const zlib   = require('zlib');
+    const funMap = {
+      // unzip will automatically detect Gzip or Deflate header
+      'unzip': 'unzipSync',
+      'gzip': 'gunzipSync',
+      'deflate': 'inflateSync',
+      'brotli': 'brotliDecompressSync',
+    };
+
     try {
-      // unit8array
-      let decompressed = decompress(buf);
-      
-      if ((typeof decompressed === 'object') && decompressed.length) {
-        return Buffer.from(decompressed).toString();
+      const decompressed = zlib[funMap[type]](buf);
+
+      if (Buffer.isBuffer(decompressed) && decompressed.length) {
+        return decompressed.toString();
       }
-    }catch (e) {}
+    }
+    catch (e) {}
 
     return false;
   },

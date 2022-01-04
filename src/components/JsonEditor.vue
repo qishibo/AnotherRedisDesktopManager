@@ -59,6 +59,17 @@ export default {
 
       return Buffer.from(JSONbig.stringify(JSONbig.parse(content), null, 0));
     },
+    getRawContent(removeJsonSpace = false) {
+      let content = this.monacoEditor.getValue();
+      
+      if (removeJsonSpace) {
+        if (this.$util.isJson(content)) {
+          content = JSONbig.stringify(JSONbig.parse(content), null, 0);
+        }
+      }
+
+      return content;
+    },
     toggleCollapse() {
       this.collapseText == 'expand_all' ? this.monacoEditor.trigger('fold', 'editor.unfoldAll') :
                                           this.monacoEditor.trigger('fold', 'editor.foldAll');
