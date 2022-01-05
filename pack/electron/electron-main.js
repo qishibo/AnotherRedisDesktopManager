@@ -1,18 +1,37 @@
 // Modules to control application life and create native browser window
-const { app, BrowserWindow, Menu, ipcMain } = require('electron');
+const { app, BrowserWindow, Menu, ipcMain, dialog } = require('electron');
 const fontManager = require('./font-manager');
 const winState = require('./win-state');
 
 
 global.APP_ENV = (process.env.NODE_ENV === 'dev') ? 'dev' : 'production';
 
-if (APP_ENV === 'production') {
-  require('./update')();
-}
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow;
+
+// handle uncaught exception
+process.on('uncaughtException', (err, origin) => {
+  if (!err) {
+    return;
+  }
+
+  dialog.showMessageBoxSync(mainWindow, {
+    type: 'error',
+    title: 'Whoops! Uncaught Exception', 
+    message: err.stack,
+    detail: '\nDon\'t worry, I will fix it! 😎😎\n\n'
+            + 'Submit issue to: \nhttps://github.com/qishibo/AnotherRedisDesktopManager/'
+  });
+
+  process.exit();
+});
+
+// auto update
+if (APP_ENV === 'production') {
+  require('./update')();
+}
 
 function createWindow() {
   // get last win stage
