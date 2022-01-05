@@ -58,6 +58,7 @@
 
 ## Feature Log
 
+- 2022-01-05: Support to load all keys
 - 2022-01-01: Brotli\Gzip\Deflate Support && RedisJSON Support
 - 2021-11-26: JSON Editable && Subscribe Support
 - 2021-08-30: Execution log Support && Add Hot Keys
