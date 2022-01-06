@@ -29,6 +29,7 @@ export default {
       patternKeys: [],
       loadingScan: false,
       loadingDelete: false,
+      scanStreams: [],
     };
   },
   props: ['client', 'rule', 'hotKeyScope'],
@@ -77,6 +78,7 @@ export default {
         }
 
         let stream = node.scanBufferStream(scanOption);
+        this.scanStreams.push(stream);
 
         stream.on('data', keys => {
           this.patternKeys = this.patternKeys.concat(keys.sort());
@@ -142,6 +144,13 @@ export default {
   },
   beforeDestroy() {
     this.$shortcut.deleteScope(this.hotKeyScope);
+    
+    // cancel scanning
+    if (this.scanStreams.length) {
+      for (let stream of this.scanStreams) {
+        stream.pause && stream.pause();
+      }
+    }
   },
 };
 </script>
