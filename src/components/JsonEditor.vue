@@ -217,4 +217,12 @@ export default {
   .dark-mode #monaco-editor-con .mtk9 {
     color: #b6b6b9;
   }
+
+  /* common string in json editor*/
+  #monaco-editor-con .mtk1 {
+    color: #606266;
+  }
+  .dark-mode #monaco-editor-con .mtk1 {
+    color: #f3f3f4;
+  }
 </style>
