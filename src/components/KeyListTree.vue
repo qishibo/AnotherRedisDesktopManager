@@ -285,11 +285,6 @@ export default {
         this.setting,
         nodes
       );
-
-      // remove animination when too many nodes
-      if (nodes.length > 2000) {
-        this.ztreeObj.setting.view.expandSpeed = '';
-      }
     },
     reCheckNodes(nodes = []) {
       if (!nodes || !nodes.length) {
@@ -321,6 +316,11 @@ export default {
         this.$util.keysToTree(newList, this.separator, this.openStatus) :
         this.$util.keysToList(newList)
       );
+
+      // remove animination when too many nodes
+      if (newList.length > 9000) {
+        this.ztreeObj && (this.ztreeObj.setting.view.expandSpeed = '');
+      }
 
       // recheck checked nodes
       this.reCheckNodes(checkedNodes);
