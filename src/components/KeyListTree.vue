@@ -229,25 +229,50 @@ export default {
       event && (event.ctrlKey || event.metaKey) && (newTab = true);
       this.$bus.$emit('clickedKey', this.client, key, newTab);
     },
+    // modify ztree struct
     addDiyDom(treeId, treeNode) {
       const spaceWidth = 5;
-      const switchObj = $("#" + treeNode.tId + "_switch");
-      const icoObj = $("#" + treeNode.tId + "_ico");
-      const checkObj = $("#" + treeNode.tId + "_check");
-      // checkObj.remove();
-      icoObj.before(checkObj);
-      // switchObj.remove();
-      icoObj.before(switchObj);
+      const tId = treeNode.tId;
 
-      // show key count
-      if (treeNode.children) {
-        icoObj.after(`<span class='key-list-count'>(${treeNode.keyCount}) </span>`)
+      const icoObj = document.getElementById(`${tId}_ico`);
+      const checkObj = document.getElementById(`${tId}_check`);
+      const switchObj = document.getElementById(`${tId}_switch`);
+
+      // folder node
+      if (treeNode.isParent) {
+        icoObj.before(checkObj);
+        icoObj.before(switchObj);
+
+        // key count
+        const countObj = document.createElement('span');
+        countObj.setAttribute('class', 'key-list-count');
+        countObj.innerHTML = `(${treeNode.keyCount})`
+        icoObj.after(countObj)
+
+        // folder indent
+        if (treeNode.level > 0) {
+          const spaceObj = document.createElement('span');
+          spaceObj.setAttribute('style', `display:inline-block;width:${spaceWidth * treeNode.level}px`);
+          switchObj.before(spaceObj);
+        }
       }
 
-      // folder indent
-      if (treeNode.level >= 1) {
-        const spaceStr = "<span style='display: inline-block;width:" + (spaceWidth * treeNode.level)+ "px'></span>";
-        switchObj.before(spaceStr);
+      // key node
+      else {
+        // text span
+        const spanObj = document.getElementById(`${tId}_span`);
+        spanObj.before(checkObj);
+
+        // key node remove icon and switch
+        icoObj.remove();
+        switchObj.remove();
+
+        // key in foleder, add indent
+        if (treeNode.level > 0) {
+          const spaceObj = document.createElement('span');
+          spaceObj.setAttribute('style', `display:inline-block;width:${spaceWidth * (treeNode.level + 2)}px`);
+          spanObj.before(spaceObj);
+        }
       }
     },
     treeRefresh(nodes) {
@@ -292,6 +317,11 @@ export default {
         this.$util.keysToList(newList)
       );
 
+      // remove animination when too many nodes
+      if (newList.length > 9000) {
+        this.ztreeObj && (this.ztreeObj.setting.view.expandSpeed = '');
+      }
+
       // recheck checked nodes
       this.reCheckNodes(checkedNodes);
 
@@ -323,9 +353,13 @@ export default {
   width: 100%;
   height: 22px;
   padding: 0;
-  line-height: normal;
+  line-height: 22px;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+/*overwrite ztree span margin, default is 2px*/
+.ztree li span {
+  margin-right: 0;
 }
 .dark-mode .ztree li a {
   color: #f7f7f7;
@@ -346,7 +380,7 @@ export default {
   background: #50616b;
 }
 
-/*checkbox && folder icon*/
+/*checkbox icon*/
 .ztree li span.button {font-size: 115%; background-image: url("../assets/custom_tree.png"); vertical-align: middle;}
 
 /*toggle switch*/
@@ -357,26 +391,22 @@ export default {
 /*.ztree li span.button.noline_open.level0 {background-position: 0 -18px;}
 .ztree li span.button.noline_close.level0 {background-position: -18px -18px;}*/
 
-/*folder icon*/
-.ztree li span.button.ico_close, .ztree li span.button.ico_open {
-  margin-right: 5px;
-  background-image: none;
-  /*background-position: 200px 0px;*/
-}
-/*key node remove icon*/
-.ztree li span.button.ico_docu {
-  display: none;
-}
-/*hide key node switch icon*/
-.ztree li span.button.noline_docu {
-  background-image: none;
-}
-/*keys in level0, switch icon*/
-.ztree li span.button.level0.noline_docu {
-  width: 10px;
+
+/*node text*/
+.ztree li span.node_name {
+  margin-left: 5px;
 }
 
-/*folder icon*/
+
+/*folder font icon*/
+.ztree li span.button.ico_open {
+  line-height: 4px;
+  background-image: none;
+}
+.ztree li span.button.ico_close {
+  line-height: 4px;
+  background-image: none;
+}
 .ztree li span.button.ico_open::before {
   content: "\f07c";
 }
@@ -399,6 +429,7 @@ export default {
   color: #848a90;
   float: right;
   line-height: 22px;
+  margin-right: 2px;
 }
 .dark-mode .ztree .key-list-count {
   color: #a3a6ad;
