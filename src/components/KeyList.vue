@@ -7,26 +7,29 @@
       :client="client"
       :keyList="keyList">
     </component>
+    
+    <div class='keys-load-more-wrapper'>
       <!-- load more -->
-      <div class='buttonsWrapper'>
-        <el-button
-          ref='scanMoreBtn'
-          class='load-more-keys'
-          :disabled='scanMoreDisabled'
-          @click='refreshKeyList(false)'>
-          {{ $t('message.load_more_keys') }}
-        </el-button>
+      <el-button
+        ref='scanMoreBtn'
+        class='load-more-keys'
+        :disabled='scanMoreDisabled || searching'
+        @click='refreshKeyList(false)'>
+        {{ $t('message.load_more_keys') }}
+      </el-button>
 
-        <!-- load all -->
-        <el-button
-          ref='scanAllBtn'
-          class='load-more-keys'
-          type= 'danger'
-          @click='loadAllKeys()'
-          v-show='canLoadAllKeys'>
-          {{ $t('message.load_all_keys') }}
-        </el-button>
-      </div>
+      <!-- load all -->
+      <el-button
+        ref='scanAllBtn'
+        class='load-more-keys'
+        type= 'danger'
+        :title="$t('message.load_all_keys_tip')"
+        :disabled='searching'
+        @click='loadAllKeys()'
+        v-if='showLoadAllKeys'>
+        {{ $t('message.load_all_keys') }}
+      </el-button>
+    </div>
   </div>
 </template>
 
@@ -55,8 +58,11 @@ export default {
       let keysPageSize = parseInt(this.globalSettings['keysPageSize']);
       return keysPageSize ? keysPageSize : 500;
     },
-    canLoadAllKeys(){
-        return this.globalSettings['canLoadAllKeys'];
+    showLoadAllKeys(){
+        return this.globalSettings['showLoadAllKeys'];
+    },
+    searching() {
+      return this.$parent.$parent.$parent.$refs.operateItem.searchIcon == 'el-icon-loading';
     },
   },
   created() {
@@ -112,14 +118,15 @@ export default {
       }
     },
     loadAllKeys(){
+      this.resetKeyList();
       this.$parent.$parent.$parent.$refs.operateItem.searchIcon = 'el-icon-loading';
       this.initScanStreamsAndScan(true);
     },
     initScanStreamsAndScan(loadAll = false) {
       let nodes = this.client.nodes ? this.client.nodes('master') : [this.client];
+      let keysPageSize = loadAll ? 50000 : this.keysPageSize;
       this.scanningCount = nodes.length;
 
-      let keysPageSize = loadAll ? 50000 : this.keysPageSize;
       nodes.map(node => {
         let scanOption = {
           match: this.getMatchMode(),
@@ -145,6 +152,7 @@ export default {
             // last node refresh keylist
             if (++this.onePageFinishedCount >= this.scanningCount) {
               // clear key list only after data scaned, to prevent list jitter
+              // empty keyList only when first click, if click 'load more' again, do not empty it
               if (!this.firstPageFinished) {
                 this.firstPageFinished = true;
                 this.keyList = [];
@@ -187,6 +195,7 @@ export default {
           // all nodes scan finished(cusor back to 0)
           if (--this.scanningCount <= 0) {
             // clear key list only after data scaned, to prevent list jitter
+            // empty keyList only when first click, if click 'load more' again, do not empty it
             if (!this.firstPageFinished) {
               this.firstPageFinished = true;
               this.keyList = [];
@@ -203,6 +212,13 @@ export default {
       });
     },
     resetKeyList(clearKeys = false) {
+      // cancel scanning
+      if (this.scanStreams.length) {
+        for (let stream of this.scanStreams) {
+          stream.pause && stream.pause();
+        }
+      }
+
       clearKeys && (this.keyList = []);
       this.firstPageFinished = false;
       this.scanStreams = [];
@@ -278,15 +294,16 @@ export default {
 </script>
 
 <style type="text/css">
-  .load-more-keys {
-    margin: 10px auto;
-    display: block;
-    height: 20px;
-    width: 100%;
-    font-size: 75%;
-    line-height: 1px;
-  }
-  .buttonsWrapper {
+  .keys-load-more-wrapper {
     display: flex;
   }
+  .keys-load-more-wrapper .load-more-keys {
+    margin: 10px 5px;
+    display: block;
+    height: 22px;
+    width: 100%;
+    font-size: 75%;
+    line-height: 3px;
+  }
+
 </style>

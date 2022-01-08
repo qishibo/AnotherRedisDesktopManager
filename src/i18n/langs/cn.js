@@ -146,7 +146,8 @@ const cn = {
     minimize_window: '最小化窗口',
     maximize_window: '最大化窗口',
     load_all_keys: '加载所有',
-    can_load_all_keys: '启用按钮以加载所有键',
+    show_load_all_keys: '启用按钮以加载所有键',
+    load_all_keys_tip: '一次性加载所有key，当key的数量过多时，有可能会导致客户端卡顿甚至崩溃，请酌情使用',
   },
 };
 

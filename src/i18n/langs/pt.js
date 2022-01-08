@@ -93,7 +93,7 @@ const pt = {
     private_key_faq: 'A chave privada de formato RSA é compatível e começa com <pre>-----BEGIN RSA PRIVATE KEY-----</pre>\
     mas se começar com<pre>-----BEGIN OPENSSH PRIVATE KEY-----</pre>você precisa converter o formato via <pre>ssh-keygen -p -m pem -f ~/.ssh/id_rsa</pre>Esta operação não afetará o login de chave privada anterior',
     dark_mode: 'Modo noturno',
-    load_more_keys: 'Carregar mais chaves',
+    load_more_keys: 'carregar mais',
     key_name: 'Nome da Chave',
     project_home: 'Home do Projeto',
     cluster_faq: 'Selecione qualquer nó no cluster para preencher e outros nós serão identificados automaticamente.',
@@ -145,8 +145,9 @@ const pt = {
     hide_window: 'Ocultar janela',
     minimize_window: 'Minimize a janela',
     maximize_window: 'Maximize a janela',
-    load_all_keys: 'carregar todas',
-    can_load_all_keys: 'Habilite o botão para carregar todas as chaves',
+    load_all_keys: 'carregar tudo',
+    show_load_all_keys: 'Habilite o botão para carregar todas as chaves',
+    load_all_keys_tip: 'Carregue todas as chaves de uma vez. Se o número de chaves for muito grande, o cliente pode ficar preso ou até travar. Por favor, use-o corretamente',
   },
 };
 

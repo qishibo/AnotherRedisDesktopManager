@@ -145,8 +145,9 @@ const fr = {
     hide_window: 'Masquer la fenêtre',
     minimize_window: 'Réduire la fenêtre',
     maximize_window: 'Agrandir la fenêtre',
-    load_all_keys: 'tout charger',
-    can_load_all_keys: 'Activer le bouton pour charger toutes les clés',
+    load_all_keys: 'charger tout',
+    show_load_all_keys: 'Activer le bouton pour charger toutes les clés',
+    load_all_keys_tip: 'Chargez toutes les clés en même temps. Si le nombre de clés est trop important, le client peut rester bloqué ou même planter. Veuillez l\'utiliser correctement',
   },
 };
 

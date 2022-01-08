@@ -146,7 +146,8 @@ const de = {
     minimize_window: 'Fenster minimieren',
     maximize_window: 'Fenster maximieren',
     load_all_keys: 'alle laden',
-    can_load_all_keys: 'Schaltfläche aktivieren, um alle Schlüssel zu laden',
+    show_load_all_keys: 'Schaltfläche aktivieren, um alle Schlüssel zu laden',
+    load_all_keys_tip: 'Laden Sie alle Schlüssel gleichzeitig. Wenn die Anzahl der Schlüssel zu groß ist, kann der Client stecken bleiben oder sogar abstürzen. Bitte verwenden Sie es richtig',
   },
 };
 

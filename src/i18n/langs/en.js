@@ -146,7 +146,8 @@ const en = {
     minimize_window: 'Minimize window',
     maximize_window: 'Maximize window',
     load_all_keys: 'load all',
-    can_load_all_keys: 'Enable button to load all keys',
+    show_load_all_keys: 'Enable button to load all keys',
+    load_all_keys_tip: 'Load all keys at one time. If the number of keys is too large, the client may get stuck or even crash. Please use it correctly',
   },
 };
 

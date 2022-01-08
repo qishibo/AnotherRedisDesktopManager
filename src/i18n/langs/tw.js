@@ -145,8 +145,9 @@ const tw = {
     hide_window: '隱藏窗口',
     minimize_window: '最小化窗口',
     maximize_window: '最大化窗口',
-    load_all_keys: '加載所有',
-    can_load_all_keys: '啟用按鈕以加載所有鍵',
+    load_all_keys: '載入所有',
+    show_load_all_keys: '啟用按鈕以加載所有鍵',
+    load_all_keys_tip: '一次載入所有密鑰。如果密鑰數量過多，客戶端可能會卡住甚至崩潰，請正確使用',
   },
 };
 
