@@ -55,7 +55,7 @@
       "plugs": ["default", "ssh-keys"]
     },
     "mac": {
-      "icon": "icons/icon.png",
+      "icon": "icons/icon.icns",
       "type": "development",
       "category": "public.app-category.developer-tools",
       "target": [
