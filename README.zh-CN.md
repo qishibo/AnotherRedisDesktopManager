@@ -30,7 +30,7 @@
 
 - 通过 **brew**: `brew install --cask another-redis-desktop-manager`
 - 或者通过App Store**赞助**, 然后让App Store帮你自动更新版本
-<br/>[![app store](https://cdn.jsdelivr.net/gh/qishibo/img/202109031654242.png)](https://apps.apple.com/app/id1516451072)
+<br/>[![app store](https://cdn.jsdelivr.net/gh/qishibo/img/avail_app_store180.svg)](https://apps.apple.com/app/id1516451072)
 
 <!--
 > If **Mac** warning `Another Desktop Manager can't be opened because it is from an unidentified developer`. Open `Settings->Security` and click **`Open Anyway`**
@@ -171,7 +171,7 @@ npm run pack:linux
 - 通过 [OpenCollective](https://opencollective.com/AnotherRedisDesktopManager)
 - 如果你是Mac用户, 也可以通过从[App Store](https://apps.apple.com/app/id1516451072)购买来赞助, 然后应用商店会为你自动更新
 
-  [![app store](https://cdn.jsdelivr.net/gh/qishibo/img/202109031654242.png)](https://apps.apple.com/app/id1516451072)
+  [![app store](https://cdn.jsdelivr.net/gh/qishibo/img/avail_app_store180.svg)](https://apps.apple.com/app/id1516451072)
 - 微信赞助码 [觉得好用，赞助一袋大白兔🐇奶糖!]
 
   <img width="150px" src="https://cdn.jsdelivr.net/gh/qishibo/img/202109031655807.jpeg" />
