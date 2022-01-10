@@ -69,6 +69,12 @@ export default {
 
             // folder clicked
             if (treeNode.children) {
+              // sort nodes async, only after opened
+              if (!treeNode.openSorted) {
+                this.$util.sortKeysAndFolder(treeNode.children);
+                treeNode.openSorted = true;
+              }
+
               // toggle tree view
               this.ztreeObj && this.ztreeObj.expandNode(treeNode, undefined, false, false);
 
@@ -277,8 +283,6 @@ export default {
     },
     treeRefresh(nodes) {
       this.ztreeObj && this.ztreeObj.destroy();
-      // folder keep in front
-      this.$util.sortNodes(nodes);
 
       this.ztreeObj = $.fn.zTree.init(
         $(`#${this.treeId}`),
@@ -311,11 +315,23 @@ export default {
       let checkedNodes = [];
       this.ztreeObj && (checkedNodes = this.ztreeObj.getCheckedNodes(true));
 
-      this.treeRefresh(
-        this.separator ?
+      const keyNodes = this.separator ?
         this.$util.keysToTree(newList, this.separator, this.openStatus) :
-        this.$util.keysToList(newList)
-      );
+        this.$util.keysToList(newList);
+
+      // nodes displayed in outest layer [not include keys collapsed], to much may stuck the tree
+      if (keyNodes.length > 30000) {
+        this.$message.warning({
+          message: "Too mang keys found, this may cause client crash!" + 
+                   "<br>You'd better set a <b>separator</b> to put keys into folder to reduce nodes.",
+          dangerouslyUseHTMLString: true,
+          duration: 6000,
+        });
+
+        return;
+      }
+
+      this.treeRefresh(keyNodes);
 
       // remove animination when too many nodes
       if (newList.length > 9000) {
@@ -324,7 +340,6 @@ export default {
 
       // recheck checked nodes
       this.reCheckNodes(checkedNodes);
-
       // only 1 key such as extract search, expand all
       if (newList.length <= 1) {
         this.ztreeObj && this.ztreeObj.expandAll(true);

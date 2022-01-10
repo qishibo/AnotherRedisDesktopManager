@@ -193,7 +193,12 @@ export default {
       });
     });
 
-    return this.formatTreeData(tree, '', openStatus, separator)
+    // to tree format
+    const treeData = this.formatTreeData(tree, '', openStatus, separator);
+    // sort layer0(outest layer)
+    this.sortKeysAndFolder(treeData);
+
+    return treeData;
   },
   formatTreeData(tree, previousKey = '', openStatus = {}, separator = ':') {
     return Object.keys(tree).map(key => {
@@ -203,8 +208,9 @@ export default {
         let tillNowKeyName = previousKey + key + separator;
         node.open     = !!openStatus[tillNowKeyName];
         node.children = this.formatTreeData(tree[key], tillNowKeyName, openStatus, separator);
-        // keep folder node in top of the tree(not include the outest list)
-        this.sortNodes(node.children);
+        // keep folder node in front of the tree and sorted(not include the outest list)
+        // async sort, only for opened folders
+        node.open && this.sortKeysAndFolder(node.children);
         node.keyCount = node.children.reduce((a, b) => a + (b.keyCount || 0), 0);
         node.fullName = tillNowKeyName;
       }
@@ -217,14 +223,27 @@ export default {
       return node;
     });
   },
-  // nodes is reference
-  sortNodes(nodes) {
+  // nodes is reference, keep folder in front and sorted, 
+  // keep keys in tail and sorted
+  sortKeysAndFolder(nodes) {
     nodes.sort(function(a, b) {
-      if (a.children && b.children) {
-        return 0;
+      // a & b are all keys
+      if (!a.children && !b.children) {
+        return a.name > b.name ? 1 : -1;
       }
-
-      return a.children ? -1 : (b.children ? 1 : 0);
+      // a & b are all folder
+      else if (a.children && b.children) {
+        return a.name > b.name ? 1 : -1;
+      }
+      
+      // a is folder, b is key
+      else if (a.children) {
+        return -1;
+      }
+      // a is key, b is folder
+      else {
+        return 1;
+      }
     });
   },
   copyToClipboard(text) {

@@ -23,6 +23,7 @@
         ref='scanAllBtn'
         class='load-more-keys'
         type= 'danger'
+        :icon="searching ? 'el-icon-loading' : ''"
         :title="$t('message.load_all_keys_tip')"
         :disabled='searching'
         @click='loadAllKeys()'
@@ -59,7 +60,7 @@ export default {
       return keysPageSize ? keysPageSize : 500;
     },
     showLoadAllKeys(){
-        return this.globalSettings['showLoadAllKeys'];
+      return this.globalSettings['showLoadAllKeys'];
     },
     searching() {
       return this.$parent.$parent.$parent.$refs.operateItem.searchIcon == 'el-icon-loading';
@@ -159,7 +160,7 @@ export default {
               }
 
               // this page key list append to raw key list
-              this.keyList = this.keyList.concat(this.onePageList.sort());
+              this.keyList = this.keyList.concat(this.onePageList);
             }
           }
         });
@@ -202,8 +203,7 @@ export default {
             }
 
             // this page key list append to raw key list
-            this.keyList = this.keyList.concat(this.onePageList.sort());
-
+            this.keyList = this.keyList.concat(this.onePageList);
             this.scanMoreDisabled = true;
             // search input icon recover
             this.$parent.$parent.$parent.$refs.operateItem.searchIcon = 'el-icon-search';
@@ -213,11 +213,7 @@ export default {
     },
     resetKeyList(clearKeys = false) {
       // cancel scanning
-      if (this.scanStreams.length) {
-        for (let stream of this.scanStreams) {
-          stream.pause && stream.pause();
-        }
-      }
+      this.cancelScanning();
 
       clearKeys && (this.keyList = []);
       this.firstPageFinished = false;
@@ -236,6 +232,13 @@ export default {
       });
 
       this.scanMoreDisabled = true;
+    },
+    cancelScanning() {
+      if (this.scanStreams.length) {
+        for (let stream of this.scanStreams) {
+          stream.pause && stream.pause();
+        }
+      }
     },
     getMatchMode(fillStar = true) {
       let match = this.$parent.$parent.$parent.$refs.operateItem.searchMatch;
@@ -299,11 +302,11 @@ export default {
   }
   .keys-load-more-wrapper .load-more-keys {
     margin: 10px 5px;
+    padding: 0;
     display: block;
     height: 22px;
     width: 100%;
     font-size: 75%;
-    line-height: 3px;
   }
 
 </style>

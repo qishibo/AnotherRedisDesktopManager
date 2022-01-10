@@ -70,7 +70,7 @@
     </el-form-item>
 
     <!-- new key dialog -->
-    <el-dialog :title="$t('message.add_new_key')" :visible.sync="newKeyDialog">
+    <el-dialog :title="$t('message.add_new_key')" :visible.sync="newKeyDialog" :close-on-click-modal='false'>
       <el-form label-position="top" size="mini">
         <el-form-item :label="$t('message.key_name')">
           <el-input v-model='newKeyName'></el-input>

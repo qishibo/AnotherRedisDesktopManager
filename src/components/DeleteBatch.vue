@@ -74,7 +74,7 @@ export default {
       nodes.map(node => {
         let scanOption = {
           match: pattern + '*',
-          count: 7000,
+          count: 50000,
         }
 
         let stream = node.scanBufferStream(scanOption);
