@@ -6,6 +6,7 @@ const en = {
     del_connection: 'Delete Connection',
     close_connection: 'Close Connection',
     add_new_line: 'Add New Line',
+    dump_to_clipboard: "Dump Command To Clipboard",
     redis_version: 'Redis Version',
     process_id: 'Process ID',
     used_memory: 'Used Memory',
