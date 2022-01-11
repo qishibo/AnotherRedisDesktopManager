@@ -6,6 +6,7 @@ const ru = {
     del_connection: 'Удалить подключение',
     close_connection: 'Закрыть соединение',
     add_new_line: 'Добавить новую строку',
+    dump_to_clipboard: "команда dump в буфер обмена",
     redis_version: 'Версия Redis',
     process_id: 'ID процесса',
     used_memory: 'Использовано памяти',

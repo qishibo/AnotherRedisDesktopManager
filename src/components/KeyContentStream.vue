@@ -14,6 +14,9 @@
         <el-form-item label="Min">
           <el-input v-model="minId" @keyup.enter.native='initShow' type="primary" placeholder='Min ID, default -' :title='$t("message.enter_to_search")'>Min</el-input>
         </el-form-item>
+        <el-form-item>
+          <el-button icon="el-icon-download" size="small" type="primary" @click='dumpToClipboard()'>{{ $t('message.dump_to_clipboard') }}</el-button>
+        </el-form-item>
       </el-form>
 
       <!-- edit & add dialog -->
@@ -71,6 +74,7 @@
           <el-button type="text" @click="$util.copyToClipboard(JSON.stringify(scope.row.content))" icon="el-icon-document" :title="$t('message.copy')"></el-button>
           <el-button type="text" @click="showEditDialog(scope.row)" icon="el-icon-view" :title="$t('message.detail')"></el-button>
           <el-button type="text" @click="deleteLine(scope.row)" icon="el-icon-delete" :title="$t('el.upload.delete')"></el-button>
+          <el-button type="text" @click="dumpToClipboard(scope.row)" icon="el-icon-download" :title="$t('message.dump_to_clipboard')"></el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -184,6 +188,24 @@ export default {
       this.editLineItem = row;
       this.beforeEditItem = this.$util.cloneObjWithBuff(row);
       this.editDialog = true;
+    },
+    dumpToClipboard(item) {
+      if (item) {
+        this.$util.copyToClipboard(this.dumpItemCommand(item));
+      } else if (this.lineData && this.lineData.length > 0) {
+        let copyLineData = [];
+        copyLineData = this.lineData.map(item => {
+          return this.dumpItemCommand(item);
+        });
+        this.$util.copyToClipboard(copyLineData.join('\n'));
+      }
+    },
+    dumpItemCommand(item) {
+      let fieldValList = [];
+      for (let field in item.content) {
+        fieldValList.push(field, item.content[field]);
+      }
+      return "xadd " + this.redisKey + " " + String(this.$util.bufToString(item.id)).split('-')[0] + " " + fieldValList.join(" ");
     },
     editLine() {
       const afterId = this.editLineItem.id
