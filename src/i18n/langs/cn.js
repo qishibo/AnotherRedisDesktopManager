@@ -6,6 +6,7 @@ const cn = {
     del_connection: '删除连接',
     close_connection: '关闭连接',
     add_new_line: '添加新行',
+    dump_to_clipboard: "dump命令到剪贴板",
     redis_version: 'Redis版本',
     process_id: '进程ID',
     used_memory: '已用内存',

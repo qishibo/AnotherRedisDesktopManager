@@ -6,6 +6,7 @@ const tr = {
     del_connection: 'Bağlantıyı Sil',
     close_connection: 'Bağlantıyı Kapat',
     add_new_line: 'Yeni Satır Ekle',
+    dump_to_clipboard: "Komutu tahta atma",
     redis_version: 'Redis Sürümü',
     process_id: 'Süreç Kimliği',
     used_memory: 'Kullanılan Bellek',
