@@ -148,6 +148,7 @@ const tr = {
     load_all_keys: 'hepsini yükle',
     show_load_all_keys: 'Tüm anahtarları yüklemek için etkinleştir düğmesi',
     load_all_keys_tip: 'Tüm anahtarları bir kerede yükleyin. Anahtar sayısı çok fazlaysa, istemci takılabilir ve hatta çökebilir. Lütfen doğru kullanın',
+    tree_node_overflow: 'Çok fazla anahtar veya klasör var, yalnızca {num} görüntüleme için ayrıldı. Anahtarınız burada değilse bulanık arama önerilir, veya anahtarı klasöre yaymak için bir ayırıcı ayarlayın',
   },
 };
 

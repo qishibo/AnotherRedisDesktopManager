@@ -168,7 +168,7 @@ export default {
       };
     });
   },
-  keysToTree(keys, separator = ':', openStatus = {}) {
+  keysToTree(keys, separator = ':', openStatus = {}, forceCut = 20000) {
     let tree = {};
     keys.forEach(key => {
       let currentNode = tree;
@@ -194,24 +194,22 @@ export default {
     });
 
     // to tree format
-    const treeData = this.formatTreeData(tree, '', openStatus, separator);
-    // sort layer0(outest layer)
-    this.sortKeysAndFolder(treeData);
-
-    return treeData;
+    return this.formatTreeData(tree, '', openStatus, separator, forceCut);
   },
-  formatTreeData(tree, previousKey = '', openStatus = {}, separator = ':') {
+  formatTreeData(tree, previousKey = '', openStatus = {}, separator = ':', forceCut = 20000) {
     return Object.keys(tree).map(key => {
       let node = { name: key};
 
       if (!tree[key].keyNode && Object.keys(tree[key]).length > 0) {
         let tillNowKeyName = previousKey + key + separator;
         node.open     = !!openStatus[tillNowKeyName];
-        node.children = this.formatTreeData(tree[key], tillNowKeyName, openStatus, separator);
+        node.children = this.formatTreeData(tree[key], tillNowKeyName, openStatus, separator, forceCut);
+        node.keyCount = node.children.reduce((a, b) => a + (b.keyCount || 0), 0);
+        // too many children, force cut, do not incluence keyCount display
+        node.open && node.children.length > forceCut && node.children.splice(forceCut);
         // keep folder node in front of the tree and sorted(not include the outest list)
         // async sort, only for opened folders
         node.open && this.sortKeysAndFolder(node.children);
-        node.keyCount = node.children.reduce((a, b) => a + (b.keyCount || 0), 0);
         node.fullName = tillNowKeyName;
       }
       else {

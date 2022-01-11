@@ -148,6 +148,7 @@ const de = {
     load_all_keys: 'alle laden',
     show_load_all_keys: 'Schaltfläche aktivieren, um alle Schlüssel zu laden',
     load_all_keys_tip: 'Laden Sie alle Schlüssel gleichzeitig. Wenn die Anzahl der Schlüssel zu groß ist, kann der Client stecken bleiben oder sogar abstürzen. Bitte verwenden Sie es richtig',
+    tree_node_overflow: 'Zu viele Schlüssel oder Ordner, behalten Sie nur {num} für die Anzeige. Wenn Ihr Schlüssel nicht hier ist, wird eine unscharfe Suche empfohlen, oder den Trenner setzen, um die Schlüssel in Ordner zu verteilen',
   },
 };
 

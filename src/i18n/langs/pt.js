@@ -148,6 +148,7 @@ const pt = {
     load_all_keys: 'carregar tudo',
     show_load_all_keys: 'Habilite o botão para carregar todas as chaves',
     load_all_keys_tip: 'Carregue todas as chaves de uma vez. Se o número de chaves for muito grande, o cliente pode ficar preso ou até travar. Por favor, use-o corretamente',
+    tree_node_overflow: 'Muitas teclas ou pastas, manter apenas {num} para exibição. Se a sua chave não está aqui, é recomendada a pesquisa difusa, ou configurar o separador para espalhar as chaves em pastas',
   },
 };
 

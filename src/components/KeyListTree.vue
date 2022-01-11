@@ -47,6 +47,7 @@ export default {
       openStatus: {},
       rightClickNode: {},
       multiOperating: false,
+      treeNodesOverflow: 20000,
       setting: {
         view: {
           showIcon: true,
@@ -69,10 +70,22 @@ export default {
 
             // folder clicked
             if (treeNode.children) {
-              // sort nodes async, only after opened
-              if (!treeNode.openSorted) {
+              if (!treeNode.asyncOperated) {
+                // force cut nodes
+                if (treeNode.children.length > this.treeNodesOverflow) {
+                  treeNode.children.splice(this.treeNodesOverflow);
+                  this.$nextTick(() => {
+                    this.$message.warning({
+                      message: this.$t('message.tree_node_overflow', {num: this.treeNodesOverflow}),
+                      duration: 4000
+                    });
+                  });
+                }
+
+                // sort nodes async, only after opened
                 this.$util.sortKeysAndFolder(treeNode.children);
-                treeNode.openSorted = true;
+                
+                treeNode.asyncOperated = true;
               }
 
               // toggle tree view
@@ -316,21 +329,24 @@ export default {
       this.ztreeObj && (checkedNodes = this.ztreeObj.getCheckedNodes(true));
 
       const keyNodes = this.separator ?
-        this.$util.keysToTree(newList, this.separator, this.openStatus) :
+        this.$util.keysToTree(newList, this.separator, this.openStatus, this.treeNodesOverflow) :
         this.$util.keysToList(newList);
 
-      // nodes displayed in outest layer [not include keys collapsed], to much may stuck the tree
-      if (keyNodes.length > 30000) {
-        this.$message.warning({
-          message: "Too mang keys found, this may cause client crash!" + 
-                   "<br>You'd better set a <b>separator</b> to put keys into folder to reduce nodes.",
-          dangerouslyUseHTMLString: true,
-          duration: 6000,
+      // nodes displayed in outermost layer
+      if (keyNodes.length > this.treeNodesOverflow) {
+        // force cut
+        keyNodes.splice(this.treeNodesOverflow);
+        // using nextTick to relieve msg missing caused by app stuck
+        this.$nextTick(() => {
+          this.$message.warning({
+            message: this.$t('message.tree_node_overflow', {num: this.treeNodesOverflow}),
+            duration: 6000,
+          });
         });
-
-        return;
       }
 
+      // sort outermost layer nodes
+      this.$util.sortKeysAndFolder(keyNodes);
       this.treeRefresh(keyNodes);
 
       // remove animination when too many nodes
