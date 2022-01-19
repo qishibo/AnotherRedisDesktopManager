@@ -6,7 +6,7 @@ const fr = {
     del_connection: 'Supprimer connexion',
     close_connection: 'Fermer connexion',
     add_new_line: 'Ajouter nouvelle ligne',
-    dump_to_clipboard: "Commande dump dans le presse - papiers",
+    dump_to_clipboard: "Copier en tant que commande",
     redis_version: 'Redis version',
     process_id: 'ID du processus',
     used_memory: 'Mémoire utilisée',

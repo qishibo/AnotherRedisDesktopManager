@@ -6,7 +6,7 @@ const tw = {
     del_connection: '刪除連線',
     close_connection: '關閉連線',
     add_new_line: '新增行',
-    dump_to_clipboard: "dump命令到剪貼板",
+    dump_to_clipboard: "複製為命令",
     redis_version: 'Redis 版本',
     process_id: '處理程序 ID',
     used_memory: '已使用記憶體',
