@@ -2,12 +2,9 @@
   <div>
     <div>
       <!-- add button -->
-      <el-form :inline="true" size="small">
+      <el-form :inline="true">
         <el-form-item>
-          <el-button size="small" type="primary" @click="showEditDialog({})">{{ $t('message.add_new_line') }}</el-button>
-        </el-form-item>
-        <el-form-item>
-          <el-button icon="el-icon-download" size="small" type="primary" @click='dumpToClipboard()'>{{ $t('message.dump_to_clipboard') }}</el-button>
+          <el-button type="primary" @click="showEditDialog({})">{{ $t('message.add_new_line') }}</el-button>
         </el-form-item>
       </el-form>
 
@@ -32,7 +29,6 @@
     <!-- content table -->
     <el-table
       stripe
-      size="small"
       border
       min-height=300
       :data="zsetData">
@@ -73,7 +69,7 @@
           <el-button type="text" @click="$util.copyToClipboard(scope.row.member)" icon="el-icon-document" :title="$t('message.copy')"></el-button>
           <el-button type="text" @click="showEditDialog(scope.row)" icon="el-icon-edit" :title="$t('message.edit_line')"></el-button>
           <el-button type="text" @click="deleteLine(scope.row)" icon="el-icon-delete" :title="$t('el.upload.delete')"></el-button>
-          <el-button type="text" @click="dumpToClipboard(scope.row)" icon="el-icon-download" :title="$t('message.dump_to_clipboard')"></el-button>
+          <el-button type="text" @click="dumpCommand(scope.row)" icon="fa fa-code" :title="$t('message.dump_to_clipboard')"></el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -244,19 +240,16 @@ export default {
       this.beforeEditItem = this.$util.cloneObjWithBuff(row);
       this.editDialog = true;
     },
-    dumpToClipboard(item) {
-      if (item) {
-        this.$util.copyToClipboard(this.dumpItemCommand(item));
-      } else if (this.zsetData && this.zsetData.length > 0) {
-        let copyZSetData = [];
-        copyZSetData = this.zsetData.map(item => {
-          return this.dumpItemCommand(item);
-        });
-        this.$util.copyToClipboard(copyZSetData.join('\n'));
-      }
-    },
-    dumpItemCommand(item) {
-      return "zadd " + this.redisKey + " " + item.score + " " + this.$util.bufToString(item.member);
+    dumpCommand(item) {
+      const lines = item ? [item] : this.zsetData;
+      const params = lines.map(line => {
+        return `${String(line.score)} ` +
+                this.$util.bufToQuotation(line.member);
+      });
+
+      const command = `ZADD ${this.$util.bufToQuotation(this.redisKey)} ${params.join(' ')}`;
+      this.$util.copyToClipboard(command);
+      this.$message.success({message: this.$t('message.copy_success'), duration: 800});
     },
     editLine() {
       const key = this.redisKey;

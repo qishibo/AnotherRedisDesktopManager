@@ -2,12 +2,9 @@
   <div>
     <div>
       <!-- add button -->
-      <el-form :inline="true" size="small">
+      <el-form :inline="true">
         <el-form-item>
-          <el-button size="small" type="primary" @click='showEditDialog({})'>{{ $t('message.add_new_line') }}</el-button>
-        </el-form-item>
-        <el-form-item>
-          <el-button icon="el-icon-download" size="small" type="primary" @click='dumpToClipboard()'>{{ $t('message.dump_to_clipboard') }}</el-button>
+          <el-button type="primary" @click='showEditDialog({})'>{{ $t('message.add_new_line') }}</el-button>
         </el-form-item>
       </el-form>
 
@@ -29,7 +26,6 @@
     <!-- content table -->
     <el-table
       stripe
-      size="small"
       border
       min-height=300
       :data="listData">
@@ -55,7 +51,7 @@
           <el-button type="text" @click="$util.copyToClipboard(scope.row.value)" icon="el-icon-document" :title="$t('message.copy')"></el-button>
           <el-button type="text" @click="showEditDialog(scope.row)" icon="el-icon-edit" :title="$t('message.edit_line')"></el-button>
           <el-button type="text" @click="deleteLine(scope.row)" icon="el-icon-delete" :title="$t('el.upload.delete')"></el-button>
-          <el-button type="text" @click="dumpToClipboard(scope.row)" icon="el-icon-download" :title="$t('message.dump_to_clipboard')"></el-button>
+          <el-button type="text" @click="dumpCommand(scope.row)" icon="fa fa-code" :title="$t('message.dump_to_clipboard')"></el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -158,19 +154,15 @@ export default {
       this.beforeEditItem = this.$util.cloneObjWithBuff(row);
       this.editDialog = true;
     },
-    dumpToClipboard(item) {
-      if (item) {
-        this.$util.copyToClipboard(this.dumpItemCommand(item));
-      } else if (this.listData && this.listData.length > 0) {
-        let copyListData = [];
-        copyListData = this.listData.map(item => {
-          return this.dumpItemCommand(item);
-        });
-        this.$util.copyToClipboard(copyListData.join('\n'));
-      }
-    },
-    dumpItemCommand(item) {
-      return "rpush " + this.redisKey + " " + this.$util.bufToString(item.value);
+    dumpCommand(item) {
+      const lines = item ? [item] : this.listData;
+      const params = lines.map(line => {
+        return this.$util.bufToQuotation(line.value);
+      });
+
+      const command = `RPUSH ${this.$util.bufToQuotation(this.redisKey)} ${params.join(' ')}`;
+      this.$util.copyToClipboard(command);
+      this.$message.success({message: this.$t('message.copy_success'), duration: 800});
     },
     editLine() {
       const key = this.redisKey;
