@@ -30,6 +30,7 @@
     <el-table
       stripe
       border
+      size='mini'
       min-height=300
       :data="zsetData">
       <el-table-column

@@ -14,6 +14,11 @@
       <el-button @click="confirmDelete" :disabled="loadingScan||loadingDelete" style="float: right;" type="danger">{{ $t('message.delete_all') }}</el-button>
     </div>
 
+    <!-- scan pattern -->
+    <el-tag v-if="rule.pattern && rule.pattern.length" style="margin-left: 10px;">
+      <i class="el-icon-search"></i> {{rule.pattern.join(' ')}}
+    </el-tag>
+
     <!-- key list -->
     <ol class="del-batch-key-list-ol">
       <li v-for="key, index in Object.keys(allKeys)" :key="index">{{ key }}</li>
@@ -74,7 +79,7 @@ export default {
       nodes.map(node => {
         let scanOption = {
           match: pattern + '*',
-          count: 7000,
+          count: 50000,
         }
 
         let stream = node.scanBufferStream(scanOption);

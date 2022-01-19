@@ -7,7 +7,7 @@
     </div>
 
     <!-- monaco editor div -->
-    <div id="monaco-editor-con" ref="editor"></div>
+    <div class="monaco-editor-con" ref="editor"></div>
   </div>
 </template>
 
@@ -148,9 +148,9 @@ export default {
 </script>
 
 <style type="text/css">
-  .text-formated-container #monaco-editor-con {
+  .text-formated-container .monaco-editor-con {
     min-height: 150px;
-    max-height: 100vh;
+    height: calc(100vh - 730px);
     clear: both;
     overflow: hidden;
     background: none;
@@ -175,14 +175,14 @@ export default {
     background: #565656;
   }
 
-  .text-formated-container #monaco-editor-con .monaco-editor .slider {
+  .text-formated-container .monaco-editor-con .monaco-editor .slider {
     border-radius: 4px;
     background: #c1c1c1;
   }
-  .dark-mode .text-formated-container #monaco-editor-con .monaco-editor .slider {
+  .dark-mode .text-formated-container .monaco-editor-con .monaco-editor .slider {
     background: #5d676d;
   }
-  .text-formated-container #monaco-editor-con .monaco-editor .slider:hover {
+  .text-formated-container .monaco-editor-con .monaco-editor .slider:hover {
     background: #7d7d7d;
   }
 
@@ -190,39 +190,39 @@ export default {
   .text-formated-container .monaco-editor .margin {
     background-color: inherit;
   }
-  #monaco-editor-con .monaco-editor, #monaco-editor-con .monaco-editor-background, #monaco-editor-con .monaco-editor .inputarea.ime-input {
+  .monaco-editor-con .monaco-editor, .monaco-editor-con .monaco-editor-background, .monaco-editor-con .monaco-editor .inputarea.ime-input {
     background-color: inherit;
   }
 
   /*json key color*/
-  #monaco-editor-con .mtk4 {
+  .monaco-editor-con .mtk4 {
     color: #111111;
   }
-  .dark-mode #monaco-editor-con .mtk4 {
+  .dark-mode .monaco-editor-con .mtk4 {
     color: #ebebec;
   }
   /*json val string color*/
-  #monaco-editor-con .mtk5 {
+  .monaco-editor-con .mtk5 {
     color: #42b983;
   }
   /*json val number color*/
-  #monaco-editor-con .mtk6 {
+  .monaco-editor-con .mtk6 {
     color: #fc1e70;
   }
   /*json bracket color*/
-  #monaco-editor-con .mtk9 {
+  .monaco-editor-con .mtk9 {
     color: #111111;
   }
   /*json bracket color*/
-  .dark-mode #monaco-editor-con .mtk9 {
+  .dark-mode .monaco-editor-con .mtk9 {
     color: #b6b6b9;
   }
 
   /* common string in json editor*/
-  #monaco-editor-con .mtk1 {
+  .monaco-editor-con .mtk1 {
     color: #606266;
   }
-  .dark-mode #monaco-editor-con .mtk1 {
+  .dark-mode .monaco-editor-con .mtk1 {
     color: #f3f3f4;
   }
 </style>

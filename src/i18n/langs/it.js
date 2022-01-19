@@ -94,7 +94,7 @@ const it = {
     private_key_faq: 'La chiave privata in formato RSA è compatibile e inizia con <pre>-----BEGIN RSA PRIVATE KEY-----</pre>\
     ma se inizi con<pre>-----BEGIN OPENSSH PRIVATE KEY-----</pre>è necessario convertire il formato tramite <pre>ssh-keygen -p -m pem -f ~/.ssh/id_rsa</pre>Questa operazione non influirà sul precedente accesso con chiave privata',
     dark_mode: 'Modalità scura',
-    load_more_keys: 'Carica più chiavi',
+    load_more_keys: 'carica di più',
     key_name: 'Nome della chiave',
     project_home: 'Progetto Home',
     cluster_faq: 'Seleziona qualsiasi nodo nel cluster da compilare e gli altri nodi verranno identificati automaticamente.',
@@ -146,6 +146,10 @@ const it = {
     hide_window: 'Nascondi finestra',
     minimize_window: 'Riduci finestra',
     maximize_window: 'Massimizza finestra',
+    load_all_keys: 'carica tutto',
+    show_load_all_keys: 'Abilita pulsante per caricare tutte le chiavi',
+    load_all_keys_tip: 'Carica tutte le chiavi contemporaneamente. Se il numero di chiavi è troppo grande, il client potrebbe rimanere bloccato. Si prega di usarlo correttamente',
+    tree_node_overflow: 'Troppi tasti o cartelle, tenere solo {num} per la visualizzazione. Se la tua chiave non è qui, si raccomanda la ricerca sfocata, o impostare il separatore per distribuire le chiavi in cartelle',
   },
 };
 

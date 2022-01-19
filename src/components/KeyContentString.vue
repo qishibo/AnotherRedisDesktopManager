@@ -7,8 +7,7 @@
       :content='content'
       :binary='binary'
       :redisKey='redisKey'
-      float=''
-      :textrows=12>
+      float=''>
     </FormatViewer>
   </el-form-item>
 
@@ -117,12 +116,7 @@ export default {
     height: calc(100vh - 286px);
   }
   /*json in monaco editor*/
-  .key-content-string #monaco-editor-con {
-    height: calc(100vh - 331px);
-  }
-  /*not text viewer box, such as json*/
-  .key-content-string .text-formated-container {
-    box-sizing: border-box;
-    min-height: calc(100vh - 286px);
+  .key-content-string .text-formated-container .monaco-editor-con {
+    height: calc(100vh - 330px);
   }
 </style>

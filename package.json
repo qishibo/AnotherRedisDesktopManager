@@ -29,7 +29,7 @@
     "@msgpack/msgpack": "^2.3.0",
     "@qii404/json-bigint": "^1.0.0",
     "@qii404/redis-splitargs": "^1.0.1",
-    "@ztree/ztree_v3": "^3.5.46",
+    "@qii404/ztree_v3": "^3.5.48",
     "element-ui": "^2.4.11",
     "font-awesome": "^4.7.0",
     "ioredis": "^4.27.0",

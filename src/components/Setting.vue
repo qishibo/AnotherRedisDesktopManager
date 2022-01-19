@@ -36,7 +36,10 @@
           :max=10000
           :step=50
           v-model='form.keysPageSize'>
-        </el-input-number>
+        </el-input-number>&nbsp;
+        <!-- load all switch -->
+        <el-switch v-model='form.showLoadAllKeys'></el-switch> {{ $t('message.show_load_all_keys') }}
+
         <span slot="label">
           {{ $t('message.keys_per_loading') }}
           <el-popover
@@ -133,7 +136,7 @@ export default {
   data() {
     return {
       visible: false,
-      form: {fontFamily: '', zoomFactor: 1.0, keysPageSize: 500},
+      form: {fontFamily: '', zoomFactor: 1.0, keysPageSize: 500, showLoadAllKeys: false},
       importConnectionVisible: false,
       connectionFileContent: '',
       appVersion: (new URL(window.location.href)).searchParams.get('version'),

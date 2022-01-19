@@ -172,7 +172,7 @@ export default {
       };
     });
   },
-  keysToTree(keys, separator = ':', openStatus = {}) {
+  keysToTree(keys, separator = ':', openStatus = {}, forceCut = 20000) {
     let tree = {};
     keys.forEach(key => {
       let currentNode = tree;
@@ -197,21 +197,27 @@ export default {
       });
     });
 
-    return this.formatTreeData(tree, '', openStatus, separator)
+    // to tree format
+    return this.formatTreeData(tree, '', openStatus, separator, forceCut);
   },
-  formatTreeData(tree, previousKey = '', openStatus = {}, separator = ':') {
+  formatTreeData(tree, previousKey = '', openStatus = {}, separator = ':', forceCut = 20000) {
     return Object.keys(tree).map(key => {
-      let node = { name: key};
+      let node = { name: key ? key : '[Empty]'};
 
+      // folder node
       if (!tree[key].keyNode && Object.keys(tree[key]).length > 0) {
         let tillNowKeyName = previousKey + key + separator;
         node.open     = !!openStatus[tillNowKeyName];
-        node.children = this.formatTreeData(tree[key], tillNowKeyName, openStatus, separator);
-        // keep folder node in top of the tree(not include the outest list)
-        this.sortNodes(node.children);
+        node.children = this.formatTreeData(tree[key], tillNowKeyName, openStatus, separator, forceCut);
         node.keyCount = node.children.reduce((a, b) => a + (b.keyCount || 0), 0);
+        // too many children, force cut, do not incluence keyCount display
+        node.open && node.children.length > forceCut && node.children.splice(forceCut);
+        // keep folder node in front of the tree and sorted(not include the outest list)
+        // async sort, only for opened folders
+        node.open && this.sortKeysAndFolder(node.children);
         node.fullName = tillNowKeyName;
       }
+      // key node
       else {
         node.keyCount = 1;
         node.name = key.replace(/`k`$/, '');
@@ -221,14 +227,27 @@ export default {
       return node;
     });
   },
-  // nodes is reference
-  sortNodes(nodes) {
+  // nodes is reference, keep folder in front and sorted, 
+  // keep keys in tail and sorted
+  sortKeysAndFolder(nodes) {
     nodes.sort(function(a, b) {
-      if (a.children && b.children) {
-        return 0;
+      // a & b are all keys
+      if (!a.children && !b.children) {
+        return a.name > b.name ? 1 : -1;
       }
-
-      return a.children ? -1 : (b.children ? 1 : 0);
+      // a & b are all folder
+      else if (a.children && b.children) {
+        return a.name > b.name ? 1 : -1;
+      }
+      
+      // a is folder, b is key
+      else if (a.children) {
+        return -1;
+      }
+      // a is key, b is folder
+      else {
+        return 1;
+      }
     });
   },
   copyToClipboard(text) {

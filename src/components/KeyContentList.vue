@@ -27,6 +27,7 @@
     <el-table
       stripe
       border
+      size='mini'
       min-height=300
       :data="listData">
       <el-table-column

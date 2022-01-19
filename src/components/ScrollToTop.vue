@@ -45,26 +45,20 @@
         timer = requestAnimationFrame(function fn() {
           const nowTop = that.realDom.scrollTop;
 
-          if (nowTop > 5000) {
-            that.realDom.scrollTop -= 2500;
-            timer = requestAnimationFrame(fn);
+          // to top already
+          if (nowTop <= 0) {
+            cancelAnimationFrame(timer);
+            that.toTopShow = false;
           }
-          else if (nowTop > 1000 && nowTop <= 5000) {
-            that.realDom.scrollTop -= 500;
-            timer = requestAnimationFrame(fn);
-          }
-          else if (nowTop > 200 && nowTop <= 1000) {
-            that.realDom.scrollTop -= 100;
-            timer = requestAnimationFrame(fn);
-          }
-          else if (nowTop > 0 && nowTop <= 200) {
-            that.realDom.scrollTop -= 15;
+
+          else if (nowTop < 50) {
+            that.realDom.scrollTop -= 5;
             timer = requestAnimationFrame(fn);
           }
 
           else {
-            cancelAnimationFrame(timer);
-            that.toTopShow = false;
+            that.realDom.scrollTop -= nowTop * 0.2;
+            timer = requestAnimationFrame(fn);
           }
         });
       }

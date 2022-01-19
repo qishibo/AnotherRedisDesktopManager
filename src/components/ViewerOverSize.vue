@@ -5,7 +5,7 @@
       :title='alertTitle'
       type="error">
     </el-alert>
-    <el-input :disabled='true' type='textarea' :rows='textrows' :value='contentDisplay'></el-input>
+    <el-input :disabled='true' type='textarea' :value='contentDisplay'></el-input>
   </div>
 </template>
 
@@ -16,7 +16,7 @@ export default {
       firstChars: 20000,
     };
   },
-  props: ['content', 'contentVisible', 'textrows', 'disabled'],
+  props: ['content', 'contentVisible', 'disabled'],
   computed: {
     contentDisplay() {
       return this.$util.bufToString(this.content.slice(0, this.firstChars), false) 
