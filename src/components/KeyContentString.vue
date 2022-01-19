@@ -1,12 +1,5 @@
 <template>
 <el-form class='key-content-string'>
-  <!-- dump button -->
-  <el-form :inline="true" size="small">
-    <el-form-item>
-      <el-button icon="el-icon-download" size="small" type="primary" @click='dumpToClipboard()'>{{ $t('message.dump_to_clipboard') }}</el-button>
-    </el-form-item>
-  </el-form>
-
   <!-- key content textarea -->
   <el-form-item>
     <FormatViewer
@@ -47,12 +40,6 @@ export default {
         this.content = reply;
         // this.$refs.formatViewer.autoFormat();
       });
-    },
-    dumpToClipboard() {
-      if (this.content) {
-        let copyContent = "set " + this.redisKey + " " + this.content;
-        this.$util.copyToClipboard(copyContent);
-      }
     },
     execSave() {
       const content = this.$refs.formatViewer.getContent();
@@ -104,6 +91,12 @@ export default {
 
         return false;
       });
+    },
+    dumpCommand() {
+      const command = `SET ${this.$util.bufToQuotation(this.redisKey)} ` +
+                      this.$util.bufToQuotation(this.content);
+      this.$util.copyToClipboard(command);
+      this.$message.success({message: this.$t('message.copy_success'), duration: 800});
     },
   },
   mounted() {

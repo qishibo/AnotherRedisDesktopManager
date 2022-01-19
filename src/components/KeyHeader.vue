@@ -1,52 +1,51 @@
 <template>
   <div>
-    <el-form :inline="true">
-      <!-- key name -->
-      <el-col :span=12 class='key-header-item key-name-input'>
-        <el-input
-          ref="keyNameInput"
-          :value="$util.bufToString(keyName)"
-          @change='changeKeyInput'
-          @keyup.enter.native="renameKey"
+    <!-- key name -->
+    <div class="key-header-item key-name-input">
+      <el-input
+        ref="keyNameInput"
+        :value="$util.bufToString(keyName)"
+        @change='changeKeyInput'
+        @keyup.enter.native="renameKey"
+        :title="$t('message.click_enter_to_rename')"
+        placeholder="KeyName">
+        <span slot="prepend" class="key-detail-type">{{ keyType }}</span>
+        <i class="el-icon-check el-input__icon cursor-pointer"
+          slot="suffix"
           :title="$t('message.click_enter_to_rename')"
-          placeholder="KeyName">
-          <span slot="prepend" class="key-detail-type">{{ keyType }}</span>
-          <i class="el-icon-check el-input__icon cursor-pointer"
-            slot="suffix"
-            :title="$t('message.click_enter_to_rename')"
-            @click="renameKey">
-          </i>
-        </el-input>
-      </el-col>
+          @click="renameKey">
+        </i>
+      </el-input>
+    </div>
 
-      <!-- key ttl -->
-      <el-col :span=6 class='key-header-item key-ttl-input'>
-        <el-input
-          v-model="keyTTL"
-          @keyup.enter.native="ttlKey"
-          :title="$t('message.click_enter_to_ttl')">
-          <span slot="prepend">TTL</span>
-          <!-- remove expire -->
-          <i class="el-icon-close el-input__icon cursor-pointer"
-            slot="suffix"
-            :title="$t('message.persist')"
-            @click="persistKet">
-          </i>
-          <!-- save ttl -->
-          <i class="el-icon-check el-input__icon cursor-pointer"
-            slot="suffix"
-            :title="$t('message.click_enter_to_ttl')"
-            @click="ttlKey">
-          </i>
-        </el-input>
-      </el-col>
+    <!-- key ttl -->
+    <div class="key-header-item key-ttl-input">
+      <el-input
+        v-model="keyTTL"
+        @keyup.enter.native="ttlKey"
+        :title="$t('message.click_enter_to_ttl')">
+        <span slot="prepend">TTL</span>
+        <!-- remove expire -->
+        <i class="el-icon-close el-input__icon cursor-pointer"
+          slot="suffix"
+          :title="$t('message.persist')"
+          @click="persistKet">
+        </i>
+        <!-- save ttl -->
+        <i class="el-icon-check el-input__icon cursor-pointer"
+          slot="suffix"
+          :title="$t('message.click_enter_to_ttl')"
+          @click="ttlKey">
+        </i>
+      </el-input>
+    </div>
 
-      <!-- del & refresh btn -->
-      <el-col :span=6 class='key-header-item key-header-btn-con'>
-        <el-button ref='deleteBtn' type="danger" @click="deleteKey" icon="el-icon-delete" :title="$t('el.upload.delete')+' Ctrl+d'"></el-button>
-        <el-button ref='refreshBtn' type="success" @click="refreshKey" icon="el-icon-refresh" :title="$t('message.refresh_connection')+' Ctrl+r / F5'"></el-button>
-      </el-col>
-    </el-form>
+    <!-- del & refresh btn -->
+    <div class='key-header-item key-header-btn-con'>
+      <el-button ref='deleteBtn' type="danger" @click="deleteKey" icon="el-icon-delete" :title="$t('el.upload.delete')+' Ctrl+d'"></el-button>
+      <el-button ref='refreshBtn' type="success" @click="refreshKey" icon="el-icon-refresh" :title="$t('message.refresh_connection')+' Ctrl+r / F5'"></el-button>
+      <el-button ref='dumpBtn' type="primary" @click="dumpCommand" icon="fa fa-code" :title="$t('message.dump_to_clipboard')"></el-button>
+    </div>  
   </div>
 </template>
 
@@ -81,6 +80,9 @@ export default {
     refreshKey() {
       this.initShow();
       this.$emit('refreshContent');
+    },
+    dumpCommand() {
+      this.$emit('dumpCommand');
     },
     deleteKey() {
       this.$confirm(
@@ -220,19 +222,25 @@ export default {
   }
 
   .key-header-item {
-    padding-right: 15px;
-    margin-bottom: 10px;
+    /*padding-right: 15px;*/
+    /*margin-bottom: 10px;*/
+    float: left;
   }
 
   .key-header-item.key-name-input {
-    min-width: 317px;
-    max-width: 650;
+    width: calc(100% - 402px);
+    min-width: 220px;
+    max-width: 800px;
+    margin-right: 15px;
+    margin-bottom: 10px;
   }
   .key-header-item.key-ttl-input {
-    min-width: 200px;
-    max-width: 400px;
+    width: 220px; 
+    margin-right: 15px; 
+    margin-bottom: 10px;
   }
-  .key-header-item.key-header-btn-con {
-    width: 130px;
+  .key-header-item.key-header-btn-con .el-button+.el-button {
+    margin-left: 4px;
   }
+
 </style>
