@@ -40,7 +40,7 @@
 <script type="text/javascript">
 import rawCommand from '@/rawCommand';
 import cmdTips from '@/cmds';
-import splitargs from 'redis-splitargs';
+import splitargs from '@qii404/redis-splitargs';
 
 export default {
   data() {
@@ -60,7 +60,12 @@ export default {
     },
     paramsArr() {
       try {
-        return splitargs(this.paramsTrim);
+        // buf array
+        let paramsArr = splitargs(this.paramsTrim, true);
+        // command to string
+        paramsArr[0] = paramsArr[0].toString();
+
+        return paramsArr;
       }
       catch(e) {
         return [this.paramsTrim];
@@ -263,7 +268,7 @@ export default {
       }
 
       // operate may add new key, refresh left key list
-      if (['hmset', 'hset', 'lpush', 'rpush', 'set', 'sadd', 'zadd', 'xadd'].includes(operate)) {
+      if (['hmset', 'hset', 'lpush', 'rpush', 'set', 'sadd', 'zadd', 'xadd', 'json.set'].includes(operate)) {
         this.$bus.$emit('refreshKeyList', this.client, Buffer.from(params[1]), 'add');
       }
       if (['del'].includes(operate)) {

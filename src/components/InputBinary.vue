@@ -1,6 +1,6 @@
 <template>
   <div>
-    <span v-if="!buffVisible" class='input-binary-tag'>[Hex]</span>
+    <el-tag v-if="!buffVisible" class='input-binary-tag' size="mini">[Hex]</el-tag>
     <el-input :disabled='disabled' :value='contentDisplay' @change="updateContent($event)"></el-input>
   </div>
 </template>
@@ -38,8 +38,6 @@ export default {
 
 <style type="text/css">
   .input-binary-tag {
-    color: #7ab3ef;
     font-size: 80%;
-    /*float: left;*/
   }
 </style>

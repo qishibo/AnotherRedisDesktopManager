@@ -8,6 +8,7 @@
         :redisKey="redisKey"
         :keyType="keyType"
         @refreshContent='refreshContent'
+        @dumpCommand='dumpCommand'
         :hotKeyScope='hotKeyScope'
         class="key-header-info">
       </KeyHeader>
@@ -82,13 +83,16 @@ export default {
         this.$message.error('Exists Error: ' + e.message);
       });
     },
+    dumpCommand() {
+      this.$refs.keyContent && this.$refs.keyContent.dumpCommand();
+    },
   },
 };
 </script>
 
 <style type="text/css">
   .key-tab-container {
-    padding-left: 5px;
+    /*padding-left: 5px;*/
   }
   .key-header-info {
     margin-top: 15px;

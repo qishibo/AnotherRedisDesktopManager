@@ -28,6 +28,10 @@ export default {
 
     return this.bufToHex(buf);
   },
+  bufToQuotation(buf) {
+    const str = this.bufToString(buf).replaceAll('"', '\\"');
+    return `"${str}"`;
+  },
   bufToHex(buf) {
     let result = buf.toJSON().data.map(item => {
       if (item >= 32 && item <= 126) {

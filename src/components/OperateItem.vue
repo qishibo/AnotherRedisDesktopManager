@@ -112,7 +112,7 @@ export default {
       selectedNewKeyType: 'string',
       newKeyTypes: {
         String: 'string', Hash: 'hash', List: 'list', Set: 'set', Zset: 'zset',
-        Stream: 'stream',
+        Stream: 'stream', ReJSON: 'rejson',
       },
       dbKeysCount: {},
     };
@@ -244,6 +244,9 @@ export default {
         }
         case 'stream': {
           return this.client.xadd(key, '*', 'New key', 'New value');
+        }
+        case 'rejson': {
+          return this.client.call('JSON.SET', [key, '.', '{"New key":"New value"}']);
         }
       }
     },

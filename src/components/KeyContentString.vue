@@ -92,6 +92,12 @@ export default {
         return false;
       });
     },
+    dumpCommand() {
+      const command = `SET ${this.$util.bufToQuotation(this.redisKey)} ` +
+                      this.$util.bufToQuotation(this.content);
+      this.$util.copyToClipboard(command);
+      this.$message.success({message: this.$t('message.copy_success'), duration: 800});
+    },
   },
   mounted() {
     this.initShow();
