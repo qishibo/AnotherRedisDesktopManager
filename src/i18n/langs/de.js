@@ -6,6 +6,7 @@ const de = {
     del_connection: 'Verbindung löschen',
     close_connection: 'Verbindung schließen',
     add_new_line: 'Neue Zeile hinzufügen',
+    dump_to_clipboard: "Als Befehl kopieren",
     redis_version: 'Redis Version',
     process_id: 'Prozess ID',
     used_memory: 'Benutzter Speicher',

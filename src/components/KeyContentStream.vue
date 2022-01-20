@@ -1,10 +1,10 @@
 <template>
   <div>
     <div>
-      <el-form :inline="true" size="small">
+      <el-form :inline="true">
         <!-- add button -->
         <el-form-item>
-          <el-button size="small" type="primary" @click='showEditDialog({id:"*"})'>{{ $t('message.add_new_line') }}</el-button>
+          <el-button type="primary" @click='showEditDialog({id:"*"})'>{{ $t('message.add_new_line') }}</el-button>
         </el-form-item>
         <!-- max value -->
         <el-form-item label="Max">
@@ -23,7 +23,7 @@
             <InputBinary :disabled='!!beforeEditItem.contentString' :content.sync="editLineItem.id"></InputBinary>
           </el-form-item>
 
-          <el-form-item label="Value (JSON kv format)">
+          <el-form-item label="Value (JSON string)">
             <FormatViewer :redisKey="redisKey" :dataMap="editLineItem" :disabled='!!beforeEditItem.contentString' ref='formatViewer' :content='editLineItem.contentString'></FormatViewer>
           </el-form-item>
         </el-form>
@@ -38,7 +38,6 @@
     <!-- content table -->
     <el-table
       stripe
-      size="small"
       border
       min-height=300
       :data="lineData">
@@ -71,6 +70,7 @@
           <el-button type="text" @click="$util.copyToClipboard(JSON.stringify(scope.row.content))" icon="el-icon-document" :title="$t('message.copy')"></el-button>
           <el-button type="text" @click="showEditDialog(scope.row)" icon="el-icon-view" :title="$t('message.detail')"></el-button>
           <el-button type="text" @click="deleteLine(scope.row)" icon="el-icon-delete" :title="$t('el.upload.delete')"></el-button>
+          <el-button type="text" @click="dumpCommand(scope.row)" icon="fa fa-code" :title="$t('message.dump_to_clipboard')"></el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -184,6 +184,23 @@ export default {
       this.editLineItem = row;
       this.beforeEditItem = this.$util.cloneObjWithBuff(row);
       this.editDialog = true;
+    },
+    dumpCommand(item) {
+      const lines = item ? [item] : this.lineData;
+      const params = lines.map(line => {
+        let command = `XADD ${this.$util.bufToQuotation(this.redisKey)} ${line.id} `;
+        
+        let dicts = [];
+        for (const field in line.content) {
+          dicts.push(this.$util.bufToQuotation(field), this.$util.bufToQuotation(line.content[field]));
+        }
+
+        return `${command} ${dicts.join(' ')}`;
+      });
+
+      // reverse: id asc order
+      this.$util.copyToClipboard(params.reverse().join('\n'));
+      this.$message.success({message: this.$t('message.copy_success'), duration: 800});
     },
     editLine() {
       const afterId = this.editLineItem.id

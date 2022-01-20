@@ -6,6 +6,7 @@ const it = {
     del_connection: 'Elimina Connessione',
     close_connection: 'Chiudere Connessione',
     add_new_line: 'Inserisci Nuova Riga',
+    dump_to_clipboard: "Copia come comando",
     redis_version: 'Versione del Redis',
     process_id: 'ID del Processi',
     used_memory: 'Memoria Usata',

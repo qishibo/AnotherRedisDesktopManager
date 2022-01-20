@@ -15,14 +15,11 @@
         <el-button type='text' icon="el-icon-edit-outline">{{$t('message.custom')}}</el-button>
       </el-option>
     </el-select>
-    <!-- copy btn -->
-    <span class="formater-copy-icon" @click='copyContent' :title='$t("message.copy")'>
-      <i class='el-icon-document'></i>{{$t("message.copy")}}
-    </span>
-    <!-- hex mode -->
-    <span v-if='!contentVisible' class='formater-binary-tag'>[Hex]</span>
-    <!-- key size -->
-    <span class='formater-binary-tag'>Size: {{ $util.humanFileSize(buffSize) }}</span>
+    <el-tag v-if='!contentVisible' size="mini" class='formater-binary-tag' :disable-transitions='true'>[Hex]</el-tag>
+    <el-tag class='formater-binary-tag' size="mini" :disable-transitions='true'>Size: {{ $util.humanFileSize(buffSize) }}</el-tag>
+    <el-button  @click='copyContent' :title='$t("message.copy")' type='text' size='mini'>
+      <i class="el-icon-document"></i>{{$t("message.copy")}}
+    </el-button>
     <br>
 
     <component
@@ -247,13 +244,6 @@ export default {
     padding: 9px 0;
   }
   .formater-binary-tag {
-    /*padding-left: 5px;*/
-    color: #7ab3ef;
-    font-size: 80%;
-  }
-  .formater-copy-icon {
-    color: #7ab3ef;
-    cursor: pointer;
     font-size: 80%;
   }
 </style>

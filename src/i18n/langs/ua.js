@@ -6,6 +6,7 @@ const ua = {
     del_connection: 'Видалити з`єднання',
     close_connection: 'Закрити з`єднання',
     add_new_line: 'Додати новий рядок',
+    dump_to_clipboard: "Копіювати як команду",
     redis_version: 'Версія Redis',
     process_id: 'ID процесу',
     used_memory: 'Використано пам`яті',

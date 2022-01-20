@@ -14,7 +14,7 @@
 <script type="text/javascript">
 // import * as monaco from 'monaco-editor';
 import * as monaco from 'monaco-editor/esm/vs/editor/editor.api';
-const JSONbig = require('json-bigint')({useNativeBigInt: false});
+const JSONbig = require('@qii404/json-bigint')({useNativeBigInt: false});
 
 export default {
   data() {

@@ -54,7 +54,7 @@ export default {
       function mousemove(e)
       {
         const mouseX = e.x;
-        const dragSideWidth = mouseX - 19;
+        const dragSideWidth = mouseX - 17;
 
         if ((dragSideWidth > 200) && (dragSideWidth < 1500)) {
           that.sideWidth = dragSideWidth;
@@ -215,7 +215,7 @@ button, input, textarea, .vjs__tree {
 #drag-resize-pointer {
   position: fixed;
   height: 100%;
-  width: 13px;
+  width: 10px;
   cursor: col-resize;
 }
 #drag-resize-pointer::after {

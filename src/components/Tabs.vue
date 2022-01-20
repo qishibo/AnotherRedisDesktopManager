@@ -238,7 +238,8 @@ export default {
     height: calc(100vh - 100px);
     overflow-x: hidden;
     overflow-y: auto;
-    padding-right: 7px;
+    /*padding-left: 5px;*/
+    padding-right: 8px;
     padding-bottom: 20px;
   }
 </style>
