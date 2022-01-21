@@ -38,7 +38,8 @@
 import $ from "jquery";
 if (!window.jQuery) window.jQuery = $;
 
-import ("@ztree/ztree_v3/js/jquery.ztree.all.min.js");
+// import ("@ztree/ztree_v3/js/jquery.ztree.all.js");
+import ("@qii404/ztree_v3/js/jquery.ztree.all.js");
 
 export default {
   data() {
@@ -54,7 +55,7 @@ export default {
           showLine: false,
           selectedMulti: false,
           dblClickExpand: false,
-          addDiyDom: this.addDiyDom,
+          // addDiyDom: this.addDiyDom,
           expandSpeed: 'fast',
         },
         check: {
@@ -70,23 +71,8 @@ export default {
 
             // folder clicked
             if (treeNode.children) {
-              if (!treeNode.asyncOperated) {
-                // force cut nodes
-                if (treeNode.children.length > this.treeNodesOverflow) {
-                  treeNode.children.splice(this.treeNodesOverflow);
-                  this.$nextTick(() => {
-                    this.$message.warning({
-                      message: this.$t('message.tree_node_overflow', {num: this.treeNodesOverflow}),
-                      duration: 4000
-                    });
-                  });
-                }
-
-                // sort nodes async, only after opened
-                this.$util.sortKeysAndFolder(treeNode.children);
-                
-                treeNode.asyncOperated = true;
-              }
+              // after folder expand, sorting keys
+              !treeNode.open && this.folderExpand(treeNode);
 
               // toggle tree view
               this.ztreeObj && this.ztreeObj.expandNode(treeNode, undefined, false, false);
@@ -97,8 +83,12 @@ export default {
 
             this.clickKey(Buffer.from(treeNode.nameBuffer.data), event);
           },
-          onExpand: (event, treeId, treeNode) => {
-            return this.openStatus[treeNode.fullName] = treeNode.open;
+          beforeExpand: (treeId, treeNode) => {
+            // after folder expand, sorting keys
+            this.folderExpand(treeNode);
+            this.openStatus[treeNode.fullName] = !treeNode.open;
+
+            return true;
           },
           onCollapse: (event, treeId, treeNode) => {
             return this.openStatus[treeNode.fullName] = treeNode.open;
@@ -205,6 +195,25 @@ export default {
     },
     toggleCheckAll(checked) {
       this.ztreeObj.checkAllNodes(checked);
+    },
+    folderExpand(treeNode) {
+      if (!treeNode.asyncOperated) {
+        // force cut nodes
+        if (treeNode.children.length > this.treeNodesOverflow) {
+          treeNode.children.splice(this.treeNodesOverflow);
+          this.$nextTick(() => {
+            this.$message.warning({
+              message: this.$t('message.tree_node_overflow', {num: this.treeNodesOverflow}),
+              duration: 4000
+            });
+          });
+        }
+
+        // sort nodes async, only after opened
+        this.$util.sortKeysAndFolder(treeNode.children);
+
+        treeNode.asyncOperated = true;
+      }
     },
     deleteBatch() {
       let rule = {key: [], pattern: []};
@@ -366,7 +375,7 @@ export default {
 </script>
 
 <style>
-@import '@ztree/ztree_v3/css/zTreeStyle/zTreeStyle.css';
+@import '@qii404/ztree_v3/css/zTreeStyle/zTreeStyle.css';
 
 /*tree style*/
 .ztree {
