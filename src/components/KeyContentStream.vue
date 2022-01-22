@@ -188,8 +188,8 @@ export default {
     dumpCommand(item) {
       const lines = item ? [item] : this.lineData;
       const params = lines.map(line => {
-        let command = `XADD ${this.$util.bufToQuotation(this.redisKey)} ${line.id} `;
-        
+        let command = `XADD ${this.$util.bufToQuotation(this.redisKey)} ${String(line.id).split('-')[0]} `;
+
         let dicts = [];
         for (const field in line.content) {
           dicts.push(this.$util.bufToQuotation(field), this.$util.bufToQuotation(line.content[field]));
