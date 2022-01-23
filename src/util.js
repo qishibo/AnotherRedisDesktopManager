@@ -202,8 +202,9 @@ export default {
   },
   formatTreeData(tree, previousKey = '', openStatus = {}, separator = ':', forceCut = 20000) {
     return Object.keys(tree).map(key => {
-      let node = { name: key};
+      let node = { name: key ? key : '[Empty]'};
 
+      // folder node
       if (!tree[key].keyNode && Object.keys(tree[key]).length > 0) {
         let tillNowKeyName = previousKey + key + separator;
         node.open     = !!openStatus[tillNowKeyName];
@@ -216,6 +217,7 @@ export default {
         node.open && this.sortKeysAndFolder(node.children);
         node.fullName = tillNowKeyName;
       }
+      // key node
       else {
         node.keyCount = 1;
         node.name = key.replace(/`k`$/, '');
