@@ -302,6 +302,10 @@ export default {
     margin-top: -10px;
     margin-bottom: 15px;
   }
+  /*fix extract checkbox height*/
+  .connection-menu .search-item .el-input__suffix-inner {
+    display: inline-block;
+  }
   .connection-menu .search-input {
     width: 100%;
   }
