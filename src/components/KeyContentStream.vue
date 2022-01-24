@@ -8,11 +8,11 @@
         </el-form-item>
         <!-- max value -->
         <el-form-item label="Max">
-          <el-input v-model="maxId" @keyup.enter.native='initShow' type="primary" placeholder='Max ID, default +' :title='$t("message.enter_to_search")'>Max</el-input>
+          <el-input v-model="maxId" @keyup.enter.native='initShow' type="primary" placeholder='Max ID, default +' :title='$t("message.enter_to_search")' size='mini'>Max</el-input>
         </el-form-item>
         <!-- min value -->
         <el-form-item label="Min">
-          <el-input v-model="minId" @keyup.enter.native='initShow' type="primary" placeholder='Min ID, default -' :title='$t("message.enter_to_search")'>Min</el-input>
+          <el-input v-model="minId" @keyup.enter.native='initShow' type="primary" placeholder='Min ID, default -' :title='$t("message.enter_to_search")' size='mini'>Min</el-input>
         </el-form-item>
       </el-form>
 
@@ -39,6 +39,7 @@
     <el-table
       stripe
       border
+      size='mini'
       min-height=300
       :data="lineData">
       <el-table-column

@@ -38,7 +38,8 @@
 import $ from "jquery";
 if (!window.jQuery) window.jQuery = $;
 
-import ("@ztree/ztree_v3/js/jquery.ztree.all.min.js");
+// import ("@ztree/ztree_v3/js/jquery.ztree.all.js");
+import ("@qii404/ztree_v3/js/jquery.ztree.all.js");
 
 export default {
   data() {
@@ -47,13 +48,14 @@ export default {
       openStatus: {},
       rightClickNode: {},
       multiOperating: false,
+      treeNodesOverflow: 20000,
       setting: {
         view: {
           showIcon: true,
           showLine: false,
           selectedMulti: false,
           dblClickExpand: false,
-          addDiyDom: this.addDiyDom,
+          // addDiyDom: this.addDiyDom,
           expandSpeed: 'fast',
         },
         check: {
@@ -69,6 +71,9 @@ export default {
 
             // folder clicked
             if (treeNode.children) {
+              // after folder expand, sorting keys
+              !treeNode.open && this.folderExpand(treeNode);
+
               // toggle tree view
               this.ztreeObj && this.ztreeObj.expandNode(treeNode, undefined, false, false);
 
@@ -78,8 +83,12 @@ export default {
 
             this.clickKey(Buffer.from(treeNode.nameBuffer.data), event);
           },
-          onExpand: (event, treeId, treeNode) => {
-            return this.openStatus[treeNode.fullName] = treeNode.open;
+          beforeExpand: (treeId, treeNode) => {
+            // after folder expand, sorting keys
+            this.folderExpand(treeNode);
+            this.openStatus[treeNode.fullName] = !treeNode.open;
+
+            return true;
           },
           onCollapse: (event, treeId, treeNode) => {
             return this.openStatus[treeNode.fullName] = treeNode.open;
@@ -187,6 +196,25 @@ export default {
     toggleCheckAll(checked) {
       this.ztreeObj.checkAllNodes(checked);
     },
+    folderExpand(treeNode) {
+      if (!treeNode.asyncOperated) {
+        // force cut nodes
+        if (treeNode.children.length > this.treeNodesOverflow) {
+          treeNode.children.splice(this.treeNodesOverflow);
+          this.$nextTick(() => {
+            this.$message.warning({
+              message: this.$t('message.tree_node_overflow', {num: this.treeNodesOverflow}),
+              duration: 4000
+            });
+          });
+        }
+
+        // sort nodes async, only after opened
+        this.$util.sortKeysAndFolder(treeNode.children);
+
+        treeNode.asyncOperated = true;
+      }
+    },
     deleteBatch() {
       let rule = {key: [], pattern: []};
       let folderNodes = {};
@@ -277,8 +305,6 @@ export default {
     },
     treeRefresh(nodes) {
       this.ztreeObj && this.ztreeObj.destroy();
-      // folder keep in front
-      this.$util.sortNodes(nodes);
 
       this.ztreeObj = $.fn.zTree.init(
         $(`#${this.treeId}`),
@@ -311,11 +337,26 @@ export default {
       let checkedNodes = [];
       this.ztreeObj && (checkedNodes = this.ztreeObj.getCheckedNodes(true));
 
-      this.treeRefresh(
-        this.separator ?
-        this.$util.keysToTree(newList, this.separator, this.openStatus) :
-        this.$util.keysToList(newList)
-      );
+      const keyNodes = this.separator ?
+        this.$util.keysToTree(newList, this.separator, this.openStatus, this.treeNodesOverflow) :
+        this.$util.keysToList(newList);
+
+      // nodes displayed in outermost layer
+      if (keyNodes.length > this.treeNodesOverflow) {
+        // force cut
+        keyNodes.splice(this.treeNodesOverflow);
+        // using nextTick to relieve msg missing caused by app stuck
+        this.$nextTick(() => {
+          this.$message.warning({
+            message: this.$t('message.tree_node_overflow', {num: this.treeNodesOverflow}),
+            duration: 6000,
+          });
+        });
+      }
+
+      // sort outermost layer nodes
+      this.$util.sortKeysAndFolder(keyNodes);
+      this.treeRefresh(keyNodes);
 
       // remove animination when too many nodes
       if (newList.length > 9000) {
@@ -324,7 +365,6 @@ export default {
 
       // recheck checked nodes
       this.reCheckNodes(checkedNodes);
-
       // only 1 key such as extract search, expand all
       if (newList.length <= 1) {
         this.ztreeObj && this.ztreeObj.expandAll(true);
@@ -335,7 +375,7 @@ export default {
 </script>
 
 <style>
-@import '@ztree/ztree_v3/css/zTreeStyle/zTreeStyle.css';
+@import '@qii404/ztree_v3/css/zTreeStyle/zTreeStyle.css';
 
 /*tree style*/
 .ztree {

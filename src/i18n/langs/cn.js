@@ -146,6 +146,10 @@ const cn = {
     hide_window: '隐藏窗口',
     minimize_window: '最小化窗口',
     maximize_window: '最大化窗口',
+    load_all_keys: '加载所有',
+    show_load_all_keys: '启用按钮以加载所有键',
+    load_all_keys_tip: '一次性加载所有key，当key的数量过多时，有可能会导致客户端卡顿，请酌情使用',
+    tree_node_overflow: 'key或者文件夹数量过多，仅保留{num}个进行展示。如未找到所需key，建议使用模糊搜索，或者设置分隔符来将key分散到文件夹中',
   },
 };
 

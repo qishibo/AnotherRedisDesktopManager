@@ -146,6 +146,10 @@ const tw = {
     hide_window: '隱藏窗口',
     minimize_window: '最小化窗口',
     maximize_window: '最大化窗口',
+    load_all_keys: '載入所有',
+    show_load_all_keys: '啟用按鈕以加載所有鍵',
+    load_all_keys_tip: '一次載入所有密鑰。如果密鑰數量過多，客戶端可能會卡住，請正確使用',
+    tree_node_overflow: '鍵或資料夾太多，僅保留{num}個以顯示。 如果您的鍵不在此處，建議使用模糊搜索，或設置分隔符以將密鑰分散到文件夾中',
   },
 };
 

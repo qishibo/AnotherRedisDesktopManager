@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- </textarea> -->
-    <el-input ref='textInput' :disabled='disabled' type='textarea' :rows='textrows' :value='contentDisplay' @input='inputContent'>
+    <el-input ref='textInput' :disabled='disabled' type='textarea' :value='contentDisplay' @input='inputContent'>
     </el-input>
   </div>
 </template>
@@ -13,7 +13,7 @@ export default {
       confirmChange: false,
     };
   },
-  props: ['content', 'contentVisible', 'textrows', 'disabled'],
+  props: ['content', 'contentVisible', 'disabled'],
   computed: {
     contentDisplay() {
       return this.content.toString();

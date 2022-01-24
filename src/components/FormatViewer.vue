@@ -28,7 +28,6 @@
       :content='content'
       :name="selectedView"
       :contentVisible='contentVisible'
-      :textrows='textrows'
       :disabled='disabled'
       :redisKey="redisKey"
       :dataMap="dataMap">
@@ -77,7 +76,6 @@ export default {
   props: {
     float: {default: 'right'},
     content: {default: () => Buffer.from('')},
-    textrows: {default: 6},
     disabled: {type: Boolean, default: false},
     redisKey:  {default: () => Buffer.from('')},
     dataMap: {type: Object, default: () => {}},
@@ -222,15 +220,19 @@ export default {
     height: 22px !important;
   }
 
+  /*outline same with text viewer's .el-textarea__inner*/
   .text-formated-container {
     border: 1px solid #dcdfe6;
-    min-height: 114px;
-    padding: 5px 15px;
-    line-height: 1.5;
-    border-radius: 5px;
+    padding: 5px 10px;
+    border-radius: 4px;
   }
   .dark-mode .text-formated-container {
     border-color: #7f8ea5;
+  }
+
+  .format-viewer-container textarea {
+    min-height: 194px !important;
+    height: calc(100vh - 686px);
   }
 
   .collapse-container {

@@ -146,6 +146,10 @@ const en = {
     hide_window: 'Hide Window',
     minimize_window: 'Minimize window',
     maximize_window: 'Maximize window',
+    load_all_keys: 'load all',
+    show_load_all_keys: 'Enable button to load all keys',
+    load_all_keys_tip: 'Load all keys at one time. If the number of keys is too large, the client may get stuck. Please use it correctly',
+    tree_node_overflow: 'Too many keys or folders , keep only {num} for display. If your key is not here, fuzzy search is recommended, or set the separator to spread the keys into folders',
   },
 };
 
