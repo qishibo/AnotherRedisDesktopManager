@@ -23,7 +23,7 @@
       <el-tooltip v-if='showLoadAllKeys' :disabled="!loadAllTooltip"
         @mouseenter.native="loadAllTooltip=true" @mouseleave.native="loadAllTooltip=false"
         effect="dark" :content="$t('message.load_all_keys_tip')"
-        placement="bottom" :open-delay=200 :enterable='false'>
+        placement="bottom" :open-delay=380 :enterable='false'>
         <el-button
           class='load-more-keys'
           type= 'danger'
