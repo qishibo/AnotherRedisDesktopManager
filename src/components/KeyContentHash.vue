@@ -31,6 +31,7 @@
     <el-table
       stripe
       border
+      size='mini'
       min-height=300
       :data="hashData">
       <el-table-column

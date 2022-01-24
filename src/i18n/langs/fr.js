@@ -148,7 +148,7 @@ const fr = {
     maximize_window: 'Agrandir la fenêtre',
     load_all_keys: 'charger tout',
     show_load_all_keys: 'Activer le bouton pour charger toutes les clés',
-    load_all_keys_tip: 'Chargez toutes les clés en même temps. Si le nombre de clés est trop important, le client peut rester bloqué ou même planter. Veuillez l\'utiliser correctement',
+    load_all_keys_tip: 'Chargez toutes les clés en même temps. Si le nombre de clés est trop important, le client peut rester bloqué. Veuillez l\'utiliser correctement',
     tree_node_overflow: 'Il y a trop de touches ou de dossiers, ne laissant que {num} à afficher. Si votre clé n\'est pas ici, une recherche floue est recommandée, ou définissez un séparateur pour disperser la clé dans le dossier',
   },
 };

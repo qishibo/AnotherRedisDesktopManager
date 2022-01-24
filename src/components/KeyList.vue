@@ -19,17 +19,20 @@
       </el-button>
 
       <!-- load all -->
-      <el-button
-        ref='scanAllBtn'
-        class='load-more-keys'
-        type= 'danger'
-        :icon="searching ? 'el-icon-loading' : ''"
-        :title="$t('message.load_all_keys_tip')"
-        :disabled='searching'
-        @click='loadAllKeys()'
-        v-if='showLoadAllKeys'>
-        {{ $t('message.load_all_keys') }}
-      </el-button>
+      <!-- fix el-tooltip 200ms delay when closing -->
+      <el-tooltip v-if='showLoadAllKeys' :disabled="!loadAllTooltip"
+        @mouseenter.native="loadAllTooltip=true" @mouseleave.native="loadAllTooltip=false"
+        effect="dark" :content="$t('message.load_all_keys_tip')"
+        placement="bottom" :open-delay=200 :enterable='false'>
+        <el-button
+          class='load-more-keys'
+          type= 'danger'
+          :icon="searching ? 'el-icon-loading' : ''"
+          :disabled='searching'
+          @click='loadAllKeys()'>
+          {{ $t('message.load_all_keys') }}
+        </el-button>
+      </el-tooltip>
     </div>
   </div>
 </template>
@@ -50,6 +53,7 @@ export default {
       onePageList: [],
       onePageFinishedCount: 0,
       firstPageFinished: false,
+      loadAllTooltip: true,
     };
   },
   props: ['client', 'config', 'globalSettings'],
