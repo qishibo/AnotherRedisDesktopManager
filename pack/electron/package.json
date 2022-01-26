@@ -20,7 +20,7 @@
       "output": "build-apps",
       "buildResources": "./"
     },
-    "electronVersion": "11.4.9",
+    "electronVersion": "11.5.0",
     "files": [
       "!static/js/*.map",
       "!static/css/*.map",
