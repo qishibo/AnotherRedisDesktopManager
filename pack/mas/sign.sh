@@ -4,7 +4,7 @@
 # Name of your app.
 APP="Another Desktop Manager"
 # The path of your app to sign.
-APP_PATH="../../dist/build-apps/mas/Another Desktop Manager.app"
+APP_PATH="../../dist/build-apps/mas-universal/Another Desktop Manager.app"
 # The path to the location you want to put the signed package.
 RESULT_PATH="../../dist/build-apps/$APP.pkg"
 # The name of certificates you requested.
