@@ -76,14 +76,11 @@
           </el-form-item>
 
           <el-form-item :label="$t('message.private_key')">
-            <el-tooltip effect="dark">
-              <div slot="content" v-html="$t('message.private_key_faq')"></div>
-              <FileInput
-                :file.sync='connection.sshOptions.privatekey'
-                :bookmark.sync='connection.sshOptions.privatekeybookmark'
-                placeholder='SSH Private Key'>
-              </FileInput>
-            </el-tooltip>
+            <FileInput
+              :file.sync='connection.sshOptions.privatekey'
+              :bookmark.sync='connection.sshOptions.privatekeybookmark'
+              placeholder='SSH Private Key'>
+            </FileInput>
           </el-form-item>
 
           <el-form-item label="Passphrase">

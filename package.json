@@ -37,7 +37,7 @@
     "monaco-editor": "^0.30.1",
     "php-serialize": "^4.0.2",
     "sortablejs": "^1.14.0",
-    "tunnel-ssh": "^4.1.4",
+    "tunnel-ssh": "^4.1.6",
     "vue": "^2.5.2",
     "vue-i18n": "^8.7.0"
   },
@@ -59,8 +59,8 @@
     "css-loader": "^0.28.0",
     "electron": "^11.5.0",
     "electron-builder": "^22.14.5",
-    "element-theme": "^2.0.1",
     "element-theme-chalk": "^2.13.0",
+    "element-themex": "^1.0.3",
     "eslint": "^5.14.1",
     "eslint-config-airbnb-base": "^13.1.0",
     "eslint-plugin-import": "^2.16.0",
