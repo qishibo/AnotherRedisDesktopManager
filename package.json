@@ -37,7 +37,7 @@
     "monaco-editor": "^0.30.1",
     "php-serialize": "^4.0.2",
     "sortablejs": "^1.14.0",
-    "tunnel-ssh": "^4.1.4",
+    "tunnel-ssh": "^4.1.6",
     "vue": "^2.5.2",
     "vue-i18n": "^8.7.0"
   },
