@@ -34,6 +34,20 @@ module.exports = {
   module: {
     rules: [
       {
+        test: /\.node$/,
+        loader: "node-loader",
+        options: {
+          // map sourceMap
+          name(resourcePath, resourceQuery) {
+            if (process.env.NODE_ENV === "development") {
+              return "[path][name].[ext]";
+            }
+
+            return "[contenthash].[ext]";
+          },
+        },
+      },
+      {
         test: /\.vue$/,
         loader: 'vue-loader',
         options: vueLoaderConfig
@@ -69,6 +83,7 @@ module.exports = {
           publicPath: '../../'
         }
       },
+
     ]
   },
   node: {
