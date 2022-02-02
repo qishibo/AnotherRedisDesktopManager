@@ -16,6 +16,7 @@
     "pack:win": "node_modules/.bin/electron-builder --project=dist -w -p never",
     "pack:win32": "node_modules/.bin/electron-builder --project=dist -w --ia32 -p never",
     "pack:mac": "node_modules/.bin/electron-builder --project=dist -m -p never",
+    "pack:mas": "CSC_IDENTITY_AUTO_DISCOVERY=false npm run pack:mac",
     "pack:linux": "node_modules/.bin/electron-builder --project=dist -l -p never",
     "pack:win:publish": "node_modules/.bin/electron-builder --project=dist -w -p always",
     "pack:mac:publish": "node_modules/.bin/electron-builder --project=dist -m -p always",
