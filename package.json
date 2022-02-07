@@ -16,6 +16,7 @@
     "pack:win": "node_modules/.bin/electron-builder --project=dist -w -p never",
     "pack:win32": "node_modules/.bin/electron-builder --project=dist -w --ia32 -p never",
     "pack:mac": "node_modules/.bin/electron-builder --project=dist -m -p never",
+    "pack:mas": "CSC_IDENTITY_AUTO_DISCOVERY=false npm run pack:mac",
     "pack:linux": "node_modules/.bin/electron-builder --project=dist -l -p never",
     "pack:win:publish": "node_modules/.bin/electron-builder --project=dist -w -p always",
     "pack:mac:publish": "node_modules/.bin/electron-builder --project=dist -m -p always",
@@ -37,7 +38,7 @@
     "monaco-editor": "^0.30.1",
     "php-serialize": "^4.0.2",
     "sortablejs": "^1.14.0",
-    "tunnel-ssh": "^4.1.6",
+    "tunnel-ssh": "^4.1.4",
     "vue": "^2.5.2",
     "vue-i18n": "^8.7.0"
   },
