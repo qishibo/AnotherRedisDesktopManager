@@ -49,6 +49,7 @@ function createWindow() {
       nodeIntegration: true,
       // add this to keep 'remote' module avaiable. Tips: it will be removed in electron 14
       enableRemoteModule: true,
+      contextIsolation: false,
     },
   });
 
