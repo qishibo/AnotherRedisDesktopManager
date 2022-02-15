@@ -72,8 +72,8 @@
         </template>
         <template slot-scope="scope">
           <el-button type="text" @click="$util.copyToClipboard(scope.row.value)" icon="el-icon-document" :title="$t('message.copy')"></el-button>
-          <el-button type="text" @click="showEditDialog(scope.row)" icon="el-icon-edit" :title="$t('message.edit_line')"></el-button>
-          <el-button type="text" @click="deleteLine(scope.row)" icon="el-icon-delete" :title="$t('el.upload.delete')"></el-button>
+          <el-button type="text" @click="showEditDialog(scope.row, scope.$index)" icon="el-icon-edit" :title="$t('message.edit_line')"></el-button>
+          <el-button type="text" @click="deleteLine(scope.row, scope.$index)" icon="el-icon-delete" :title="$t('el.upload.delete')"></el-button>
           <el-button type="text" @click="dumpCommand(scope.row)" icon="fa fa-code" :title="$t('message.dump_to_clipboard')"></el-button>
         </template>
       </el-table-column>
@@ -203,10 +203,12 @@ export default {
       //   this.$refs.formatViewer.autoFormat();
       // });
     },
-    showEditDialog(row) {
+    showEditDialog(row, index = undefined) {
       this.editLineItem = row;
       this.beforeEditItem = this.$util.cloneObjWithBuff(row);
       this.editDialog = true;
+
+      this.rowIndex = index;
     },
     dumpCommand(item) {
       const lines = item ? [item] : this.hashData;
@@ -240,16 +242,17 @@ export default {
       ).then((reply) => {
         // edit key && key changed
         if (before.key && !before.key.equals(afterKey)) {
-          client.hdel(
-            key,
-            before.key
-          ).then((reply) => {
-            this.initShow();
-          });
+          client.hdel(key, before.key);
         }
 
+        // this.initShow(); // do not reinit, #786
+        // edit line
+        if (typeof this.rowIndex === 'number') {
+          this.hashData.splice(this.rowIndex, 1, {key: afterKey, value: afterValue})
+        }
+        // new line
         else {
-          this.initShow();
+          this.hashData.push({key: afterKey, value: afterValue});
         }
 
         // reply==1:new field; reply==0 field exists
@@ -259,7 +262,7 @@ export default {
         });
       }).catch(e => {this.$message.error(e.message);});
     },
-    deleteLine(row) {
+    deleteLine(row, index = undefined) {
       this.$confirm(
         this.$t('message.confirm_to_delete_row_data'),
         {type: 'warning'}
@@ -274,7 +277,8 @@ export default {
               duration: 1000,
             });
 
-            this.initShow();
+            // this.initShow(); // do not reinit, #786
+            (typeof index === 'number') && this.hashData.splice(index, 1);
           }
         }).catch(e => {this.$message.error(e.message);});
       }).catch(() => {});

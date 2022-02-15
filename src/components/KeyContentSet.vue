@@ -58,8 +58,8 @@
         </template>
         <template slot-scope="scope">
           <el-button type="text" @click="$util.copyToClipboard(scope.row.value)" icon="el-icon-document" :title="$t('message.copy')"></el-button>
-          <el-button type="text" @click="showEditDialog(scope.row)" icon="el-icon-edit" :title="$t('message.edit_line')"></el-button>
-          <el-button type="text" @click="deleteLine(scope.row)" icon="el-icon-delete" :title="$t('el.upload.delete')"></el-button>
+          <el-button type="text" @click="showEditDialog(scope.row, scope.$index)" icon="el-icon-edit" :title="$t('message.edit_line')"></el-button>
+          <el-button type="text" @click="deleteLine(scope.row, scope.$index)" icon="el-icon-delete" :title="$t('el.upload.delete')"></el-button>
           <el-button type="text" @click="dumpCommand(scope.row)" icon="fa fa-code" :title="$t('message.dump_to_clipboard')"></el-button>
         </template>
       </el-table-column>
@@ -186,10 +186,12 @@ export default {
       //   this.$refs.formatViewer.autoFormat();
       // });
     },
-    showEditDialog(row) {
+    showEditDialog(row, index = undefined) {
       this.editLineItem = row;
       this.beforeEditItem = this.$util.cloneObjWithBuff(row);
       this.editDialog = true;
+
+      this.rowIndex = index;
     },
     dumpCommand(item) {
       const lines = item ? [item] : this.setData;
@@ -226,16 +228,17 @@ export default {
         if (reply === 1) {
           // edit key remove previous value
           if (before.value) {
-            client.srem(
-              key,
-              before.value
-            ).then((reply) => {
-              this.initShow();
-            });
+            client.srem(key, before.value);
           }
 
+          // this.initShow(); // do not reinit, #786
+          // edit line
+          if (typeof this.rowIndex === 'number') {
+            this.setData.splice(this.rowIndex, 1, {value: afterValue})
+          }
+          // new line
           else {
-            this.initShow();
+            this.setData.push({value: afterValue});
           }
 
           this.$message.success({
@@ -253,7 +256,7 @@ export default {
         }
       }).catch(e => {this.$message.error(e.message);});
     },
-    deleteLine(row) {
+    deleteLine(row, index = undefined) {
       this.$confirm(
         this.$t('message.confirm_to_delete_row_data'),
         { type: 'warning' }
@@ -268,7 +271,8 @@ export default {
               duration: 1000,
             });
 
-            this.initShow();
+            // this.initShow(); // do not reinit, #786
+            (typeof index === 'number') && this.setData.splice(index, 1);
           }
         }).catch(e => {this.$message.error(e.message);});
       }).catch(() => {});
