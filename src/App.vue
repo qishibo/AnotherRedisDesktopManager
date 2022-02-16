@@ -236,4 +236,8 @@ button, input, textarea, .vjs__tree {
   border-left: 1px solid #b9b8b8;
   border-right: 1px solid #b9b8b8;
 }
+
+@keyframes rotate {
+  to{ transform: rotate(360deg); }
+}
 </style>
