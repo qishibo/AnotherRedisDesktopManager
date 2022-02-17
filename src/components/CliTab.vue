@@ -41,6 +41,7 @@
 import rawCommand from '@/rawCommand';
 import cmdTips from '@/cmds';
 import splitargs from '@qii404/redis-splitargs';
+import { ipcRenderer } from 'electron';
 
 export default {
   data() {
@@ -379,14 +380,30 @@ export default {
         this.content = '';
       });
     },
+    initHistoryTips() {
+      const key = `cliTips_${this.client.options.connectionName}`;
+      const tips = localStorage.getItem(key);
+
+      this.inputSuggestionItems = tips ? JSON.parse(tips) : [];
+
+      ipcRenderer.on('closingWindow', (event, arg) => {
+        this.storeCommandTips();
+      });
+    },
+    storeCommandTips() {
+      const key = `cliTips_${this.client.options.connectionName}`;
+      localStorage.setItem(key, JSON.stringify(this.inputSuggestionItems.slice(-500)));
+    },
   },
   mounted() {
     this.initShow();
     this.initShortcut();
+    this.initHistoryTips();
   },
   beforeDestroy() {
     this.anoClient && this.anoClient.quit && this.anoClient.quit();
     this.$shortcut.deleteScope(this.hotKeyScope);
+    this.storeCommandTips();
   },
 };
 </script>

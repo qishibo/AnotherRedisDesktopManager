@@ -70,6 +70,10 @@ function createWindow() {
   // Open the DevTools.
   // mainWindow.webContents.openDevTools();
 
+  mainWindow.on('close', () => {
+    mainWindow.webContents.send('closingWindow');
+  });
+
   // Emitted when the window is closed.
   mainWindow.on('closed', () => {
     // Dereference the window object, usually you would store windows
