@@ -38,8 +38,7 @@
 </template>
 
 <script type="text/javascript">
-import rawCommand from '@/rawCommand';
-import cmdTips from '@/cmds';
+import { allCMD } from '@/commands';
 import splitargs from '@qii404/redis-splitargs';
 import { ipcRenderer } from 'electron';
 
@@ -124,12 +123,12 @@ export default {
         return;
       }
 
-      const items = this.inputSuggestionItems.filter(function (item) {
+      let items = this.inputSuggestionItems.filter(function (item) {
         return item.toLowerCase().indexOf(input.toLowerCase()) !== -1;
       });
 
       // add cmd tips
-      this.addCMDTips(items);
+      items = this.addCMDTips(items);
 
       const suggestions = [...new Set(items)].map(function (item) {
         return {value: item};
@@ -143,23 +142,25 @@ export default {
       const cmd = paramsArr[0].toUpperCase();
 
       if (!cmd) {
-        return;
+        return items;
       }
 
-      for (var i = cmdTips.length - 1; i >= 0; i--) {
-        // cmd with param such as 'hget hhh'
-        if (paramsLen > 1) {
-          if (cmdTips[i].split(' ')[0] === cmd) {
-            items.unshift(cmdTips[i]);
+      for (const key in allCMD) {
+        if (key.startsWith(cmd)) {
+          const tip = allCMD[key];
+          // single tip
+          if (typeof tip === 'string') {
+            items.unshift(tip);
           }
-        }
-        // cmd without param such as 'hget'
-        else {
-          if (cmdTips[i].startsWith(cmd)) {
-            items.unshift(cmdTips[i]);
+
+          // with sub commands, such as CONFIG SET/GET...
+          else {
+            items = tip.concat(items);
           }
         }
       }
+
+      return items;
     },
     bindSubscribeMessage() {
       // bind subscribe message
@@ -240,17 +241,7 @@ export default {
       }
 
       // normal command
-      let promise = rawCommand.exec(this.anoClient, paramsArr);
-
-      // exec error
-      if (typeof promise == 'string') {
-        // fetal error in some cluster condition
-        if (promise == rawCommand.message.catchError) {
-          this.multiQueue = null;
-        }
-
-        return this.scrollToBottom(promise);
-      }
+      let promise = this.anoClient.callBuffer(paramsArr[0].toLowerCase(), paramsArr.slice(1));
 
       // normal command promise
       promise.then((reply) => {
@@ -258,6 +249,7 @@ export default {
         this.execFinished(paramsArr);
         this.scrollToBottom();
       }).catch((err) => {
+        this.multiQueue = null;
         this.scrollToBottom(err.message);
       });
     },
@@ -392,7 +384,7 @@ export default {
     },
     storeCommandTips() {
       const key = `cliTips_${this.client.options.connectionName}`;
-      localStorage.setItem(key, JSON.stringify(this.inputSuggestionItems.slice(-500)));
+      localStorage.setItem(key, JSON.stringify(this.inputSuggestionItems.slice(-200)));
     },
   },
   mounted() {

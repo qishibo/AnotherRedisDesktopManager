@@ -115,6 +115,8 @@ export default {
       // one key per time instead of batch is for cluster...
       for (let i = 0; i < total; i++) {
         let promise = this.client.del(keys[i]);
+        promise.catch(e => {});
+
         // just wait the last one
         if (i === last) {
           promise.then((reply) => {
