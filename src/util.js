@@ -279,4 +279,12 @@ export default {
 
     return debounced;
   },
+  listSplice(lines, uniq, replacement = null) {
+    for (let i = 0; i < lines.length; i++) {
+      if (lines[i].uniq === uniq) {
+        replacement ? lines.splice(i, 1, replacement) : lines.splice(i, 1);
+        break;
+      }
+    }
+  },
 };

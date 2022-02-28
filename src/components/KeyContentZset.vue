@@ -68,8 +68,8 @@
         </template>
         <template slot-scope="scope">
           <el-button type="text" @click="$util.copyToClipboard(scope.row.member)" icon="el-icon-document" :title="$t('message.copy')"></el-button>
-          <el-button type="text" @click="showEditDialog(scope.row, scope.$index)" icon="el-icon-edit" :title="$t('message.edit_line')"></el-button>
-          <el-button type="text" @click="deleteLine(scope.row, scope.$index)" icon="el-icon-delete" :title="$t('el.upload.delete')"></el-button>
+          <el-button type="text" @click="showEditDialog(scope.row)" icon="el-icon-edit" :title="$t('message.edit_line')"></el-button>
+          <el-button type="text" @click="deleteLine(scope.row)" icon="el-icon-delete" :title="$t('el.upload.delete')"></el-button>
           <el-button type="text" @click="dumpCommand(scope.row)" icon="fa fa-code" :title="$t('message.dump_to_clipboard')"></el-button>
         </template>
       </el-table-column>
@@ -106,7 +106,7 @@ export default {
       beforeEditItem: {},
       editLineItem: {},
       loadingIcon: '',
-      pageSize: 30,
+      pageSize: 200,
       pageIndex: 0,
       searchPageSize: 1000,
       oneTimeListLength: 0,
@@ -223,6 +223,7 @@ export default {
           score: Number(list[i + 1]),
           member: list[i],
           // memberDisplay: this.$util.bufToString(list[i]),
+          uniq: Math.random(),
         });
       }
 
@@ -236,12 +237,12 @@ export default {
       //   this.$refs.formatViewer.autoFormat();
       // });
     },
-    showEditDialog(row, index = undefined) {
+    showEditDialog(row) {
       this.editLineItem = row;
       this.beforeEditItem = this.$util.cloneObjWithBuff(row);
       this.editDialog = true;
 
-      this.rowIndex = index;
+      this.rowUniq = row.uniq;
     },
     dumpCommand(item) {
       const lines = item ? [item] : this.zsetData;
@@ -279,13 +280,15 @@ export default {
         }
 
         // this.initShow(); // do not reinit, #786
+        const newLine = {score: afterScore, member: afterMember, uniq: Math.random()};
         // edit line
-        if (typeof this.rowIndex === 'number') {
-          this.zsetData.splice(this.rowIndex, 1, {score: afterScore, member: afterMember})
+        if (this.rowUniq) {
+          this.$util.listSplice(this.zsetData, this.rowUniq, newLine);
         }
         // new line
         else {
-          this.zsetData.push({score: afterScore, member: afterMember});
+          this.zsetData.push(newLine);
+          this.total++;
         }
 
         this.$message.success({
@@ -294,7 +297,7 @@ export default {
         });
       }).catch(e => {this.$message.error(e.message);});
     },
-    deleteLine(row, index = undefined) {
+    deleteLine(row) {
       this.$confirm(
         this.$t('message.confirm_to_delete_row_data'),
         { type: 'warning' }
@@ -310,7 +313,8 @@ export default {
             });
 
             // this.initShow(); // do not reinit, #786
-            (typeof index === 'number') && this.zsetData.splice(index, 1);
+            this.$util.listSplice(this.zsetData, row.uniq);
+            this.total--;
           }
         }).catch(e => {this.$message.error(e.message);});
       }).catch(() => {});
