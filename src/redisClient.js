@@ -1,4 +1,4 @@
-import Redis from 'ioredis';
+import Redis from '@qii404/ioredis';
 import tunnelssh from 'tunnel-ssh';
 import vue from '@/main.js';
 import {remote} from 'electron';
