@@ -18,7 +18,7 @@
         autocomplete="off"
         v-model="params"
         :debounce='10'
-        :disabled='subscribeMode'
+        :disabled='subscribeMode || monitorMode'
         :fetch-suggestions="inputSuggestion"
         :placeholder="$t('message.enter_to_exec')"
         :select-when-unmatched="true"
@@ -34,6 +34,7 @@
   </el-form>
 
   <el-button v-if='subscribeMode' @click='stopSubscribe' type='danger' class='stop-subscribe'>Stop Subscribe</el-button>
+  <el-button v-else-if='monitorMode' @click='stopMonitor' type='danger' class='stop-subscribe'>Stop Monitor</el-button>
 </div>
 </template>
 
@@ -51,6 +52,7 @@ export default {
       inputSuggestionItems: [],
       multiQueue: null,
       subscribeMode: false,
+      monitorMode: false,
     };
   },
   props: ['client', 'hotKeyScope'],
@@ -184,6 +186,10 @@ export default {
       Object.keys(subSet.subscribe).length && this.anoClient.unsubscribe();
       Object.keys(subSet.psubscribe).length && this.anoClient.punsubscribe();
     },
+    stopMonitor() {
+      this.monitorMode = false;
+      this.monitorInstance && this.monitorInstance.disconnect();
+    },
     consoleExec() {
       const params = this.paramsTrim;
       const paramsArr = this.paramsArr;
@@ -238,6 +244,20 @@ export default {
       // subscribe command
       if (/subscribe/.test(paramsArr[0].toLowerCase())) {
         this.subscribeMode = true;
+      }
+
+      // monitor command
+      if (paramsArr[0].toLowerCase() == 'monitor') {
+        this.anoClient.monitor().then(monitor => {
+          this.monitorMode = true;
+          this.scrollToBottom('OK');
+          this.monitorInstance = monitor;
+          this.monitorInstance.on("monitor", (time, args, source, database) => {
+            this.scrollToBottom(`${time} [${database} ${source}] ${args.join(' ')}`);
+          });
+        });
+
+        return;
       }
 
       // normal command
