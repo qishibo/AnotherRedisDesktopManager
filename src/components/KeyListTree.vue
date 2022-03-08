@@ -48,6 +48,7 @@ export default {
       openStatus: {},
       rightClickNode: {},
       multiOperating: false,
+      multiLastSelectTreeId : "",
       treeNodesOverflow: 20000,
       setting: {
         view: {
@@ -63,10 +64,19 @@ export default {
             // chkboxType: { "Y": "s", "N": "s" }
         },
         callback: {
+          onCheck: (event, treeId, treeNode) => {
+            // init, keep consistent with clicking item
+            treeNode.checked = !treeNode.checked;
+
+            // event transfer
+            return this.ztreeObj.vue.treeItemMultiSelect(event, treeId, treeNode, event.shiftKey || window.event.shiftKey);
+          },
           onClick: (event, treeId, treeNode) => {
             // multi operating, do not open key detail tab, just check node
-            if (this.multiOperating) {
-              return this.ztreeObj.checkNode(treeNode, !treeNode.checked, true);
+            let vue = this.ztreeObj.vue;
+            if (vue.multiOperating) {
+              // event transfer
+              return vue.treeItemMultiSelect(event, treeId, treeNode, event.shiftKey || window.event.shiftKey);
             }
 
             // folder clicked
@@ -123,6 +133,7 @@ export default {
     },
     hideMultiSelect() {
       this.multiOperating = false;
+      this.multiLastSelectTreeId = "";
       this.ztreeObj.checkAllNodes(false);
       this.$refs.treeWrapper.classList.remove('show-checkbox');
     },
@@ -304,13 +315,22 @@ export default {
       }
     },
     treeRefresh(nodes) {
-      this.ztreeObj && this.ztreeObj.destroy();
+      this.multiLastSelectTreeId = "";
+      if (this.ztreeObj) {
+        // release vue instance ref
+        this.ztreeObj.vue = null;
+
+        this.ztreeObj.destroy();
+      }
 
       this.ztreeObj = $.fn.zTree.init(
         $(`#${this.treeId}`),
         this.setting,
         nodes
       );
+
+      // create vue instance ref
+      this.ztreeObj.vue = this;
     },
     reCheckNodes(nodes = []) {
       if (!nodes || !nodes.length) {
@@ -330,6 +350,45 @@ export default {
         checkedNode && this.ztreeObj.checkNode(checkedNode, true, true);
       }
     },
+    treeItemMultiSelect(event, treeId, treeNode, shiftKey) {
+      // get last select treeNode, if not selected is null
+      let treeNodeLast = this.ztreeObj.getNodeByTId(this.multiLastSelectTreeId);
+
+      // target checked status
+      let checked = !treeNode.checked;
+
+      if (!treeNodeLast || !shiftKey) {// if not treeNodeLast or keyboard shift not down
+        this.ztreeObj.checkNode(treeNode, checked, true);
+      } else {
+        // update to last selected treeNode status
+        if (treeNodeLast) {
+          checked = treeNodeLast.checked;
+        }
+
+        // get index range
+        let a = this.ztreeObj.getNodeIndex(treeNodeLast);
+        let b = this.ztreeObj.getNodeIndex(treeNode);
+
+        if (a < 0 || b < 0) {
+          this.ztreeObj.checkNode(treeNode, checked, true);
+        } else {
+          // get current view all treeNode item list
+          let treeNodeList = this.ztreeObj.getNodes();
+
+          // limit index range
+          let start = Math.min(a, b);
+          let end = Math.min(Math.max(a, b), treeNodeList.length);
+
+          // foreach range set checkbox selected status
+          for (let i = start; i <= end; i++) {
+            this.ztreeObj.checkNode(treeNodeList[i], checked, true);
+          }
+        }
+      }
+
+      // record current treeNode tId
+      this.multiLastSelectTreeId = treeNode.tId;
+    }
   },
   watch: {
     keyList(newList) {
