@@ -48,7 +48,6 @@ export default {
       openStatus: {},
       rightClickNode: {},
       multiOperating: false,
-      multiLastSelectTreeId : "",
       treeNodesOverflow: 20000,
       setting: {
         view: {
@@ -65,32 +64,68 @@ export default {
         },
         callback: {
           onCheck: (event, treeId, treeNode) => {
-            // init, keep consistent with clicking item
-            treeNode.checked = !treeNode.checked;
+            if (!window.event.shiftKey || !this.lastTid || this.lastTid === treeNode.tId) {
+              return this.lastTid = treeNode.tId;
+            }
 
-            // event transfer
-            return this.ztreeObj.vue.treeItemMultiSelect(event, treeId, treeNode, event.shiftKey || window.event.shiftKey);
+            const curLi = document.getElementById(treeNode.tId);
+            const lastLi = document.getElementById(this.lastTid);
+
+            if (!curLi || !lastLi) {
+              return;
+            }
+
+            const direction = curLi.getBoundingClientRect().y - lastLi.getBoundingClientRect().y;
+            const liDoms = document.querySelectorAll(`#${this.treeId} li`);
+
+            // same as the last node check status
+            const checkTarget = this.ztreeObj.getNodeByTId(this.lastTid).checked;
+
+            const checkPerNode = (startId, endId, checkStatus) => {
+              let startCheck = false;
+              for (let line of liDoms) {
+                if (!startCheck) {
+                  if (line.id !== startId) {
+                    continue;
+                  }
+                  else {
+                    startCheck = true;
+                  }
+                }
+
+                const node = this.ztreeObj.getNodeByTId(line.id);
+                node && this.ztreeObj.checkNode(node, checkStatus, false);
+
+                if (line.id === endId) {
+                  break;
+                }
+              }
+            }
+
+            // upward checking
+            if (direction <= 0) {
+              checkPerNode(treeNode.tId, this.lastTid, checkTarget);
+            }
+            // downward checking
+            else {
+              checkPerNode(this.lastTid, treeNode.tId, checkTarget);
+            }
+
+            return this.lastTid = treeNode.tId;
           },
           onClick: (event, treeId, treeNode) => {
             // multi operating, do not open key detail tab, just check node
-            let vue = this.ztreeObj.vue;
-            if (vue.multiOperating) {
-              // event transfer
-              return vue.treeItemMultiSelect(event, treeId, treeNode, event.shiftKey || window.event.shiftKey);
+            if (this.multiOperating) {
+              return this.ztreeObj.checkNode(treeNode, undefined, true, true);
             }
 
             // folder clicked
             if (treeNode.children) {
-              // after folder expand, sorting keys
-              !treeNode.open && this.folderExpand(treeNode);
-
               // toggle tree view
-              this.ztreeObj && this.ztreeObj.expandNode(treeNode, undefined, false, false);
-
-              // store open status
-              return this.openStatus[treeNode.fullName] = treeNode.open;
+              return this.ztreeObj && this.ztreeObj.expandNode(treeNode, undefined, false, false, true);
             }
 
+            // key clicked
             this.clickKey(Buffer.from(treeNode.nameBuffer.data), event);
           },
           beforeExpand: (treeId, treeNode) => {
@@ -133,7 +168,6 @@ export default {
     },
     hideMultiSelect() {
       this.multiOperating = false;
-      this.multiLastSelectTreeId = "";
       this.ztreeObj.checkAllNodes(false);
       this.$refs.treeWrapper.classList.remove('show-checkbox');
     },
@@ -315,22 +349,13 @@ export default {
       }
     },
     treeRefresh(nodes) {
-      this.multiLastSelectTreeId = "";
-      if (this.ztreeObj) {
-        // release vue instance ref
-        this.ztreeObj.vue = null;
-
-        this.ztreeObj.destroy();
-      }
+      this.ztreeObj && this.ztreeObj.destroy();
 
       this.ztreeObj = $.fn.zTree.init(
         $(`#${this.treeId}`),
         this.setting,
         nodes
       );
-
-      // create vue instance ref
-      this.ztreeObj.vue = this;
     },
     reCheckNodes(nodes = []) {
       if (!nodes || !nodes.length) {
@@ -350,45 +375,6 @@ export default {
         checkedNode && this.ztreeObj.checkNode(checkedNode, true, true);
       }
     },
-    treeItemMultiSelect(event, treeId, treeNode, shiftKey) {
-      // get last select treeNode, if not selected is null
-      let treeNodeLast = this.ztreeObj.getNodeByTId(this.multiLastSelectTreeId);
-
-      // target checked status
-      let checked = !treeNode.checked;
-
-      if (!treeNodeLast || !shiftKey) {// if not treeNodeLast or keyboard shift not down
-        this.ztreeObj.checkNode(treeNode, checked, true);
-      } else {
-        // update to last selected treeNode status
-        if (treeNodeLast) {
-          checked = treeNodeLast.checked;
-        }
-
-        // get index range
-        let a = this.ztreeObj.getNodeIndex(treeNodeLast);
-        let b = this.ztreeObj.getNodeIndex(treeNode);
-
-        if (a < 0 || b < 0) {
-          this.ztreeObj.checkNode(treeNode, checked, true);
-        } else {
-          // get current view all treeNode item list
-          let treeNodeList = this.ztreeObj.getNodes();
-
-          // limit index range
-          let start = Math.min(a, b);
-          let end = Math.min(Math.max(a, b), treeNodeList.length);
-
-          // foreach range set checkbox selected status
-          for (let i = start; i <= end; i++) {
-            this.ztreeObj.checkNode(treeNodeList[i], checked, true);
-          }
-        }
-      }
-
-      // record current treeNode tId
-      this.multiLastSelectTreeId = treeNode.tId;
-    }
   },
   watch: {
     keyList(newList) {
