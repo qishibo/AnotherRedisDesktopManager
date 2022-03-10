@@ -63,55 +63,25 @@ export default {
             // chkboxType: { "Y": "s", "N": "s" }
         },
         callback: {
-          onCheck: (event, treeId, treeNode) => {
+          beforeCheck: (treeId, treeNode) => {
             if (!window.event.shiftKey || !this.lastTid || this.lastTid === treeNode.tId) {
-              return this.lastTid = treeNode.tId;
+              this.lastTid = treeNode.tId;
+              return true;
             }
-
             const curLi = document.getElementById(treeNode.tId);
             const lastLi = document.getElementById(this.lastTid);
 
             if (!curLi || !lastLi) {
-              return;
+              return true;
             }
 
-            const direction = curLi.getBoundingClientRect().y - lastLi.getBoundingClientRect().y;
-            const liDoms = document.querySelectorAll(`#${this.treeId} li`);
+            const direction = (curLi.getBoundingClientRect().y - lastLi.getBoundingClientRect().y)
+                              <= 0 ? 'up' : 'down';
+            // check between bottom and top
+            this.multipleCheck(direction, treeNode.tId, this.lastTid);
+            this.lastTid = treeNode.tId;
 
-            // same as the last node check status
-            const checkTarget = this.ztreeObj.getNodeByTId(this.lastTid).checked;
-
-            const checkPerNode = (startId, endId, checkStatus) => {
-              let startCheck = false;
-              for (let line of liDoms) {
-                if (!startCheck) {
-                  if (line.id !== startId) {
-                    continue;
-                  }
-                  else {
-                    startCheck = true;
-                  }
-                }
-
-                const node = this.ztreeObj.getNodeByTId(line.id);
-                node && this.ztreeObj.checkNode(node, checkStatus, false);
-
-                if (line.id === endId) {
-                  break;
-                }
-              }
-            }
-
-            // upward checking
-            if (direction <= 0) {
-              checkPerNode(treeNode.tId, this.lastTid, checkTarget);
-            }
-            // downward checking
-            else {
-              checkPerNode(this.lastTid, treeNode.tId, checkTarget);
-            }
-
-            return this.lastTid = treeNode.tId;
+            return false;
           },
           onClick: (event, treeId, treeNode) => {
             // multi operating, do not open key detail tab, just check node
@@ -375,6 +345,61 @@ export default {
         checkedNode && this.ztreeObj.checkNode(checkedNode, true, true);
       }
     },
+    multipleCheck (direction, curTid, lastTid) {
+      const topId = direction == 'up' ? curTid : lastTid;
+      const bottomId = direction == 'up' ? lastTid : curTid;
+      // all nodes display
+      const liDoms = document.querySelectorAll(`#${this.treeId} li`);
+      // same as the last node check status
+      const checkTarget = this.ztreeObj.getNodeByTId(lastTid).checked;
+
+      let startCheck = false;
+      let bottomNodeParents = {};
+      // map from bottom
+      for (let index = liDoms.length - 1; index >= 0; index--) {
+        const domId = liDoms[index].id;
+        // not in checking yet
+        if (!startCheck) {
+          if (domId !== bottomId) continue;
+          // the node in the bottom
+          else {
+            startCheck = true;
+            let node = this.ztreeObj.getNodeByTId(domId);
+
+            // downward checking, bottom node check directly
+            direction == 'down' && this.ztreeObj.checkNode(node, checkTarget, true);
+            // record parents of the node
+            while (node.parentTId) {
+              bottomNodeParents[node.parentTId] = true;
+              node = node.getParentNode();
+            }
+            // bottom node finished
+            continue;
+          }
+        }
+
+        // parents of bottom node, continue
+        if (domId in bottomNodeParents) {
+          // parent is on top, break
+          if (domId === topId) break;
+          continue;
+        }
+
+        // the top node
+        if (domId === topId) {
+          if (direction == 'up') {
+            const node = this.ztreeObj.getNodeByTId(domId);
+            this.ztreeObj.checkNode(node, checkTarget, true);
+          }
+
+          break;
+        }
+
+        // nodes along the way
+        const node = this.ztreeObj.getNodeByTId(domId);
+        node.checked !== checkTarget && this.ztreeObj.checkNode(node, checkTarget, true);
+      }
+    },
   },
   watch: {
     keyList(newList) {
@@ -467,6 +492,9 @@ export default {
 
 /*checkbox icon*/
 .ztree li span.button {font-size: 115%; background-image: url("../assets/custom_tree.png"); vertical-align: middle;}
+/*fix checkbox missing*/
+.ztree li span.button.chk.checkbox_false_part {background-position: 0 0;}
+.ztree li span.button.chk.checkbox_false_part_focus {background-position: 0 -14px;}
 
 /*toggle switch*/
 .ztree li span.button.switch {height: 22px; width: 20px; background-image: url("../assets/key_tree_toggle.png");}
