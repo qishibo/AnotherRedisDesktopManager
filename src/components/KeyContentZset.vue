@@ -134,7 +134,7 @@ export default {
 
       // default mode, ordered
       else {
-        this.getListRange();
+        this.getListRange(resetTable);
         this.pageIndex++;
       }
 
@@ -147,6 +147,8 @@ export default {
       }).catch(e => {});
     },
     resetTable() {
+      // stop scanning first, #815
+      this.scanStream && this.scanStream.pause();
       this.zsetData = [];
       this.pageIndex = 0;
       this.scanStream = null;
