@@ -18,6 +18,8 @@
 
 - 可以在[github](https://github.com/qishibo/AnotherRedisDesktopManager/releases) 或者 [gitee](https://gitee.com/qishibo/AnotherRedisDesktopManager/releases)下载`exe`安装包
 - 或者通过**winget**: `winget install qishibo.AnotherRedisDesktopManager`
+- 或者通过Win Store**赞助**，然后让Win Store帮你自动更新版本
+<br>[![windows store](https://cdn.jsdelivr.net/gh/qishibo/img/windows-store-icon182-56.png)](https://www.microsoft.com/store/apps/9MTD84X0JFHZ)
 
 ## Linux
 
@@ -170,8 +172,9 @@ npm run pack:linux
 - 给我点个Star⭐⭐
 - 通过 [OpenCollective](https://opencollective.com/AnotherRedisDesktopManager)
 - 如果你是Mac用户, 也可以通过从[App Store](https://apps.apple.com/app/id1516451072)购买来赞助, 然后应用商店会为你自动更新
-
-  [![app store](https://cdn.jsdelivr.net/gh/qishibo/img/avail_app_store180.svg)](https://apps.apple.com/app/id1516451072)
+<br>[![app store](https://cdn.jsdelivr.net/gh/qishibo/img/avail_app_store180.svg)](https://apps.apple.com/app/id1516451072)
+- 如果你是Windows用户，还可以通过从[Windows Store](https://www.microsoft.com/store/apps/9MTD84X0JFHZ)购买来赞助，商店就会帮你自动更新
+<br>[![windows store](https://cdn.jsdelivr.net/gh/qishibo/img/windows-store-icon182-56.png)](https://www.microsoft.com/store/apps/9MTD84X0JFHZ)
 - 微信赞助码 [觉得好用，赞助一袋大白兔🐇奶糖!]
 
   <img width="150px" src="https://cdn.jsdelivr.net/gh/qishibo/img/202109031655807.jpeg" />
