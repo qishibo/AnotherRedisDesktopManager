@@ -1,39 +1,38 @@
 <template>
-  <div>
-    <el-button type='text' icon="el-icon-menu" @click="selectProto">Select Proto</el-button>
-    <el-tag v-for="p of proto">{{ p }}</el-tag>
-    <br>
-    <el-select v-model="selectedType" class="type-selector">
-      <el-option
+  <JsonEditor ref='editor' :content='newContent' :readOnly='false'>
+    <div class="viewer-protobuf">
+      <!-- type selector -->
+      <el-select v-model="selectedType" filterable placeholder="Select Type" size="mini" class="type-selector">
+        <el-option
           v-for="t of types"
           :key="t"
           :label="t"
           :value="t">
-      </el-option>
-    </el-select>
-    <JsonEditor ref='editor' :content='newContent' :readOnly='true'></JsonEditor>
-  </div>
+        </el-option>
+      </el-select>
+      <!-- select proto file -->
+      <el-button class="select-proto-btn" type='primary' size="mini" icon="el-icon-upload2" @click="selectProto">Select Proto Files</el-button>
+    </div>
+    <!-- selected files -->
+    <el-tag v-for="p of proto" class="selected-proto-file-tag">{{ p }}</el-tag>
+    <hr>
+  </JsonEditor>
 </template>
-<style>
-.type-selector {
-  width: 100%;
-}
-</style>
 
 <script type="text/javascript">
 import JsonEditor from '@/components/JsonEditor';
 import { getData } from 'rawproto';
-import * as protobuf from 'protobufjs';
-
+// import * as protobuf from 'protobufjs';
+const protobuf = require("protobufjs/minimal");
 const { dialog } = require('electron').remote;
 
 export default {
   data() {
     return {
       proto: [],
-      protoRoot: new protobuf.Root(),
-      types: ['rawproto'],
-      selectedType: 'rawproto',
+      protoRoot: null,
+      types: ['Rawproto'],
+      selectedType: 'Rawproto',
     };
   },
   components: { JsonEditor },
@@ -41,25 +40,25 @@ export default {
   computed: {
     newContent() {
       try {
-        if (this.selectedType === 'rawproto') {
+        if (this.selectedType === 'Rawproto') {
           return getData(this.content);
         }
-        const t = this.protoRoot.lookupType(this.selectedType);
-        const m = t.decode(this.content);
-        return m.toJSON();
+        const type = this.protoRoot.lookupType(this.selectedType);
+        const message = type.decode(this.content);
+        return message.toJSON();
       } catch (e) {
-        return this.$t('message.protobuf_decode_failed');
+        return 'Protobuf Decode Failed!';
       }
     },
   },
   methods: {
-    traverseTypes(current, fn) {
+    traverseTypes(current) {
       if (current instanceof protobuf.Type) {
-        fn(current);
+        this.types.push(current.fullName);
       }
-      if (current.nestedArray) {
-        current.nestedArray.forEach((nested) => {
-          this.traverseTypes(nested, fn);
+      else if (current.nestedArray) {
+        current.nestedArray.forEach(nested => {
+          this.traverseTypes(nested);
         });
       }
     },
@@ -72,22 +71,79 @@ export default {
             extensions: ['proto'],
           },
         ],
-      })
-        .then((result) => {
+      }).then(result => {
           if (result.canceled) return;
           this.proto = result.filePaths;
-          this.types = ['rawproto'];
-          this.selectedType = 'rawproto';
-          return protobuf.load(this.proto);
-        })
-        .then((root) => {
-          if (!root) return;
-          this.protoRoot = root;
-          this.traverseTypes(root, (type) => {
-            this.types.push(type.fullName);
+          this.types = ['Rawproto'];
+          this.selectedType = 'Rawproto';
+
+          protobuf.load(this.proto).then(root => {
+            this.protoRoot = root;
+            // init types
+            this.traverseTypes(root);
+            // first type as default
+            if (this.types.length > 0) {
+              this.selectedType = this.types[1];
+            }
+          }).catch(e => {
+            this.$message.error(e.message);
           });
+        }).catch(e => {
+          this.$message.error(e.message);
         });
+    },
+    getContent() {
+      if (!this.protoRoot) {
+        this.$message.error('Select a correct .proto file');
+        return false;
+      }
+
+      if (!this.selectedType || this.selectedType === 'Rawproto') {
+        this.$message.error('Select a correct Type to encode');
+        return false;
+      }
+
+      let content = this.$refs.editor.getRawContent();
+      const type = this.protoRoot.lookupType(this.selectedType);
+
+      try {
+        content = JSON.parse(content);
+        const err = type.verify(content);
+
+        if (err) {
+          this.$message.error('Proto Verify Failed: ' + err);
+          return false;
+        }
+
+        const message = type.create(content);
+        return type.encode(message).finish();
+      }
+      catch(e) {
+        this.$message.error(this.$t('message.json_format_failed'));
+        return false;
+      }
+    },
+    copyContent() {
+      return JSON.stringify(this.newContent);
     },
   },
 };
 </script>
+
+<style type="text/css">
+  .viewer-protobuf {
+    display: flex;
+    margin-top: 8px;
+  }
+  .viewer-protobuf .type-selector {
+    flex: 1;
+    margin-right: 10px;
+  }
+  .viewer-protobuf .select-proto-btn {
+    margin-top: 2px;
+    height: 27px;
+  }
+  .selected-proto-file-tag {
+    margin-right: 4px;
+  }
+</style>

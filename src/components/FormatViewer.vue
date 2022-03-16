@@ -174,6 +174,12 @@ export default {
       else if (this.$util.isDeflate(this.content)) {
         return this.changeViewer('Deflate');
       }
+      // protobuf
+      else if (this.$util.isProtobuf(this.content)) {
+        return this.changeViewer('Protobuf');
+      }
+
+
       // hex
       else if (!this.contentVisible) {
         return this.changeViewer('Hex');

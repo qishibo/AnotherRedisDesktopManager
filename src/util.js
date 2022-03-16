@@ -119,6 +119,17 @@ export default {
   isDeflate(buf) {
     return typeof this.zippedToString(buf, 'deflate') === 'string';
   },
+  isProtobuf(buf) {
+    const getData = require('rawproto').getData;
+
+    try {
+      getData(buf);
+      return true;
+    }
+    catch (e) {}
+
+    return false;
+  },
   zippedToString(buf, type = 'unzip') {
     const zlib   = require('zlib');
     const funMap = {
@@ -227,7 +238,7 @@ export default {
       return node;
     });
   },
-  // nodes is reference, keep folder in front and sorted, 
+  // nodes is reference, keep folder in front and sorted,
   // keep keys in tail and sorted
   sortKeysAndFolder(nodes) {
     nodes.sort(function(a, b) {
@@ -239,7 +250,7 @@ export default {
       else if (a.children && b.children) {
         return a.name > b.name ? 1 : -1;
       }
-      
+
       // a is folder, b is key
       else if (a.children) {
         return -1;

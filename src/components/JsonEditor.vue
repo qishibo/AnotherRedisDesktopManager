@@ -61,7 +61,7 @@ export default {
     },
     getRawContent(removeJsonSpace = false) {
       let content = this.monacoEditor.getValue();
-      
+
       if (removeJsonSpace) {
         if (this.$util.isJson(content)) {
           content = JSONbig.stringify(JSONbig.parse(content), null, 0);
@@ -92,11 +92,11 @@ export default {
 
   mounted() {
     this.monacoEditor = monaco.editor.create(
-      this.$refs.editor, 
+      this.$refs.editor,
       {
         value: this.newContentStr,
         theme: 'vs-dark',
-        language: 'json', 
+        language: 'json',
         links: false,
         readOnly: this.readOnly,
         cursorStyle: this.readOnly ? 'underline-thin' : 'line',
