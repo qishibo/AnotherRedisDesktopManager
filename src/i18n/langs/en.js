@@ -151,7 +151,6 @@ const en = {
     load_all_keys_tip: 'Load all keys at one time. If the number of keys is too large, the client may get stuck. Please use it correctly',
     tree_node_overflow: 'Too many keys or folders , keep only {num} for display. If your key is not here, fuzzy search is recommended, or set the separator to spread the keys into folders',
     connection_readonly: 'Readonly mode. Adding, editing and deleting are prohibited',
-    protobuf_decode_failed: 'Protobuf decode failed',
   },
 };
 
