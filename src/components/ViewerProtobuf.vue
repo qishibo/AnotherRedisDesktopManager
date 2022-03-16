@@ -56,7 +56,7 @@ export default {
       if (current instanceof protobuf.Type) {
         this.types.push(current.fullName);
       }
-      else if (current.nestedArray) {
+      if (current.nestedArray) {
         current.nestedArray.forEach(nested => {
           this.traverseTypes(nested);
         });
