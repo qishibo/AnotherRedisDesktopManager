@@ -24,10 +24,13 @@
       <li v-for="key, index in Object.keys(allKeys)" :key="index">{{ key }}</li>
     </ol>
   </el-card>
+  <ScrollToTop parentNum='1'></ScrollToTop>
 </div>
 </template>
 
 <script type="text/javascript">
+import ScrollToTop from '@/components/ScrollToTop';
+
 export default {
   data() {
     return {
@@ -38,6 +41,7 @@ export default {
     };
   },
   props: ['client', 'rule', 'hotKeyScope'],
+  components: { ScrollToTop },
   computed: {
     allKeys() {
       let dict = this.specifyKeys;
@@ -151,7 +155,7 @@ export default {
   },
   beforeDestroy() {
     this.$shortcut.deleteScope(this.hotKeyScope);
-    
+
     // cancel scanning
     if (this.scanStreams.length) {
       for (let stream of this.scanStreams) {

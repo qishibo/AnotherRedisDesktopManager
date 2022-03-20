@@ -151,6 +151,12 @@ const tr = {
     load_all_keys_tip: 'Tüm anahtarları bir kerede yükleyin. Anahtar sayısı çok fazlaysa, istemci takılabilir. Lütfen doğru kullanın',
     tree_node_overflow: 'Çok fazla anahtar veya klasör var, yalnızca {num} görüntüleme için ayrıldı. Anahtarınız burada değilse bulanık arama önerilir, veya anahtarı klasöre yaymak için bir ayırıcı ayarlayın',
     connection_readonly: 'Salt okunur mod. Eklemek, düzenlemek ve silmek yasaktır',
+    memory_analysis: 'Bellek Analizi',
+    begin: 'Başlamak',
+    pause: 'Duraklat',
+    restart: 'Tekrar başlat',
+    max_display: 'Maksimum ekran sayısı: {num}',
+    max_scan: 'Maksimum tarama sayısı: {num}',
   },
 };
 
