@@ -151,6 +151,12 @@ const de = {
     load_all_keys_tip: 'Alle Schlüssel auf einmal laden. Wenn die Anzahl der Schlüssel zu groß ist, kann der Client stecken bleiben. Bitte verwenden Sie es richtig',
     tree_node_overflow: 'Zu viele Schlüssel oder Ordner, behalten Sie nur {num} für die Anzeige. Wenn Ihr Schlüssel nicht hier ist, wird eine unscharfe Suche empfohlen, oder den Trenner setzen, um die Schlüssel in Ordner zu verteilen',
     connection_readonly: 'Readonly-Modus. Das Hinzufügen, Bearbeiten und Löschen ist untersagt',
+    memory_analysis: 'Gedächtnisanalyse',
+    begin: 'Start',
+    pause: 'Pause',
+    restart: 'Neu starten',
+    max_display: 'Maximale Anzahl von Displays: {num}',
+    max_scan: 'Maximale Anzahl an Scans: {num}',
   },
 };
 
