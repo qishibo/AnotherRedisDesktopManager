@@ -354,49 +354,54 @@ export default {
       const checkTarget = this.ztreeObj.getNodeByTId(lastTid).checked;
 
       let startCheck = false;
-      let bottomNodeParents = {};
-      // map from bottom
+      let selectedIds = new Set();
+      let bottomNodeParents = new Set();
+
+      // collect all nodes which need to be checked, from bottom to top
       for (let index = liDoms.length - 1; index >= 0; index--) {
         const domId = liDoms[index].id;
-        // not in checking yet
+        // find bottom node
         if (!startCheck) {
-          if (domId !== bottomId) continue;
-          // the node in the bottom
-          else {
-            startCheck = true;
-            let node = this.ztreeObj.getNodeByTId(domId);
-
-            // downward checking, bottom node check directly
-            direction == 'down' && this.ztreeObj.checkNode(node, checkTarget, true);
-            // record parents of the node
-            while (node.parentTId) {
-              bottomNodeParents[node.parentTId] = true;
-              node = node.getParentNode();
-            }
-            // bottom node finished
-            continue;
-          }
-        }
-
-        // parents of bottom node, continue
-        if (domId in bottomNodeParents) {
-          // parent is on top, break
-          if (domId === topId) break;
+          (domId === bottomId) && (startCheck = true);
           continue;
         }
 
-        // the top node
+        // find top node, means last node
         if (domId === topId) {
-          if (direction == 'up') {
-            const node = this.ztreeObj.getNodeByTId(domId);
-            this.ztreeObj.checkNode(node, checkTarget, true);
-          }
-
+          direction === 'up' && selectedIds.add(domId);
           break;
         }
 
-        // nodes along the way
-        const node = this.ztreeObj.getNodeByTId(domId);
+        selectedIds.add(domId);
+      }
+
+      let topNode = this.ztreeObj.getNodeByTId(topId);
+      let bottomNode = this.ztreeObj.getNodeByTId(bottomId);
+
+      // check top or bottom node
+      this.ztreeObj.checkNode(direction === 'down' ? bottomNode : topNode, checkTarget, true);
+
+      // get nodeIds in tree of bottom root
+      while (bottomNode.parentTId) {
+        bottomNodeParents.add(bottomNode.parentTId);
+        bottomNode = bottomNode.getParentNode();
+      }
+
+      // check other nodes along the way, from bottom to top
+      for (let domId of selectedIds) {
+        // folders in bottom tree, checked by bottom node already
+        if (bottomNodeParents.has(domId)) {
+          continue;
+        }
+
+        let node = this.ztreeObj.getNodeByTId(domId);
+
+        // exclude bottom root tree nodes
+        // ignore this node because its parent node also in the check list
+        if (!bottomNodeParents.has(node.parentTId) && selectedIds.has(node.parentTId)) {
+          continue;
+        }
+
         node.checked !== checkTarget && this.ztreeObj.checkNode(node, checkTarget, true);
       }
     },
