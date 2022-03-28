@@ -14,7 +14,7 @@
       <el-button class="select-proto-btn" type='primary' size="mini" icon="el-icon-upload2" @click="selectProto">Select Proto Files</el-button>
     </div>
     <!-- selected files -->
-    <el-tag v-for="p of proto" class="selected-proto-file-tag">{{ p }}</el-tag>
+    <!-- <el-tag v-for="p of proto" class="selected-proto-file-tag">{{ p }}</el-tag> -->
     <hr>
   </JsonEditor>
 </template>
@@ -67,7 +67,7 @@ export default {
         properties: ['openFile', 'multiSelections'],
         filters: [
           {
-            name: 'Protobuf',
+            name: '.proto',
             extensions: ['proto'],
           },
         ],
