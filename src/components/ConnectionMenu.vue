@@ -47,6 +47,9 @@
         <el-dropdown-item @click.native='deleteConnection'>
           <span><i class='more-operate-ico el-icon-delete'></i>&nbsp;{{ $t('message.del_connection') }}</span>
         </el-dropdown-item>
+        <el-dropdown-item @click.native='memoryAnalisys'>
+          <span><i class='more-operate-ico fa fa-table'></i>&nbsp;{{ $t('message.memory_analysis') }}</span>
+        </el-dropdown-item>
         <el-dropdown-item @click.native='flushDB' divided>
           <span><i class='more-operate-ico fa fa-exclamation-triangle'></i>&nbsp;{{ $t('message.flushdb') }}</span>
         </el-dropdown-item>
@@ -149,6 +152,9 @@ export default {
       else {
         this.$bus.$emit('openCli', this.client, this.config.connectionName);
       }
+    },
+    memoryAnalisys() {
+      this.$bus.$emit('memoryAnalysis', this.client, this.config.connectionName);
     },
     flushDB() {
       if (!this.client) {
