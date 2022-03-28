@@ -77,6 +77,9 @@ export default {
         return forceOpen ? this.afterOpenConnection(this.client, callback) : false;
       }
 
+      // set searching status first
+      this.$refs.operateItem.searchIcon = 'el-icon-loading';
+
       // create a new client
       const clientPromise = this.getRedisClient(this.config);
 

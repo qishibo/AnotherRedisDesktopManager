@@ -21,6 +21,8 @@
 
 - Download latest [exe](https://github.com/qishibo/AnotherRedisDesktopManager/releases) package from [release](https://github.com/qishibo/AnotherRedisDesktopManager/releases) [or [gitee](https://gitee.com/qishibo/AnotherRedisDesktopManager/releases) in China], double click to install.
 - Or by **winget**: `winget install qishibo.AnotherRedisDesktopManager`
+- Or **sponsor** by win store, It's not free, and I will be very grateful to you.
+<br/>[![windows store](https://cdn.jsdelivr.net/gh/qishibo/img/windows-store-icon182-56.png)](https://www.microsoft.com/store/apps/9MTD84X0JFHZ)
 
 ## Linux
 
@@ -58,6 +60,8 @@
 
 ## Feature Log
 
+- 2022-04-01: Protobuf Support && Memory Analysis
+- 2022-03-03: Readonly Mode && Mointor Support
 - 2022-01-24: Command Dump Support
 - 2022-01-05: Support To Load All Keys
 - 2022-01-01: Brotli\Gzip\Deflate Support && RedisJSON Support
@@ -172,8 +176,9 @@ npm run pack:linux
 - Give me a star ⭐!
 - Through [OpenCollective](https://opencollective.com/AnotherRedisDesktopManager)
 - If you are a Mac user, you can purchase this software from the [app store](https://apps.apple.com/app/id1516451072) to sponsor, and then let the app store automatically update it for you.
-
-  [![app store](https://cdn.jsdelivr.net/gh/qishibo/img/avail_app_store180.svg)](https://apps.apple.com/app/id1516451072)
+<br>[![app store](https://cdn.jsdelivr.net/gh/qishibo/img/avail_app_store180.svg)](https://apps.apple.com/app/id1516451072)
+- If you are a Windows user, you can purchase this software from the [win store](https://www.microsoft.com/store/apps/9MTD84X0JFHZ) to sponsor.
+<br>[![windows store](https://cdn.jsdelivr.net/gh/qishibo/img/windows-store-icon182-56.png)](https://www.microsoft.com/store/apps/9MTD84X0JFHZ)
 - Wechat sponsor code [Sponsor me a cup of coffee ☕]
 
   <img width="150px" src="https://cdn.jsdelivr.net/gh/qishibo/img/202109031655807.jpeg" />

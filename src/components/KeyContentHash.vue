@@ -111,7 +111,7 @@ export default {
       beforeEditItem: {},
       editLineItem: {},
       loadingIcon: '',
-      pageSize: 30,
+      pageSize: 200,
       searchPageSize: 1000,
       oneTimeListLength: 0,
       scanStream: null,
@@ -149,6 +149,8 @@ export default {
       }).catch(e => {});
     },
     resetTable() {
+      // stop scanning first, #815
+      this.scanStream && this.scanStream.pause();
       this.hashData = [];
       this.scanStream = null;
       this.oneTimeListLength = 0;
@@ -172,6 +174,7 @@ export default {
             // keyDisplay: this.$util.bufToString(reply[i]),
             value: reply[i + 1],
             // valueDisplay: this.$util.bufToString(reply[i + 1]),
+            uniq: Math.random(),
           });
         }
 
@@ -207,6 +210,8 @@ export default {
       this.editLineItem = row;
       this.beforeEditItem = this.$util.cloneObjWithBuff(row);
       this.editDialog = true;
+
+      this.rowUniq = row.uniq;
     },
     dumpCommand(item) {
       const lines = item ? [item] : this.hashData;
@@ -240,16 +245,19 @@ export default {
       ).then((reply) => {
         // edit key && key changed
         if (before.key && !before.key.equals(afterKey)) {
-          client.hdel(
-            key,
-            before.key
-          ).then((reply) => {
-            this.initShow();
-          });
+          client.hdel(key, before.key);
         }
 
+        // this.initShow(); // do not reinit, #786
+        const newLine = {key: afterKey, value: afterValue, uniq: Math.random()};
+        // edit line
+        if (this.rowUniq) {
+          this.$util.listSplice(this.hashData, this.rowUniq, newLine);
+        }
+        // new line
         else {
-          this.initShow();
+          this.hashData.push(newLine);
+          this.total++;
         }
 
         // reply==1:new field; reply==0 field exists
@@ -274,7 +282,9 @@ export default {
               duration: 1000,
             });
 
-            this.initShow();
+            // this.initShow(); // do not reinit, #786
+            this.$util.listSplice(this.hashData, row.uniq);
+            this.total--;
           }
         }).catch(e => {this.$message.error(e.message);});
       }).catch(() => {});

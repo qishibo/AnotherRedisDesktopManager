@@ -42,8 +42,30 @@
 
     <!-- del & refresh btn -->
     <div class='key-header-item key-header-btn-con'>
+      <!-- del btn -->
       <el-button ref='deleteBtn' type="danger" @click="deleteKey" icon="el-icon-delete" :title="$t('el.upload.delete')+' Ctrl+d'"></el-button>
-      <el-button ref='refreshBtn' type="success" @click="refreshKey" icon="el-icon-refresh" :title="$t('message.refresh_connection')+' Ctrl+r / F5'"></el-button>
+      <!-- refresh btn -->
+      <!-- <el-button ref='refreshBtn' type="success" @click="refreshKey" icon="el-icon-refresh" :title="$t('message.refresh_connection')+' Ctrl+r / F5'"></el-button> -->
+
+      <!-- refresh btn component -->
+      <el-popover
+        placement="bottom"
+        :open-delay="200"
+        trigger="hover">
+        <el-tag type="info">
+          <i class="el-icon-refresh"></i>
+          {{ $t('message.auto_refresh') }}
+        </el-tag>
+
+        <el-tooltip :content="$t('message.auto_refresh_tip', {interval: refreshInterval / 1000})" effect="dark" placement="bottom">
+          <el-switch v-model='autoRefresh' @change="refreshInit"></el-switch>
+        </el-tooltip>
+
+        <!-- refresh btn -->
+        <el-button slot="reference" ref='refreshBtn' type="success" @click="refreshKey" icon="el-icon-refresh" :title="$t('message.refresh_connection')+' Ctrl+r / F5'" :class="autoRefresh?'rotating':''"></el-button>
+      </el-popover>
+
+      <!-- dump btn -->
       <el-button ref='dumpBtn' type="primary" @click="dumpCommand" icon="fa fa-code" :title="$t('message.dump_to_clipboard')"></el-button>
     </div>  
   </div>
@@ -56,6 +78,8 @@ export default {
       keyName: this.redisKey,
       keyTTL: -1,
       binary: false,
+      autoRefresh: false,
+      refreshInterval: 2000,
     };
   },
   props: ['client', 'redisKey', 'keyType', 'hotKeyScope'],
@@ -80,6 +104,17 @@ export default {
     refreshKey() {
       this.initShow();
       this.$emit('refreshContent');
+    },
+    refreshInit() {
+      this.refreshTimer && clearInterval(this.refreshTimer);
+
+      if (this.autoRefresh) {
+        this.refreshKey();
+
+        this.refreshTimer = setInterval(() => {
+          this.refreshKey();
+        }, this.refreshInterval);
+      }
     },
     dumpCommand() {
       this.$emit('dumpCommand');
@@ -205,6 +240,7 @@ export default {
     this.initShortcut();
   },
   beforeDestroy() {
+    clearInterval(this.refreshTimer);
     this.$shortcut.deleteScope(this.hotKeyScope);
   },
 };
@@ -241,6 +277,11 @@ export default {
   }
   .key-header-item.key-header-btn-con .el-button+.el-button {
     margin-left: 4px;
+  }
+
+  /*refresh btn rotating*/
+  .key-header-info .key-header-btn-con .rotating .el-icon-refresh{
+    animation: rotate 1.5s linear infinite;
   }
 
 </style>

@@ -103,7 +103,7 @@ export default {
       beforeEditItem: {},
       editLineItem: {},
       loadingIcon: '',
-      pageSize: 30,
+      pageSize: 200,
       loadMoreDisable: false,
       minId: '-',
       maxId: '+',
@@ -140,7 +140,7 @@ export default {
 
         for (let stream of reply) {
           let content = {};
-          let line = {id: stream[0], content: content};
+          let line = {id: stream[0], content: content, uniq: Math.random()};
           // add key value map
           for (var i = 0; i < stream[1].length; i+=2) {
             content[this.$util.bufToString(stream[1][i])] =
@@ -256,7 +256,9 @@ export default {
               duration: 1000,
             });
 
-            this.initShow();
+            // this.initShow(); // do not reinit, #786
+            this.$util.listSplice(this.lineData, row.uniq);
+            this.total--;
           }
         });
       }).catch(() => {});

@@ -150,6 +150,13 @@ const it = {
     show_load_all_keys: 'Abilita pulsante per caricare tutte le chiavi',
     load_all_keys_tip: 'Carica tutte le chiavi contemporaneamente. Se il numero di chiavi è troppo grande, il client potrebbe rimanere bloccato. Si prega di usarlo correttamente',
     tree_node_overflow: 'Troppi tasti o cartelle, tenere solo {num} per la visualizzazione. Se la tua chiave non è qui, si raccomanda la ricerca sfocata, o impostare il separatore per distribuire le chiavi in cartelle',
+    connection_readonly: 'Modalità di sola lettura. È vietato aggiungere, modificare ed eliminare',
+    memory_analysis: 'Analisi della memoria',
+    begin: 'Inizio',
+    pause: 'Pausa',
+    restart: 'Ricomincia',
+    max_display: 'Numero massimo di visualizzazioni: {num}',
+    max_scan: 'Numero massimo di scansioni: {num}',
   },
 };
 

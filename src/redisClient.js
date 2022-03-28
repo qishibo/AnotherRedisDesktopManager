@@ -1,13 +1,26 @@
-import Redis from 'ioredis';
+import Redis from '@qii404/ioredis';
 import tunnelssh from 'tunnel-ssh';
 import vue from '@/main.js';
 import {remote} from 'electron';
+import {writeCMD} from '@/commands.js';
 
 const fs = require('fs');
 const { sendCommand } = Redis.prototype;
 
 // redis command log
 Redis.prototype.sendCommand = async function (...options) {
+  // readonly mode
+  if (this.options.connectionReadOnly && writeCMD[options[0].name.toUpperCase()]) {
+    throw new Error("You are in readonly mode! Unable to execute write command!");
+  }
+
+  // exec directly, without logs
+  if (this.withoutLogging === true) {
+    // invalid in next calling
+    this.withoutLogging = false;
+    return await sendCommand.call(this, ...options);
+  }
+
   const start = performance.now();
   const response = await sendCommand.call(this, ...options);
   const cost = performance.now() - start;
@@ -177,6 +190,7 @@ export default {
       // ACL support
       username: config.username ? config.username : undefined,
       tls: config.sslOptions ? this.getTLSOptions(config.sslOptions) : undefined,
+      connectionReadOnly: config.connectionReadOnly ? true : undefined,
     };
   },
 

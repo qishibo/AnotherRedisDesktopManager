@@ -55,6 +55,13 @@
             {{ $t('message.cluster_faq') }}
           </el-popover>
         </el-checkbox>
+        <el-checkbox v-model="connection.connectionReadOnly">
+          Readonly
+          <el-popover trigger="hover">
+            <i slot="reference" class="el-icon-question"></i>
+            {{ $t('message.connection_readonly') }}
+          </el-popover>
+        </el-checkbox>
       </el-form-item>
     </el-form>
 
@@ -192,6 +199,7 @@ export default {
         name: '',
         separator: ':',
         cluster: false,
+        connectionReadOnly: false,
         sshOptions: {
           host: '',
           port: 22,

@@ -3,7 +3,7 @@
     <!-- multi operate -->
     <el-row class="batch-operate" :gutter="6">
       <el-col :span="2">
-        <el-checkbox @change='toggleCheckAll' class='select-cancel-all' :title='$t("message.toggle_check_all")'></el-checkbox>
+        <el-checkbox v-model='checkAllSelect' @change='toggleCheckAll' class='select-cancel-all' :title='$t("message.toggle_check_all")'></el-checkbox>
       </el-col>
       <el-col :span="11">
         <el-button @click='deleteBatch' type="danger" style="width: 100%" size="mini">{{ $t('el.upload.delete') }}</el-button>
@@ -48,6 +48,7 @@ export default {
       openStatus: {},
       rightClickNode: {},
       multiOperating: false,
+      checkAllSelect: false,
       treeNodesOverflow: 20000,
       setting: {
         view: {
@@ -63,24 +64,39 @@ export default {
             // chkboxType: { "Y": "s", "N": "s" }
         },
         callback: {
+          beforeCheck: (treeId, treeNode) => {
+            if (!window.event.shiftKey || !this.lastTid || this.lastTid === treeNode.tId) {
+              this.lastTid = treeNode.tId;
+              return true;
+            }
+            const curLi = document.getElementById(treeNode.tId);
+            const lastLi = document.getElementById(this.lastTid);
+
+            if (!curLi || !lastLi) {
+              return true;
+            }
+
+            const direction = (curLi.getBoundingClientRect().y - lastLi.getBoundingClientRect().y)
+                              <= 0 ? 'up' : 'down';
+            // check between bottom and top
+            this.multipleCheck(direction, treeNode.tId, this.lastTid);
+            this.lastTid = treeNode.tId;
+
+            return false;
+          },
           onClick: (event, treeId, treeNode) => {
             // multi operating, do not open key detail tab, just check node
             if (this.multiOperating) {
-              return this.ztreeObj.checkNode(treeNode, !treeNode.checked, true);
+              return this.ztreeObj.checkNode(treeNode, undefined, true, true);
             }
 
             // folder clicked
             if (treeNode.children) {
-              // after folder expand, sorting keys
-              !treeNode.open && this.folderExpand(treeNode);
-
               // toggle tree view
-              this.ztreeObj && this.ztreeObj.expandNode(treeNode, undefined, false, false);
-
-              // store open status
-              return this.openStatus[treeNode.fullName] = treeNode.open;
+              return this.ztreeObj && this.ztreeObj.expandNode(treeNode, undefined, false, false, true);
             }
 
+            // key clicked
             this.clickKey(Buffer.from(treeNode.nameBuffer.data), event);
           },
           beforeExpand: (treeId, treeNode) => {
@@ -123,6 +139,7 @@ export default {
     },
     hideMultiSelect() {
       this.multiOperating = false;
+      this.checkAllSelect = false;
       this.ztreeObj.checkAllNodes(false);
       this.$refs.treeWrapper.classList.remove('show-checkbox');
     },
@@ -330,6 +347,66 @@ export default {
         checkedNode && this.ztreeObj.checkNode(checkedNode, true, true);
       }
     },
+    multipleCheck (direction, curTid, lastTid) {
+      const topId = direction == 'up' ? curTid : lastTid;
+      const bottomId = direction == 'up' ? lastTid : curTid;
+      // all nodes display
+      const liDoms = document.querySelectorAll(`#${this.treeId} li`);
+      // same as the last node check status
+      const checkTarget = this.ztreeObj.getNodeByTId(lastTid).checked;
+
+      let startCheck = false;
+      let selectedIds = new Set();
+      let bottomNodeParents = new Set();
+
+      // collect all nodes which need to be checked, from bottom to top
+      for (let index = liDoms.length - 1; index >= 0; index--) {
+        const domId = liDoms[index].id;
+        // find bottom node
+        if (!startCheck) {
+          (domId === bottomId) && (startCheck = true);
+          continue;
+        }
+
+        // find top node, means last node
+        if (domId === topId) {
+          direction === 'up' && selectedIds.add(domId);
+          break;
+        }
+
+        selectedIds.add(domId);
+      }
+
+      let topNode = this.ztreeObj.getNodeByTId(topId);
+      let bottomNode = this.ztreeObj.getNodeByTId(bottomId);
+
+      // check top or bottom node
+      this.ztreeObj.checkNode(direction === 'down' ? bottomNode : topNode, checkTarget, true);
+
+      // get nodeIds in tree of bottom root
+      while (bottomNode.parentTId) {
+        bottomNodeParents.add(bottomNode.parentTId);
+        bottomNode = bottomNode.getParentNode();
+      }
+
+      // check other nodes along the way, from bottom to top
+      for (let domId of selectedIds) {
+        // folders in bottom tree, checked by bottom node already
+        if (bottomNodeParents.has(domId)) {
+          continue;
+        }
+
+        let node = this.ztreeObj.getNodeByTId(domId);
+
+        // exclude bottom root tree nodes
+        // ignore this node because its parent node also in the check list
+        if (!bottomNodeParents.has(node.parentTId) && selectedIds.has(node.parentTId)) {
+          continue;
+        }
+
+        node.checked !== checkTarget && this.ztreeObj.checkNode(node, checkTarget, true);
+      }
+    },
   },
   watch: {
     keyList(newList) {
@@ -422,6 +499,9 @@ export default {
 
 /*checkbox icon*/
 .ztree li span.button {font-size: 115%; background-image: url("../assets/custom_tree.png"); vertical-align: middle;}
+/*fix checkbox missing*/
+.ztree li span.button.chk.checkbox_false_part {background-position: 0 0;}
+.ztree li span.button.chk.checkbox_false_part_focus {background-position: 0 -14px;}
 
 /*toggle switch*/
 .ztree li span.button.switch {height: 22px; width: 20px; background-image: url("../assets/key_tree_toggle.png");}
