@@ -1,6 +1,6 @@
 <template>
-  <JsonEditor ref='editor' :content='newContent' :readOnly='false'>
-    <div class="viewer-protobuf">
+  <JsonEditor ref='editor' :content='newContent' :readOnly='false' class='protobuf-viewer'>
+    <div class="viewer-protobuf-header">
       <!-- type selector -->
       <el-select v-model="selectedType" filterable placeholder="Select Type" size="mini" class="type-selector">
         <el-option
@@ -131,19 +131,24 @@ export default {
 </script>
 
 <style type="text/css">
-  .viewer-protobuf {
+  .viewer-protobuf-header {
     display: flex;
     margin-top: 8px;
   }
-  .viewer-protobuf .type-selector {
+  .viewer-protobuf-header .type-selector {
     flex: 1;
     margin-right: 10px;
   }
-  .viewer-protobuf .select-proto-btn {
+  .viewer-protobuf-header .select-proto-btn {
     margin-top: 2px;
     height: 27px;
   }
   .selected-proto-file-tag {
     margin-right: 4px;
+  }
+
+  /*text viewer box*/
+  .key-content-string .text-formated-container.protobuf-viewer .monaco-editor-con {
+    height: calc(100vh - 385px);
   }
 </style>
