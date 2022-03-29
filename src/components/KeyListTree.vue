@@ -3,7 +3,7 @@
     <!-- multi operate -->
     <el-row class="batch-operate" :gutter="6">
       <el-col :span="2">
-        <el-checkbox @change='toggleCheckAll' class='select-cancel-all' :title='$t("message.toggle_check_all")'></el-checkbox>
+        <el-checkbox v-model='checkAllSelect' @change='toggleCheckAll' class='select-cancel-all' :title='$t("message.toggle_check_all")'></el-checkbox>
       </el-col>
       <el-col :span="11">
         <el-button @click='deleteBatch' type="danger" style="width: 100%" size="mini">{{ $t('el.upload.delete') }}</el-button>
@@ -48,6 +48,7 @@ export default {
       openStatus: {},
       rightClickNode: {},
       multiOperating: false,
+      checkAllSelect: false,
       treeNodesOverflow: 20000,
       setting: {
         view: {
@@ -138,6 +139,7 @@ export default {
     },
     hideMultiSelect() {
       this.multiOperating = false;
+      this.checkAllSelect = false;
       this.ztreeObj.checkAllNodes(false);
       this.$refs.treeWrapper.classList.remove('show-checkbox');
     },
