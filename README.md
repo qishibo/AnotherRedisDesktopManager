@@ -60,6 +60,8 @@
 
 ## Feature Log
 
+- 2022-04-01: Protobuf Support && Memory Analysis
+- 2022-03-03: Readonly Mode && Mointor Support
 - 2022-01-24: Command Dump Support
 - 2022-01-05: Support To Load All Keys
 - 2022-01-01: Brotli\Gzip\Deflate Support && RedisJSON Support
