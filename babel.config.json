@@ -1,0 +1,12 @@
+{
+  "presets": [
+    "@babel/env",
+    "@vue/babel-preset-jsx"
+  ],
+  "sourceType": "unambiguous",
+  "plugins": [
+    "@babel/plugin-transform-runtime",
+    "@babel/plugin-syntax-dynamic-import",
+    "@babel/plugin-proposal-object-rest-spread"
+  ]
+}
