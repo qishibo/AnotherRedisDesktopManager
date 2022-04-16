@@ -134,6 +134,8 @@ export default {
       }).catch(e => {});
     },
     resetTable() {
+      // stop scanning first, #815
+      this.scanStream && this.scanStream.pause();
       this.setData = [];
       this.scanStream = null;
       this.oneTimeListLength = 0;

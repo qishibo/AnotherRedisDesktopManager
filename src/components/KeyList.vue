@@ -7,7 +7,7 @@
       :client="client"
       :keyList="keyList">
     </component>
-    
+
     <div class='keys-load-more-wrapper'>
       <!-- load more -->
       <el-button
@@ -151,8 +151,6 @@ export default {
           if (this.onePageList.length >= keysPageSize && loadAll === false) {
             // temp stop
             stream.pause();
-            // search input icon recover
-            this.$parent.$parent.$parent.$refs.operateItem.searchIcon = 'el-icon-search';
 
             // last node refresh keylist
             if (++this.onePageFinishedCount >= this.scanningCount) {
@@ -165,6 +163,8 @@ export default {
 
               // this page key list append to raw key list
               this.keyList = this.keyList.concat(this.onePageList);
+              // search input icon recover
+              this.$parent.$parent.$parent.$refs.operateItem.searchIcon = 'el-icon-search';
             }
           }
         });
