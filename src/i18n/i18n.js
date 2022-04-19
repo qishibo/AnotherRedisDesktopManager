@@ -12,6 +12,7 @@ import deLocale from 'element-ui/lib/locale/lang/de';
 import frLocale from 'element-ui/lib/locale/lang/fr';
 import uaLocale from 'element-ui/lib/locale/lang/ua';
 import itLocale from 'element-ui/lib/locale/lang/it';
+import esLocale from 'element-ui/lib/locale/lang/es';
 
 
 
@@ -25,6 +26,7 @@ import de from './langs/de';
 import fr from './langs/fr';
 import ua from './langs/ua';
 import it from './langs/it';
+import es from './langs/es';
 
 Vue.use(VueI18n);
 
@@ -68,6 +70,10 @@ const messages = {
   it: {
     ...it,
     ...itLocale
+  },
+  es: {
+    ...es,
+    ...esLocale
   },
 };
 
