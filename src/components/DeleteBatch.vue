@@ -11,7 +11,7 @@
         Total: {{ Object.keys(allKeys).length }}
       </el-tag>
 
-      <el-button @click="confirmDelete" :disabled="loadingScan||loadingDelete" style="float: right;" type="danger">{{ $t('message.delete_all') }}</el-button>
+      <el-button @click="confirmDelete" :disabled="loadingScan||loadingDelete||Object.values(allKeys).length==0" style="float: right;" type="danger">{{ $t('message.delete_all') }}</el-button>
     </div>
 
     <!-- scan pattern -->
