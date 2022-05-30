@@ -38,14 +38,13 @@
 </template>
 
 <script type="text/javascript">
-import KeyListTree from '@/components/KeyListTree';
-import KeyListNormal from '@/components/KeyListNormal';
+import KeyListVirtualTree from '@/components/KeyListVirtualTree';
 
 export default {
   data() {
     return {
       keyList: [],
-      keyListType: 'KeyListTree',
+      keyListType: 'KeyListVirtualTree',
       searchPageSize: 10000,
       scanStreams: [],
       scanningCount: 0,
@@ -57,7 +56,7 @@ export default {
     };
   },
   props: ['client', 'config', 'globalSettings'],
-  components: {KeyListTree, KeyListNormal},
+  components: {KeyListVirtualTree},
   computed: {
     keysPageSize() {
       let keysPageSize = parseInt(this.globalSettings['keysPageSize']);
@@ -283,10 +282,6 @@ export default {
     },
   },
   watch: {
-    config(newConfig) {
-      // separator changes
-      // this.keyListType = newConfig.separator === '' ? 'KeyListNormal' : 'KeyListTree';
-    },
     globalSettings(newSetting, oldSetting) {
       if (!this.client) {
         return;

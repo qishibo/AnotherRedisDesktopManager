@@ -175,9 +175,10 @@ export default {
       const cutString = this.$util.cutString;
       const dbIndex = client.condition ? client.condition.select : 0;
       const connectionName = client.options.connectionName;
+      const keyStr = this.$util.bufToString(key);
 
-      const label = `${cutString(this.$util.bufToString(key))} | ${cutString(connectionName)} | DB${dbIndex}`;
-      const name  = `${key} | ${connectionName} | DB${dbIndex}`;
+      const label = `${cutString(keyStr)} | ${cutString(connectionName)} | DB${dbIndex}`;
+      const name  = `${keyStr} | ${connectionName} | DB${dbIndex}`;
 
       return {
         name: name, label: label, title: name, client: client, component: 'key',

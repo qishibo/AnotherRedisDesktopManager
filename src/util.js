@@ -177,10 +177,13 @@ export default {
   },
   keysToList(keys) {
     return keys.map(key => {
-      return {
+      let item = {
         name: this.bufToString(key),
         nameBuffer: key.toJSON(),
       };
+
+      item.fullName = item.name;
+      return item;
     });
   },
   keysToTree(keys, separator = ':', openStatus = {}, forceCut = 20000) {
@@ -218,11 +221,12 @@ export default {
       // folder node
       if (!tree[key].keyNode && Object.keys(tree[key]).length > 0) {
         let tillNowKeyName = previousKey + key + separator;
-        node.open     = !!openStatus[tillNowKeyName];
+        // node.open     = !!openStatus[tillNowKeyName];
+        node.open     = openStatus.has(tillNowKeyName);
         node.children = this.formatTreeData(tree[key], tillNowKeyName, openStatus, separator, forceCut);
         node.keyCount = node.children.reduce((a, b) => a + (b.keyCount || 0), 0);
         // too many children, force cut, do not incluence keyCount display
-        node.open && node.children.length > forceCut && node.children.splice(forceCut);
+        // node.open && node.children.length > forceCut && node.children.splice(forceCut);
         // keep folder node in front of the tree and sorted(not include the outest list)
         // async sort, only for opened folders
         node.open && this.sortKeysAndFolder(node.children);
@@ -233,6 +237,7 @@ export default {
         node.keyCount = 1;
         node.name = key.replace(/`k`$/, '');
         node.nameBuffer = tree[key].nameBuffer.toJSON();
+        node.fullName = node.name;
       }
 
       return node;
@@ -240,6 +245,7 @@ export default {
   },
   // nodes is reference, keep folder in front and sorted,
   // keep keys in tail and sorted
+  // sortByData
   sortKeysAndFolder(nodes) {
     nodes.sort(function(a, b) {
       // a & b are all keys
@@ -253,6 +259,28 @@ export default {
 
       // a is folder, b is key
       else if (a.children) {
+        return -1;
+      }
+      // a is key, b is folder
+      else {
+        return 1;
+      }
+    });
+  },
+  // sortByTreeNode
+  sortByTreeNodes(nodes) {
+    nodes.sort(function(a, b) {
+      // a & b are all keys
+      if (a.isLeaf && b.isLeaf) {
+        return a.label > b.label ? 1 : -1;
+      }
+      // a & b are all folder
+      else if (!a.isLeaf && !b.isLeaf) {
+        return a.label > b.label ? 1 : -1;
+      }
+
+      // a is folder, b is key
+      else if (!a.isLeaf) {
         return -1;
       }
       // a is key, b is folder

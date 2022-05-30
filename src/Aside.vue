@@ -109,5 +109,6 @@ export default {
     height: calc(100vh - 54px);
     margin-top: 4px;
     /*border-top: 1px solid #dbdada;*/
+    scroll-behavior: smooth;
   }
 </style>
