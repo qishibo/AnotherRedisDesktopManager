@@ -46,7 +46,7 @@ export default {
       const { params } = formatter;
       const paramsReplaced = this.replaceTemplate(params);
 
-      return `${command} ${paramsReplaced}`;
+      return `"${command}" ${paramsReplaced}`;
     },
     replaceTemplate(params) {
       if (!params) {
