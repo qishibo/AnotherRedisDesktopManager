@@ -10,7 +10,7 @@
           </el-form-item>
 
           <el-form-item :label="$t('message.password')">
-            <el-input v-model="connection.auth" type='password' autocomplete="off"></el-input>
+            <InputPassword v-model="connection.auth" placeholder="Auth"></InputPassword>
           </el-form-item>
 
           <el-form-item :label="$t('message.connection_name')">
@@ -91,7 +91,7 @@
           </el-form-item>
 
           <el-form-item label="Passphrase">
-            <el-input v-model="connection.sshOptions.passphrase" type='password' autocomplete="off" placeholder='Passphrase for Private Key'></el-input>
+            <InputPassword v-model="connection.sshOptions.passphrase" placeholder='Passphrase for Private Key'></InputPassword>
           </el-form-item>
         </el-col>
 
@@ -102,7 +102,7 @@
           </el-form-item>
 
           <el-form-item :label="$t('message.password')">
-            <el-input v-model="connection.sshOptions.password" type='password' autocomplete="off"></el-input>
+            <InputPassword v-model="connection.sshOptions.password" placeholder="SSH Password"></InputPassword>
           </el-form-item>
 
           <el-form-item :label="$t('message.timeout')">
@@ -161,7 +161,7 @@
         <!-- left col -->
         <el-col :span=12>
           <el-form-item :label="$t('message.redis_node_password')">
-            <el-input type='password' v-model="connection.sentinelOptions.nodePassword" autocomplete="off" placeholder='Redis Node Password'></el-input>
+            <InputPassword v-model="connection.sentinelOptions.nodePassword" placeholder='Redis Node Password'></InputPassword>
           </el-form-item>
         </el-col>
 
@@ -184,6 +184,7 @@
 <script type="text/javascript">
 import storage from '@/storage';
 import FileInput from '@/components/FileInput';
+import InputPassword from '@/components/InputPassword';
 
 export default {
   data() {
@@ -225,7 +226,7 @@ export default {
       sentinelOptionsShow: false,
     }
   },
-  components: {FileInput},
+  components: {FileInput, InputPassword},
   props: {
     config: {
       default: _ => new Array,
