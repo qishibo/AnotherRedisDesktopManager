@@ -22,7 +22,7 @@
       ref="veTree"
       node-key="fullName"
       :show-checkbox='multiOperating'
-      height="calc(100vh - 248px)"
+      :height="vtreeHeight"
       :data="keyNodes"
       :props="props"
       :indent=10
@@ -75,6 +75,9 @@ export default {
       rightClickNode: {},
       multiOperating: false,
       checkAllSelect: false,
+      vtreeHeight: 0,
+      vtreeHeightRaw: 'calc(100vh - 248px)',
+      vtreeHeightMutiple: 'calc(100vh - 284px)',
       treeNodesOverflow: 20e4, // 200k
       keyNodes: [],
       props: {
@@ -145,12 +148,18 @@ export default {
     showMultiSelect() {
       this.multiOperating = true;
       this.$refs.treeWrapper.classList.add('show-checkbox');
+      
+      // adjust vtree height
+      this.vtreeHeight = this.vtreeHeightMutiple;
     },
     hideMultiSelect() {
       this.multiOperating = false;
       this.checkAllSelect = false;
       this.$refs.veTree.setCheckedAll(false);
       this.$refs.treeWrapper.classList.remove('show-checkbox');
+
+      // recover vtree height
+      this.vtreeHeight = this.vtreeHeightRaw;
     },
     removeMenus() {
       document.removeEventListener("click", this.removeMenus);
@@ -307,7 +316,7 @@ export default {
     },
   },
   created() {
-    //
+    this.vtreeHeight = this.vtreeHeightRaw;
   },
 }
 </script>
