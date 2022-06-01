@@ -13,6 +13,7 @@
       <el-button
         ref='scanMoreBtn'
         class='load-more-keys'
+        :icon="searching && !loadingAll ? 'el-icon-loading' : ''"
         :disabled='scanMoreDisabled || searching'
         @click='refreshKeyList(false)'>
         {{ $t('message.load_more_keys') }}
@@ -27,7 +28,7 @@
         <el-button
           class='load-more-keys'
           type= 'danger'
-          :icon="searching ? 'el-icon-loading' : ''"
+          :icon="searching && loadingAll ? 'el-icon-loading' : ''"
           :disabled='searching'
           @click='loadAllKeys()'>
           {{ $t('message.load_all_keys') }}
@@ -53,6 +54,7 @@ export default {
       onePageFinishedCount: 0,
       firstPageFinished: false,
       loadAllTooltip: true,
+      loadingAll: false,
     };
   },
   props: ['client', 'config', 'globalSettings'],
@@ -123,6 +125,7 @@ export default {
     },
     loadAllKeys(){
       this.resetKeyList();
+      this.loadingAll = true;
       this.$parent.$parent.$parent.$refs.operateItem.searchIcon = 'el-icon-loading';
       this.initScanStreamsAndScan(true);
     },
@@ -170,6 +173,7 @@ export default {
 
         stream.on('error', (e) => {
           this.$parent.$parent.$parent.$refs.operateItem.searchIcon = 'el-icon-search';
+          this.loadingAll = false;
 
           // scan command disabled, other functions may be used normally
           if (
@@ -210,6 +214,7 @@ export default {
             this.scanMoreDisabled = true;
             // search input icon recover
             this.$parent.$parent.$parent.$refs.operateItem.searchIcon = 'el-icon-search';
+            this.loadingAll = false;
           }
         });
       });
