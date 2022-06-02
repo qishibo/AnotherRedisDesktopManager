@@ -20,7 +20,7 @@
     <!-- tree list -->
     <VueEasyTree
       ref="veTree"
-      node-key="fullName"
+      node-key="key"
       :show-checkbox='multiOperating'
       :height="vtreeHeight"
       :data="keyNodes"
@@ -124,7 +124,7 @@ export default {
       // folder click, do nothing
     },
     nodeExpand(data, node, component) {
-      this.expandedKeys.add(data.fullName);
+      this.expandedKeys.add(data.key);
       // async sort nodes
       if (!node.customSorted) {
         node.customSorted = true;
@@ -132,7 +132,7 @@ export default {
       }
     },
     nodeCollapse(data, node, component) {
-      this.expandedKeys.delete(data.fullName);
+      this.expandedKeys.delete(data.key);
     },
     nodeCheck(data, state) {
       const node = this.$refs.veTree.getNode(data);

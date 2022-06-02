@@ -182,7 +182,7 @@ export default {
         nameBuffer: key.toJSON(),
       };
 
-      item.fullName = item.name;
+      item.key = item.name;
       return item;
     });
   },
@@ -220,11 +220,15 @@ export default {
 
       // folder node
       if (!tree[key].keyNode && Object.keys(tree[key]).length > 0) {
+        // fullName
         let tillNowKeyName = previousKey + key + separator;
-        // node.open     = !!openStatus[tillNowKeyName];
-        node.open     = openStatus.has(tillNowKeyName);
+
+        // folder's fullName may same with key name, such as 'aa-'
+        // for unique, add 'F' prefix
+        node.key      = `F${tillNowKeyName}`;
+        node.open     = openStatus.has(node.key);
         node.children = this.formatTreeData(tree[key], tillNowKeyName, openStatus, separator, forceCut);
-        node.keyCount = node.children.reduce((a, b) => a + (b.keyCount || 0), 0);
+        node.keyCount = node.children.reduce((a, b) => a + (b.keyCount || 1), 0);
         // too many children, force cut, do not incluence keyCount display
         // node.open && node.children.length > forceCut && node.children.splice(forceCut);
         // keep folder node in front of the tree and sorted(not include the outest list)
@@ -234,10 +238,10 @@ export default {
       }
       // key node
       else {
-        node.keyCount = 1;
+        // node.keyCount = 1;
         node.name = key.replace(/`k`$/, '');
         node.nameBuffer = tree[key].nameBuffer.toJSON();
-        node.fullName = node.name;
+        node.key = node.name;
       }
 
       return node;
