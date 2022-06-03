@@ -1,9 +1,9 @@
 <template>
   <div>
     <ConnectionWrapper
-      v-for="item of connections"
+      v-for="item, index of connections"
       :key="item.key ? item.key : item.connectionName"
-      :index="item.connectionName"
+      :index="index"
       :globalSettings="globalSettings"
       :config='item'>
     </ConnectionWrapper>

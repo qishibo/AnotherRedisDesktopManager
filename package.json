@@ -31,7 +31,7 @@
     "@qii404/ioredis": "^4.28.5",
     "@qii404/json-bigint": "^1.0.0",
     "@qii404/redis-splitargs": "^1.0.1",
-    "@qii404/ztree_v3": "^3.5.48",
+    "@qii404/vue-easy-tree": "^1.0.9",
     "element-ui": "^2.4.11",
     "font-awesome": "^4.7.0",
     "keymaster": "^1.6.2",
