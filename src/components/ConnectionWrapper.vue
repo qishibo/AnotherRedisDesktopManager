@@ -203,16 +203,7 @@ export default {
       this.$nextTick(() => {
         // 300ms after menu expand animination
         setTimeout(() => {
-          // const anchor = document.getElementById(this.connectionAnchor);
-          // // fix margin-top on ul, first ul will scroll little distance
-          // if (this.index == 0 && document.querySelector('.connections-list').scrollTop < 10) {
-          //   return;
-          // }
-
-          // anchor && anchor.scrollIntoView({behavior: 'smooth'});
-          // return;
-
-          let heightSum = 0;
+          let scrollTop = 0;
           const menus = document.querySelectorAll('.connections-list>ul');
 
           // calc height sum of all above menus
@@ -220,10 +211,13 @@ export default {
             if (menu.id === this.connectionAnchor) {
               break;
             }
-            heightSum += (menu.clientHeight + 10);
+            scrollTop += (menu.clientHeight + 8);
           }
 
-          document.querySelector('.connections-list').scrollTop = heightSum;
+          document.querySelector('.connections-list').scrollTo({
+            top: scrollTop, 
+            behavior: 'smooth',
+          });
         }, 320);
       });
     },
@@ -240,7 +234,7 @@ export default {
 <style type="text/css">
   /*menu ul*/
   .connection-menu {
-    margin-top: 9px;
+    margin-bottom: 8px;
     padding-right: 6px;
     border-right: 0;
   }

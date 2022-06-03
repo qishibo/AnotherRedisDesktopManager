@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="connections-list">
     <ConnectionWrapper
       v-for="item, index of connections"
       :key="item.key ? item.key : item.connectionName"
@@ -75,3 +75,11 @@ export default {
   },
 };
 </script>
+
+<style type="text/css">
+  .connections-list {
+    height: calc(100vh - 59px);
+    overflow-y: auto;
+    margin-top: 11px;
+  }
+</style>
