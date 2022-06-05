@@ -35,7 +35,7 @@ export default {
   components: { FormatViewer, ScrollToTop },
   methods: {
     initShow() {
-      this.client.callBuffer('JSON.GET', [this.redisKey]).then(reply => {
+      this.client.callBuffer('JSON.GET', [this.redisKey, 'NOESCAPE']).then(reply => {
         this.content = reply;
       })
     },
