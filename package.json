@@ -37,7 +37,7 @@
     "keymaster": "^1.6.2",
     "monaco-editor": "^0.30.1",
     "php-serialize": "^4.0.2",
-    "protobufjs": "^6.11.2",
+    "protobufjs": "^6.11.3",
     "rawproto": "^0.7.6",
     "sortablejs": "^1.14.0",
     "tunnel-ssh": "^4.1.6",
