@@ -62,7 +62,8 @@
         {"arch": "universal", "target": "mas"}
       ],
       "extendInfo": {
-        "ElectronTeamID": "68JN8DV835"
+        "ElectronTeamID": "68JN8DV835",
+        "ITSAppUsesNonExemptEncryption": "NO"
       }
     }
   }
