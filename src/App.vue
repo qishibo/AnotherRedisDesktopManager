@@ -148,32 +148,41 @@ button, input, textarea, .vjs__tree {
   overflow-x: hidden;
 }
 
+/*scrollbar style start*/
 ::-webkit-scrollbar {
   width: 9px;
 }
+/*track*/
 ::-webkit-scrollbar-track {
   background: #eaeaea;
   border-radius: 4px;
 }
 .dark-mode ::-webkit-scrollbar-track {
-  background: #475156;
+  background: #425057;
 }
+/*track hover*/
 ::-webkit-scrollbar-track:hover {
   background: #e0e0dd;
 }
 .dark-mode ::-webkit-scrollbar-track:hover {
-  background: #565656;
+  background: #495961;
 }
+/*thumb*/
 ::-webkit-scrollbar-thumb {
   border-radius: 8px;
   background: #c1c1c1;
 }
 .dark-mode ::-webkit-scrollbar-thumb {
-  background: #5d676d;
+  background: #5a6f7a;
 }
+/*thumb hover*/
 ::-webkit-scrollbar-thumb:hover {
-  background: #7d7d7d;
+  background: #7f7f7f;
 }
+.dark-mode ::-webkit-scrollbar-thumb:hover {
+  background: #6a838f;
+}
+/*scrollbar style end*/
 
 .wrap-container {
   height: 100%;
