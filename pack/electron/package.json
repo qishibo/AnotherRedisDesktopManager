@@ -48,7 +48,7 @@
       "icon": "icons/icon.png",
       "category": "Utility",
       "target": [
-        "AppImage"
+        "snap"
       ]
     },
     "snap": {
