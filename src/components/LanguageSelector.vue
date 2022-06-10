@@ -25,7 +25,8 @@ export default {
         { value: 'de', label: 'Deutsch' },
         { value: 'fr', label: 'Français' },
         { value: 'ua', label: 'Українською' },
-        { value: 'it', label: 'Italiano' }
+        { value: 'it', label: 'Italiano' },
+		{ value: 'es', label: 'Español' }
       ],
     };
   },

@@ -67,7 +67,9 @@ export default {
 
     // new added has no order, add it. do not add when edit mode
     if (!oldKey && isNaN(connection.order)) {
-      connection.order = Object.keys(connections).length;
+      // connection.order = Object.keys(connections).length;
+      const maxOrder = Math.max(...Object.values(connections).map(item => !isNaN(item.order) ? item.order : 0));
+      connection.order = (maxOrder > 0 ? maxOrder : 0) + 1;
     }
 
     connections[newKey] = connection;
@@ -147,7 +149,7 @@ export default {
 
     for (const index in connections) {
       let connection = connections[index];
-      connection.order = index;
+      connection.order = parseInt(index);
       newConnections[this.getConnectionKey(connection, true)] = connection;
     }
 

@@ -27,8 +27,12 @@
       <li>
         <span class="header-title">Key</span>
         <span class="size-container">
+          <el-popover trigger="hover">
+            <i slot="reference" class="el-icon-question"></i>
+            If size is "unknown", your Redis may disabled <b><code>MEMORY</code></b> command.
+          </el-popover>
           <span class="header-title">Size (bytes)</span>
-          <span @click="reOrder" class="el-icon-d-caret"></span>
+          <span @click="reOrder" class="el-icon-d-caret" style="cursor: pointer;"></span>
         </span>
       </li>
     </ol>
@@ -142,7 +146,7 @@ export default {
         const promise = this.client.call('MEMORY', 'USAGE', key).then(reply => {
           keysWithMemory.push([key, reply]);
         }).catch(e => {
-          keysWithMemory.push([key, false]);
+          keysWithMemory.push([key, 'unknown']);
         });
 
         allPromise.push(promise);
