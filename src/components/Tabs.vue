@@ -12,6 +12,7 @@
       <Status v-if="item.component === 'status'" :client='item.client' class='tab-content-wrappe' :hotKeyScope='item.name'></Status>
       <CliTab v-else-if="item.component === 'cli'" :client='item.client' class='tab-content-wrappe' :hotKeyScope='item.name'></CliTab>
       <DeleteBatch v-else-if="item.component === 'delbatch'" :client='item.client' :rule="item.rule" class='tab-content-wrappe' :hotKeyScope='item.name'></DeleteBatch>
+      <MemoryAnalysis v-else-if="item.component === 'memory'" :client='item.client' class='tab-content-wrappe' :hotKeyScope='item.name'></MemoryAnalysis>
       <KeyDetail v-else :client='item.client' :redisKey="item.redisKey" :keyType="item.keyType" class='tab-content-wrappe' :hotKeyScope='item.name'></KeyDetail>
     </el-tab-pane>
   </el-tabs>
@@ -22,6 +23,7 @@ import Status from '@/components/Status';
 import CliTab from '@/components/CliTab';
 import KeyDetail from '@/components/KeyDetail';
 import DeleteBatch from '@/components/DeleteBatch';
+import MemoryAnalysis from '@/components/MemoryAnalysis';
 
 export default {
   data() {
@@ -30,7 +32,7 @@ export default {
       tabs: [],
     };
   },
-  components: { Status, KeyDetail, CliTab, DeleteBatch },
+  components: { Status, KeyDetail, CliTab, DeleteBatch, MemoryAnalysis },
   created() {
     // key clicked
     this.$bus.$on('clickedKey', (client, key, newTab = false) => {
@@ -50,6 +52,11 @@ export default {
     // open delete batch tab
     this.$bus.$on('openDelBatch', (client, tabName, rule = {}) => {
       this.addDelBatchTab(client, tabName, rule);
+    });
+
+    // open memory anaysis tab
+    this.$bus.$on('memoryAnalysis', (client, tabName) => {
+      this.addMemoryTab(client, tabName);
     });
 
     // remove pre tab
@@ -136,6 +143,17 @@ export default {
 
       this.addTab(newTabItem, true);
     },
+    addMemoryTab(client, tabName) {
+      const newTabItem = {
+        name: `memory_analysis_${tabName}_${Math.random()}`,
+        label: this.$util.cutString(tabName),
+        title: tabName,
+        client: client,
+        component: 'memory',
+      }
+
+      this.addTab(newTabItem, true);
+    },
     addKeyTab(client, key, newTab = false) {
       client.type(key).then((type) => {
         // key not exists
@@ -157,9 +175,10 @@ export default {
       const cutString = this.$util.cutString;
       const dbIndex = client.condition ? client.condition.select : 0;
       const connectionName = client.options.connectionName;
+      const keyStr = this.$util.bufToString(key);
 
-      const label = `${cutString(this.$util.bufToString(key))} | ${cutString(connectionName)} | DB${dbIndex}`;
-      const name  = `${key} | ${connectionName} | DB${dbIndex}`;
+      const label = `${cutString(keyStr)} | ${cutString(connectionName)} | DB${dbIndex}`;
+      const name  = `${keyStr} | ${connectionName} | DB${dbIndex}`;
 
       return {
         name: name, label: label, title: name, client: client, component: 'key',
@@ -212,6 +231,7 @@ export default {
         cli: 'fa fa-terminal',
         status: 'el-icon-info',
         delbatch: 'el-icon-delete',
+        memory: 'fa fa-table',
       };
 
       const icon = map[component];

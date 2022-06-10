@@ -151,6 +151,12 @@ const fr = {
     load_all_keys_tip: 'Chargez toutes les clés en même temps. Si le nombre de clés est trop important, le client peut rester bloqué. Veuillez l\'utiliser correctement',
     tree_node_overflow: 'Il y a trop de touches ou de dossiers, ne laissant que {num} à afficher. Si votre clé n\'est pas ici, une recherche floue est recommandée, ou définissez un séparateur pour disperser la clé dans le dossier',
     connection_readonly: 'Mode lecture seule. L\'ajout, la modification et la suppression sont interdits',
+    memory_analysis: 'Analyse de la mémoire',
+    begin: 'Commencer',
+    pause: 'Pause',
+    restart: 'Redémarrage',
+    max_display: 'Nombre maximal d\'affichages : {num}',
+    max_scan: 'Nombre maximal d\'analyses : {num}',
   },
 };
 

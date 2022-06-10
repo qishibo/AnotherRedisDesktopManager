@@ -14,6 +14,13 @@ Redis.prototype.sendCommand = async function (...options) {
     throw new Error("You are in readonly mode! Unable to execute write command!");
   }
 
+  // exec directly, without logs
+  if (this.withoutLogging === true) {
+    // invalid in next calling
+    this.withoutLogging = false;
+    return await sendCommand.call(this, ...options);
+  }
+
   const start = performance.now();
   const response = await sendCommand.call(this, ...options);
   const cost = performance.now() - start;

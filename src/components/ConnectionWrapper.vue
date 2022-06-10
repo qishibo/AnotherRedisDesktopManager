@@ -2,6 +2,7 @@
   <el-menu
     ref="connectionMenu"
     :collapse-transition='false'
+    :id="connectionAnchor"
     @open="openConnection()"
     class="connection-menu"
     active-text-color="#ffd04b">
@@ -48,12 +49,17 @@ export default {
       lastSelectedDb: 0,
     };
   },
-  props: ['config', 'globalSettings'],
+  props: ['config', 'globalSettings', 'index'],
   components: {ConnectionMenu, OperateItem, KeyList},
   created() {
     this.$bus.$on('closeConnection', (connectionName = false) => {
       this.closeConnection(connectionName);
     });
+  },
+  computed: {
+    connectionAnchor() {
+      return `connection-anchor-${this.config.connectionName}`;
+    },
   },
   methods: {
     initShow() {
@@ -69,6 +75,8 @@ export default {
       }
     },
     openConnection(callback = false, forceOpen = false) {
+      // scroll to connection
+      this.scrollToConnection();
       // recovery last selected db
       this.initLastSelectedDb();
 
@@ -76,6 +84,9 @@ export default {
       if (this.client) {
         return forceOpen ? this.afterOpenConnection(this.client, callback) : false;
       }
+
+      // set searching status first
+      this.$refs.operateItem.searchIcon = 'el-icon-loading';
 
       // create a new client
       const clientPromise = this.getRedisClient(this.config);
@@ -188,6 +199,28 @@ export default {
         this.$el.style.setProperty("--menu-color", color);
       }
     },
+    scrollToConnection() {
+      this.$nextTick(() => {
+        // 300ms after menu expand animination
+        setTimeout(() => {
+          let scrollTop = 0;
+          const menus = document.querySelectorAll('.connections-list>ul');
+
+          // calc height sum of all above menus
+          for (const menu of menus) {
+            if (menu.id === this.connectionAnchor) {
+              break;
+            }
+            scrollTop += (menu.clientHeight + 8);
+          }
+
+          document.querySelector('.connections-list').scrollTo({
+            top: scrollTop, 
+            behavior: 'smooth',
+          });
+        }, 320);
+      });
+    },
   },
   mounted() {
     this.setColor(this.config.color, false);
@@ -201,7 +234,7 @@ export default {
 <style type="text/css">
   /*menu ul*/
   .connection-menu {
-    margin-top: 9px;
+    margin-bottom: 8px;
     padding-right: 6px;
     border-right: 0;
   }

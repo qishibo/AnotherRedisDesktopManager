@@ -33,7 +33,7 @@
           size="mini"
           placeholder='500'
           :min=10
-          :max=10000
+          :max=20000
           :step=50
           v-model='form.keysPageSize'>
         </el-input-number>&nbsp;

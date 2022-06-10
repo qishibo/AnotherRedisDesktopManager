@@ -11,7 +11,7 @@
         Total: {{ Object.keys(allKeys).length }}
       </el-tag>
 
-      <el-button @click="confirmDelete" :disabled="loadingScan||loadingDelete" style="float: right;" type="danger">{{ $t('message.delete_all') }}</el-button>
+      <el-button @click="confirmDelete" :disabled="loadingScan||loadingDelete||Object.keys(allKeys).length == 0" style="float: right;" type="danger">{{ $t('message.delete_all') }}</el-button>
     </div>
 
     <!-- scan pattern -->
@@ -24,10 +24,13 @@
       <li v-for="key, index in Object.keys(allKeys)" :key="index">{{ key }}</li>
     </ol>
   </el-card>
+  <ScrollToTop parentNum='1'></ScrollToTop>
 </div>
 </template>
 
 <script type="text/javascript">
+import ScrollToTop from '@/components/ScrollToTop';
+
 export default {
   data() {
     return {
@@ -38,6 +41,7 @@ export default {
     };
   },
   props: ['client', 'rule', 'hotKeyScope'],
+  components: { ScrollToTop },
   computed: {
     allKeys() {
       let dict = this.specifyKeys;
@@ -151,7 +155,7 @@ export default {
   },
   beforeDestroy() {
     this.$shortcut.deleteScope(this.hotKeyScope);
-    
+
     // cancel scanning
     if (this.scanStreams.length) {
       for (let stream of this.scanStreams) {
