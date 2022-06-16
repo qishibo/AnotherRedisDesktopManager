@@ -30,6 +30,7 @@
       iconClass="fa fa-chevron-right"
       :expand-on-click-node='!multiOperating'
       :check-on-click-node='multiOperating'
+      :emptyText="$t('el.tree.emptyText')"
       @node-click="nodeClick"
       @node-contextmenu="rightClick"
       :default-expanded-keys="Array.from(expandedKeys)"
