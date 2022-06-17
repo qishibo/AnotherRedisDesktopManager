@@ -120,6 +120,11 @@ export default {
     return typeof this.zippedToString(buf, 'deflate') === 'string';
   },
   isProtobuf(buf) {
+    // fix #859, #880, exclude number type
+    if (!isNaN(buf)) {
+      return false;
+    }
+
     const getData = require('rawproto').getData;
 
     try {

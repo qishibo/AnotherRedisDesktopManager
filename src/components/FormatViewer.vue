@@ -175,8 +175,7 @@ export default {
         return this.changeViewer('Deflate');
       }
       // protobuf
-      // add length #859
-      else if (this.content.length > 4 && this.$util.isProtobuf(this.content)) {
+      else if (this.$util.isProtobuf(this.content)) {
         return this.changeViewer('Protobuf');
       }
 
