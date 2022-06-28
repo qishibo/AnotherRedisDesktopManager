@@ -1,31 +1,31 @@
 <template>
   <div>
     <!-- </textarea> -->
-    <el-input ref='textInput' :disabled='disabled' type='textarea' :value='contentDisplay'></el-input>
+    <el-input ref='textInput' :disabled='disabled' type='textarea' v-model='contentDisplay'></el-input>
   </div>
 </template>
 
 <script type="text/javascript">
 export default {
-  props: ['content', 'contentVisible', 'disabled'],
-  computed: {
-    contentDisplay() {
-      return this.$util.bufToString(this.content);
-    },
+  data() {
+    return {
+      contentDisplay: ""
+    }
   },
+  props: ['content', 'contentVisible', 'disabled'],
   watch: {
-    content() {
+    content(val) {
       // refresh
-      this.$nextTick(() => {
-        this.$refs.textInput.$refs.textarea.value = this.contentDisplay;
-      });
+      this.contentDisplay = this.$util.bufToString(val);
     },
   },
   methods: {
     getContent() {
-      const content = this.$refs.textInput.$refs.textarea.value;
-      return this.$util.xToBuffer(content);
+      return this.$util.xToBuffer(this.contentDisplay);
     },
+  },
+  mounted() {
+    this.contentDisplay = this.$util.bufToString(this.content);
   },
 }
 </script>
