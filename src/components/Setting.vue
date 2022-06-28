@@ -1,23 +1,23 @@
 <template>
   <!-- setting dialog -->
-  <el-dialog :title="$t('message.settings')" :visible.sync="visible">
+  <el-dialog :title="$t('message.settings')" :visible.sync="visible" custom-class="setting-main-dialog">
     <el-form label-position="top" size="mini">
 
       <el-card :header="$t('message.ui_settings')" class="setting-card">
-        <el-row :gutter="20" justify="space-between" type="flex" class="setting-row">
-          <el-col :sm="12" :lg="6">
+        <el-row :gutter="10" justify="space-between" type="flex" class="setting-row">
+          <el-col :sm="12" :lg="5">
             <!-- theme select-->
             <el-form-item :label="$t('message.dark_mode')">
               <el-switch v-model='darkMode' @change="changeTheme"></el-switch>
             </el-form-item>
           </el-col>
-          <el-col :sm="12" :lg="6">
+          <el-col :sm="12" :lg="7">
             <!-- language select -->
             <el-form-item :label="$t('message.select_lang')">
               <LanguageSelector></LanguageSelector>
             </el-form-item>
           </el-col>
-          <el-col :sm="12" :lg="6">
+          <el-col :sm="12" :lg="5">
             <!-- zoom page -->
             <el-form-item :label="$t('message.page_zoom')">
               <el-input-number
@@ -32,20 +32,20 @@
               </el-input-number>
             </el-form-item>
           </el-col>
-          <el-col :sm="12" :lg="6">
+          <el-col :sm="12" :lg="7">
             <!-- font-family -->
             <el-form-item :label="$t('message.font_family')">
-            <span slot="label">
-              {{ $t('message.font_family') }}
-              <el-popover
-                placement="top-start"
-                :title="$t('message.font_faq_title')"
-                trigger="hover">
-                <i slot="reference" class="el-icon-question"></i>
-                <p v-html="$t('message.font_faq')"></p>
-              </el-popover>
-              <i v-if="loadingFonts" class="el-icon-loading"></i>
-            </span>
+              <span slot="label">
+                {{ $t('message.font_family') }}
+                <el-popover
+                  placement="top-start"
+                  :title="$t('message.font_faq_title')"
+                  trigger="hover">
+                  <i slot="reference" class="el-icon-question"></i>
+                  <p v-html="$t('message.font_faq')"></p>
+                </el-popover>
+                <i v-if="loadingFonts" class="el-icon-loading"></i>
+              </span>
               <!-- font-family select -->
               <el-select v-model="form.fontFamily" @visible-change="getAllFonts" allow-create default-first-option
                          filterable multiple>
@@ -63,9 +63,9 @@
         </el-row>
       </el-card>
 
-      <el-card :header="$t('message.feature_settings')" class="setting-card">
+      <el-card :header="$t('message.common_settings')" class="setting-card">
         <el-row :gutter="20" justify="space-between" type="flex" class="setting-row">
-          <el-col :span="24">
+          <el-col :sm="12" :lg="12">
             <!-- keys per loading -->
             <el-form-item>
               <el-input-number
@@ -77,8 +77,8 @@
                 v-model='form.keysPageSize'>
               </el-input-number>&nbsp;
               <!-- load all switch -->
-              <el-switch v-model='form.showLoadAllKeys'></el-switch>
-              {{ $t('message.show_load_all_keys') }}
+              <!-- <el-switch v-model='form.showLoadAllKeys'></el-switch>
+              {{ $t('message.show_load_all_keys') }} -->
 
               <span slot="label">
                 {{ $t('message.keys_per_loading') }}
@@ -91,12 +91,7 @@
               </span>
             </el-form-item>
           </el-col>
-        </el-row>
-      </el-card>
-
-      <el-card :header="$t('message.common_settings')" class="setting-card">
-        <el-row :gutter="20" justify="space-between" type="flex" class="setting-row">
-          <el-col :span="24">
+          <el-col :sm="12" :lg="12">
             <!-- export connections -->
             <el-form-item :label="$t('message.config_connections')">
               <el-button icon="el-icon-upload2" @click="exportConnection">{{ $t('message.export') }}</el-button>
@@ -299,21 +294,30 @@ export default {
 </script>
 
 <style type="text/css">
+.setting-main-dialog {
+  width: 80%;
+  max-width: 900px;
+  margin-top: 7vh !important;
+}
+
 .dark-mode .el-upload-dragger {
   background: inherit;
 }
 
-.current-version a {
+.setting-main-dialog .current-version a {
   color: grey;
-  font-size: smaller;
-  /*text-decoration: none;*/
+  font-size: 95%;
 }
 
-.setting-card {
+.setting-main-dialog .setting-card {
   margin-bottom: 8px;
 }
+.setting-main-dialog .setting-card .el-card__header {
+  font-size: 105%;
+  font-weight: bold;
+}
 
-.setting-card .setting-row {
-  flex-wrap: wrap
+.setting-main-dialog .setting-card .setting-row {
+  flex-wrap: wrap;
 }
 </style>

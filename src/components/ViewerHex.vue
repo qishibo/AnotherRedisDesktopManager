@@ -19,13 +19,13 @@ export default {
       this.contentDisplay = this.$util.bufToString(val);
     },
   },
-  mounted() {
-    this.contentDisplay = this.$util.bufToString(this.content);
-  },
   methods: {
     getContent() {
       return this.$util.xToBuffer(this.contentDisplay);
     },
+  },
+  mounted() {
+    this.contentDisplay = this.$util.bufToString(this.content);
   },
 }
 </script>

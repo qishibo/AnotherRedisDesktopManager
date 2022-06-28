@@ -65,6 +65,8 @@ export default {
       return keysPageSize ? keysPageSize : 500;
     },
     showLoadAllKeys(){
+      // force show
+      return true;
       return this.globalSettings['showLoadAllKeys'];
     },
     searching() {

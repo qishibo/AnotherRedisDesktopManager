@@ -20,14 +20,8 @@ export default {
     content(val) {
       // refresh
       this.contentDisplay = val.toString();
+      this.oldContentDisplay = this.contentDisplay;
     },
-    contentDisplay(newVal, oldVal) {
-      // keep old display Value
-      this.oldContentDisplay = oldVal;
-    }
-  },
-  mounted() {
-    this.contentDisplay = this.content.toString();
   },
   methods: {
     getContent() {
@@ -56,6 +50,10 @@ export default {
         this.contentDisplay = this.oldContentDisplay;
       });
     },
+  },
+  mounted() {
+    this.contentDisplay = this.content.toString();
+    this.oldContentDisplay = this.contentDisplay;
   },
 }
 </script>

@@ -19,13 +19,13 @@ export default {
       this.contentDisplay = this.$util.bufToBinary(val)
     },
   },
-  mounted() {
-    this.contentDisplay = this.$util.bufToBinary(this.content)
-  },
   methods: {
     getContent() {
       return this.$util.binaryStringToBuffer(this.contentDisplay);
     },
+  },
+  mounted() {
+    this.contentDisplay = this.$util.bufToBinary(this.content)
   },
 }
 </script>
