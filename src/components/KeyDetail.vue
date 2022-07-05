@@ -59,7 +59,6 @@ export default {
         set   : 'KeyContentSet',
         list  : 'KeyContentList',
         stream  : 'KeyContentStream',
-        stream  : 'KeyContentStream',
         'ReJSON-RL': 'KeyContentReJson',
       };
 
