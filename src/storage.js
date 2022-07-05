@@ -1,3 +1,7 @@
+import utils from './util';
+
+const { addConnectionNameSuffix } = utils;
+
 export default {
   getSetting(key) {
     let settings = localStorage.getItem('settings');
@@ -93,7 +97,7 @@ export default {
     for (let key in connections) {
       // if 'name' same with others, add random suffix
       if (this.getConnectionName(connections[key]) == name) {
-        name += ` (${Math.random().toString(36).substr(-3)})`;
+        name = addConnectionNameSuffix(name);
         break;
       }
     }
@@ -102,6 +106,15 @@ export default {
   },
   getConnectionName(connection) {
     return connection.name || `${connection.host}@${connection.port}`;
+  },
+  duplicateConnection(connection) {
+    const newConnection = {
+      ...connection,
+      key: '',
+      name: addConnectionNameSuffix(connection.name),
+    };
+
+    this.addConnection(newConnection);
   },
   setConnections(connections) {
     localStorage.connections = JSON.stringify(connections);

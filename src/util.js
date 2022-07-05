@@ -335,4 +335,7 @@ export default {
       }
     }
   },
+  addConnectionNameSuffix(name) {
+    return `${name} (${Math.random().toString(36).substr(-3)})`;
+  },
 };
