@@ -114,13 +114,13 @@ export default {
       if (this.multiOperating) {
         return;
       }
-
+// console.log(data.nameBuffer,Buffer.from(data.nameBuffer),  8888888)
       // key clicked
       if (!data.children) {
         let newTab = false;
         event && (event.ctrlKey || event.metaKey) && (newTab = true);
 
-        this.clickKey(Buffer.from(data.nameBuffer.data), newTab);
+        this.clickKey(Buffer.from(data.nameBuffer), newTab);
       }
       // folder click, do nothing
     },
@@ -194,7 +194,7 @@ export default {
             return this.deleteBatch();
           }
 
-          let keyBuffer = Buffer.from(this.rightClickNode.data.nameBuffer.data);
+          let keyBuffer = Buffer.from(this.rightClickNode.data.nameBuffer);
 
           this.client.del(keyBuffer).then((reply) => {
             if (reply === 1) {
@@ -218,7 +218,7 @@ export default {
         }
         // open key in new tab
         case 'open': {
-          this.clickKey(Buffer.from(this.rightClickNode.data.nameBuffer.data), true);
+          this.clickKey(Buffer.from(this.rightClickNode.data.nameBuffer), true);
           break;
         }
         // delete whole folder
@@ -239,7 +239,7 @@ export default {
       for (let node of checkedNodes) {
         // key node
         if (!node.children) {
-          rule.key.push(Buffer.from(node.nameBuffer.data));
+          rule.key.push(Buffer.from(node.nameBuffer));
         }
       }
 
@@ -280,7 +280,7 @@ export default {
   watch: {
     keyList(newList) {
       let newListCopy = newList;
-
+console.log(newList.length)
       // size limit
       if (newList.length > this.treeNodesOverflow) {
         // force cut
@@ -296,11 +296,50 @@ export default {
 
       // backup checked keys
       this.checkedKeys = this.$refs.veTree.getCheckedKeys(true);
+console.time()
+      // const { Worker } = require('worker_threads');
+      // const worker = new global.window.Worker("/static/compute.js")
+
+//       const worker = new Worker("/static/compute.js")
+//       worker.addEventListener("message",(event)=>{
+//         // console.log("compute result:" , event.data)
+// console.timeEnd()
+//         this.keyNodes = event.data;
+//         // console.log(event.data[0], 99999)
+//         this.$nextTick(() => {
+//           // sort outermost layer nodes
+//           this.$util.sortByTreeNodes(this.$refs.veTree.root.childNodes);
+//           // recheck checked nodes
+//           this.$refs.veTree.setCheckedLeafKeys(this.checkedKeys);
+
+//           // little keys such as extract search, expand all
+//           if (newListCopy.length <= 10) {
+//             this.$refs.veTree.setExpandAll(true);
+//           }
+//         });
+//       })
+//       // console.log('raw buffer list', newListCopy)
+//       worker.postMessage([newListCopy, this.separator, this.expandedKeys, this.treeNodesOverflow]);
+
+      //====================
+
+      // var child_process = require('child_process');
+      // console.log(require('path').join(__dirname, '/static/child.js'), process.execPath)
+      // var child = child_process.fork(require('path').join(__dirname, '/static/child.js'));
+      // console.log(child)
+      // child.on('message', function(m){
+      //     console.log('parent get message from child: ' , m);
+      // });
+
+      // child.send({from: newListCopy});
+
+
+      // return;
 
       const keyNodes = this.separator ?
         this.$util.keysToTree(newListCopy, this.separator, this.expandedKeys, this.treeNodesOverflow) :
         this.$util.keysToList(newListCopy);
-
+console.timeEnd()
       this.keyNodes = keyNodes;
 
       this.$nextTick(() => {

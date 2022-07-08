@@ -246,6 +246,7 @@ export default {
         // node.keyCount = 1;
         node.name = key.replace(/`k`$/, '');
         node.nameBuffer = tree[key].nameBuffer.toJSON();
+        // node.nameBuffer = tree[key].nameBuffer;
         node.key = node.name;
       }
 

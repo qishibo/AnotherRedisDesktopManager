@@ -34,12 +34,31 @@
           {{ $t('message.load_all_keys') }}
         </el-button>
       </el-tooltip>
+
+        <!-- @click='resetKeyList' -->
+      <el-button
+        class='load-more-keys'
+        @click='cancelLoadingAll'
+        >
+        cancel
+      </el-button>
     </div>
   </div>
 </template>
 
 <script type="text/javascript">
 import KeyListVirtualTree from '@/components/KeyListVirtualTree';
+// const { Worker } = require('worker_threads');
+// const {
+//   Worker, isMainThread, parentPort, workerData
+// } = require('worker_threads');
+
+// console.log(Worker, isMainThread, parentPort, workerData, '=======')
+
+
+
+
+// worker.postMessage({frist:1,second:2})
 
 export default {
   data() {
@@ -217,6 +236,9 @@ export default {
             // search input icon recover
             this.$parent.$parent.$parent.$refs.operateItem.searchIcon = 'el-icon-search';
             this.loadingAll = false;
+
+            
+
           }
         });
       });
@@ -249,6 +271,11 @@ export default {
           stream.pause && stream.pause();
         }
       }
+    },
+    cancelLoadingAll() {
+      console.log('canceling loading all...')
+      this.cancelScanning();
+      this.$parent.$parent.$parent.$refs.operateItem.searchIcon = 'el-icon-search';
     },
     getMatchMode(fillStar = true) {
       let match = this.$parent.$parent.$parent.$refs.operateItem.searchMatch;

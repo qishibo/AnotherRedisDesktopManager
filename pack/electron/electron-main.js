@@ -53,6 +53,7 @@ function createWindow() {
     autoHideMenuBar: true,
     webPreferences: {
       nodeIntegration: true,
+      nodeIntegrationInWorker: true,
       // add this to keep 'remote' module avaiable. Tips: it will be removed in electron 14
       enableRemoteModule: true,
       contextIsolation: false,
@@ -65,6 +66,18 @@ function createWindow() {
 
   winState.watchClose(mainWindow);
 
+  const path = require('path');
+const url = require('url');
+
+console.log(
+  url.format({
+    pathname: path.join(__dirname, 'index.html'),
+    protocol: 'file:',
+    slashes: true
+  }),
+  '==========',
+  `file://${__dirname}/index.html?version=${app.getVersion()}`
+  )
   // and load the index.html of the app.
   if (APP_ENV === 'production') {
     // mainWindow.loadFile('index.html');
