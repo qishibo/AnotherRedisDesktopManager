@@ -3,6 +3,7 @@ const tw = {
     new_connection: '新增連線',
     refresh_connection: '重新整理',
     edit_connection: '編輯連線',
+    duplicate_connection: '重複連接',
     del_connection: '刪除連線',
     close_connection: '關閉連線',
     add_new_line: '新增行',

@@ -4,6 +4,7 @@ const pt = {
     refresh_connection: 'Atualizar',
     edit_connection: 'Editar Conexão',
     del_connection: 'Deletar Conexão',
+    duplicate_connection: 'Conexão duplicada',
     close_connection: 'Encerrar Conexão',
     add_new_line: 'Adicionar nova linha',
     dump_to_clipboard: "Copiar como comando",

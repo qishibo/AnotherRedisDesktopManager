@@ -3,6 +3,7 @@ const ru = {
     new_connection: 'Новое подключение',
     refresh_connection: 'Обновить',
     edit_connection: 'Редактировать подключение',
+    duplicate_connection: 'Дублирующее подключение',
     del_connection: 'Удалить подключение',
     close_connection: 'Закрыть соединение',
     add_new_line: 'Добавить новую строку',

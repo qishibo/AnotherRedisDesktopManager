@@ -44,6 +44,10 @@
         <el-dropdown-item @click.native='showEditConnection'>
           <span><i class='more-operate-ico el-icon-edit-outline'></i>&nbsp;{{ $t('message.edit_connection') }}</span>
         </el-dropdown-item>
+        <el-dropdown-item @click.native='duplicateConnection'>
+          <span><i class='more-operate-ico fa fa-clone
+'></i>&nbsp;{{ $t('message.duplicate_connection') }}</span>
+        </el-dropdown-item>
         <el-dropdown-item @click.native='deleteConnection'>
           <span><i class='more-operate-ico el-icon-delete'></i>&nbsp;{{ $t('message.del_connection') }}</span>
         </el-dropdown-item>
@@ -110,6 +114,10 @@ export default {
       }).catch(() => {});
     },
     editConnectionFinished(newConfig) {
+      this.$bus.$emit('refreshConnections');
+    },
+    duplicateConnection() {
+      storage.duplicateConnection(this.config);
       this.$bus.$emit('refreshConnections');
     },
     deleteConnection() {
