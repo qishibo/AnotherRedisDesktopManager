@@ -3,6 +3,7 @@ const en = {
     new_connection: 'New Connection',
     refresh_connection: 'Refresh',
     edit_connection: 'Edit Connection',
+    duplicate_connection: 'Duplicate Connection',
     del_connection: 'Delete Connection',
     close_connection: 'Close Connection',
     add_new_line: 'Add New Line',

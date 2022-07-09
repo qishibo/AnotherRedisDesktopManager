@@ -1,3 +1,7 @@
+import utils from './util';
+
+const { randomString } = utils;
+
 export default {
   getSetting(key) {
     let settings = localStorage.getItem('settings');
@@ -93,7 +97,7 @@ export default {
     for (let key in connections) {
       // if 'name' same with others, add random suffix
       if (this.getConnectionName(connections[key]) == name) {
-        name += ` (${Math.random().toString(36).substr(-3)})`;
+        name += ` (${randomString(3)})`;
         break;
       }
     }
@@ -124,7 +128,7 @@ export default {
     }
 
     if (forceUnique) {
-      return new Date().getTime() + '_' + Math.random().toString(36).substr(-5);
+      return new Date().getTime() + '_' + randomString(5);
     }
 
     return connection.host + connection.port + connection.name;

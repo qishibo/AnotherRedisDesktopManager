@@ -24,19 +24,7 @@
       <i class="connection-right-icon el-icon-menu" @click.stop></i>
       <el-dropdown-menu class='connection-menu-more-ul' slot="dropdown">
 
-        <!-- menu color picker -->
-        <el-tooltip placement="right" effect="light">
-          <el-color-picker
-            slot='content'
-            v-model="menuColor"
-            @change='changeColor'
-            :predefine="['#f56c6c', '#409EFF', '#85ce61', '#c6e2ff']">
-          </el-color-picker>
 
-          <el-dropdown-item>
-            <span><i class='more-operate-ico fa fa-bookmark-o'></i>&nbsp;{{ $t('message.mark_color') }}</span>
-          </el-dropdown-item>
-        </el-tooltip>
 
         <el-dropdown-item @click.native='closeConnection'>
           <span><i class='more-operate-ico fa fa-power-off'></i>&nbsp;{{ $t('message.close_connection') }}</span>
@@ -47,6 +35,24 @@
         <el-dropdown-item @click.native='deleteConnection'>
           <span><i class='more-operate-ico el-icon-delete'></i>&nbsp;{{ $t('message.del_connection') }}</span>
         </el-dropdown-item>
+        <el-dropdown-item @click.native='duplicateConnection'>
+          <span><i class='more-operate-ico fa fa-clone'></i>&nbsp;{{ $t('message.duplicate_connection') }}</span>
+        </el-dropdown-item>
+
+        <!-- menu color picker -->
+        <el-tooltip placement="right" effect="light">
+          <el-color-picker
+            slot='content'
+            v-model="menuColor"
+            @change='changeColor'
+            :predefine="['#f56c6c', '#409EFF', '#85ce61', '#c6e2ff']">
+          </el-color-picker>
+
+          <el-dropdown-item divided>
+            <span><i class='more-operate-ico fa fa-bookmark-o'></i>&nbsp;{{ $t('message.mark_color') }}</span>
+          </el-dropdown-item>
+        </el-tooltip>
+
         <el-dropdown-item @click.native='memoryAnalisys'>
           <span><i class='more-operate-ico fa fa-table'></i>&nbsp;{{ $t('message.memory_analysis') }}</span>
         </el-dropdown-item>
@@ -83,6 +89,16 @@ export default {
   },
   props: ['config', 'client'],
   components: {NewConnectionDialog},
+  created() {
+    this.$bus.$on('duplicateConnection', newConfig => {
+      // not self
+      if (this.config.name !== newConfig.name) {
+        return;
+      }
+
+      this.showEditConnection();
+    });
+  },
   methods: {
     refreshConnection() {
       this.$emit('refreshConnection');
@@ -111,6 +127,23 @@ export default {
     },
     editConnectionFinished(newConfig) {
       this.$bus.$emit('refreshConnections');
+    },
+    duplicateConnection() {
+      // empty key\order , just as a new connection
+      const newConfig = {
+        ...this.config,
+        key: undefined,
+        order: undefined,
+        connectionName: undefined,
+      };
+
+      storage.addConnection(newConfig);
+
+      this.$bus.$emit('refreshConnections');
+      // 100ms after connection list is ready
+      setTimeout(() => {
+        this.$bus.$emit('duplicateConnection', newConfig);
+      }, 100);
     },
     deleteConnection() {
       this.$confirm(
@@ -154,6 +187,10 @@ export default {
       }
     },
     memoryAnalisys() {
+      if (!this.client) {
+        return;
+      }
+
       this.$bus.$emit('memoryAnalysis', this.client, this.config.connectionName);
     },
     flushDB() {
@@ -162,7 +199,7 @@ export default {
       }
 
       const preDB = this.client.condition ? this.client.condition.select : 0;
-      const inputTxt = 'yes';
+      const inputTxt = 'y';
       const placeholder = this.$t('message.flushdb_prompt', {txt: inputTxt});
 
       this.$prompt(this.$t('message.confirm_flush_db', {db: preDB}), {
