@@ -3,7 +3,7 @@ const it = {
     new_connection: 'Nuova Connessione',
     refresh_connection: 'Ricaricare',
     edit_connection: 'Modificare Connessione',
-    duplicate_connection: 'Doppia connessione',
+    duplicate_connection: 'Copia connessione',
     del_connection: 'Elimina Connessione',
     close_connection: 'Chiudere Connessione',
     add_new_line: 'Inserisci Nuova Riga',

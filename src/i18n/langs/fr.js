@@ -3,7 +3,7 @@ const fr = {
     new_connection: 'Nouvelle connexion',
     refresh_connection: 'Actualiser',
     edit_connection: 'Éditer connexion',
-    duplicate_connection: 'Connexion en double',
+    duplicate_connection: 'Copier la connexion',
     del_connection: 'Supprimer connexion',
     close_connection: 'Fermer connexion',
     add_new_line: 'Ajouter nouvelle ligne',

@@ -3,7 +3,7 @@ const es = {
     new_connection: 'Nueva Conexión',
     refresh_connection: 'Refrescar',
     edit_connection: 'Editar Conexión',
-    duplicate_connection: 'Conexión duplicada',
+    duplicate_connection: 'Copiar Conexión',
     del_connection: 'Eliminar Conexión',
     close_connection: 'Cerrar Conexión',
     add_new_line: 'Añadir Nueva Linea',

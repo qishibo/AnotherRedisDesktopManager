@@ -1,6 +1,6 @@
 import utils from './util';
 
-const { addConnectionNameSuffix } = utils;
+const { randomString } = utils;
 
 export default {
   getSetting(key) {
@@ -97,7 +97,7 @@ export default {
     for (let key in connections) {
       // if 'name' same with others, add random suffix
       if (this.getConnectionName(connections[key]) == name) {
-        name = addConnectionNameSuffix(name);
+        name += ` (${randomString(3)})`;
         break;
       }
     }
@@ -106,15 +106,6 @@ export default {
   },
   getConnectionName(connection) {
     return connection.name || `${connection.host}@${connection.port}`;
-  },
-  duplicateConnection(connection) {
-    const newConnection = {
-      ...connection,
-      key: '',
-      name: addConnectionNameSuffix(connection.name),
-    };
-
-    this.addConnection(newConnection);
   },
   setConnections(connections) {
     localStorage.connections = JSON.stringify(connections);
@@ -137,7 +128,7 @@ export default {
     }
 
     if (forceUnique) {
-      return new Date().getTime() + '_' + Math.random().toString(36).substr(-5);
+      return new Date().getTime() + '_' + randomString(5);
     }
 
     return connection.host + connection.port + connection.name;
