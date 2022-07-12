@@ -7,7 +7,7 @@ const tr = {
     del_connection: 'Bağlantıyı Sil',
     close_connection: 'Bağlantıyı Kapat',
     add_new_line: 'Yeni Satır Ekle',
-    dump_to_clipboard: "Komut olarak kopyala",
+    dump_to_clipboard: 'Komut olarak kopyala',
     redis_version: 'Redis Sürümü',
     process_id: 'Süreç Kimliği',
     used_memory: 'Kullanılan Bellek',
@@ -85,17 +85,21 @@ const tr = {
     update_error: 'Güncelleştirme Başarısız',
     update_downloading: 'İndiriliyor...',
     update_download_progress: 'İndirme Durumu',
-    update_downloaded: 'Güncelleme İndirme Tamamlandı, Lütfen Uygulamanızı Yeniden Başlatın.\
+    update_downloaded:
+      'Güncelleme İndirme Tamamlandı, Lütfen Uygulamanızı Yeniden Başlatın.\
     [Tips]: Windows kullanıyorsanız, uygulamayı kapattıktan sonra masaüstü simgesinin normal duruma (yaklaşık 10 saniye) dönmesini bekleyin ve ardından yeniden açabilirsiniz',
-    mac_not_support_auto_update: 'Mac Otomatik Güncellemeyi Desteklemez, Lütfen Manuel Olarak <a href="https://github.com/qishibo/AnotherRedisDesktopManager/releases">İndirin</a> ve Yükleyin,\
+    mac_not_support_auto_update:
+      'Mac Otomatik Güncellemeyi Desteklemez, Lütfen Manuel Olarak <a href="https://github.com/qishibo/AnotherRedisDesktopManager/releases">İndirin</a> ve Yükleyin,\
     veya Yükleme Komutunu Çalıştırın "brew reinstall --cask another-redis-desktop-manager"\
     <br><br>🧡sizin için yararlı olursa, <a href="https://apps.apple.com/app/id1516451072">AppStore</a> üzerinden sponsor olabilirsiniz ve AppStore sizin için otomatik olarak güncelleyecektir.',
     font_family: 'Yazı Tipi Ailesi',
     font_faq_title: 'Yazı Tipi Ayar Talimatları',
-    font_faq: '1. Birden fazla yazı tipi ayarlanabilir<br>\
+    font_faq:
+      '1. Birden fazla yazı tipi ayarlanabilir<br>\
     2. Yazı tipi seçimi düzenli. Önce İngilizce yazı tipini sonra da kendi dilinizde yazı tipini seçmeniz önerilir<br>\
     3. Bazı istisna durumlarda sistem yazı tipi listesi yüklenemediğinde, yüklü yazı tipi adını manuel girebilirsiniz.',
-    private_key_faq: '<pre>-----BEGIN RSA PRIVATE KEY-----</pre> ile başlayan RSA formatlı özel anahtar desteklenir\
+    private_key_faq:
+      '<pre>-----BEGIN RSA PRIVATE KEY-----</pre> ile başlayan RSA formatlı özel anahtar desteklenir\
     <pre>-----BEGIN OPENSSH PRIVATE KEY-----</pre> ile başlayalım, <pre>ssh-keygen -p -m pem -f ~/.ssh/id_rsa</pre> ile formatı dönüştürmeniz gerekiyor. Bu işlem önceki özel anahtar girişini etkilemez',
     dark_mode: 'Siyah Tema',
     load_more_keys: 'devamını yükle',
@@ -124,7 +128,8 @@ const tr = {
     clear_cache_tip: 'İstemcide bir sorun olduğunda, bu işlem istemciyi geri yüklemek için tüm bağlantıları ve yapılandırmaları silecektir',
     detail: 'Detay',
     separator_tip: 'Ağaç görünümünün ayırıcısı, ağacı devre dışı bırakmak için boş olarak ayarlanır ve anahtarları liste olarak görüntüler',
-    confirm_modify_unvisible_content: 'İçerik görünmez karakterler içeriyor, "Hex View" içinde güvenle düzenleyebilirsiniz. "Text View" de düzenlemeye devam etmek kodlama hatalarına neden oluyorsa, devam edeceğinizden emin misiniz?',
+    confirm_modify_unvisible_content:
+      'İçerik görünmez karakterler içeriyor, "Hex View" içinde güvenle düzenleyebilirsiniz. "Text View" de düzenlemeye devam etmek kodlama hatalarına neden oluyorsa, devam edeceğinizden emin misiniz?',
     keys_per_loading: 'Anahtar Sayısı',
     keys_per_loading_tip: 'Her seferinde yüklenen anahtar sayısı. Çok büyük ayarlamak performansı etkileyebilir',
     host: 'Adres',
@@ -140,7 +145,8 @@ const tr = {
     redis_node_password: 'Redis düğüm şifresi',
     master_group_name: 'Master Grubunun Adı',
     command_log: 'Günlük',
-    sentinel_faq: 'Birden fazla nöbetçiden birini seçebilirsiniz. Lütfen adres, bağlantı noktası ve parola için sentinel yapılandırmasını doldurun. Redis düğüm parolası, nöbetçi tarafından izlenen Ana düğümün parolasıdır.',
+    sentinel_faq:
+      'Birden fazla nöbetçiden birini seçebilirsiniz. Lütfen adres, bağlantı noktası ve parola için sentinel yapılandırmasını doldurun. Redis düğüm parolası, nöbetçi tarafından izlenen Ana düğümün parolasıdır.',
     hotkey: 'Kısayol Tuşu',
     persist: 'Bitiş Süresini Kaldır',
     custom_formatter: 'Özel Biçimlendirici',
@@ -153,7 +159,8 @@ const tr = {
     load_all_keys: 'hepsini yükle',
     show_load_all_keys: 'Tüm anahtarları yüklemek için etkinleştir düğmesi',
     load_all_keys_tip: 'Tüm anahtarları bir kerede yükleyin. Anahtar sayısı çok fazlaysa, istemci takılabilir. Lütfen doğru kullanın',
-    tree_node_overflow: 'Çok fazla anahtar veya klasör var, yalnızca {num} görüntüleme için ayrıldı. Anahtarınız burada değilse bulanık arama önerilir, veya anahtarı klasöre yaymak için bir ayırıcı ayarlayın',
+    tree_node_overflow:
+      'Çok fazla anahtar veya klasör var, yalnızca {num} görüntüleme için ayrıldı. Anahtarınız burada değilse bulanık arama önerilir, veya anahtarı klasöre yaymak için bir ayırıcı ayarlayın',
     connection_readonly: 'Salt okunur mod. Eklemek, düzenlemek ve silmek yasaktır',
     memory_analysis: 'Bellek Analizi',
     begin: 'Başlamak',
@@ -161,6 +168,8 @@ const tr = {
     restart: 'Tekrar başlat',
     max_display: 'Maksimum ekran sayısı: {num}',
     max_scan: 'Maksimum tarama sayısı: {num}',
+    before_connect: 'Bağlanmadan Önce (Komut)',
+    before_connect_error: 'Bağlanmadan Önce (Komut) Hatası: {message}',
   },
 };
 

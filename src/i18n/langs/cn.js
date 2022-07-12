@@ -7,7 +7,7 @@ const cn = {
     del_connection: '删除连接',
     close_connection: '关闭连接',
     add_new_line: '添加新行',
-    dump_to_clipboard: "复制为命令",
+    dump_to_clipboard: '复制为命令',
     redis_version: 'Redis版本',
     process_id: '进程ID',
     used_memory: '已用内存',
@@ -85,16 +85,20 @@ const cn = {
     update_error: '更新失败',
     update_downloading: '下载中...',
     update_download_progress: '下载进度',
-    update_downloaded: "更新下载完成，重启客户端生效.\
-    [Tips]: 如果您使用的是Windows，关闭软件后，请等待桌面图标刷新到正常状态(约10秒)，然后再重新打开即可",
-    mac_not_support_auto_update: 'Mac暂时不支持自动更新，请手动<a href="https://github.com/qishibo/AnotherRedisDesktopManager/releases">下载</a>后重新安装，\
+    update_downloaded:
+      '更新下载完成，重启客户端生效.\
+    [Tips]: 如果您使用的是Windows，关闭软件后，请等待桌面图标刷新到正常状态(约10秒)，然后再重新打开即可',
+    mac_not_support_auto_update:
+      'Mac暂时不支持自动更新，请手动<a href="https://github.com/qishibo/AnotherRedisDesktopManager/releases">下载</a>后重新安装，\
     或者执行brew reinstall --cask another-redis-desktop-manager \
     <br><br>🧡如果您觉得好用，可以通过<a href="https://apps.apple.com/app/id1516451072">AppStore</a>赞助，并由AppStore帮您自动更新',
     font_family: '字体选择',
     font_faq_title: '字体设置说明',
-    font_faq: '1. 可以设置多个字体<br>2. 字体选择是有序的，建议首先选择英文字体，然后再选择中文字体<br>\
+    font_faq:
+      '1. 可以设置多个字体<br>2. 字体选择是有序的，建议首先选择英文字体，然后再选择中文字体<br>\
     3. 某些异常情况无法加载系统字体列表时，可以手动输入已安装字体名称',
-    private_key_faq: '目前支持RSA格式私钥，即以<pre>-----BEGIN RSA PRIVATE KEY-----</pre>开头，\
+    private_key_faq:
+      '目前支持RSA格式私钥，即以<pre>-----BEGIN RSA PRIVATE KEY-----</pre>开头，\
     以<pre>-----BEGIN OPENSSH PRIVATE KEY-----</pre>开头的，需要执行\
     <pre>ssh-keygen -p -m pem -f ~/.ssh/id_rsa</pre>进行格式转换后再使用，该操作不会影响以前的私钥登陆',
     dark_mode: '深色模式',
@@ -161,6 +165,8 @@ const cn = {
     restart: '重新开始',
     max_display: '最大显示数量: {num}',
     max_scan: '最大扫描数量: {num}',
+    before_connect: '連接前（命令)',
+    before_connect_error: '連接前（命令）錯誤：{message}',
   },
 };
 

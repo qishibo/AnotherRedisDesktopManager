@@ -7,7 +7,7 @@ const it = {
     del_connection: 'Elimina Connessione',
     close_connection: 'Chiudere Connessione',
     add_new_line: 'Inserisci Nuova Riga',
-    dump_to_clipboard: "Copia come comando",
+    dump_to_clipboard: 'Copia come comando',
     redis_version: 'Versione del Redis',
     process_id: 'ID del Processi',
     used_memory: 'Memoria Usata',
@@ -81,21 +81,25 @@ const it = {
     check_update: 'Ricerca aggiornamenti',
     update_checking: 'Alla ricerca di aggiornamenti esistenti, aspetta un attimo...',
     update_available: 'Nuova versione trovata',
-    update_not_available: 'A sua applicazione è stata l\'ultima versione recente',
+    update_not_available: "A sua applicazione è stata l'ultima versione recente",
     update_error: 'Aggiornamento non riuscito',
     update_downloading: 'Scaricando...',
     update_download_progress: 'Download in corso',
-    update_downloaded: 'Aggiornamento download completato, riavvia la app per favore.\
-    [Tips]: Se stai utilizzando Windows, dopo aver chiuso l\'app, attendi che l\'icona del desktop si aggiorni a uno stato normale (circa 10 secondi), quindi puoi riaprirla',
-    mac_not_support_auto_update: 'Il Mac non supporta l\'aggiornamento automatico, Si prega di <a href="https://github.com/qishibo/AnotherRedisDesktopManager/releases">scaricare</a> e reinstallare manualmente,\
+    update_downloaded:
+      "Aggiornamento download completato, riavvia la app per favore.\
+    [Tips]: Se stai utilizzando Windows, dopo aver chiuso l'app, attendi che l'icona del desktop si aggiorni a uno stato normale (circa 10 secondi), quindi puoi riaprirla",
+    mac_not_support_auto_update:
+      'Il Mac non supporta l\'aggiornamento automatico, Si prega di <a href="https://github.com/qishibo/AnotherRedisDesktopManager/releases">scaricare</a> e reinstallare manualmente,\
     o eseguire "brew reinstall --cask another-redis-desktop-manager"\
     <br><br>🧡se ti è utile, puoi sponsorizzare <a href="https://apps.apple.com/app/id1516451072">AppStore</a>, e AppStore lo aggiornerà automaticamente per te.',
     font_family: 'Famiglia di font',
-    font_faq_title: 'Istruzioni per l\'impostazione dei fonti',
-    font_faq: '1. È possibile definire più sorgenti<br>\
+    font_faq_title: "Istruzioni per l'impostazione dei fonti",
+    font_faq:
+      "1. È possibile definire più sorgenti<br>\
     2. La selezione della Font è ordinata. Si consiglia di scegliere prima il carattere inglese e poi il carattere nella tua lingua<br>\
-    3. Quando l\'elenco dei caratteri di sistema non può essere caricato in alcuni casi eccezionali, è possibile immettere manualmente il nome del carattere installato.',
-    private_key_faq: 'La chiave privata in formato RSA è compatibile e inizia con <pre>-----BEGIN RSA PRIVATE KEY-----</pre>\
+    3. Quando l'elenco dei caratteri di sistema non può essere caricato in alcuni casi eccezionali, è possibile immettere manualmente il nome del carattere installato.",
+    private_key_faq:
+      'La chiave privata in formato RSA è compatibile e inizia con <pre>-----BEGIN RSA PRIVATE KEY-----</pre>\
     ma se inizi con<pre>-----BEGIN OPENSSH PRIVATE KEY-----</pre>è necessario convertire il formato tramite <pre>ssh-keygen -p -m pem -f ~/.ssh/id_rsa</pre>Questa operazione non influirà sul precedente accesso con chiave privata',
     dark_mode: 'Modalità scura',
     load_more_keys: 'carica di più',
@@ -106,11 +110,13 @@ const it = {
     confirm_flush_db: 'Confermare per eliminare tutte le chiavi in ​​db {db}?',
     flushdb: 'Flush DB',
     flushdb_prompt: 'ingresso "{txt}"',
-    info_disabled: 'Eccezione di esecuzione del comando Info (potrebbe essere stata disabilitata), le informazioni redis non possono essere visualizzate',
+    info_disabled:
+      'Eccezione di esecuzione del comando Info (potrebbe essere stata disabilitata), le informazioni redis non possono essere visualizzate',
     page_zoom: 'Zoom della pagina',
-    scan_disabled: 'Eccezione di esecuzione del comando di scansione (potrebbe essere stata disabilitata), l\'elenco delle chiavi non può essere visualizzato',
+    scan_disabled:
+      "Eccezione di esecuzione del comando di scansione (potrebbe essere stata disabilitata), l'elenco delle chiavi non può essere visualizzato",
     key_type_not_support: 'La visualizzazione visiva non è supportata per questo tipo. Si prega di utilizzare la console',
-    delete_folder: 'Scansiona ed elimina l\'intera cartella',
+    delete_folder: "Scansiona ed elimina l'intera cartella",
     multiple_select: 'Selezione multipla',
     copy: 'Copia',
     copy_success: 'Copia realizzata con successo',
@@ -121,16 +127,18 @@ const it = {
     key_no_permission: 'Il permesso di lettura del file è scaduto, riseleziona manualmente il file della chiave',
     toggle_check_all: 'Seleziona tutto | Deseleziona tutto',
     select_lang: 'Seleziona la lingua',
-    clear_cache_tip: 'Quando si verifica un problema con il client, questa operazione eliminerà tutte le connessioni e le configurazioni per ripristinare il client',
+    clear_cache_tip:
+      'Quando si verifica un problema con il client, questa operazione eliminerà tutte le connessioni e le configurazioni per ripristinare il client',
     detail: 'Dettaglio',
-    separator_tip: 'Il separatore della vista ad albero, impostato su vuoto per disabilitare l\'albero e visualizzare i tasti come elenco',
-    confirm_modify_unvisible_content: 'Il contenuto contiene caratteri invisibili, puoi modificare in sicurezza nella "Hex View". Se continuare a modificare nella "Text View" può causare errori di codifica, continuare?',
+    separator_tip: "Il separatore della vista ad albero, impostato su vuoto per disabilitare l'albero e visualizzare i tasti come elenco",
+    confirm_modify_unvisible_content:
+      'Il contenuto contiene caratteri invisibili, puoi modificare in sicurezza nella "Hex View". Se continuare a modificare nella "Text View" può causare errori di codifica, continuare?',
     keys_per_loading: 'Numero di chiavi',
-    keys_per_loading_tip: 'Il numero di chiavi caricate ogni volta. Un\'impostazione troppo grande potrebbe influire sulle prestazioni',
+    keys_per_loading_tip: "Il numero di chiavi caricate ogni volta. Un'impostazione troppo grande potrebbe influire sulle prestazioni",
     host: 'Indirizzo',
     port: 'Porta',
     username: 'Nome utente',
-    password: 'Parola d\'ordine',
+    password: "Parola d'ordine",
     connection_name: 'Nome personalizzato',
     separator: 'Delimitatore',
     timeout: 'Tempo scaduto',
@@ -140,9 +148,10 @@ const it = {
     redis_node_password: 'Password del nodo Redis',
     master_group_name: 'Nome del gruppo Master',
     command_log: 'Accedi',
-    sentinel_faq: 'Puoi scegliere una delle molteplici sentinelle. Si prega di compilare la configurazione sentinella per l\'indirizzo, la porta e la password. La password del nodo Redis è la password del nodo Master monitorato dalla sentinella.',
+    sentinel_faq:
+      "Puoi scegliere una delle molteplici sentinelle. Si prega di compilare la configurazione sentinella per l'indirizzo, la porta e la password. La password del nodo Redis è la password del nodo Master monitorato dalla sentinella.",
     hotkey: 'Tasto di scelta rapida',
-    persist: 'Rimuovi l\'ora di scadenza',
+    persist: "Rimuovi l'ora di scadenza",
     custom_formatter: 'Formattatore personalizzato',
     edit: 'Modifica',
     new: 'Aggiungere',
@@ -152,8 +161,10 @@ const it = {
     maximize_window: 'Massimizza finestra',
     load_all_keys: 'carica tutto',
     show_load_all_keys: 'Abilita pulsante per caricare tutte le chiavi',
-    load_all_keys_tip: 'Carica tutte le chiavi contemporaneamente. Se il numero di chiavi è troppo grande, il client potrebbe rimanere bloccato. Si prega di usarlo correttamente',
-    tree_node_overflow: 'Troppi tasti o cartelle, tenere solo {num} per la visualizzazione. Se la tua chiave non è qui, si raccomanda la ricerca sfocata, o impostare il separatore per distribuire le chiavi in cartelle',
+    load_all_keys_tip:
+      'Carica tutte le chiavi contemporaneamente. Se il numero di chiavi è troppo grande, il client potrebbe rimanere bloccato. Si prega di usarlo correttamente',
+    tree_node_overflow:
+      'Troppi tasti o cartelle, tenere solo {num} per la visualizzazione. Se la tua chiave non è qui, si raccomanda la ricerca sfocata, o impostare il separatore per distribuire le chiavi in cartelle',
     connection_readonly: 'Modalità di sola lettura. È vietato aggiungere, modificare ed eliminare',
     memory_analysis: 'Analisi della memoria',
     begin: 'Inizio',
@@ -161,6 +172,8 @@ const it = {
     restart: 'Ricomincia',
     max_display: 'Numero massimo di visualizzazioni: {num}',
     max_scan: 'Numero massimo di scansioni: {num}',
+    before_connect: 'Prima della connessione (comando)',
+    before_connect_error: 'Errore prima della connessione (comando): {message}',
   },
 };
 
