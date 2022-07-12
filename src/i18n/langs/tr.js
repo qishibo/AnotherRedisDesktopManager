@@ -3,6 +3,7 @@ const tr = {
     new_connection: 'Yeni Bağlantı',
     refresh_connection: 'Yenile',
     edit_connection: 'Bağlantıyı Düzenle',
+    duplicate_connection: 'Bağlantıyı Kopyala',
     del_connection: 'Bağlantıyı Sil',
     close_connection: 'Bağlantıyı Kapat',
     add_new_line: 'Yeni Satır Ekle',

@@ -3,6 +3,7 @@ const ua = {
     new_connection: 'Нове з`єднання',
     refresh_connection: 'Оновити',
     edit_connection: 'Редагувати з`єднання',
+    duplicate_connection: 'Копіювати підключення',
     del_connection: 'Видалити з`єднання',
     close_connection: 'Закрити з`єднання',
     add_new_line: 'Додати новий рядок',

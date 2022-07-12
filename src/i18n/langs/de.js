@@ -3,6 +3,7 @@ const de = {
     new_connection: 'Neue Verbindung',
     refresh_connection: 'Aktualisieren',
     edit_connection: 'Verbindung bearbeiten',
+    duplicate_connection: 'Verbindung kopieren',
     del_connection: 'Verbindung löschen',
     close_connection: 'Verbindung schließen',
     add_new_line: 'Neue Zeile hinzufügen',
