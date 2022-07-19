@@ -170,7 +170,8 @@ export default {
         const li = document.createElement('li');
         const byte = document.createElement('span');
         li.textContent = item[0]; // key
-        byte.textContent = item[1]; // byte
+        // byte.textContent = item[1]; // byte
+        byte.textContent = this.$util.humanFileSize(item[1]); // byte
         li.appendChild(byte);
 
         flag.appendChild(li);
@@ -276,6 +277,12 @@ export default {
   }
   .dark-mode .memory-analysis-container .keys-body li {
     border-bottom: 1px solid #444444;
+  }
+  .memory-analysis-container .keys-body li:hover {
+    background: #c6c6c6;
+  }
+  .dark-mode .memory-analysis-container .keys-body li:hover {
+    background: #3b4e57;
   }
   /*key size*/
   .memory-analysis-container .keys-body span {
