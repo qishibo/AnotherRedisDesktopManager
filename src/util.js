@@ -157,10 +157,10 @@ export default {
     return false;
   },
   base64Encode(str) {
-    return (new Buffer(str, 'utf8')).toString('base64');
+    return Buffer.from(str, 'utf8').toString('base64');
   },
   base64Decode(str) {
-    return (new Buffer(str, 'base64')).toString('utf8');
+    return Buffer.from(str, 'base64').toString('utf8');
   },
   humanFileSize(size = 0) {
     if (!size) {
