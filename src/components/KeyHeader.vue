@@ -117,6 +117,10 @@ export default {
         }, this.refreshInterval);
       }
     },
+    removeInterval() {
+      this.autoRefresh = false;
+      this.refreshInit();
+    },
     dumpCommand() {
       this.$emit('dumpCommand');
     },
