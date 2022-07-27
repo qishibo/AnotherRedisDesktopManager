@@ -71,6 +71,7 @@ export default {
         float: this.float,
       },
       overSizeBytes: 20971520, // 20MB
+      autoFormated: false,
     };
   },
   components: {ViewerText, ViewerHex, ViewerJson, ViewerBinary, ViewerUnserialize, ViewerMsgpack,
@@ -115,7 +116,13 @@ export default {
   },
   watch: {
     content() {
+      // auto format only when first in #920
+      if (this.autoFormated) {
+        return;
+      }
+
       this.autoFormat();
+      this.autoFormated = true;
     },
     selectedView(viewer) {
       // custom viewer com may same, force change
