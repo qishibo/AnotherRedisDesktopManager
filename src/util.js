@@ -128,7 +128,15 @@ export default {
     const getData = require('rawproto').getData;
 
     try {
-      getData(buf);
+      const result = getData(buf);
+
+      // fix #922 some str mismatch
+      if (result[0]) {
+        let firstEle = Object.values(result[0])[0];
+        if (firstEle < 1e-14 || firstEle.low) {
+          return false;
+        }
+      }
       return true;
     }
     catch (e) {}
