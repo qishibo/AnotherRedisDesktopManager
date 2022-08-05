@@ -250,7 +250,7 @@ export default {
           this.redisKey,
           row.id
         ).then((reply) => {
-          if (reply === 1) {
+          if (reply == 1) {
             this.$message.success({
               message: this.$t('message.delete_success'),
               duration: 1000,
