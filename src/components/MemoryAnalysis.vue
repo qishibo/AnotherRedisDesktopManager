@@ -169,11 +169,13 @@ export default {
       for (const item of keysList) {
         const li = document.createElement('li');
         const byte = document.createElement('span');
-        li.textContent = item[0]; // key
-        // byte.textContent = item[1]; // byte
-        byte.textContent = this.$util.humanFileSize(item[1]); // byte
-        li.appendChild(byte);
+        const key = this.$util.bufToString(item[0]);
 
+        li.textContent = key;
+        li.setAttribute('key', key);
+        byte.textContent = this.$util.humanFileSize(item[1]);
+        
+        li.appendChild(byte);
         flag.appendChild(li);
       }
 
@@ -228,6 +230,16 @@ export default {
       const showKeys = this.keysList.slice(0, this.showMax);
       this.insertIntoDom(showKeys, true);
     },
+    initClickKey() {
+      // add click to ol instead of li
+      this.$refs.keysList.addEventListener('click', e => {
+        const li = e.srcElement;
+        if (li && li.hasAttribute('key')) {
+          const key = li.getAttribute('key');
+          this.$bus.$emit('clickedKey', this.client, this.$util.xToBuffer(key), true);
+        }
+      });
+    },
     initShortcut() {
       this.$shortcut.bind('ctrl+r, ⌘+r, f5', this.hotKeyScope, () => {
         // scanning not finished, return
@@ -243,6 +255,7 @@ export default {
   mounted() {
     this.initKeys();
     this.initShortcut();
+    this.initClickKey();
   },
   beforeDestroy() {
     this.$shortcut.deleteScope(this.hotKeyScope);
@@ -274,6 +287,9 @@ export default {
   /*keys body li*/
   .memory-analysis-container .keys-body li {
     border-bottom: 1px solid #d0d0d0;
+    cursor:  pointer;
+    padding: 0 4px;
+    font-size: 92%;
   }
   .dark-mode .memory-analysis-container .keys-body li {
     border-bottom: 1px solid #444444;
