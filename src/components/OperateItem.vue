@@ -188,6 +188,8 @@ export default {
 
       this.client.select(this.selectedDbIndex)
       .then(() => {
+        // clear the search input
+        this.searchMatch = '';
         this.$parent.$parent.$parent.$refs.keyList.refreshKeyList();
         // store the last selected db
         localStorage.setItem('lastSelectedDb_' + this.config.connectionName, this.selectedDbIndex);
