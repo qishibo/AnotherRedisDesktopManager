@@ -98,7 +98,7 @@ export default {
     return false;
   },
   isMsgpack(buf) {
-    const decode = require('@msgpack/msgpack').decode;
+    const decode = require('algo-msgpack-with-bigint').decode;
 
     try {
       const result = decode(buf);

@@ -3,6 +3,11 @@
   <el-card class="box-card">
     <!-- card title -->
     <div slot="header" class="clearfix">
+      <el-popover trigger="hover">
+        <i slot="reference" class="el-icon-question"></i>
+        If size is "0", your Redis may disabled <b><code>MEMORY</code></b> command.
+      </el-popover>
+      
       <span class="analysis-title">{{ $t('message.memory_analysis') }}</span>
       <i v-if="isScanning" class='el-icon-loading'></i>
       <el-tag size="mini">
@@ -27,10 +32,6 @@
       <li>
         <span class="header-title">Key</span>
         <span class="size-container">
-          <el-popover trigger="hover">
-            <i slot="reference" class="el-icon-question"></i>
-            If size is "unknown", your Redis may disabled <b><code>MEMORY</code></b> command.
-          </el-popover>
           <span class="header-title">Size (bytes)</span>
           <span @click="reOrder" class="el-icon-d-caret" style="cursor: pointer;"></span>
         </span>
@@ -146,7 +147,7 @@ export default {
         const promise = this.client.call('MEMORY', 'USAGE', key).then(reply => {
           keysWithMemory.push([key, reply]);
         }).catch(e => {
-          keysWithMemory.push([key, 'unknown']);
+          keysWithMemory.push([key, false]);
         });
 
         allPromise.push(promise);
