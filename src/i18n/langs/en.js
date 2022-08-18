@@ -161,6 +161,9 @@ const en = {
     restart: 'Restart',
     max_display: 'Maximum number of displays:  {num}',
     max_scan: 'Maximum number of scans:  {num}',
+    close_left: 'Close Left Tabs',
+    close_right: 'Close Right Tabs',
+    close_other: 'Close Other Tabs',
   },
 };
 

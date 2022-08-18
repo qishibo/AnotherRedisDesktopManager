@@ -161,6 +161,9 @@ const es = {
     restart: 'Reiniciar',
     max_display: 'Número máximo de visualizaciones:  {num}',
     max_scan: 'Número máximo de escaneos:  {num}',
+    close_left: 'Cerrar pestañas izquierdas',
+    close_right: 'Cerrar pestañas derechas',
+    close_other: 'Cerrar otras pestañas',
   },
 };
 

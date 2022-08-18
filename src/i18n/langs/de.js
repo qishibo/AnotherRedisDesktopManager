@@ -161,6 +161,9 @@ const de = {
     restart: 'Neu starten',
     max_display: 'Maximale Anzahl von Displays: {num}',
     max_scan: 'Maximale Anzahl an Scans: {num}',
+    close_left: 'Schließen Sie die linken Registerkarten',
+    close_right: 'Schließen Sie die rechten Registerkarten',
+    close_other: 'Schließen Sie andere Registerkarten',
   },
 };
 

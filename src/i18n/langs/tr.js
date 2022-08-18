@@ -161,6 +161,9 @@ const tr = {
     restart: 'Tekrar başlat',
     max_display: 'Maksimum ekran sayısı: {num}',
     max_scan: 'Maksimum tarama sayısı: {num}',
+    close_left: 'Sol Sekmeleri Kapat',
+    close_right: 'Sağ Sekmeleri Kapat',
+    close_other: 'Diğer Sekmeleri Kapat',
   },
 };
 
