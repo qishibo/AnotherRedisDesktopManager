@@ -161,6 +161,9 @@ const tw = {
     restart: '重新開始',
     max_display: '最大顯示數量：{num}',
     max_scan: '最大掃描數量：{num}',
+    close_left: '關閉左側標籤',
+    close_right: '關閉右側標籤',
+    close_other: '關閉其他標籤',
   },
 };
 

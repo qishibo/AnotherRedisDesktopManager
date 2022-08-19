@@ -161,6 +161,9 @@ const fr = {
     restart: 'Redémarrage',
     max_display: 'Nombre maximal d\'affichages : {num}',
     max_scan: 'Nombre maximal d\'analyses : {num}',
+    close_left: 'Fermer les onglets de gauche',
+    close_right: 'Fermer les onglets de droite',
+    close_other: 'Fermer les autres onglets',
   },
 };
 

@@ -161,6 +161,9 @@ const cn = {
     restart: '重新开始',
     max_display: '最大显示数量: {num}',
     max_scan: '最大扫描数量: {num}',
+    close_left: '关闭左侧标签',
+    close_right: '关闭右侧标签',
+    close_other: '关闭其他标签',
   },
 };
 

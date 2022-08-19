@@ -161,6 +161,9 @@ const pt = {
     restart: 'Reiniciar',
     max_display: 'Número máximo de exibições: {num}',
     max_scan: 'Número máximo de verificações: {num}',
+    close_left: 'Fechar abas esquerdas',
+    close_right: 'Fechar abas direitas',
+    close_other: 'Fechar outras guias',
   },
 };
 

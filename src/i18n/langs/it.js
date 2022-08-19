@@ -161,6 +161,9 @@ const it = {
     restart: 'Ricomincia',
     max_display: 'Numero massimo di visualizzazioni: {num}',
     max_scan: 'Numero massimo di scansioni: {num}',
+    close_left: 'Chiudi le schede a sinistra',
+    close_right: 'Chiudi le schede a destra',
+    close_other: 'Chiudi altre schede',
   },
 };
 
