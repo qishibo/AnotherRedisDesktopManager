@@ -189,7 +189,7 @@ export default {
 
         // use final promise
         delPromise.then((reply) => {
-          if (reply === 1) {
+          if (reply == 1) {
             this.afterDelete();
           }
           else {
