@@ -1,6 +1,6 @@
 {
   "name": "another-redis-desktop-manager",
-  "version": "1.5.6",
+  "version": "1.5.8",
   "description": "A faster, better and more stable redis desktop manager.",
   "author": "Another",
   "private": true,
@@ -64,7 +64,7 @@
       "plugs": ["default", "ssh-keys"]
     },
     "mac": {
-      "icon": "icons/icon.png",
+      "icon": "icons/icon.icns",
       "type": "development",
       "category": "public.app-category.developer-tools",
       "target": [

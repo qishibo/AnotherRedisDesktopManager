@@ -12,7 +12,13 @@ export default {
   computed: {
     newContent() {
       try {
-        return JSONbig.parse(this.content);
+        const parsedObj = JSONbig.parse(this.content);
+        // if JSON.parse returns string, means raw content like "{\"name\":\"age\"}"
+        // (JSON string wrapped with quotation) issue #909
+        if (typeof parsedObj === 'string') {
+          this.jsonIsString = true;
+        }
+        return parsedObj;
       } catch (e) {
         // parse failed, return raw content to edit instead of error
         return this.content.toString();
@@ -21,7 +27,18 @@ export default {
   },
   methods: {
     getContent() {
-      return this.$refs.editor.getContent();
+      const content = this.$refs.editor.getContent();
+
+      if (!content) {
+        return false;
+      }
+
+      // json in string, quotation wrapped and escaped,
+      if (this.jsonIsString) {
+        return JSONbig.stringify(content.toString());
+      }
+
+      return content;
     },
   },
 }

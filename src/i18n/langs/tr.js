@@ -3,6 +3,7 @@ const tr = {
     new_connection: 'Yeni Bağlantı',
     refresh_connection: 'Yenile',
     edit_connection: 'Bağlantıyı Düzenle',
+    duplicate_connection: 'Bağlantıyı Kopyala',
     del_connection: 'Bağlantıyı Sil',
     close_connection: 'Bağlantıyı Kapat',
     add_new_line: 'Yeni Satır Ekle',
@@ -21,6 +22,9 @@ const tr = {
     memory: 'Bellek',
     stats: 'İstatistik',
     settings: 'Ayarlar',
+    ui_settings: 'Dış görünüş',
+    feature_settings: 'Fonksiyon',
+    common_settings: 'Genel',
     confirm_to_delete_row_data: 'Satır Verilerini Silmek İstiyor Musunuz?',
     delete_success: 'Silme Başarılı',
     delete_failed: 'Silme Başarısız',
@@ -157,6 +161,9 @@ const tr = {
     restart: 'Tekrar başlat',
     max_display: 'Maksimum ekran sayısı: {num}',
     max_scan: 'Maksimum tarama sayısı: {num}',
+    close_left: 'Sol Sekmeleri Kapat',
+    close_right: 'Sağ Sekmeleri Kapat',
+    close_other: 'Diğer Sekmeleri Kapat',
   },
 };
 

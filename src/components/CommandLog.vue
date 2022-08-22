@@ -11,9 +11,9 @@
   </ul>
 
   <!-- filter -->
-  <el-input v-model='filter' size='mini' style='max-width: 200px;' placeholder='Search'></el-input>&nbsp;
+  <el-input v-model='filter' size='mini' style='max-width: 200px;' :placeholder="$t('message.key_to_search')"></el-input>&nbsp;
   <!-- show only write commands -->
-  <el-checkbox v-model='showOnlyWrite'>Only Show Write</el-checkbox>
+  <el-checkbox v-model='showOnlyWrite'>Only Write</el-checkbox>
 
   <div slot="footer" class="dialog-footer">
     <el-button @click="logs=[]">{{ $t('el.colorpicker.clear') }}</el-button>

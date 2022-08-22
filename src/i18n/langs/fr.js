@@ -3,6 +3,7 @@ const fr = {
     new_connection: 'Nouvelle connexion',
     refresh_connection: 'Actualiser',
     edit_connection: 'Éditer connexion',
+    duplicate_connection: 'Copier la connexion',
     del_connection: 'Supprimer connexion',
     close_connection: 'Fermer connexion',
     add_new_line: 'Ajouter nouvelle ligne',
@@ -21,6 +22,9 @@ const fr = {
     memory: 'Mémoire',
     stats: 'Statistiques',
     settings: 'Paramètres',
+    ui_settings: 'Apparence',
+    feature_settings: 'Fonction',
+    common_settings: 'Général',
     confirm_to_delete_row_data: 'Supprimer les données de cette ligne ?',
     delete_success: 'Suppression réussie',
     delete_failed: 'Suppression échouée',
@@ -157,6 +161,9 @@ const fr = {
     restart: 'Redémarrage',
     max_display: 'Nombre maximal d\'affichages : {num}',
     max_scan: 'Nombre maximal d\'analyses : {num}',
+    close_left: 'Fermer les onglets de gauche',
+    close_right: 'Fermer les onglets de droite',
+    close_other: 'Fermer les autres onglets',
   },
 };
 

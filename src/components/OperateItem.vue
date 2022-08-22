@@ -70,7 +70,7 @@
     </el-form-item>
 
     <!-- new key dialog -->
-    <el-dialog :title="$t('message.add_new_key')" :visible.sync="newKeyDialog" :close-on-click-modal='false'>
+    <el-dialog :title="$t('message.add_new_key')" :visible.sync="newKeyDialog" :close-on-click-modal='false' append-to-body>
       <el-form label-position="top" size="mini">
         <el-form-item :label="$t('message.key_name')">
           <el-input v-model='newKeyName'></el-input>
@@ -188,6 +188,8 @@ export default {
 
       this.client.select(this.selectedDbIndex)
       .then(() => {
+        // clear the search input
+        this.searchMatch = '';
         this.$parent.$parent.$parent.$refs.keyList.refreshKeyList();
         // store the last selected db
         localStorage.setItem('lastSelectedDb_' + this.config.connectionName, this.selectedDbIndex);

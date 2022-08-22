@@ -1,6 +1,6 @@
 <template>
 <div>
-  <el-card v-loading="loadingDelete||loadingScan" class="box-card del-batch-card">
+  <el-card class="box-card del-batch-card">
     <!-- card title -->
     <div slot="header" class="clearfix">
       <span class="del-title">{{ $t('message.keys_to_be_deleted') }}</span>
@@ -8,10 +8,13 @@
       <el-tag size="mini">
         <span v-if="loadingScan">Scanning... </span>
         <span v-if="loadingDelete">Deleting... </span>
-        Total: {{ Object.keys(allKeys).length }}
+        Total: {{ allKeysList.length }}
       </el-tag>
 
-      <el-button @click="confirmDelete" :disabled="loadingScan||loadingDelete||Object.keys(allKeys).length == 0" style="float: right;" type="danger">{{ $t('message.delete_all') }}</el-button>
+      <!-- del btn -->
+      <el-button @click="confirmDelete" :disabled="loadingScan||loadingDelete||allKeysList.length == 0" style="float: right;" type="danger">{{ $t('message.delete_all') }}</el-button>
+      <!-- toggle scanning btn -->
+      <el-button v-if="rule.pattern.length && !scanningEnd" @click="toggleScanning" type="text" style="float: right;">{{loadingScan ? $t('message.pause') : $t('message.begin')}}</el-button>
     </div>
 
     <!-- scan pattern -->
@@ -21,7 +24,7 @@
 
     <!-- key list -->
     <ol class="del-batch-key-list-ol">
-      <li v-for="key, index in Object.keys(allKeys)" :key="index">{{ key }}</li>
+      <li v-for="item, index in allKeysList" :key="index">{{ item[0] }}</li>
     </ol>
   </el-card>
   <ScrollToTop parentNum='1'></ScrollToTop>
@@ -38,35 +41,23 @@ export default {
       loadingScan: false,
       loadingDelete: false,
       scanStreams: [],
+      allKeysList: [],
+      scanningEnd: false,
     };
   },
   props: ['client', 'rule', 'hotKeyScope'],
   components: { ScrollToTop },
-  computed: {
-    allKeys() {
-      let dict = this.specifyKeys;
-
-      for (let key of this.patternKeys) {
-        dict[this.$util.bufToString(key)] = key;
-      }
-
-      return dict;
-    },
-    specifyKeys() {
-      let dict = {};
+  methods: {
+    initKeys() {
+      let keys = [];
 
       if (this.rule.key && this.rule.key.length) {
         for (let key of this.rule.key) {
-          dict[this.$util.bufToString(key)] = key;
+          keys.push([this.$util.bufToString(key), key]);
         }
       }
 
-      return dict;
-    },
-  },
-  methods: {
-    initKeys() {
-      this.patternKeys = [];
+      this.allKeysList = keys;
 
       if (this.rule.pattern && this.rule.pattern.length) {
         this.loadingScan = true;
@@ -83,14 +74,24 @@ export default {
       nodes.map(node => {
         let scanOption = {
           match: pattern + '*',
-          count: 50000,
+          count: 20000,
         }
 
         let stream = node.scanBufferStream(scanOption);
         this.scanStreams.push(stream);
 
         stream.on('data', keys => {
-          this.patternKeys = this.patternKeys.concat(keys.sort());
+          this.addToList(keys.sort());
+
+          if (!this.loadingScan) {
+            return stream.pause();
+          }
+
+          // pause for dom rendering
+          stream.pause();
+          setTimeout(() => {
+            this.loadingScan && stream.resume();
+          }, 100);
         });
 
         stream.on('error', (e) => {
@@ -105,42 +106,120 @@ export default {
           // all nodes scan finished(cusor back to 0)
           if (--this.scanningCount <= 0) {
             this.loadingScan = false;
+            this.scanningEnd = true;
           }
         });
       });
     },
-    confirmDelete() {
-      this.loadingDelete = true;
+    addToList(keys) {
+      let list = [];
+      for (const key of keys) {
+        list.push([this.$util.bufToString(key), key]);
+      }
 
-      let keys = Object.values(this.allKeys);
-      let total = keys.length;
-      let last = total - 1;
+      this.allKeysList = this.allKeysList.concat(list);
+    },
+    stopScanning() {
+      this.loadingScan = false;
 
-      // one key per time instead of batch is for cluster...
-      for (let i = 0; i < total; i++) {
-        let promise = this.client.del(keys[i]);
-        promise.catch(e => {});
-
-        // just wait the last one
-        if (i === last) {
-          promise.then((reply) => {
-            this.loadingDelete = false;
-
-            if (reply === 1) {
-              this.$message.success(this.$t('message.delete_success'));
-              this.$bus.$emit('removePreTab');
-              this.$bus.$emit('refreshKeyList', this.client);
-            }
-            else {
-              this.$message.error(this.$t('message.delete_failed'));
-            }
-          }).catch(e => {
-            this.loadingScan = false;
-            this.loadingDelete = false;
-            this.$message.error(e.message);
-          });
+      if (this.scanStreams.length) {
+        for (let stream of this.scanStreams) {
+          stream.pause();
         }
       }
+    },
+    toggleScanning() {
+      this.loadingScan = !this.loadingScan;
+
+      // resume scanning
+      if (this.loadingScan) {
+        if (this.scanStreams.length) {
+          for (let stream of this.scanStreams) {
+            stream.resume();
+          }
+        }
+      }
+    },
+    confirmDelete() {
+      let keys = this.allKeysList;
+      let total = keys.length;
+
+      if (total <= 0) {
+        return;
+      }
+
+      this.loadingDelete = true;
+      let delPromise = null;
+
+      // standalone Redis, batch delete
+      if (!this.client.nodes) {
+        let chunked = [];
+        for (let i = 0; i < total; i++) {
+          chunked.push(keys[i][1]);
+
+          // del 5000 keys one time
+          if (chunked.length >= 5000) {
+            delPromise = this.client.del(chunked);
+            chunked = [];
+          }
+        }
+
+        if (chunked.length) {
+          delPromise = this.client.del(chunked);
+        }
+        // use final promise
+        delPromise.then((reply) => {
+          if (reply > 0) {
+            this.afterDelete();
+          }
+          else {
+            this.deleteFailed(this.$t('message.delete_failed'));
+          }
+        }).catch(e => {
+          this.deleteFailed(e.message);
+        });
+      }
+
+      // cluster, one key per time instead of batch
+      else {
+        for (let i = 0; i < total; i++) {
+          delPromise = this.client.del(keys[i][1]);
+          delPromise.catch(e => {});
+        }
+
+        // use final promise
+        delPromise.then((reply) => {
+          if (reply == 1) {
+            this.afterDelete();
+          }
+          else {
+            this.deleteFailed(this.$t('message.delete_failed'));
+          }
+        }).catch(e => {
+          this.deleteFailed(e.message);
+        });
+      }
+    },
+    afterDelete() {
+      this.loadingDelete = false;
+      this.allKeysList = [];
+
+      // empty the specified keys
+      // this.rule.key = [];
+
+      this.$message.success(this.$t('message.delete_success'));
+      this.$bus.$emit('refreshKeyList', this.client);
+
+      // except pattern mode scanning not to end, close pre tab
+      if (!this.rule.pattern.length || this.scanningEnd) {
+        this.$bus.$emit('removePreTab');
+      }
+    },
+    deleteFailed(msg = '') {
+      msg && this.$message.error(msg);
+
+      this.loadingScan = false;
+      this.loadingDelete = false;
     },
     initShortcut() {
       this.$shortcut.bind('ctrl+r, ⌘+r, f5', this.hotKeyScope, () => {
@@ -151,17 +230,13 @@ export default {
   },
   mounted() {
     this.initKeys();
-    this.initShortcut();
+    // disable f5 for streams on event cannot stop
+    // this.initShortcut();
   },
   beforeDestroy() {
-    this.$shortcut.deleteScope(this.hotKeyScope);
-
+    // this.$shortcut.deleteScope(this.hotKeyScope);
     // cancel scanning
-    if (this.scanStreams.length) {
-      for (let stream of this.scanStreams) {
-        stream.pause && stream.pause();
-      }
-    }
+    this.stopScanning();
   },
 };
 </script>

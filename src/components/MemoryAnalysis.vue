@@ -3,6 +3,11 @@
   <el-card class="box-card">
     <!-- card title -->
     <div slot="header" class="clearfix">
+      <el-popover trigger="hover">
+        <i slot="reference" class="el-icon-question"></i>
+        If size is "0", your Redis may disabled <b><code>MEMORY</code></b> command.
+      </el-popover>
+      
       <span class="analysis-title">{{ $t('message.memory_analysis') }}</span>
       <i v-if="isScanning" class='el-icon-loading'></i>
       <el-tag size="mini">
@@ -27,10 +32,6 @@
       <li>
         <span class="header-title">Key</span>
         <span class="size-container">
-          <el-popover trigger="hover">
-            <i slot="reference" class="el-icon-question"></i>
-            If size is "unknown", your Redis may disabled <b><code>MEMORY</code></b> command.
-          </el-popover>
           <span class="header-title">Size (bytes)</span>
           <span @click="reOrder" class="el-icon-d-caret" style="cursor: pointer;"></span>
         </span>
@@ -146,7 +147,7 @@ export default {
         const promise = this.client.call('MEMORY', 'USAGE', key).then(reply => {
           keysWithMemory.push([key, reply]);
         }).catch(e => {
-          keysWithMemory.push([key, 'unknown']);
+          keysWithMemory.push([key, false]);
         });
 
         allPromise.push(promise);
@@ -169,10 +170,13 @@ export default {
       for (const item of keysList) {
         const li = document.createElement('li');
         const byte = document.createElement('span');
-        li.textContent = item[0]; // key
-        byte.textContent = item[1]; // byte
-        li.appendChild(byte);
+        const key = this.$util.bufToString(item[0]);
 
+        li.textContent = key;
+        li.setAttribute('key', key);
+        byte.textContent = this.$util.humanFileSize(item[1]);
+        
+        li.appendChild(byte);
         flag.appendChild(li);
       }
 
@@ -227,6 +231,16 @@ export default {
       const showKeys = this.keysList.slice(0, this.showMax);
       this.insertIntoDom(showKeys, true);
     },
+    initClickKey() {
+      // add click to ol instead of li
+      this.$refs.keysList.addEventListener('click', e => {
+        const li = e.srcElement;
+        if (li && li.hasAttribute('key')) {
+          const key = li.getAttribute('key');
+          this.$bus.$emit('clickedKey', this.client, this.$util.xToBuffer(key), true);
+        }
+      });
+    },
     initShortcut() {
       this.$shortcut.bind('ctrl+r, ⌘+r, f5', this.hotKeyScope, () => {
         // scanning not finished, return
@@ -242,6 +256,7 @@ export default {
   mounted() {
     this.initKeys();
     this.initShortcut();
+    this.initClickKey();
   },
   beforeDestroy() {
     this.$shortcut.deleteScope(this.hotKeyScope);
@@ -273,9 +288,18 @@ export default {
   /*keys body li*/
   .memory-analysis-container .keys-body li {
     border-bottom: 1px solid #d0d0d0;
+    cursor:  pointer;
+    padding: 0 4px;
+    font-size: 92%;
   }
   .dark-mode .memory-analysis-container .keys-body li {
     border-bottom: 1px solid #444444;
+  }
+  .memory-analysis-container .keys-body li:hover {
+    background: #c6c6c6;
+  }
+  .dark-mode .memory-analysis-container .keys-body li:hover {
+    background: #3b4e57;
   }
   /*key size*/
   .memory-analysis-container .keys-body span {

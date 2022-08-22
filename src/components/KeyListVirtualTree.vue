@@ -30,6 +30,7 @@
       iconClass="fa fa-chevron-right"
       :expand-on-click-node='!multiOperating'
       :check-on-click-node='multiOperating'
+      :emptyText="$t('el.tree.emptyText')"
       @node-click="nodeClick"
       @node-contextmenu="rightClick"
       :default-expanded-keys="Array.from(expandedKeys)"
@@ -196,7 +197,7 @@ export default {
           let keyBuffer = Buffer.from(this.rightClickNode.data.nameBuffer.data);
 
           this.client.del(keyBuffer).then((reply) => {
-            if (reply === 1) {
+            if (reply == 1) {
               this.$message.success({
                 message: this.$t('message.delete_success'),
                 duration: 1000,
