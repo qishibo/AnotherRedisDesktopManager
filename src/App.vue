@@ -184,14 +184,14 @@ button, input, textarea, .vjs__tree {
 }
 /*scrollbar style end*/
 
-/*ordered list marker*/
-ol li::marker {
+/*list index*/
+li .list-index {
   color: #828282;
   font-size: 80%;
+  user-select: none;
 }
-.dark-mode ol li::marker {
+.dark-mode li .list-index {
   color: #adacac;
-  font-size: 80%;
 }
 
 .wrap-container {
