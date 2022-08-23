@@ -14,7 +14,7 @@
       <!-- del btn -->
       <el-button @click="confirmDelete" :disabled="loadingScan||loadingDelete||allKeysList.length == 0" style="float: right;" type="danger">{{ $t('message.delete_all') }}</el-button>
       <!-- toggle scanning btn -->
-      <el-button v-if="rule.pattern.length && !scanningEnd" @click="toggleScanning" type="text" style="float: right;">{{loadingScan ? $t('message.pause') : $t('message.begin')}}</el-button>
+      <el-button v-if="rule.pattern.length && !scanningEnd" @click="toggleScanning()" type="text" style="float: right;">{{loadingScan ? $t('message.pause') : $t('message.begin')}}&nbsp;</el-button>
     </div>
 
     <!-- scan pattern -->
@@ -23,21 +23,28 @@
     </el-tag>
 
     <!-- key list -->
-    <ol class="del-batch-key-list-ol">
-      <li v-for="item, index in allKeysList" :key="index">{{ item[0] }}</li>
-    </ol>
+    <RecycleScroller
+      class="del-batch-key-list"
+      :items="allKeysList"
+      :item-size="20"
+      key-field="str"
+      v-slot="{ item, index }"
+    >
+      <li>
+        <span class="list-index">{{ index + 1 }}.</span>
+        {{ item.str }}
+      </li>
+    </RecycleScroller>
   </el-card>
-  <ScrollToTop parentNum='1'></ScrollToTop>
 </div>
 </template>
 
 <script type="text/javascript">
-import ScrollToTop from '@/components/ScrollToTop';
+import { RecycleScroller } from 'vue-virtual-scroller'
 
 export default {
   data() {
     return {
-      patternKeys: [],
       loadingScan: false,
       loadingDelete: false,
       scanStreams: [],
@@ -46,18 +53,11 @@ export default {
     };
   },
   props: ['client', 'rule', 'hotKeyScope'],
-  components: { ScrollToTop },
+  components: { RecycleScroller },
   methods: {
     initKeys() {
-      let keys = [];
-
-      if (this.rule.key && this.rule.key.length) {
-        for (let key of this.rule.key) {
-          keys.push([this.$util.bufToString(key), key]);
-        }
-      }
-
-      this.allKeysList = keys;
+      this.allKeysList = [];
+      this.rule.key && this.rule.key.length && this.addToList(this.rule.key);
 
       if (this.rule.pattern && this.rule.pattern.length) {
         this.loadingScan = true;
@@ -82,10 +82,6 @@ export default {
 
         stream.on('data', keys => {
           this.addToList(keys.sort());
-
-          if (!this.loadingScan) {
-            return stream.pause();
-          }
 
           // pause for dom rendering
           stream.pause();
@@ -114,29 +110,17 @@ export default {
     addToList(keys) {
       let list = [];
       for (const key of keys) {
-        list.push([this.$util.bufToString(key), key]);
+        list.push({key: key, str: this.$util.bufToString(key)});
       }
 
       this.allKeysList = this.allKeysList.concat(list);
     },
-    stopScanning() {
-      this.loadingScan = false;
+    toggleScanning(forcePause = null) {
+      this.loadingScan = (forcePause === null ? !this.loadingScan : !forcePause);
 
       if (this.scanStreams.length) {
         for (let stream of this.scanStreams) {
-          stream.pause();
-        }
-      }
-    },
-    toggleScanning() {
-      this.loadingScan = !this.loadingScan;
-
-      // resume scanning
-      if (this.loadingScan) {
-        if (this.scanStreams.length) {
-          for (let stream of this.scanStreams) {
-            stream.resume();
-          }
+          this.loadingScan ? stream.resume() : stream.pause();
         }
       }
     },
@@ -155,7 +139,7 @@ export default {
       if (!this.client.nodes) {
         let chunked = [];
         for (let i = 0; i < total; i++) {
-          chunked.push(keys[i][1]);
+          chunked.push(keys[i].key);
 
           // del 5000 keys one time
           if (chunked.length >= 5000) {
@@ -183,7 +167,7 @@ export default {
       // cluster, one key per time instead of batch
       else {
         for (let i = 0; i < total; i++) {
-          delPromise = this.client.del(keys[i][1]);
+          delPromise = this.client.del(keys[i].key);
           delPromise.catch(e => {});
         }
 
@@ -236,7 +220,7 @@ export default {
   beforeDestroy() {
     // this.$shortcut.deleteScope(this.hotKeyScope);
     // cancel scanning
-    this.stopScanning();
+    this.toggleScanning(true);
   },
 };
 </script>
@@ -250,26 +234,17 @@ export default {
   .del-batch-card {
     margin-top: 10px;
   }
-  .del-batch-key-list-ol {
-    min-height: calc(100vh - 272px);
+  .del-batch-key-list {
+    height: calc(100vh - 263px);
     overflow: auto;
     padding-left: 10px;
-    list-style-position: inside;
+    list-style: none;
   }
-  .del-batch-key-list-ol li {
+  .del-batch-key-list li {
     color: #333;
     font-size: 92%;
   }
-  .dark-mode .del-batch-key-list-ol li {
+  .dark-mode .del-batch-key-list li {
     color: #f7f7f7;
-  }
-
-  .del-batch-card .el-loading-mask {
-    /*opacity: 0.3;*/
-    /*background: #263238;*/
-    background: rgba(38, 50, 56, .3);
-  }
-  .del-batch-card .el-loading-spinner {
-    top: 200px;
   }
 </style>
