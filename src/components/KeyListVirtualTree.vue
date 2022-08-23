@@ -100,15 +100,25 @@ export default {
     rightClick(event, data, node) {
       this.hideAllMenus();
 
-      const menu = this.$refs.rightMenu;
-      menu.style.left = `${event.clientX}px`;
-      menu.style.top = `${event.clientY}px`;
-      menu.style.display = 'block';
-
       this.$refs.veTree.setCurrentKey(node.key);
       this.rightClickNode = node;
 
-      document.addEventListener("click", this.removeMenus);
+      // nextTick for dom render
+      this.$nextTick(() => {
+        let top = event.clientY;
+        const menu = this.$refs.rightMenu;
+        menu.style.display = 'block';
+
+        // position in bottom
+        if (document.body.clientHeight - top < menu.clientHeight) {
+          top -= menu.clientHeight;
+        }
+
+        menu.style.left = `${event.clientX}px`;
+        menu.style.top = `${top}px`;
+
+        document.addEventListener("click", this.hideAllMenus, {once: true});
+      });
     },
     nodeClick(data, node, component, event) {
       if (this.multiOperating) {
@@ -162,10 +172,6 @@ export default {
       // recover vtree height
       this.vtreeHeight = this.vtreeHeightRaw;
     },
-    removeMenus() {
-      document.removeEventListener("click", this.removeMenus);
-      this.hideAllMenus();
-    },
     hideAllMenus() {
       let menus = document.querySelectorAll('.key-list-right-menu');
 
@@ -178,8 +184,6 @@ export default {
       }
     },
     clickItem(type) {
-      this.removeMenus();
-
       switch(type) {
         // copy key name
         case 'copy': {

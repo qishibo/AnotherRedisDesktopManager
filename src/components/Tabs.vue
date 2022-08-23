@@ -44,6 +44,12 @@ export default {
     };
   },
   components: { Status, KeyDetail, CliTab, DeleteBatch, MemoryAnalysis },
+  watch: {
+    selectedTabName(value) {
+      // for mousewheel toggle tabs
+      value && this.$shortcut.setScope(value);
+    },
+  },
   created() {
     // key clicked
     this.$bus.$on('clickedKey', (client, key, newTab = false) => {
@@ -261,9 +267,22 @@ export default {
         return closeWindow;
       });
     },
-    bindContextMenu() {
+    bindTabEvents() {
       const tabs = this.$refs.tabs.$el.querySelector('.el-tabs__header');
       tabs && tabs.addEventListener('contextmenu', this.openContextMenu);
+      tabs && tabs.addEventListener('mousewheel', this.wheelToggleTabs);
+    },
+    wheelToggleTabs(event) {
+      let index = this.tabs.findIndex(item => item.name === this.selectedTabName);
+
+      // up: deltaY < 0
+      event.deltaY < 0 ? index-- : index++;
+
+      if (!this.tabs[index]) {
+        return;
+      }
+
+      this.selectedTabName = this.tabs[index].name;
     },
     openContextMenu(event) {
       this.preTabId = '';
@@ -334,7 +353,7 @@ export default {
   },
   mounted() {
     this.initShortcut();
-    this.bindContextMenu();
+    this.bindTabEvents();
   },
 };
 </script>
