@@ -193,7 +193,7 @@ export default {
         return;
       }
 
-      this.sortOrder = this.sortOrder == 'desc' ? 'asc' : 'desc';
+      this.sortOrder = (this.sortOrder == 'desc' ? 'asc' : 'desc');
       this.reOrder();
     },
     reOrder(order = null) {
