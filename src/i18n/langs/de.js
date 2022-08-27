@@ -3,6 +3,7 @@ const de = {
     new_connection: 'Neue Verbindung',
     refresh_connection: 'Aktualisieren',
     edit_connection: 'Verbindung bearbeiten',
+    duplicate_connection: 'Verbindung kopieren',
     del_connection: 'Verbindung löschen',
     close_connection: 'Verbindung schließen',
     add_new_line: 'Neue Zeile hinzufügen',
@@ -21,6 +22,9 @@ const de = {
     memory: 'Speicher',
     stats: 'Statistik',
     settings: 'Einstellungen',
+    ui_settings: 'Aussehen',
+    feature_settings: 'Funktion',
+    common_settings: 'Allgemein',
     confirm_to_delete_row_data: 'Soll die Zeile wirklich gelöscht werden?',
     delete_success: 'Löschen erfolgreich',
     delete_failed: 'Löschen fehlgeschlagen',
@@ -157,6 +161,9 @@ const de = {
     restart: 'Neu starten',
     max_display: 'Maximale Anzahl von Displays: {num}',
     max_scan: 'Maximale Anzahl an Scans: {num}',
+    close_left: 'Schließen Sie die linken Registerkarten',
+    close_right: 'Schließen Sie die rechten Registerkarten',
+    close_other: 'Schließen Sie andere Registerkarten',
   },
 };
 

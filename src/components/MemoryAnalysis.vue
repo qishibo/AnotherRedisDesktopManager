@@ -3,6 +3,11 @@
   <el-card class="box-card">
     <!-- card title -->
     <div slot="header" class="clearfix">
+      <el-popover trigger="hover">
+        <i slot="reference" class="el-icon-question"></i>
+        If size is "0", your Redis may disabled <b>MEMORY</b> command.
+      </el-popover>
+      
       <span class="analysis-title">{{ $t('message.memory_analysis') }}</span>
       <i v-if="isScanning" class='el-icon-loading'></i>
       <el-tag size="mini">
@@ -23,35 +28,39 @@
     </div>
 
     <!-- table header -->
-    <ol class="keys-header">
-      <li>
-        <span class="header-title">Key</span>
-        <span class="size-container">
-          <el-popover trigger="hover">
-            <i slot="reference" class="el-icon-question"></i>
-            If size is "unknown", your Redis may disabled <b><code>MEMORY</code></b> command.
-          </el-popover>
-          <span class="header-title">Size (bytes)</span>
-          <span @click="reOrder" class="el-icon-d-caret" style="cursor: pointer;"></span>
-        </span>
-      </li>
-    </ol>
+    <div class="keys-header">
+      <span class="header-title">Key</span>
+      <span @click="toggleOrder" class="size-container">
+        <span class="header-title">Size</span>
+        <span class="el-icon-d-caret"></span>
+      </span>
+    </div>
 
-    <!-- table list -->
-    <ol ref='keysList' class='keys-body'></ol>
+    <!-- keys list -->
+    <RecycleScroller
+      class="keys-body"
+      :items="keysList"
+      :item-size="20"
+      key-field="str"
+      v-slot="{ item, index }"
+    >
+      <li @click="clickJump(item)">
+        <span class="list-index">{{ index + 1 }}.</span>
+        {{ item.str }}
+        <span class="size">{{ item.human }}</span>
+      </li>
+    </RecycleScroller>
 
     <!-- table footer -->
     <div class="keys-footer">
-      <el-tag>{{ $t('message.max_display', {num: showMax}) }}</el-tag>
+      <el-tag>{{ $t('message.max_display', {num: scanMax}) }}</el-tag>
     </div>
   </el-card>
-
-  <ScrollToTop parentNum='1'></ScrollToTop>
 </div>
 </template>
 
 <script type="text/javascript">
-import ScrollToTop from '@/components/ScrollToTop';
+import { RecycleScroller } from 'vue-virtual-scroller'
 
 export default {
   data() {
@@ -62,23 +71,20 @@ export default {
       scanStreams: [],
       sortOrder: '',
       scanMax: 200000,
-      showMax: 10000,
       scanPageSize: 2000,
     };
   },
   props: ['client', 'hotKeyScope'],
-  components: { ScrollToTop },
+  components: { RecycleScroller },
   methods: {
     initKeys() {
       this.keysList = [];
-      this.$refs.keysList.innerHTML = '';
       this.isScanning = true;
       this.scanningEnd = false;
       this.initScanStreamsAndScan();
     },
     initScanStreamsAndScan(pattern = '') {
       const nodes = this.client.nodes ? this.client.nodes('master') : [this.client];
-      const keysListDom = this.$refs.keysList;
       this.scanningCount = nodes.length;
 
       nodes.map(node => {
@@ -107,12 +113,8 @@ export default {
           promise.then(() => {
             // add interval between rendering
             setTimeout(() => {
-              // limit show max
-              if (keysListDom.querySelectorAll('li').length < this.showMax) {
-                this.insertIntoDom(keysWithMemory, false);
-              }
-
               this.keysList = this.keysList.concat(keysWithMemory);
+              this.reOrder('desc');
               this.isScanning && stream.resume();
             }, 100);
           });
@@ -144,9 +146,13 @@ export default {
         // not logging
         this.client.withoutLogging = true;
         const promise = this.client.call('MEMORY', 'USAGE', key).then(reply => {
-          keysWithMemory.push([key, reply]);
+          keysWithMemory.push({
+            key: key, str: this.$util.bufToString(key), size: reply, human: this.$util.humanFileSize(reply),
+          });
         }).catch(e => {
-          keysWithMemory.push([key, 'unknown']);
+          keysWithMemory.push({
+            key: key, str: this.$util.bufToString(key), size: 0, human: 0,
+          });
         });
 
         allPromise.push(promise);
@@ -154,30 +160,8 @@ export default {
 
       return Promise.all(allPromise);
     },
-    insertIntoDom(keysList, clearHTML = false) {
-      if (!keysList || keysList.length == 0) {
-        return;
-      }
-
-      const flag = document.createDocumentFragment();
-      const keysListDom = this.$refs.keysList;
-
-      if (!keysListDom) {
-        return;
-      }
-
-      for (const item of keysList) {
-        const li = document.createElement('li');
-        const byte = document.createElement('span');
-        li.textContent = item[0]; // key
-        byte.textContent = item[1]; // byte
-        li.appendChild(byte);
-
-        flag.appendChild(li);
-      }
-
-      clearHTML && (keysListDom.innerHTML = '');
-      keysListDom.appendChild(flag);
+    clickJump(item) {
+      this.$bus.$emit('clickedKey', this.client, item.key, true);
     },
     toggleScanning(pause = true) {
       // stop scanning
@@ -204,28 +188,28 @@ export default {
         }
       }
     },
-    reOrder() {
+    toggleOrder() {
       if (this.isScanning) {
         return;
       }
 
-      this.sortOrder = this.sortOrder == 'desc' ? 'asc' : 'desc';
+      this.sortOrder = (this.sortOrder == 'desc' ? 'asc' : 'desc');
+      this.reOrder();
+    },
+    reOrder(order = null) {
+      order !== null && (this.sortOrder = order);
 
       // sorting
       if (this.sortOrder == 'asc') {
         this.keysList.sort((a, b) => {
-          return a[1] - b[1];
+          return a.size - b.size;
         });
       }
       else {
         this.keysList.sort((a, b) => {
-          return b[1] - a[1];
+          return b.size - a.size;
         });
       }
-
-      // limit max display keys
-      const showKeys = this.keysList.slice(0, this.showMax);
-      this.insertIntoDom(showKeys, true);
     },
     initShortcut() {
       this.$shortcut.bind('ctrl+r, ⌘+r, f5', this.hotKeyScope, () => {
@@ -259,26 +243,43 @@ export default {
     float: right;
   }
 
-  /*keys header*/
+  /*keys header container*/
   .memory-analysis-container .keys-header {
-    list-style: none;
+    margin: 2px 0 14px 0;
+    user-select: none;
   }
   .memory-analysis-container .keys-header .header-title {
     font-weight: bold;
   }
   .memory-analysis-container .keys-header .size-container {
     float: right;
+    cursor: pointer;
   }
 
+  /*keys body list*/
+  .memory-analysis-container .keys-body {
+    height: calc(100vh - 290px);
+  }
   /*keys body li*/
   .memory-analysis-container .keys-body li {
     border-bottom: 1px solid #d0d0d0;
+    cursor:  pointer;
+    padding: 0 2px;
+    font-size: 92%;
+    list-style: none;
   }
   .dark-mode .memory-analysis-container .keys-body li {
     border-bottom: 1px solid #444444;
   }
+  .memory-analysis-container .keys-body li:hover {
+    background: #c6c6c6;
+  }
+  .dark-mode .memory-analysis-container .keys-body li:hover {
+    background: #3b4e57;
+  }
+
   /*key size*/
-  .memory-analysis-container .keys-body span {
+  .memory-analysis-container .keys-body .size {
     float: right;
     font-size: 90%;
   }

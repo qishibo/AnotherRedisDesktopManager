@@ -3,6 +3,7 @@ const it = {
     new_connection: 'Nuova Connessione',
     refresh_connection: 'Ricaricare',
     edit_connection: 'Modificare Connessione',
+    duplicate_connection: 'Copia connessione',
     del_connection: 'Elimina Connessione',
     close_connection: 'Chiudere Connessione',
     add_new_line: 'Inserisci Nuova Riga',
@@ -21,6 +22,9 @@ const it = {
     memory: 'Memoria',
     stats: 'Statistiche',
     settings: 'Impostazioni',
+    ui_settings: 'Aspetto esteriore',
+    feature_settings: 'Funzione',
+    common_settings: 'Generale',
     confirm_to_delete_row_data: 'Confermare per eliminare i dati della riga?',
     delete_success: 'Eliminato con successo',
     delete_failed: 'Eliminazione non riuscita',
@@ -157,6 +161,9 @@ const it = {
     restart: 'Ricomincia',
     max_display: 'Numero massimo di visualizzazioni: {num}',
     max_scan: 'Numero massimo di scansioni: {num}',
+    close_left: 'Chiudi le schede a sinistra',
+    close_right: 'Chiudi le schede a destra',
+    close_other: 'Chiudi altre schede',
   },
 };
 

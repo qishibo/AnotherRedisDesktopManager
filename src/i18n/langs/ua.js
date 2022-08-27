@@ -3,6 +3,7 @@ const ua = {
     new_connection: 'Нове з`єднання',
     refresh_connection: 'Оновити',
     edit_connection: 'Редагувати з`єднання',
+    duplicate_connection: 'Копіювати підключення',
     del_connection: 'Видалити з`єднання',
     close_connection: 'Закрити з`єднання',
     add_new_line: 'Додати новий рядок',
@@ -21,6 +22,9 @@ const ua = {
     memory: 'Оперативна пам`ять',
     stats: 'Статистика',
     settings: 'Налаштування',
+    ui_settings: 'Зовнішній вигляд',
+    feature_settings: 'Функція',
+    common_settings: 'Генеральний',
     confirm_to_delete_row_data: 'Підтвердити видалення даних рядка?',
     delete_success: 'Успішно видалено',
     delete_failed: 'Видалити не вдалося',
@@ -157,6 +161,9 @@ const ua = {
     restart: 'Перезавантажте',
     max_display: 'Максимальна кількість показів: {num}',
     max_scan: 'Максимальна кількість сканувань: {num}',
+    close_left: 'Закрити ліві вкладки',
+    close_right: 'Закрити праві вкладки',
+    close_other: 'Закрийте інші вкладки',
   },
 };
 

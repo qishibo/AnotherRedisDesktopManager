@@ -21,6 +21,7 @@
     <!-- key ttl -->
     <div class="key-header-item key-ttl-input">
       <el-input
+        type="number"
         v-model="keyTTL"
         @keyup.enter.native="ttlKey"
         :title="$t('message.click_enter_to_ttl')">
@@ -116,6 +117,10 @@ export default {
         }, this.refreshInterval);
       }
     },
+    removeInterval() {
+      this.autoRefresh = false;
+      this.refreshInit();
+    },
     dumpCommand() {
       this.$emit('dumpCommand');
     },
@@ -126,7 +131,7 @@ export default {
       )
       .then(() => {
         this.client.del(this.redisKey).then((reply) => {
-          if (reply === 1) {
+          if (reply == 1) {
             this.$message.success({
               message: this.$t('message.delete_success'),
               duration: 1000,
@@ -275,6 +280,12 @@ export default {
     margin-right: 15px; 
     margin-bottom: 10px;
   }
+  /*hide number input button*/
+  .key-header-item.key-ttl-input input::-webkit-inner-spin-button,
+  .key-header-item.key-ttl-input input::-webkit-outer-spin-button {
+    appearance: none;
+  }
+
   .key-header-item.key-header-btn-con .el-button+.el-button {
     margin-left: 4px;
   }
