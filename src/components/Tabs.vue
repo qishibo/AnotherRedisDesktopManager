@@ -143,7 +143,7 @@ export default {
     },
     addCliTab(client, tabName, newTab = true) {
       const newTabItem = {
-        name: `cli_${tabName}`,
+        name: `cli_${tabName}_${Math.random()}`,
         label: this.$util.cutString(tabName),
         title: tabName,
         client: client,
