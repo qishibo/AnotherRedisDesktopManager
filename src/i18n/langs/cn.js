@@ -3,6 +3,7 @@ const cn = {
     new_connection: '新建连接',
     refresh_connection: '刷新',
     edit_connection: '编辑连接',
+    duplicate_connection: '复制连接',
     del_connection: '删除连接',
     close_connection: '关闭连接',
     add_new_line: '添加新行',
@@ -21,6 +22,9 @@ const cn = {
     memory: '内存',
     stats: '状态',
     settings: '基础设置',
+    ui_settings: '外观',
+    feature_settings: '功能',
+    common_settings: '通用',
     confirm_to_delete_row_data: '确认删除该行数据？',
     delete_success: '删除成功',
     delete_failed: '删除失败',
@@ -157,6 +161,9 @@ const cn = {
     restart: '重新开始',
     max_display: '最大显示数量: {num}',
     max_scan: '最大扫描数量: {num}',
+    close_left: '关闭左侧标签',
+    close_right: '关闭右侧标签',
+    close_other: '关闭其他标签',
   },
 };
 

@@ -202,9 +202,9 @@ export default {
       return this.filterValue ? `*${this.filterValue}*` : '*';
     },
     openDialog() {
-      // this.$nextTick(() => {
-      //   this.$refs.formatViewer.autoFormat();
-      // });
+      this.$nextTick(() => {
+        this.$refs.formatViewer.autoFormat();
+      });
     },
     showEditDialog(row) {
       this.editLineItem = row;
@@ -262,7 +262,7 @@ export default {
 
         // reply==1:new field; reply==0 field exists
         this.$message.success({
-          message: reply ? this.$t('message.add_success') : this.$t('message.modify_success'),
+          message: reply == 1 ? this.$t('message.add_success') : this.$t('message.modify_success'),
           duration: 1000,
         });
       }).catch(e => {this.$message.error(e.message);});
@@ -276,7 +276,7 @@ export default {
           this.redisKey,
           row.key
         ).then((reply) => {
-          if (reply === 1) {
+          if (reply == 1) {
             this.$message.success({
               message: this.$t('message.delete_success'),
               duration: 1000,

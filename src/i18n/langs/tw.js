@@ -3,6 +3,7 @@ const tw = {
     new_connection: '新增連線',
     refresh_connection: '重新整理',
     edit_connection: '編輯連線',
+    duplicate_connection: '複製連接',
     del_connection: '刪除連線',
     close_connection: '關閉連線',
     add_new_line: '新增行',
@@ -21,6 +22,9 @@ const tw = {
     memory: '記憶體',
     stats: '狀態',
     settings: '基本設定',
+    ui_settings: '外觀',
+    feature_settings: '功能',
+    common_settings: '通用',
     confirm_to_delete_row_data: '確認刪除該行資料？',
     delete_success: '刪除成功',
     delete_failed: '刪除失敗',
@@ -157,6 +161,9 @@ const tw = {
     restart: '重新開始',
     max_display: '最大顯示數量：{num}',
     max_scan: '最大掃描數量：{num}',
+    close_left: '關閉左側標籤',
+    close_right: '關閉右側標籤',
+    close_other: '關閉其他標籤',
   },
 };
 

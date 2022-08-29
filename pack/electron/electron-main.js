@@ -3,6 +3,12 @@ const { app, BrowserWindow, Menu, ipcMain, dialog } = require('electron');
 const fontManager = require('./font-manager');
 const winState = require('./win-state');
 
+const url = require('url');
+const path = require('path');
+
+// disable GPU for some white screen issues
+// app.disableHardwareAcceleration();
+// app.commandLine.appendSwitch('disable-gpu');
 
 global.APP_ENV = (process.env.NODE_ENV === 'dev') ? 'dev' : 'production';
 
@@ -62,7 +68,12 @@ function createWindow() {
   // and load the index.html of the app.
   if (APP_ENV === 'production') {
     // mainWindow.loadFile('index.html');
-    mainWindow.loadURL(`file://${__dirname}/index.html?version=${app.getVersion()}`);
+    mainWindow.loadURL(url.format({
+      protocol: 'file',
+      slashes: true,
+      pathname: path.join(__dirname, 'index.html'),
+      query: {version: app.getVersion()},
+    }));
   } else {
     mainWindow.loadURL(`http://localhost:9988/?version=${app.getVersion()}`);
   }

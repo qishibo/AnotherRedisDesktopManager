@@ -191,6 +191,8 @@ export default {
       username: config.username ? config.username : undefined,
       tls: config.sslOptions ? this.getTLSOptions(config.sslOptions) : undefined,
       connectionReadOnly: config.connectionReadOnly ? true : undefined,
+      // return int as string to avoid big number issues
+      stringNumbers: true,
     };
   },
 

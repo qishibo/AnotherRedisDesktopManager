@@ -4,6 +4,7 @@ const pt = {
     refresh_connection: 'Atualizar',
     edit_connection: 'Editar Conexão',
     del_connection: 'Deletar Conexão',
+    duplicate_connection: 'Copiar Conexão',
     close_connection: 'Encerrar Conexão',
     add_new_line: 'Adicionar nova linha',
     dump_to_clipboard: "Copiar como comando",
@@ -21,6 +22,9 @@ const pt = {
     memory: 'Memória',
     stats: 'Estatísticas',
     settings: 'Configurações',
+    ui_settings: 'Aparência',
+    feature_settings: 'Função',
+    common_settings: 'Geral',
     confirm_to_delete_row_data: 'Você deseja excluir os dados da linha?',
     delete_success: 'Deleção executada com sucesso',
     delete_failed: 'Houve uma falha na deleção',
@@ -157,6 +161,9 @@ const pt = {
     restart: 'Reiniciar',
     max_display: 'Número máximo de exibições: {num}',
     max_scan: 'Número máximo de verificações: {num}',
+    close_left: 'Fechar abas esquerdas',
+    close_right: 'Fechar abas direitas',
+    close_other: 'Fechar outras guias',
   },
 };
 

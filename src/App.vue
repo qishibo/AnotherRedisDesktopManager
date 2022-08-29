@@ -184,6 +184,16 @@ button, input, textarea, .vjs__tree {
 }
 /*scrollbar style end*/
 
+/*list index*/
+li .list-index {
+  color: #828282;
+  font-size: 80%;
+  user-select: none;
+}
+.dark-mode li .list-index {
+  color: #adacac;
+}
+
 .wrap-container {
   height: 100%;
 }

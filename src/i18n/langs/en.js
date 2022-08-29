@@ -3,6 +3,7 @@ const en = {
     new_connection: 'New Connection',
     refresh_connection: 'Refresh',
     edit_connection: 'Edit Connection',
+    duplicate_connection: 'Duplicate Connection',
     del_connection: 'Delete Connection',
     close_connection: 'Close Connection',
     add_new_line: 'Add New Line',
@@ -21,6 +22,9 @@ const en = {
     memory: 'Memory',
     stats: 'Stats',
     settings: 'Settings',
+    ui_settings: 'Appearance',
+    feature_settings: 'Function',
+    common_settings: 'General',
     confirm_to_delete_row_data: 'Confirm To Delete The Row Data?',
     delete_success: 'Delete Success',
     delete_failed: 'Delete Failed',
@@ -157,6 +161,9 @@ const en = {
     restart: 'Restart',
     max_display: 'Maximum number of displays:  {num}',
     max_scan: 'Maximum number of scans:  {num}',
+    close_left: 'Close Left Tabs',
+    close_right: 'Close Right Tabs',
+    close_other: 'Close Other Tabs',
   },
 };
 

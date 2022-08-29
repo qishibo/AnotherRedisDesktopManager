@@ -1,21 +1,32 @@
 <template>
-  <el-tabs class='tabs-container' v-model="selectedTabName" type="card" closable @tab-remove="removeTab" @tab-click="tabClick">
-    <el-tab-pane
-      v-for="(item) in tabs"
-      :key="item.name"
-      :name="item.name">
-      <span slot="label" :title="item.title">
-        <i :class="iconNameByComponent(item.component)"></i>
-        <span>{{ item.label }}</span>
-      </span>
+  <div>
+    <el-tabs ref="tabs" class='tabs-container' v-model="selectedTabName" type="card" closable @tab-remove="removeTab" @tab-click="tabClick">
+      <el-tab-pane
+        v-for="(item) in tabs"
+        :key="item.name"
+        :name="item.name">
+        <span slot="label" :title="item.title">
+          <i :class="iconNameByComponent(item.component)"></i>
+          <span>{{ item.label }}</span>
+        </span>
 
-      <Status v-if="item.component === 'status'" :client='item.client' class='tab-content-wrappe' :hotKeyScope='item.name'></Status>
-      <CliTab v-else-if="item.component === 'cli'" :client='item.client' class='tab-content-wrappe' :hotKeyScope='item.name'></CliTab>
-      <DeleteBatch v-else-if="item.component === 'delbatch'" :client='item.client' :rule="item.rule" class='tab-content-wrappe' :hotKeyScope='item.name'></DeleteBatch>
-      <MemoryAnalysis v-else-if="item.component === 'memory'" :client='item.client' class='tab-content-wrappe' :hotKeyScope='item.name'></MemoryAnalysis>
-      <KeyDetail v-else :client='item.client' :redisKey="item.redisKey" :keyType="item.keyType" class='tab-content-wrappe' :hotKeyScope='item.name'></KeyDetail>
-    </el-tab-pane>
-  </el-tabs>
+        <Status v-if="item.component === 'status'" :client='item.client' class='tab-content-wrappe' :hotKeyScope='item.name'></Status>
+        <CliTab v-else-if="item.component === 'cli'" :client='item.client' class='tab-content-wrappe' :hotKeyScope='item.name'></CliTab>
+        <DeleteBatch v-else-if="item.component === 'delbatch'" :client='item.client' :rule="item.rule" class='tab-content-wrappe' :hotKeyScope='item.name'></DeleteBatch>
+        <MemoryAnalysis v-else-if="item.component === 'memory'" :client='item.client' class='tab-content-wrappe' :hotKeyScope='item.name'></MemoryAnalysis>
+        <KeyDetail v-else :client='item.client' :redisKey="item.redisKey" :keyType="item.keyType" class='tab-content-wrappe' :hotKeyScope='item.name'></KeyDetail>
+      </el-tab-pane>
+    </el-tabs>
+
+    <div ref="tabContextMenu" class="tabs-context-menu">
+      <ul>
+        <li @click="removeTab(preTabId)">{{ $t('message.close') }}</li>
+        <li @click="removeOtherTabs('other')">{{ $t('message.close_other') }}</li>
+        <li @click="removeOtherTabs('right')">{{ $t('message.close_right') }}</li>
+        <li @click="removeOtherTabs('left')">{{ $t('message.close_left') }}</li>
+      </ul>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -33,6 +44,12 @@ export default {
     };
   },
   components: { Status, KeyDetail, CliTab, DeleteBatch, MemoryAnalysis },
+  watch: {
+    selectedTabName(value) {
+      // for mousewheel toggle tabs
+      value && this.$shortcut.setScope(value);
+    },
+  },
   created() {
     // key clicked
     this.$bus.$on('clickedKey', (client, key, newTab = false) => {
@@ -85,6 +102,10 @@ export default {
   },
   methods: {
     removeTab(removeName) {
+      if (!removeName) {
+        return;
+      }
+
       const { tabs } = this;
       let nextSelectTab;
 
@@ -122,7 +143,7 @@ export default {
     },
     addCliTab(client, tabName, newTab = true) {
       const newTabItem = {
-        name: `cli_${tabName}`,
+        name: `cli_${tabName}_${Math.random()}`,
         label: this.$util.cutString(tabName),
         title: tabName,
         client: client,
@@ -246,9 +267,93 @@ export default {
         return closeWindow;
       });
     },
+    bindTabEvents() {
+      const tabs = this.$refs.tabs.$el.querySelector('.el-tabs__header');
+      tabs && tabs.addEventListener('contextmenu', this.openContextMenu);
+      tabs && tabs.addEventListener('mousewheel', this.wheelToggleTabs);
+    },
+    wheelToggleTabs(event) {
+      let index = this.tabs.findIndex(item => item.name === this.selectedTabName);
+
+      // up: deltaY < 0
+      event.deltaY < 0 ? index-- : index++;
+
+      if (!this.tabs[index]) {
+        return;
+      }
+
+      this.selectedTabName = this.tabs[index].name;
+    },
+    openContextMenu(event) {
+      this.preTabId = '';
+      this.hideAllMenus();
+
+      const items = this.$refs.tabs.$el.querySelectorAll('.el-tabs__header .el-tabs__item');
+
+      if (!items.length) {
+        return;
+      }
+
+      for (const item of items) {
+        if (item.contains(event.srcElement)) {
+          this.preTabId = item.id.split("-")[1];
+        }
+      }
+
+      if (!this.preTabId) {
+        return;
+      }
+
+      // show menu
+      const menu = this.$refs.tabContextMenu;
+      menu.style.left = `${event.clientX}px`;
+      menu.style.top = `${event.clientY}px`;
+      menu.style.display = 'block';
+
+      document.addEventListener("click", this.hideAllMenus, {once: true});
+    },
+    hideAllMenus() {
+      let menus = document.querySelectorAll('.tabs-context-menu');
+
+      if (menus.length === 0) {
+        return;
+      }
+
+      for (const menu of menus) {
+        menu.style.display='none';
+      }
+    },
+    removeOtherTabs(type = 'right') {
+      // find index of current contextMenu
+      const index = this.tabs.findIndex(item => item.name === this.preTabId);
+
+      if (index === -1) {
+        return;
+      }
+
+      switch (type) {
+        case 'right': {
+          this.tabs = this.tabs.slice(0, index + 1);
+          break;
+        }
+        case 'left': {
+          this.tabs = this.tabs.slice(index);
+          break;
+        }
+        case 'other': {
+          this.tabs = this.tabs.filter(item => item.name === this.preTabId);
+          break;
+        }
+      }
+
+      // change select tab only after current select is removed
+      const selectedTabExists = !!this.tabs.find(item => item.name === this.selectedTabName);
+      !selectedTabExists && (this.selectedTabName = this.preTabId);
+    },
   },
   mounted() {
     this.initShortcut();
+    this.bindTabEvents();
   },
 };
 </script>
@@ -261,5 +366,46 @@ export default {
     /*padding-left: 5px;*/
     padding-right: 8px;
     padding-bottom: 20px;
+  }
+
+  .tabs-context-menu {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    padding: 0px;
+    z-index: 99999;
+    border-radius: 3px;
+    border: 2px solid lightgrey;
+    background: #fafafa;
+  }
+  .dark-mode .tabs-context-menu {
+    background: #263238;
+  }
+
+  .tabs-context-menu ul {
+    list-style: none;
+    padding: 0px;
+    margin: 0;
+  }
+  .tabs-context-menu ul li:not(:last-child) {
+    border-bottom: 1px solid lightgrey;
+  }
+
+  .tabs-context-menu ul li {
+    font-size: 13.4px;
+    padding: 6px 10px;
+    cursor: pointer;
+    color: #263238;
+  }
+  .dark-mode .tabs-context-menu ul li {
+    color: #fff;
+  }
+
+  .tabs-context-menu ul li:hover {
+    background: #e4e2e2;
+  }
+  .dark-mode .tabs-context-menu ul li:hover {
+    background: #344A4E;
   }
 </style>
