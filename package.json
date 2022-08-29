@@ -75,7 +75,6 @@
     "eslint-config-airbnb-base": "^13.1.0",
     "eslint-plugin-import": "^2.16.0",
     "eslint-plugin-vue": "^5.2.2",
-    "extract-text-webpack-plugin": "^3.0.0",
     "file-loader": "^1.1.4",
     "font-list": "^1.4.5",
     "friendly-errors-webpack-plugin": "^1.6.1",
