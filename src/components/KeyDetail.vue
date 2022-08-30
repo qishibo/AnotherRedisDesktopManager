@@ -73,7 +73,7 @@ export default {
     },
     refreshContent() {
       this.client.exists(this.redisKey).then(reply => {
-        if (!reply) {
+        if (reply == 0) {
           // clear interval if auto refresh opened
           this.$refs.keyHeader.removeInterval();
           return this.$message.error(this.$t('message.key_not_exists'));

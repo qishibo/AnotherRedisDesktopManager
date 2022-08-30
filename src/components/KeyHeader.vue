@@ -198,7 +198,7 @@ export default {
     },
     setTTL(keyDeleted = false) {
       this.client.expire(this.redisKey, this.keyTTL).then((reply) => {
-        if (reply) {
+        if (reply == 1) {
           this.$message.success({
             message: this.$t('message.modify_success'),
             duration: 1000,
