@@ -42,7 +42,7 @@
       "allowToChangeInstallationDirectory": true,
       "oneClick": false,
       "menuCategory": true,
-      "allowElevation": false
+      "allowElevation": true
     },
     "linux": {
       "icon": "icons/icon.png",
