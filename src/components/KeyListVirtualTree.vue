@@ -40,6 +40,7 @@
       @node-collapse="nodeCollapse"
       @check="nodeCheck"
       @click-check="clickCheck"
+      @node-keydown="nodeKeyDown"
       highlight-current
     >
       <span class="key-list-custom-node" slot-scope="{node, data}" :title="node.label">
@@ -155,6 +156,19 @@ export default {
     clickCheck(event) {
       // add 'click' event when toggle checkbox, default only 'check' event
       this.clickCheckEvent = event;
+    },
+    nodeKeyDown(node, event) {
+      if (!node) {
+        return;
+      }
+
+      const data = node.data;
+      this.$refs.veTree.setCurrentKey(node.key);
+
+      // up & down, key node
+      if (['ArrowUp', 'ArrowDown'].includes(event.key) && !data.children) {
+        this.clickKey(Buffer.from(data.nameBuffer.data));
+      }
     },
     showMultiSelect() {
       this.multiOperating = true;
