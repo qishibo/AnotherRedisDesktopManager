@@ -27,7 +27,7 @@
     "sign": "cd pack/mas; bash sign.sh"
   },
   "dependencies": {
-    "@qii404/ioredis": "^4.28.5",
+    "@qii404/ioredis": "^4.28.501",
     "@qii404/json-bigint": "^1.0.0",
     "@qii404/redis-splitargs": "^1.0.1",
     "@qii404/vue-easy-tree": "^1.0.10",
