@@ -31,7 +31,7 @@
 
 ## Mac
 
-> 如果通过brew或者dmg安装后无法打开，执行下面命令后再启动即可:<br>`sudo xattr -rd com.apple.quarantine /Applications/Another\ Redis\ Desktop\ Manager.app`
+> 如果通过brew或者dmg安装后无法打开，报错**不受信任**或者**移到垃圾箱**，执行下面命令后再启动即可:<br>`sudo xattr -rd com.apple.quarantine /Applications/Another\ Redis\ Desktop\ Manager.app`
 
 - 可以在[github](https://github.com/qishibo/AnotherRedisDesktopManager/releases) 或者 [gitee](https://gitee.com/qishibo/AnotherRedisDesktopManager/releases)下载`dmg`安装包
 - 通过 **brew**: `brew install --cask another-redis-desktop-manager`
