@@ -35,6 +35,8 @@
 
 ## Mac
 
+> If you can't open it after installation by brew or dmg, exec the following command then reopen:<br>`sudo xattr -rd com.apple.quarantine /Applications/Another\ Redis\ Desktop\ Manager.app`
+
 - Download latest [dmg](https://github.com/qishibo/AnotherRedisDesktopManager/releases) package from release [or [gitee](https://gitee.com/qishibo/AnotherRedisDesktopManager/releases) in China], double click to install.
 - Or by **brew**: `brew install --cask another-redis-desktop-manager`
 - Or **sponsor** by app store, It's not free, and I will be very grateful to you.
