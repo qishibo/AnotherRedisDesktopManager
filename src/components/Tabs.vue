@@ -296,7 +296,7 @@ export default {
 
       for (const item of items) {
         if (item.contains(event.srcElement)) {
-          this.preTabId = item.id.split("-")[1];
+          this.preTabId = item.id.substr(4); // remove prefix "tab-"
         }
       }
 
