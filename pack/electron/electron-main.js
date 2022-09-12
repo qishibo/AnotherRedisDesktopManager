@@ -45,10 +45,10 @@ function createWindow() {
 
   // Create the browser window.
   mainWindow = new BrowserWindow({
-    x: (lastWinStage.x > 0) ? lastWinStage.x : null,
-    y: (lastWinStage.y > 0) ? lastWinStage.y : null,
-    width: (lastWinStage.width > 250) ? lastWinStage.width : 1100,
-    height: (lastWinStage.height > 250) ? lastWinStage.height : 728,
+    x: lastWinStage.x,
+    y: lastWinStage.y,
+    width: lastWinStage.width,
+    height: lastWinStage.height,
     icon: `${__dirname}/icons/icon.png`,
     autoHideMenuBar: true,
     webPreferences: {
