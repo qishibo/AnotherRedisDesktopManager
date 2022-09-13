@@ -118,5 +118,12 @@ export default {
   }
   .content-more-container .content-more-btn {
     width: 95%;
+    padding-top: 5px;
+    padding-bottom: 5px;
+  }
+
+  /*table list height*/
+  .key-content-container .el-table .el-table__body td {
+    padding: 0px 0px;
   }
 </style>
