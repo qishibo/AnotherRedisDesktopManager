@@ -173,7 +173,7 @@ export default {
     showMultiSelect() {
       this.multiOperating = true;
       this.$refs.treeWrapper.classList.add('show-checkbox');
-      
+
       // adjust vtree height
       this.vtreeHeight = this.vtreeHeightMutiple;
     },
@@ -281,15 +281,19 @@ export default {
       const bottomKey = direction == 'up' ? this.lastKey : curKey;
 
       let start = false;
-      for (let item of this.$refs.veTree.dataList) {
-        if (!start) {
-          (item.key === topKey) && (start = true);
+      this.multilevelCheck(this.$refs.veTree.dataList,topKey, bottomKey,start);
+    },
+    multilevelCheck(dataList, topKey, bottomKey, start){
+      for(let item of dataList){
+        if(!start){
+          (item.key === topKey) && (start = true)
           continue;
         }
-
-        item.checked = this.lastChecked;
-
-        if (item.key === bottomKey) {
+        item.checked = this.lastChecked
+        if(item.childNodes.length > 0){
+          this.multilevelCheck(item.childNodes, topKey, bottomKey, true);
+        }
+        if(item.key === bottomKey){
           break;
         }
       }
@@ -376,7 +380,7 @@ export default {
 
 /*node item*/
 .key-list-vtree .el-tree-node {
-  font-size: 14px; 
+  font-size: 14px;
 }
 .key-list-vtree .el-tree-node .el-tree-node__content {
   padding-left: 3px;
@@ -461,8 +465,8 @@ export default {
 }
 /*select\cancel select all col*/
 .key-list-vtree .batch-operate .fixed-col {
-  float: left; 
-  width: 20px; 
+  float: left;
+  width: 20px;
   line-height: 22px;
 }
 /*second col*/
