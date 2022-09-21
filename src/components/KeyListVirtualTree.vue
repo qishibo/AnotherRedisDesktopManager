@@ -274,25 +274,67 @@ export default {
         return;
       }
 
+      const tree = this.$refs.veTree;
       const curKey = node.key;
       const direction = (event.screenY - this.lastY) <= 0 ? 'up' : 'down';
 
       const topKey = direction == 'up' ? curKey : this.lastKey;
       const bottomKey = direction == 'up' ? this.lastKey : curKey;
 
+      let bottomNode = tree.getNode(bottomKey);
+      let bottomNodeParents = new Set();
+
+      // get all bottom node parents
+      while (bottomNode.parent) {
+        bottomNode = bottomNode.parent;
+        bottomNodeParents.add(bottomNode.key);
+      }
+
       let start = false;
-      for (let item of this.$refs.veTree.dataList) {
+      let selectedNodes = [];
+
+      // collect all nodes which need to be checked, from bottom to top
+      for (let i = tree.dataList.length - 1; i >= 0; i--) {
+        const item = tree.dataList[i];
+
         if (!start) {
-          (item.key === topKey) && (start = true);
+          if (item.key === bottomKey) {
+            direction === 'down' && selectedNodes.push(item);
+            start = true;
+          }
+          
           continue;
         }
 
-        item.checked = this.lastChecked;
-
-        if (item.key === bottomKey) {
+        if (item.key === topKey) {
+          direction === 'up' && selectedNodes.push(item);
           break;
         }
+
+        selectedNodes.push(item);
       }
+
+      const checkRecursive = (node, checked = true) => {
+        node.checked = checked;
+
+        // folder node
+        if (node.childNodes.length) {
+          for (const item of node.childNodes) {
+            checkRecursive(item, checked);
+          }
+        }
+      }
+
+      for (let item of selectedNodes) {
+        if (bottomNodeParents.has(item.key)) {
+          continue;
+        }
+        
+        checkRecursive(item, this.lastChecked);
+      }
+
+      // reinit folder node check status
+      this.$refs.veTree.store._initCheckRecursive(tree.root);
     },
   },
   watch: {
