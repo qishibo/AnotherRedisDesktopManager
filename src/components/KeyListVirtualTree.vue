@@ -55,6 +55,7 @@
       <!-- folder right menu -->
       <ul v-if="!rightClickNode.isLeaf">
         <li @click='clickItem("multiple_select")'>{{ $t('message.multiple_select') }}</li>
+        <li @click='clickItem("memory_analysis")'>{{ $t('message.memory_analysis') }}</li>
         <li @click='clickItem("delete_folder")'>{{ $t('message.delete_folder') }}</li>
       </ul>
       <!-- key right menu -->
@@ -243,6 +244,12 @@ export default {
         case 'delete_folder': {
           let rule = {pattern: [this.rightClickNode.data.fullName]};
           this.$bus.$emit('openDelBatch', this.client, this.config.connectionName, rule);
+          break;
+        }
+        // memory analysis
+        case 'memory_analysis': {
+          const pattern = this.rightClickNode.data.fullName;
+          this.$bus.$emit('memoryAnalysis', this.client, this.config.connectionName, pattern);
           break;
         }
       }

@@ -12,7 +12,8 @@
       <i v-if="isScanning" class='el-icon-loading'></i>
       <el-tag size="mini">
         <span v-if="isScanning">Scanning...</span>
-        Total: {{keysList.length}}
+        Total: {{keysList.length}} &nbsp;
+        Size: {{$util.humanFileSize(totalSize)}}
       </el-tag>
 
       <!-- operate btn -->
@@ -29,7 +30,10 @@
 
     <!-- table header -->
     <div class="keys-header">
-      <span class="header-title">Key</span>
+      <span class="header-title">
+        Key
+        <el-tag v-if="pattern" size="mini"><i class="fa fa-search"></i> {{pattern}}</el-tag>
+      </span>
       <span @click="toggleOrder" class="size-container">
         <span class="header-title">Size</span>
         <span class="el-icon-d-caret"></span>
@@ -72,16 +76,18 @@ export default {
       sortOrder: '',
       scanMax: 200000,
       scanPageSize: 2000,
+      totalSize: 0,
     };
   },
-  props: ['client', 'hotKeyScope'],
+  props: ['client', 'hotKeyScope', 'pattern'],
   components: { RecycleScroller },
   methods: {
     initKeys() {
       this.keysList = [];
+      this.totalSize = 0;
       this.isScanning = true;
       this.scanningEnd = false;
-      this.initScanStreamsAndScan();
+      this.initScanStreamsAndScan(this.pattern ? this.pattern : '');
     },
     initScanStreamsAndScan(pattern = '') {
       const nodes = this.client.nodes ? this.client.nodes('master') : [this.client];
@@ -117,6 +123,9 @@ export default {
               this.reOrder('desc');
               this.isScanning && stream.resume();
             }, 100);
+
+            // size count
+            this.totalSize += keysWithMemory.reduce((sum, item) => sum + parseInt(item.size), 0);
           });
         });
 

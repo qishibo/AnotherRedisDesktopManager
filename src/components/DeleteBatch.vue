@@ -3,7 +3,7 @@
   <el-card class="box-card del-batch-card">
     <!-- card title -->
     <div slot="header" class="clearfix">
-      <span class="del-title">{{ $t('message.keys_to_be_deleted') }}</span>
+      <span class="del-title"><i class="fa fa-exclamation-triangle"></i> {{ $t('message.keys_to_be_deleted') }}</span>
       <i v-if="loadingScan||loadingDelete" class='el-icon-loading'></i>
       <el-tag size="mini">
         <span v-if="loadingScan">Scanning... </span>
@@ -18,8 +18,8 @@
     </div>
 
     <!-- scan pattern -->
-    <el-tag v-if="rule.pattern && rule.pattern.length" style="margin-left: 10px;">
-      <i class="el-icon-search"></i> {{rule.pattern.join(' ')}}
+    <el-tag v-if="rule.pattern && rule.pattern.length" size="mini" style="margin-left: 10px;">
+      <i class="fa fa-search"></i> {{rule.pattern.join(' ')}}
     </el-tag>
 
     <!-- key list -->
@@ -232,13 +232,14 @@ export default {
     font-size: 120%;
   }
   .del-batch-card {
-    margin-top: 10px;
+    /*margin-top: 10px;*/
   }
   .del-batch-key-list {
     height: calc(100vh - 263px);
     overflow: auto;
     padding-left: 10px;
     list-style: none;
+    margin-top: 10px;
   }
   .del-batch-key-list li {
     color: #333;
