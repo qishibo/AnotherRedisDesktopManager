@@ -51,7 +51,7 @@
       <!-- refresh btn component -->
       <el-popover
         placement="bottom"
-        :open-delay="200"
+        :open-delay="500"
         trigger="hover">
         <el-tag type="info">
           <i class="el-icon-refresh"></i>

@@ -122,8 +122,17 @@ export default {
     padding-bottom: 5px;
   }
 
+  /*data table list styles*/
+  .key-content-container .el-table {
+    border-radius: 3px;
+  }
   /*table list height*/
   .key-content-container .el-table .el-table__body td {
     padding: 0px 0px;
+  }
+
+  /*table list border*/
+  .key-content-container .el-table--border td, .key-content-container .el-table--border th {
+    border-right-width: 0;
   }
 </style>
