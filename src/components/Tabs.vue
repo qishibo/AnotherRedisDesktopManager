@@ -360,6 +360,16 @@ export default {
 </script>
 
 <style type="text/css">
+  /*tabs header height*/
+  .tabs-container .el-tabs__item {
+    height: 34px;
+    line-height: 34px;
+  }
+  .tabs-container .el-tabs__nav-next, .tabs-container .el-tabs__nav-prev {
+    line-height: 34px;
+  }
+  /*height end*/
+
   .tab-content-wrappe {
     height: calc(100vh - 100px);
     overflow-x: hidden;
@@ -369,6 +379,7 @@ export default {
     padding-bottom: 20px;
   }
 
+  /*tabs context menu*/
   .tabs-context-menu {
     display: none;
     position: fixed;
@@ -409,4 +420,5 @@ export default {
   .dark-mode .tabs-context-menu ul li:hover {
     background: #344A4E;
   }
+  /*context menu end*/
 </style>
