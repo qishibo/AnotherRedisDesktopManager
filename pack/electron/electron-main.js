@@ -10,8 +10,7 @@ const path = require('path');
 // app.disableHardwareAcceleration();
 // app.commandLine.appendSwitch('disable-gpu');
 
-global.APP_ENV = (process.env.NODE_ENV === 'dev') ? 'dev' : 'production';
-
+global.APP_ENV = (process.env.ARDM_ENV === 'development') ? 'development' : 'production';
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.

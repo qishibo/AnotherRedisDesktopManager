@@ -8,7 +8,7 @@
     "dev": "webpack serve --mode development --progress --config build/webpack.dev.conf.js",
     "start": "npm run dev",
     "build": "node build/build.js",
-    "electron": "cross-env NODE_ENV=dev npx electron pack/electron",
+    "electron": "cross-env ARDM_ENV=development npx electron pack/electron",
     "lint": "eslint --ext js,vue src --fix",
     "lint:init": "eslint --init",
     "asar": "npx asar pack dist dist/app.asar --unpack-dir \"{app.asar,build-apps,app.asar.unpacked}\"",
