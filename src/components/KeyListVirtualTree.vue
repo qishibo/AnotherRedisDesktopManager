@@ -395,6 +395,11 @@ export default {
   width: calc(100% + 2px);
 }
 
+/*replace transform to avoid font blurry*/
+.key-list-vtree .vue-recycle-scroller.ready .vue-recycle-scroller__item-view {
+  will-change: auto;
+}
+
 /*vtree scrollbat style*/
 /*blur status*/
 .key-list-vtree .vue-recycle-scroller::-webkit-scrollbar-thumb {
