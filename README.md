@@ -63,6 +63,7 @@
 
 ## Feature Log
 
+- 2022-10-07: Arrow Keys support in key list && Memory Analysis in folder
 - 2022-08-05: Clone Connection && Tabs Contextmenu\Mousewheel Support
 - 2022-04-01: Protobuf Support && Memory Analysis
 - 2022-03-03: Readonly Mode && Mointor Support
