@@ -13,7 +13,7 @@
         <Status v-if="item.component === 'status'" :client='item.client' class='tab-content-wrappe' :hotKeyScope='item.name'></Status>
         <CliTab v-else-if="item.component === 'cli'" :client='item.client' class='tab-content-wrappe' :hotKeyScope='item.name'></CliTab>
         <DeleteBatch v-else-if="item.component === 'delbatch'" :client='item.client' :rule="item.rule" class='tab-content-wrappe' :hotKeyScope='item.name'></DeleteBatch>
-        <MemoryAnalysis v-else-if="item.component === 'memory'" :client='item.client' class='tab-content-wrappe' :hotKeyScope='item.name'></MemoryAnalysis>
+        <MemoryAnalysis v-else-if="item.component === 'memory'" :client='item.client' :pattern="item.pattern" class='tab-content-wrappe' :hotKeyScope='item.name'></MemoryAnalysis>
         <KeyDetail v-else :client='item.client' :redisKey="item.redisKey" :keyType="item.keyType" class='tab-content-wrappe' :hotKeyScope='item.name'></KeyDetail>
       </el-tab-pane>
     </el-tabs>
@@ -72,8 +72,8 @@ export default {
     });
 
     // open memory anaysis tab
-    this.$bus.$on('memoryAnalysis', (client, tabName) => {
-      this.addMemoryTab(client, tabName);
+    this.$bus.$on('memoryAnalysis', (client, tabName, pattern = '') => {
+      this.addMemoryTab(client, tabName, pattern);
     });
 
     // remove pre tab
@@ -164,13 +164,14 @@ export default {
 
       this.addTab(newTabItem, true);
     },
-    addMemoryTab(client, tabName) {
+    addMemoryTab(client, tabName, pattern = '') {
       const newTabItem = {
         name: `memory_analysis_${tabName}_${Math.random()}`,
         label: this.$util.cutString(tabName),
         title: tabName,
         client: client,
         component: 'memory',
+        pattern: pattern,
       }
 
       this.addTab(newTabItem, true);
@@ -296,7 +297,7 @@ export default {
 
       for (const item of items) {
         if (item.contains(event.srcElement)) {
-          this.preTabId = item.id.split("-")[1];
+          this.preTabId = item.id.substr(4); // remove prefix "tab-"
         }
       }
 
@@ -359,6 +360,16 @@ export default {
 </script>
 
 <style type="text/css">
+  /*tabs header height*/
+  .tabs-container .el-tabs__item {
+    height: 34px;
+    line-height: 34px;
+  }
+  .tabs-container .el-tabs__nav-next, .tabs-container .el-tabs__nav-prev {
+    line-height: 34px;
+  }
+  /*height end*/
+
   .tab-content-wrappe {
     height: calc(100vh - 100px);
     overflow-x: hidden;
@@ -368,6 +379,7 @@ export default {
     padding-bottom: 20px;
   }
 
+  /*tabs context menu*/
   .tabs-context-menu {
     display: none;
     position: fixed;
@@ -408,4 +420,5 @@ export default {
   .dark-mode .tabs-context-menu ul li:hover {
     background: #344A4E;
   }
+  /*context menu end*/
 </style>

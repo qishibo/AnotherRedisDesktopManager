@@ -31,6 +31,8 @@
 
 ## Mac
 
+> 如果通过brew或者dmg安装后无法打开，报错**不受信任**或者**移到垃圾箱**，执行下面命令后再启动即可:<br>`sudo xattr -rd com.apple.quarantine /Applications/Another\ Redis\ Desktop\ Manager.app`
+
 - 可以在[github](https://github.com/qishibo/AnotherRedisDesktopManager/releases) 或者 [gitee](https://gitee.com/qishibo/AnotherRedisDesktopManager/releases)下载`dmg`安装包
 - 通过 **brew**: `brew install --cask another-redis-desktop-manager`
 - 或者通过App Store**赞助**, 然后让App Store帮你自动更新版本
@@ -58,6 +60,7 @@
 
 ## 里程碑
 
+- 2022-10-07: Key列表方向键 && 内存分析支持指定文件夹
 - 2022-08-05: 克隆连接 && Tabs右键和滚轮支持
 - 2022-04-01: Protobuf 支持 && 内存占用分析
 - 2022-03-03: 只读模式 && Mointor 支持
