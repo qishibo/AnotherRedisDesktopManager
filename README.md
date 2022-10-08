@@ -35,6 +35,8 @@
 
 ## Mac
 
+> If you can't open it after installation by brew or dmg, exec the following command then reopen:<br>`sudo xattr -rd com.apple.quarantine /Applications/Another\ Redis\ Desktop\ Manager.app`
+
 - Download latest [dmg](https://github.com/qishibo/AnotherRedisDesktopManager/releases) package from release [or [gitee](https://gitee.com/qishibo/AnotherRedisDesktopManager/releases) in China], double click to install.
 - Or by **brew**: `brew install --cask another-redis-desktop-manager`
 - Or **sponsor** by app store, It's not free, and I will be very grateful to you.
@@ -61,6 +63,7 @@
 
 ## Feature Log
 
+- 2022-10-07: Arrow Keys support in key list && Memory Analysis in folder
 - 2022-08-05: Clone Connection && Tabs Contextmenu\Mousewheel Support
 - 2022-04-01: Protobuf Support && Memory Analysis
 - 2022-03-03: Readonly Mode && Mointor Support

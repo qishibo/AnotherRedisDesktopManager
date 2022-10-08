@@ -14,7 +14,6 @@ const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 
 const VueLoaderPlugin = require('vue-loader/lib/plugin');
 const MonacoWebpackPlugin = require('monaco-editor-webpack-plugin');
-// const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 
 const env = require('../config/prod.env')
 
