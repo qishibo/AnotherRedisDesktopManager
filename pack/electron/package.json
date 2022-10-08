@@ -1,6 +1,6 @@
 {
   "name": "another-redis-desktop-manager",
-  "version": "1.5.8",
+  "version": "1.5.9",
   "description": "A faster, better and more stable redis desktop manager.",
   "author": "Another",
   "private": true,
@@ -43,7 +43,7 @@
       "allowToChangeInstallationDirectory": true,
       "oneClick": false,
       "menuCategory": true,
-      "allowElevation": false
+      "allowElevation": true
     },
     "appx": {
       "applicationId": "qii404.AnotherRedisDesktopManager",

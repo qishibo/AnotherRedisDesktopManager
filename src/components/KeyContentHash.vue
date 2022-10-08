@@ -45,7 +45,8 @@
         sortable
         resizable
         label="Key"
-        width=150>
+        show-overflow-tooltip
+        width="150">
         <template slot-scope="scope">
           {{ $util.bufToString(scope.row.key) }}
         </template>

@@ -40,6 +40,7 @@
       @node-collapse="nodeCollapse"
       @check="nodeCheck"
       @click-check="clickCheck"
+      @node-keydown="nodeKeyDown"
       highlight-current
     >
       <span class="key-list-custom-node" slot-scope="{node, data}" :title="node.label">
@@ -54,6 +55,7 @@
       <!-- folder right menu -->
       <ul v-if="!rightClickNode.isLeaf">
         <li @click='clickItem("multiple_select")'>{{ $t('message.multiple_select') }}</li>
+        <li @click='clickItem("memory_analysis")'>{{ $t('message.memory_analysis') }}</li>
         <li @click='clickItem("delete_folder")'>{{ $t('message.delete_folder') }}</li>
       </ul>
       <!-- key right menu -->
@@ -100,15 +102,25 @@ export default {
     rightClick(event, data, node) {
       this.hideAllMenus();
 
-      const menu = this.$refs.rightMenu;
-      menu.style.left = `${event.clientX}px`;
-      menu.style.top = `${event.clientY}px`;
-      menu.style.display = 'block';
-
       this.$refs.veTree.setCurrentKey(node.key);
       this.rightClickNode = node;
 
-      document.addEventListener("click", this.removeMenus);
+      // nextTick for dom render
+      this.$nextTick(() => {
+        let top = event.clientY;
+        const menu = this.$refs.rightMenu;
+        menu.style.display = 'block';
+
+        // position in bottom
+        if (document.body.clientHeight - top < menu.clientHeight) {
+          top -= menu.clientHeight;
+        }
+
+        menu.style.left = `${event.clientX}px`;
+        menu.style.top = `${top}px`;
+
+        document.addEventListener("click", this.hideAllMenus, {once: true});
+      });
     },
     nodeClick(data, node, component, event) {
       if (this.multiOperating) {
@@ -146,6 +158,19 @@ export default {
       // add 'click' event when toggle checkbox, default only 'check' event
       this.clickCheckEvent = event;
     },
+    nodeKeyDown(node, event) {
+      if (!node) {
+        return;
+      }
+
+      const data = node.data;
+      this.$refs.veTree.setCurrentKey(node.key);
+
+      // up & down, key node
+      if (['ArrowUp', 'ArrowDown'].includes(event.key) && !data.children) {
+        this.clickKey(Buffer.from(data.nameBuffer.data));
+      }
+    },
     showMultiSelect() {
       this.multiOperating = true;
       this.$refs.treeWrapper.classList.add('show-checkbox');
@@ -162,10 +187,6 @@ export default {
       // recover vtree height
       this.vtreeHeight = this.vtreeHeightRaw;
     },
-    removeMenus() {
-      document.removeEventListener("click", this.removeMenus);
-      this.hideAllMenus();
-    },
     hideAllMenus() {
       let menus = document.querySelectorAll('.key-list-right-menu');
 
@@ -178,8 +199,6 @@ export default {
       }
     },
     clickItem(type) {
-      this.removeMenus();
-
       switch(type) {
         // copy key name
         case 'copy': {
@@ -227,6 +246,12 @@ export default {
           this.$bus.$emit('openDelBatch', this.client, this.config.connectionName, rule);
           break;
         }
+        // memory analysis
+        case 'memory_analysis': {
+          const pattern = this.rightClickNode.data.fullName;
+          this.$bus.$emit('memoryAnalysis', this.client, this.config.connectionName, pattern);
+          break;
+        }
       }
     },
     toggleCheckAll(checked) {
@@ -256,25 +281,67 @@ export default {
         return;
       }
 
+      const tree = this.$refs.veTree;
       const curKey = node.key;
       const direction = (event.screenY - this.lastY) <= 0 ? 'up' : 'down';
 
       const topKey = direction == 'up' ? curKey : this.lastKey;
       const bottomKey = direction == 'up' ? this.lastKey : curKey;
 
+      let bottomNode = tree.getNode(bottomKey);
+      let bottomNodeParents = new Set();
+
+      // get all bottom node parents
+      while (bottomNode.parent) {
+        bottomNode = bottomNode.parent;
+        bottomNodeParents.add(bottomNode.key);
+      }
+
       let start = false;
-      for (let item of this.$refs.veTree.dataList) {
+      let selectedNodes = [];
+
+      // collect all nodes which need to be checked, from bottom to top
+      for (let i = tree.dataList.length - 1; i >= 0; i--) {
+        const item = tree.dataList[i];
+
         if (!start) {
-          (item.key === topKey) && (start = true);
+          if (item.key === bottomKey) {
+            direction === 'down' && selectedNodes.push(item);
+            start = true;
+          }
+          
           continue;
         }
 
-        item.checked = this.lastChecked;
-
-        if (item.key === bottomKey) {
+        if (item.key === topKey) {
+          direction === 'up' && selectedNodes.push(item);
           break;
         }
+
+        selectedNodes.push(item);
       }
+
+      const checkRecursive = (node, checked = true) => {
+        node.checked = checked;
+
+        // folder node
+        if (node.childNodes.length) {
+          for (const item of node.childNodes) {
+            checkRecursive(item, checked);
+          }
+        }
+      }
+
+      for (let item of selectedNodes) {
+        if (bottomNodeParents.has(item.key)) {
+          continue;
+        }
+        
+        checkRecursive(item, this.lastChecked);
+      }
+
+      // reinit folder node check status
+      this.$refs.veTree.store._initCheckRecursive(tree.root);
     },
   },
   watch: {
@@ -326,6 +393,11 @@ export default {
 /*vtree container*/
 .key-list-vtree .vue-recycle-scroller {
   width: calc(100% + 2px);
+}
+
+/*replace transform to avoid font blurry*/
+.key-list-vtree .vue-recycle-scroller.ready .vue-recycle-scroller__item-view {
+  will-change: auto;
 }
 
 /*vtree scrollbat style*/
