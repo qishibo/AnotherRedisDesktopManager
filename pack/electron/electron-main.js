@@ -1,5 +1,5 @@
 // Modules to control application life and create native browser window
-const { app, BrowserWindow, Menu, ipcMain, dialog } = require('electron');
+const { app, BrowserWindow, Menu, ipcMain, dialog, nativeTheme } = require('electron');
 const fontManager = require('./font-manager');
 const winState = require('./win-state');
 
@@ -71,10 +71,14 @@ function createWindow() {
       protocol: 'file',
       slashes: true,
       pathname: path.join(__dirname, 'index.html'),
-      query: {version: app.getVersion()},
+      query: {version: app.getVersion(), dark: nativeTheme.shouldUseDarkColors},
     }));
   } else {
-    mainWindow.loadURL(`http://localhost:9988/?version=${app.getVersion()}`);
+    mainWindow.loadURL(url.format({
+      protocol: 'http',
+      host: 'localhost:9988',
+      query: {version: app.getVersion(), dark: nativeTheme.shouldUseDarkColors}
+    }));
   }
 
   // Open the DevTools.

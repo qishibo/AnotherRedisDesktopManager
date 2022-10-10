@@ -10,19 +10,23 @@
     <!-- this script must be placed here after body -->
     <script type="text/javascript">
       function globalChangeTheme(theme) {
-        theme  && (localStorage.theme = theme);
-        !theme && (theme = localStorage.theme);
+        if (!['dark', 'light', 'system'].includes(theme)) {
+          theme = 'light';
+        }
 
-        const themeName =  (theme  == 'dark' ? 'dark' : 'chalk');
-        const themeHref = 'static/theme/' + themeName + '/index.css';
+        // follow system
+        if (theme == 'system') {
+          theme = (new URL(window.location.href)).searchParams.get('dark') == 'true' ? 'dark' : 'light';
+        }
 
+        const themeHref = 'static/theme/' + theme + '/index.css';
         document.getElementById('theme-link').href = themeHref;
-        themeName == 'dark' ? document.body.classList.add('dark-mode') :
+        theme == 'dark' ? document.body.classList.add('dark-mode') :
                               document.body.classList.remove('dark-mode');
       }
 
       // theme init
-      globalChangeTheme();
+      globalChangeTheme(localStorage.theme);
     </script>
 
     <div id="app"></div>

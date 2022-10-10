@@ -188,7 +188,8 @@ export default {
       this.$bus.$emit('reloadSettings', Object.assign({}, this.form));
     },
     changeTheme() {
-      const themeName = this.darkMode ? 'dark' : 'chalk';
+      const themeName = this.darkMode ? 'dark' : 'light';
+      localStorage.theme = themeName;
       globalChangeTheme(themeName);
     },
     changeZoom() {
