@@ -1,5 +1,6 @@
 {
   "name": "another-desktop-manager",
+  "productName": "Another Desktop Manager",
   "version": "1.5.9",
   "description": "A faster, better and more stable redis desktop manager.",
   "author": "Another",
