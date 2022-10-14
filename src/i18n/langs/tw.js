@@ -168,6 +168,9 @@ const tw = {
     max_scan: '最大掃描數量：{num}',
     before_connect: '连接前（命令)',
     before_connect_error: '连接前（命令）错误：{message}',
+    close_left: '關閉左側標籤',
+    close_right: '關閉右側標籤',
+    close_other: '關閉其他標籤',
   },
 };
 

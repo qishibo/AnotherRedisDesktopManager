@@ -172,6 +172,11 @@ const fr = {
     max_scan: "Nombre maximal d'analyses : {num}",
     before_connect: 'Avant de se connecter (commande)',
     before_connect_error: 'Erreur avant connexion (commande) : {message}',
+    max_display: "Nombre maximal d'affichages : {num}",
+    max_scan: "Nombre maximal d'analyses : {num}",
+    close_left: 'Fermer les onglets de gauche',
+    close_right: 'Fermer les onglets de droite',
+    close_other: 'Fermer les autres onglets',
   },
 };
 

@@ -171,6 +171,9 @@ const en = {
     max_scan: 'Maximum number of scans:  {num}',
     before_connect: 'Before Connect (Command)',
     before_connect_error: 'Before Connect (Command) Error: {message}',
+    close_left: 'Close Left Tabs',
+    close_right: 'Close Right Tabs',
+    close_other: 'Close Other Tabs',
   },
 };
 

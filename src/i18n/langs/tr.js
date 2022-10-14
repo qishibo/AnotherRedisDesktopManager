@@ -170,6 +170,9 @@ const tr = {
     max_scan: 'Maksimum tarama sayısı: {num}',
     before_connect: 'Bağlanmadan Önce (Komut)',
     before_connect_error: 'Bağlanmadan Önce (Komut) Hatası: {message}',
+    close_left: 'Sol Sekmeleri Kapat',
+    close_right: 'Sağ Sekmeleri Kapat',
+    close_other: 'Diğer Sekmeleri Kapat',
   },
 };
 

@@ -111,7 +111,7 @@ const es = {
     flushdb: 'Vaciar DB',
     flushdb_prompt: 'Input "{txt}"',
     info_disabled: 'Excepción de ejecución de comando de información (puede haberse deshabilitado), no se puede mostrar la información de redis',
-    page_zoom: 'Zoom Págiona',
+    page_zoom: 'Zoom Página',
     scan_disabled: 'Excepción de ejecución de comando de escaneo (puede haberse deshabilitado), no se puede mostrar la lista de claves',
     key_type_not_support: 'La visualización visual no es compatible con este tipo. Utilice la consola',
     delete_folder: 'Escanear y eliminar toda la carpeta',
@@ -157,7 +157,7 @@ const es = {
     hide_window: 'Ocultar Ventana',
     minimize_window: 'Minimizar Ventana',
     maximize_window: 'Maximizar Ventana',
-    load_all_keys: 'cargar todo',
+    load_all_keys: 'Cargar todo',
     show_load_all_keys: 'Habilitar botón para cargar todas las claves',
     load_all_keys_tip:
       'Cargue todas las claves a la vez. Si el número de claves es demasiado grande, el cliente puede atascarse. Por favor úsalo correctamente',
@@ -172,6 +172,9 @@ const es = {
     max_scan: 'Número máximo de escaneos:  {num}',
     before_connect: 'Antes de conectar (comando)',
     before_connect_error: 'Antes de conectar (comando) Error: {message}',
+    close_left: 'Cerrar pestañas izquierdas',
+    close_right: 'Cerrar pestañas derechas',
+    close_other: 'Cerrar otras pestañas',
   },
 };
 

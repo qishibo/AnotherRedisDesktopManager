@@ -174,6 +174,9 @@ const it = {
     max_scan: 'Numero massimo di scansioni: {num}',
     before_connect: 'Prima della connessione (comando)',
     before_connect_error: 'Errore prima della connessione (comando): {message}',
+    close_left: 'Chiudi le schede a sinistra',
+    close_right: 'Chiudi le schede a destra',
+    close_other: 'Chiudi altre schede',
   },
 };
 

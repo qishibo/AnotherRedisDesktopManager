@@ -9,24 +9,27 @@ const fs = require('fs');
 const { sendCommand } = Redis.prototype;
 
 // redis command log
-Redis.prototype.sendCommand = async function (...options) {
+Redis.prototype.sendCommand = function (...options) {
+  const command = options[0];
+
   // readonly mode
-  if (this.options.connectionReadOnly && writeCMD[options[0].name.toUpperCase()]) {
-    throw new Error('You are in readonly mode! Unable to execute write command!');
+  if (this.options.connectionReadOnly && writeCMD[command.name.toUpperCase()]) {
+    command.reject(new Error('You are in readonly mode! Unable to execute write command!'));
+    return command.promise;
   }
 
   // exec directly, without logs
   if (this.withoutLogging === true) {
     // invalid in next calling
     this.withoutLogging = false;
-    return await sendCommand.call(this, ...options);
+    return sendCommand.apply(this, options);
   }
 
   const start = performance.now();
-  const response = await sendCommand.call(this, ...options);
+  const response = sendCommand.apply(this, options);
   const cost = performance.now() - start;
 
-  const record = { time: new Date(), connectionName: this.options.connectionName, command: options[0], cost: cost };
+  const record = { time: new Date(), connectionName: this.options.connectionName, command: command, cost: cost };
   vue.$bus.$emit('commandLog', record);
 
   return response;
@@ -216,6 +219,8 @@ export default {
       username: config.username ? config.username : undefined,
       tls: config.sslOptions ? this.getTLSOptions(config.sslOptions) : undefined,
       connectionReadOnly: config.connectionReadOnly ? true : undefined,
+      // return int as string to avoid big number issues
+      stringNumbers: true,
     };
   },
 

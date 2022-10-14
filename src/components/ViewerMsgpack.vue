@@ -4,7 +4,8 @@
 
 <script type="text/javascript">
 import JsonEditor from '@/components/JsonEditor';
-import {decode, encode} from "@msgpack/msgpack";
+import {decode, encode} from "algo-msgpack-with-bigint"
+const JSONbig = require('@qii404/json-bigint')({useNativeBigInt: true});
 
 
 export default {
@@ -26,7 +27,7 @@ export default {
       // raw content is an object
       if (typeof this.newContent !== 'string') {
         try {
-          content = JSON.parse(content);
+          content = JSONbig.parse(content); 
         }
         catch (e) {
           // object parse failed
@@ -44,7 +45,7 @@ export default {
     },
     copyContent() {
       const content = decode(this.content);
-      return (typeof content === 'object') ? JSON.stringify(content): content;
+      return (typeof content === 'object') ? JSONbig.stringify(content) : content;
     }
   }
 }

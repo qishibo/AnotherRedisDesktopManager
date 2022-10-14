@@ -167,6 +167,9 @@ const cn = {
     max_scan: '最大扫描数量: {num}',
     before_connect: '連接前（命令)',
     before_connect_error: '連接前（命令）錯誤：{message}',
+    close_left: '关闭左侧标签',
+    close_right: '关闭右侧标签',
+    close_other: '关闭其他标签',
   },
 };
 

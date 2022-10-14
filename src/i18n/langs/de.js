@@ -172,6 +172,9 @@ const de = {
     max_scan: 'Maximale Anzahl an Scans: {num}',
     before_connect: 'Vor dem Verbinden (Befehl)',
     before_connect_error: 'Fehler vor dem Verbinden (Befehl): {message}',
+    close_left: 'Schließen Sie die linken Registerkarten',
+    close_right: 'Schließen Sie die rechten Registerkarten',
+    close_other: 'Schließen Sie andere Registerkarten',
   },
 };
 

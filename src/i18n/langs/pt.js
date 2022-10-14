@@ -171,6 +171,9 @@ const pt = {
     max_scan: 'Número máximo de verificações: {num}',
     before_connect: 'Antes de conectar (comando)',
     before_connect_error: 'Erro antes de conectar (comando): {message}',
+    close_left: 'Fechar abas esquerdas',
+    close_right: 'Fechar abas direitas',
+    close_other: 'Fechar outras guias',
   },
 };
 

@@ -236,7 +236,7 @@ export default {
       const match = this.getMatchMode(false);
 
       this.client.exists(match).then((reply) => {
-        this.keyList = (reply === 1) ? [Buffer.from(match)] : [];
+        this.keyList = (reply == 1) ? [Buffer.from(match)] : [];
       }).catch(e => {
         this.$message.error(e.message);
       });

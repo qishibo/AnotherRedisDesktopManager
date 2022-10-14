@@ -51,7 +51,7 @@
       <!-- refresh btn component -->
       <el-popover
         placement="bottom"
-        :open-delay="200"
+        :open-delay="500"
         trigger="hover">
         <el-tag type="info">
           <i class="el-icon-refresh"></i>
@@ -117,6 +117,10 @@ export default {
         }, this.refreshInterval);
       }
     },
+    removeInterval() {
+      this.autoRefresh = false;
+      this.refreshInit();
+    },
     dumpCommand() {
       this.$emit('dumpCommand');
     },
@@ -127,7 +131,7 @@ export default {
       )
       .then(() => {
         this.client.del(this.redisKey).then((reply) => {
-          if (reply === 1) {
+          if (reply == 1) {
             this.$message.success({
               message: this.$t('message.delete_success'),
               duration: 1000,
@@ -194,7 +198,7 @@ export default {
     },
     setTTL(keyDeleted = false) {
       this.client.expire(this.redisKey, this.keyTTL).then((reply) => {
-        if (reply) {
+        if (reply == 1) {
           this.$message.success({
             message: this.$t('message.modify_success'),
             duration: 1000,
