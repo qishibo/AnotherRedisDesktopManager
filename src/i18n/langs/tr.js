@@ -128,7 +128,7 @@ const tr = {
     keys_per_loading: 'Anahtar Sayısı',
     keys_per_loading_tip: 'Her seferinde yüklenen anahtar sayısı. Çok büyük ayarlamak performansı etkileyebilir',
     host: 'Adres',
-    port: 'Liman',
+    port: 'Port',
     username: 'Kullanıcı adı',
     password: 'Parola',
     connection_name: 'Bağlantı adı',
