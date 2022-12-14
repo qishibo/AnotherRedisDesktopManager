@@ -177,6 +177,27 @@ export default {
     var i = Math.floor(Math.log(size) / Math.log(1024));
     return (size / Math.pow(1024, i)).toFixed(2) * 1 + ['B', 'kB', 'MB', 'GB', 'TB'][i];
   },
+  leftTime(seconds) {
+    if (seconds == 0 || seconds == -1) {
+      return '';
+    }
+
+    let str = '';
+
+    if (seconds >= 86400) {
+      str += `${parseInt(seconds / 60 / 60 / 24)} day, `;
+    }
+    if (seconds >= 3600) {
+      str += `${parseInt(seconds / 60 / 60 % 24)} hour, `;
+    }
+    if (seconds >= 60) {
+      str += `${parseInt(seconds / 60 % 60)} min, `;
+    }
+
+    str += `${parseInt(seconds % 60)} sec`;
+
+    return str;
+  },
   cloneObjWithBuff(object) {
     let clone = JSON.parse(JSON.stringify(object));
 
