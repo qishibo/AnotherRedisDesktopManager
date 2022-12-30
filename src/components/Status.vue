@@ -61,21 +61,21 @@
         <p class="server-status-tag-p">
           <el-tag class='server-status-container' type="info" size="big">
             {{ $t('message.used_memory') }}:
-            <span class="server-status-text">{{this.connectionStatus.used_memory_human}}</span>
+            <span class="server-status-text">{{$util.humanFileSize(connectionStatus.used_memory)}}</span>
           </el-tag>
         </p>
 
         <p class="server-status-tag-p">
           <el-tag class='server-status-container' type="info" size="big">
             {{ $t('message.used_memory_peak') }}:
-            <span class="server-status-text">{{this.connectionStatus.used_memory_peak_human}}</span>
+            <span class="server-status-text">{{$util.humanFileSize(connectionStatus.used_memory_peak)}}</span>
           </el-tag>
         </p>
 
         <p class="server-status-tag-p">
           <el-tag class='server-status-container' type="info" size="big">
             {{ $t('message.used_memory_lua') }}:
-            <span class="server-status-text">{{Math.round(this.connectionStatus.used_memory_lua / 1024)}}K</span>
+            <span class="server-status-text">{{$util.humanFileSize(connectionStatus.used_memory_lua)}}</span>
           </el-tag>
         </p>
       </el-card>
