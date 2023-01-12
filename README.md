@@ -196,6 +196,34 @@ This project exists thanks to all the people who contribute.
 [![backers](https://opencollective.com/AnotherRedisDesktopManager/backers.svg)](https://opencollective.com/AnotherRedisDesktopManager)
 
 
+## Custom Viewer
+
+> When the default viewer does not meet the needs, you can format your content via customize script.
+> Method: Pull down the viewer list to the bottom, click "Custom -> Add", and then refer to the instructions below
+> Note: The script needs to output formatted content through `print` `console.log` `echo` etc., which can be any string or JSON string
+
+| Config | Description |
+| ------ | ------ |
+| `Name` | Custom name |
+| `Command` | Executable commands, such as `xxx.py` `xxx.js` `xxx.class` etc. The file needs `x` permission, which can be executed in the form of `./xxx.py`; It can also be set to `/bin/node` `/bin/bash` or other system commands, and the script path needs to be placed in Params |
+| `Params` | Parameters spliced after `Command`, such as "--key `{KEY}` --value `{VALUE}`", where `{KEY}` and `{VALUE}` will be replaced with the corresponding Redis key and value. Note that if the content is invisible such as binary, you can use `{HEX}` instead of `{VALUE}`, and `{HEX}` will be replaced with the hexadecimal string |
+
+### Configuration example：
+> Add env to the first line of the script, the final executed command is: `./home/qii/pickle_decoder.py {HEX}`, the script can receive parameters via `argv[1]`
+
+| Command | Params |
+| ------ | ------ |
+| `/home/qii/pickle_decoder.py` | `{HEX}` |
+| `/home/qii/shell_decoder.sh` | `{VALUE}` |
+
+### Without execute permission `x`：
+> The final executed command is: `/bin/node /home/qii/node_decoder.js {HEX} --key={KEY}`, the script can receive parameters via `argv[1]`
+
+| Command | Params |
+| ------ | ------ |
+| `/bin/bash` | `/home/qii/shell_decoder.sh {VALUE}` |
+| `/bin/node` | `/home/qii/node_decoder.js {HEX} --key={KEY}` |
+
 
 ## License
 
