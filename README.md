@@ -199,8 +199,8 @@ This project exists thanks to all the people who contribute.
 ## Custom Viewer
 
 > When the default viewer does not meet the needs, you can format your content via customize script.
-> Method: Pull down the viewer list to the bottom, click "Custom -> Add", and then refer to the instructions below
-> Note: The script needs to output formatted content through `print` `console.log` `echo` etc., which can be any string or JSON string
+<br>Method: Pull down the viewer list to the bottom, click "Custom -> Add", and then refer to the instructions below
+<br>Note: The script needs to output formatted content through `print` `console.log` `echo` etc., which can be any string or JSON string
 
 | Config | Description |
 | ------ | ------ |
