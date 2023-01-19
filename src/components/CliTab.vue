@@ -222,6 +222,11 @@ export default {
         return this.content = [];
       }
 
+      // mock help command
+      if (paramsArr[0].toLowerCase() == 'help') {
+        return this.scrollToBottom('Input your command and select from tips');
+      }
+
       // multi-exec mode
       if (params == 'multi') {
         this.multiQueue = [];
