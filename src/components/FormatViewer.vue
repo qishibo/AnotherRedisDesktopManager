@@ -49,7 +49,6 @@ import ViewerMsgpack from '@/components/ViewerMsgpack';
 import ViewerOverSize from '@/components/ViewerOverSize';
 import ViewerCustom from '@/components/ViewerCustom';
 import ViewerProtobuf from '@/components/ViewerProtobuf';
-import ViewerDeflateRawJson from '@/components/ViewerDeflateRawJson';
 import ViewerDeflateRaw from '@/components/ViewerDeflateRaw';
 
 export default {
@@ -68,7 +67,6 @@ export default {
         { value: 'ViewerGzip', text: 'Gzip' },
         { value: 'ViewerDeflate', text: 'Deflate' },
         { value: 'ViewerProtobuf', text: 'Protobuf' },
-        { value: 'ViewerDeflateRawJson', text: 'DeflateRaw+JSON' },
         { value: 'ViewerDeflateRaw', text: 'DeflateRaw' },
       ],
       selectStyle: {
@@ -91,7 +89,6 @@ export default {
     ViewerGzip,
     ViewerDeflate,
     ViewerProtobuf,
-    ViewerDeflateRawJson,
     ViewerDeflateRaw,
   },
   props: {
@@ -205,7 +202,7 @@ export default {
       }
       // deflateRaw
       if (this.$util.isDeflateRaw(this.content)) {
-        return this.changeViewer('DeflateRaw+JSON');
+        return this.changeViewer('DeflateRaw');
       }
 
       // hex

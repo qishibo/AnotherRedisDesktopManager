@@ -31,7 +31,7 @@ export default {
   methods: {
     getContent() {
       const content = this.$refs.editor.getRawContent(true);
-      return zlib.deflateSync(content);
+      return zlib.deflateRawSync(content);
     },
     copyContent() {
       return this.formatStr;
