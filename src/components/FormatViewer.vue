@@ -66,8 +66,8 @@ export default {
         { value: 'ViewerBrotli', text: 'Brotli' },
         { value: 'ViewerGzip', text: 'Gzip' },
         { value: 'ViewerDeflate', text: 'Deflate' },
-        { value: 'ViewerProtobuf', text: 'Protobuf' },
         { value: 'ViewerDeflateRaw', text: 'DeflateRaw' },
+        { value: 'ViewerProtobuf', text: 'Protobuf' },
       ],
       selectStyle: {
         float: this.float,
@@ -244,7 +244,7 @@ export default {
 
 <style type="text/css">
   .format-selector {
-    width: 200px;
+    width: 130px;
   }
   .format-selector .el-input__inner {
     height: 22px !important;

@@ -4,7 +4,6 @@
 
 <script type="text/javascript">
 import JsonEditor from '@/components/JsonEditor';
-
 const zlib = require('zlib');
 
 export default {
@@ -22,7 +21,7 @@ export default {
         return formatStr;
       }
 
-      return 'Zlib Deflate Parse Failed!';
+      return 'Zlib DeflateRaw Parse Failed!';
     },
     formatStr() {
       return this.$util.zippedToString(this.content, 'deflateRaw');
