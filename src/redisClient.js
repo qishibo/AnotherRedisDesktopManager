@@ -183,6 +183,7 @@ export default {
       // add additional host+port to options for "::1"
       host: host,
       port: port,
+      family: 0,
 
       connectTimeout: 30000,
       retryStrategy: (times) => {return this.retryStragety(times, {host, port})},
