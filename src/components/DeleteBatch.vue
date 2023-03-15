@@ -32,7 +32,7 @@
     >
       <li>
         <span class="list-index">{{ index + 1 }}.</span>
-        {{ item.str }}
+        <span class="key-name" :title="item.str">{{ item.str }}</span>
       </li>
     </RecycleScroller>
   </el-card>
@@ -244,8 +244,14 @@ export default {
   .del-batch-key-list li {
     color: #333;
     font-size: 92%;
+    display: flex;
   }
   .dark-mode .del-batch-key-list li {
     color: #f7f7f7;
+  }
+  .del-batch-key-list li .key-name {
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 </style>

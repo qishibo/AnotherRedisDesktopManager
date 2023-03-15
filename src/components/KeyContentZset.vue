@@ -106,7 +106,7 @@ export default {
       beforeEditItem: {},
       editLineItem: {},
       loadingIcon: '',
-      pageSize: 200,
+      pageSize: 100,
       pageIndex: 0,
       searchPageSize: 1000,
       oneTimeListLength: 0,

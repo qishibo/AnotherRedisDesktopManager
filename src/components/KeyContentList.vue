@@ -48,6 +48,14 @@
       </el-table-column>
 
       <el-table-column label="Operation">
+        <template slot="header" slot-scope="scope">
+          <input
+            class="el-input__inner key-detail-filter-value"
+            v-model="filterValue"
+            @keyup.enter='initShow()'
+            :placeholder="$t('message.key_to_search')"/>
+          <i :class='loadingIcon'></i>
+        </template>
         <template slot-scope="scope">
           <el-button type="text" @click="$util.copyToClipboard(scope.row.value)" icon="el-icon-document" :title="$t('message.copy')"></el-button>
           <el-button type="text" @click="showEditDialog(scope.row)" icon="el-icon-edit" :title="$t('message.edit_line')"></el-button>
@@ -88,8 +96,9 @@ export default {
       beforeEditItem: {},
       editLineItem: {},
       loadingIcon: '',
-      pageSize: 200,
+      pageSize: 100,
       pageIndex: 0,
+      oneTimeListLength: 0,
       loadMoreDisable: false,
     };
   },
@@ -106,31 +115,59 @@ export default {
       resetTable && this.resetTable();
       this.loadingIcon = 'el-icon-loading';
 
-      let start = this.pageSize * this.pageIndex;
-      let end = start + this.pageSize - 1;
+      // scan
+      this.listScan();
+      // total lines
+      this.initTotal();
+    },
+    listScan() {
+      const filterValue = this.filterValue;
+      const pageSize = filterValue ? 500 : this.pageSize;
+
+      let start = pageSize * this.pageIndex;
+      let end = start + pageSize - 1;
 
       this.client.lrangeBuffer([this.redisKey, start, end]).then((reply) => {
-        let listData = [];
+        // scanning end
+        if (!reply || !reply.length) {
+          this.loadingIcon = '';
+          this.loadMoreDisable = true;
+          return;
+        }
 
+        const listData = [];
         for (const i of reply) {
+          if (filterValue) {
+            if (!i.includes(filterValue)) {
+              continue;
+            }
+          }
+
           listData.push({
             value: i,
-            // valueDisplay: this.$util.bufToString(i),
             uniq: Math.random(),
           });
         }
 
-        this.listData = resetTable ? listData : this.listData.concat(listData);
-        (listData.length < this.pageSize) && (this.loadMoreDisable = true);
-        this.loadingIcon = '';
+        this.oneTimeListLength += listData.length;
+        this.listData = this.listData.concat(listData);
+
+        if (this.oneTimeListLength >= this.pageSize) {
+          this.loadingIcon = '';
+          this.oneTimeListLength = 0;
+          return;
+        }
+
+        if (this.cancelScanning) {
+          return;
+        }
+        // continue scanning until to pagesize
+        this.loadMore();
       }).catch(e => {
         this.loadingIcon = '';
         this.loadMoreDisable = true;
         this.$message.error(e.message);
       });
-
-      // total lines
-      this.initTotal();
     },
     initTotal() {
       this.client.llen(this.redisKey).then((reply) => {
@@ -140,11 +177,12 @@ export default {
     resetTable() {
       this.listData = [];
       this.pageIndex = 0;
+      this.oneTimeListLength = 0;
       this.loadMoreDisable = false;
     },
     loadMore() {
       this.pageIndex++;
-      this.initShow(false);
+      this.listScan();
     },
     openDialog() {
       this.$nextTick(() => {
@@ -241,6 +279,9 @@ export default {
   },
   mounted() {
     this.initShow();
+  },
+  beforeDestroy() {
+    this.cancelScanning = true;
   },
 };
 </script>
