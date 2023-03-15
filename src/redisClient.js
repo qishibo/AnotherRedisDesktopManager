@@ -1,9 +1,10 @@
 import Redis from '@qii404/ioredis';
 import tunnelssh from 'tunnel-ssh';
 import vue from '@/main.js';
-import {remote} from 'electron';
-import {writeCMD} from '@/commands.js';
+import { remote } from 'electron';
+import { writeCMD } from '@/commands.js';
 
+const { execSync } = require('child_process');
 const fs = require('fs');
 const { sendCommand } = Redis.prototype;
 
@@ -13,7 +14,7 @@ Redis.prototype.sendCommand = function (...options) {
 
   // readonly mode
   if (this.options.connectionReadOnly && writeCMD[command.name.toUpperCase()]) {
-    command.reject(new Error("You are in readonly mode! Unable to execute write command!"));
+    command.reject(new Error('You are in readonly mode! Unable to execute write command!'));
     return command.promise;
   }
 
@@ -28,14 +29,14 @@ Redis.prototype.sendCommand = function (...options) {
   const response = sendCommand.apply(this, options);
   const cost = performance.now() - start;
 
-  const record = {time: new Date(), connectionName: this.options.connectionName, command: command, cost: cost};
+  const record = { time: new Date(), connectionName: this.options.connectionName, command: command, cost: cost };
   vue.$bus.$emit('commandLog', record);
 
   return response;
 };
 
 // fix ioredis hgetall key has been toString()
-Redis.Command.setReplyTransformer("hgetall", (result) => {
+Redis.Command.setReplyTransformer('hgetall', (result) => {
   let arr = [];
   for (let i = 0; i < result.length; i += 2) {
     arr.push([result[i], result[i + 1]]);
@@ -43,7 +44,6 @@ Redis.Command.setReplyTransformer("hgetall", (result) => {
 
   return arr;
 });
-
 
 export default {
   createConnection(host, port, auth, config, promise = true, forceStandalone = false, removeDb = false) {
@@ -67,7 +67,7 @@ export default {
     // cluster redis
     else if (config.cluster) {
       const clusterOptions = this.getClusterOptions(options, config.natMap ? config.natMap : {});
-      client = new Redis.Cluster([{port, host}], clusterOptions)
+      client = new Redis.Cluster([{ port, host }], clusterOptions);
     }
 
     // standalone redis
@@ -90,7 +90,7 @@ export default {
       password: sshOptions.password,
       host: sshOptions.host,
       port: sshOptions.port,
-      readyTimeout: (sshOptions.timeout) > 0 ? (sshOptions.timeout * 1000) : 30000,
+      readyTimeout: sshOptions.timeout > 0 ? sshOptions.timeout * 1000 : 30000,
       dstHost: host,
       dstPort: port,
       localHost: '127.0.0.1',
@@ -103,10 +103,12 @@ export default {
     const configRaw = JSON.parse(JSON.stringify(config));
     const sshConfigRaw = JSON.parse(JSON.stringify(sshConfig));
 
+    const bccPromise = this.runBeforeConnectCommand(sshOptions.beforeconnect);
+
     const sshPromise = new Promise((resolve, reject) => {
       var server = tunnelssh(sshConfig, (error, server) => {
         // ssh error only on this, not the 'error' argument...
-        server.on('error', error => {
+        server.on('error', (error) => {
           vue.$message.error(error.message + ' SSH config right?');
           vue.$bus.$emit('closeConnection');
           // return reject(error);
@@ -124,22 +126,35 @@ export default {
           let client = this.createConnection(listenAddress.address, listenAddress.port, auth, configRaw, false, true, true);
 
           client.on('ready', () => {
-            client.call('sentinel', 'get-master-addr-by-name', configRaw.sentinelOptions.masterName).then(reply => {
-              if (!reply) {
-                return reject(new Error(`Master name "${configRaw.sentinelOptions.masterName}" not exists!`));
-              }
+            client
+              .call('sentinel', 'get-master-addr-by-name', configRaw.sentinelOptions.masterName)
+              .then((reply) => {
+                if (!reply) {
+                  return reject(new Error(`Master name "${configRaw.sentinelOptions.masterName}" not exists!`));
+                }
 
-              // connect to the master node via ssh
-              this.createClusterSSHTunnels(sshConfigRaw, [{host: reply[0], port: reply[1]}]).then(tunnels => {
-                const sentinelClient = this.createConnection(
-                  tunnels[0].localHost, tunnels[0].localPort, configRaw.sentinelOptions.nodePassword, configRaw, false, true);
+                // connect to the master node via ssh
+                this.createClusterSSHTunnels(sshConfigRaw, [{ host: reply[0], port: reply[1] }]).then((tunnels) => {
+                  const sentinelClient = this.createConnection(
+                    tunnels[0].localHost,
+                    tunnels[0].localPort,
+                    configRaw.sentinelOptions.nodePassword,
+                    configRaw,
+                    false,
+                    true
+                  );
 
-                return resolve(sentinelClient);
-              });
-            }).catch(e => {reject(e);}); // sentinel exec failed
+                  return resolve(sentinelClient);
+                });
+              })
+              .catch((e) => {
+                reject(e);
+              }); // sentinel exec failed
           });
 
-          client.on('error', e => {reject(e);});
+          client.on('error', (e) => {
+            reject(e);
+          });
         }
 
         // ssh cluster mode
@@ -148,23 +163,29 @@ export default {
 
           client.on('ready', () => {
             // get all cluster nodes info
-            client.call('cluster', 'nodes').then(reply => {
-              let nodes = this.getClusterNodes(reply);
+            client
+              .call('cluster', 'nodes')
+              .then((reply) => {
+                let nodes = this.getClusterNodes(reply);
 
-              // create ssh tunnel for each node
-              this.createClusterSSHTunnels(sshConfigRaw, nodes).then((tunnels) => {
-                configRaw.natMap = this.initNatMap(tunnels);
+                // create ssh tunnel for each node
+                this.createClusterSSHTunnels(sshConfigRaw, nodes).then((tunnels) => {
+                  configRaw.natMap = this.initNatMap(tunnels);
 
-                // select first line of tunnels to connect
-                const clusterClient = this.createConnection(tunnels[0].localHost, tunnels[0].localPort, auth, configRaw, false);
+                  // select first line of tunnels to connect
+                  const clusterClient = this.createConnection(tunnels[0].localHost, tunnels[0].localPort, auth, configRaw, false);
 
-                resolve(clusterClient);
+                  resolve(clusterClient);
+                });
+              })
+              .catch((e) => {
+                reject(e);
               });
-            }).catch(e => {reject(e);});
-
           });
 
-          client.on('error', e => {reject(e);});
+          client.on('error', (e) => {
+            reject(e);
+          });
         }
 
         // ssh standalone redis
@@ -175,7 +196,9 @@ export default {
       });
     });
 
-    return sshPromise;
+    return bccPromise.then(() => {
+      return sshPromise;
+    });
   },
 
   getRedisOptions(host, port, auth, config) {
@@ -186,7 +209,9 @@ export default {
       family: 0,
 
       connectTimeout: 30000,
-      retryStrategy: (times) => {return this.retryStragety(times, {host, port})},
+      retryStrategy: (times) => {
+        return this.retryStragety(times, { host, port });
+      },
       enableReadyCheck: false,
       connectionName: config.connectionName ? config.connectionName : null,
       password: auth,
@@ -202,12 +227,14 @@ export default {
 
   getSentinelOptions(host, port, auth, config) {
     return {
-      sentinels: [{host: host, port: port}],
+      sentinels: [{ host: host, port: port }],
       sentinelPassword: auth,
       password: config.sentinelOptions.nodePassword,
       name: config.sentinelOptions.masterName,
       connectTimeout: 30000,
-      retryStrategy: (times) => {return this.retryStragety(times, {host, port})},
+      retryStrategy: (times) => {
+        return this.retryStragety(times, { host, port });
+      },
       enableReadyCheck: false,
       connectionName: config.connectionName ? config.connectionName : null,
       db: config.db ? config.db : undefined,
@@ -229,7 +256,7 @@ export default {
 
   getClusterNodes(nodes, type = 'master') {
     let result = [];
-    nodes = nodes.split("\n");
+    nodes = nodes.split('\n');
 
     for (let node of nodes) {
       if (!node) {
@@ -245,7 +272,7 @@ export default {
         let host = dsn.substr(0, lastIndex);
         let port = dsn.substr(lastIndex + 1);
 
-        result.push({host: host, port: port})
+        result.push({ host: host, port: port });
       }
     }
 
@@ -254,6 +281,8 @@ export default {
 
   createClusterSSHTunnels(sshConfig, nodes) {
     let sshTunnelStack = [];
+
+    const bccPromise = this.runBeforeConnectCommand(sshConfig.beforeconnect);
 
     for (let node of nodes) {
       // tunnelssh will change 'config' param, so just copy it
@@ -273,8 +302,10 @@ export default {
 
           let addr = server.address();
           let line = {
-            localHost: addr.address, localPort: addr.port,
-            dstHost: node.host, dstPort: node.port
+            localHost: addr.address,
+            localPort: addr.port,
+            dstHost: node.host,
+            dstPort: node.port,
           };
 
           resolve(line);
@@ -284,14 +315,14 @@ export default {
       sshTunnelStack.push(promise);
     }
 
-    return Promise.all(sshTunnelStack);
+    return bccPromise.then(() => Promise.all(sshTunnelStack));
   },
 
   initNatMap(tunnels) {
     let natMap = {};
 
     for (let line of tunnels) {
-      natMap[`${line.dstHost}:${line.dstPort}`] = {host: line.localHost, port: line.localPort};
+      natMap[`${line.dstHost}:${line.dstPort}`] = { host: line.localHost, port: line.localPort };
     }
 
     return natMap;
@@ -311,14 +342,14 @@ export default {
         return undefined;
       },
       rejectUnauthorized: false,
-    }
+    };
   },
 
   retryStragety(times, connection) {
     const maxRetryTimes = 3;
 
     if (times >= maxRetryTimes) {
-      vue.$message.error("Too Many Attempts To Reconnect. Please Check The Server Status!");
+      vue.$message.error('Too Many Attempts To Reconnect. Please Check The Server Status!');
       vue.$bus.$emit('closeConnection');
       return false;
     }
@@ -339,11 +370,10 @@ export default {
       }
 
       const content = fs.readFileSync(file);
-      (typeof bookmarkClose == 'function') && bookmarkClose();
+      typeof bookmarkClose == 'function' && bookmarkClose();
 
       return content;
-    }
-    catch (e) {
+    } catch (e) {
       // force alert
       alert(vue.$t('message.key_no_permission') + `\n[${e.message}]`);
       vue.$bus.$emit('closeConnection');
@@ -351,5 +381,22 @@ export default {
       return undefined;
     }
   },
-};
 
+  runBeforeConnectCommand(command) {
+    return new Promise((resolve, reject) => {
+      if (command !== '') {
+        try {
+          execSync(command);
+        } catch (error) {
+          vue.$message.error(
+            this.$t('message.before_connect_error', {
+              message: error.message,
+            })
+          );
+          reject();
+        }
+      }
+      resolve();
+    });
+  },
+};
