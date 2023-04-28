@@ -45,7 +45,8 @@
         sortable
         resizable
         label="Key"
-        width=150>
+        show-overflow-tooltip
+        width="150">
         <template slot-scope="scope">
           {{ $util.bufToString(scope.row.key) }}
         </template>
@@ -111,7 +112,7 @@ export default {
       beforeEditItem: {},
       editLineItem: {},
       loadingIcon: '',
-      pageSize: 200,
+      pageSize: 100,
       searchPageSize: 1000,
       oneTimeListLength: 0,
       scanStream: null,

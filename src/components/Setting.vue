@@ -48,7 +48,7 @@
               </span>
               <!-- font-family select -->
               <el-select v-model="form.fontFamily" @visible-change="getAllFonts" allow-create default-first-option
-                         filterable multiple>
+                         filterable multiple class="setting-font-select">
                 <el-option
                   v-for="(font, index) in allFonts"
                   :key="index"
@@ -318,5 +318,23 @@ export default {
 
 .setting-main-dialog .setting-card .setting-row {
   flex-wrap: wrap;
+}
+
+/* add height: fix el-select jitter when multiple*/
+.setting-main-dialog .setting-card .setting-row .setting-font-select .el-select__tags .el-tag {
+  height: 21px;
+  max-width: 98%;
+}
+
+/*label style inside el-select multiple*/
+.setting-main-dialog .setting-card .setting-row .setting-font-select .el-select__tags .el-tag .el-select__tags-text {
+  display: inline-block;
+  max-width: 90%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+/*fix close icon vertical align*/
+.setting-main-dialog .setting-card .setting-row .setting-font-select .el-select__tags .el-tag .el-tag__close {
+  vertical-align: super;
 }
 </style>

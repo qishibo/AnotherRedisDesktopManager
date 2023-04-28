@@ -24,7 +24,7 @@
         type="number"
         v-model="keyTTL"
         @keyup.enter.native="ttlKey"
-        :title="$t('message.click_enter_to_ttl')">
+        :title="$util.leftTime(keyTTL)">
         <span slot="prepend">TTL</span>
         <!-- remove expire -->
         <i class="el-icon-close el-input__icon cursor-pointer"
@@ -51,7 +51,7 @@
       <!-- refresh btn component -->
       <el-popover
         placement="bottom"
-        :open-delay="200"
+        :open-delay="500"
         trigger="hover">
         <el-tag type="info">
           <i class="el-icon-refresh"></i>
