@@ -24,7 +24,8 @@
     "pack:linux:publish": "electron-builder --project=dist -l -p always",
     "pack:win:docker": "docker run --rm -it --env GH_TOKEN=$GH_TOKEN --env ELECTRON_CACHE=\"/root/.cache/electron\" --env ELECTRON_BUILDER_CACHE=\"/root/.cache/electron-builder\" -v ${PWD}:/project -v ~/.cache/electron:/root/.cache/electron -v ~/.cache/electron-builder:/root/.cache/electron-builder electronuserland/builder:wine sh -c \"electron-builder --project=dist -w -p never\"",
     "et": "et -m",
-    "sign": "cd pack/mas; bash sign.sh"
+    "sign": "cd pack/mas; bash sign.sh",
+    "snap:upload": "snapcraft upload --release=stable \"dist/build-apps/Another Redis Desktop Manager.1.6.0.snap\""
   },
   "dependencies": {
     "@qii404/ioredis": "^4.28.501",
