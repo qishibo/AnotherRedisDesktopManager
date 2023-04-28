@@ -69,7 +69,7 @@
     "cross-env": "^5.2.0",
     "css-loader": "^0.28.0",
     "electron": "^12.2.3",
-    "electron-builder": "^22.14.5",
+    "electron-builder": "^23.0.2",
     "element-theme-chalk": "^2.13.0",
     "eslint": "^5.14.1",
     "eslint-config-airbnb-base": "^13.1.0",
