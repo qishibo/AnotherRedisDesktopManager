@@ -187,8 +187,9 @@ button, input, textarea, .vjs__tree {
 /*list index*/
 li .list-index {
   color: #828282;
-  font-size: 80%;
+  /*font-size: 80%;*/
   user-select: none;
+  margin-right: 10px;
 }
 .dark-mode li .list-index {
   color: #adacac;

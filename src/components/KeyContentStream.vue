@@ -103,7 +103,7 @@ export default {
       beforeEditItem: {},
       editLineItem: {},
       loadingIcon: '',
-      pageSize: 200,
+      pageSize: 100,
       loadMoreDisable: false,
       minId: '-',
       maxId: '+',

@@ -50,7 +50,7 @@
     >
       <li @click="clickJump(item)">
         <span class="list-index">{{ index + 1 }}.</span>
-        {{ item.str }}
+        <span class="key-name" :title="item.str">{{ item.str }}</span>
         <span class="size">{{ item.human }}</span>
       </li>
     </RecycleScroller>
@@ -276,6 +276,7 @@ export default {
     padding: 0 2px;
     font-size: 92%;
     list-style: none;
+    display: flex;
   }
   .dark-mode .memory-analysis-container .keys-body li {
     border-bottom: 1px solid #444444;
@@ -286,11 +287,18 @@ export default {
   .dark-mode .memory-analysis-container .keys-body li:hover {
     background: #3b4e57;
   }
+  /*key name*/
+  .memory-analysis-container .keys-body li .key-name {
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
 
   /*key size*/
   .memory-analysis-container .keys-body .size {
-    float: right;
     font-size: 90%;
+    margin-left: 20px;
+    margin-right: 4px;
   }
 
   /*keys footer*/

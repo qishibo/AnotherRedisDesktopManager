@@ -96,7 +96,7 @@ export default {
       beforeEditItem: {},
       editLineItem: {},
       loadingIcon: '',
-      pageSize: 200,
+      pageSize: 100,
       searchPageSize: 1000,
       oneTimeListLength: 0,
       scanStream: null,

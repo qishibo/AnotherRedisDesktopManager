@@ -49,6 +49,7 @@ import ViewerMsgpack from '@/components/ViewerMsgpack';
 import ViewerOverSize from '@/components/ViewerOverSize';
 import ViewerCustom from '@/components/ViewerCustom';
 import ViewerProtobuf from '@/components/ViewerProtobuf';
+import ViewerDeflateRaw from '@/components/ViewerDeflateRaw';
 
 export default {
   data() {
@@ -65,6 +66,7 @@ export default {
         { value: 'ViewerBrotli', text: 'Brotli' },
         { value: 'ViewerGzip', text: 'Gzip' },
         { value: 'ViewerDeflate', text: 'Deflate' },
+        { value: 'ViewerDeflateRaw', text: 'DeflateRaw' },
         { value: 'ViewerProtobuf', text: 'Protobuf' },
       ],
       selectStyle: {
@@ -74,14 +76,27 @@ export default {
       autoFormated: false,
     };
   },
-  components: {ViewerText, ViewerHex, ViewerJson, ViewerBinary, ViewerUnserialize, ViewerMsgpack,
-    ViewerOverSize, ViewerCustom, ViewerBrotli, ViewerGzip, ViewerDeflate, ViewerProtobuf},
+  components: {
+    ViewerText,
+    ViewerHex,
+    ViewerJson,
+    ViewerBinary,
+    ViewerUnserialize,
+    ViewerMsgpack,
+    ViewerOverSize,
+    ViewerCustom,
+    ViewerBrotli,
+    ViewerGzip,
+    ViewerDeflate,
+    ViewerProtobuf,
+    ViewerDeflateRaw,
+  },
   props: {
-    float: {default: 'right'},
-    content: {default: () => Buffer.from('')},
-    disabled: {type: Boolean, default: false},
-    redisKey:  {default: () => Buffer.from('')},
-    dataMap: {type: Object, default: () => {}},
+    float: { default: 'right' },
+    content: { default: () => Buffer.from('') },
+    disabled: { type: Boolean, default: false },
+    redisKey: { default: () => Buffer.from('') },
+    dataMap: { type: Object, default: () => {} },
   },
   computed: {
     contentVisible() {
@@ -99,9 +114,9 @@ export default {
     },
     viewersMap() {
       // add oversize tmp
-      let map = {OverSize: 'ViewerOverSize'};
+      const map = { OverSize: 'ViewerOverSize' };
 
-      this.viewers.forEach(item => {
+      this.viewers.forEach((item) => {
         map[item.text] = item.value;
       });
 
@@ -162,43 +177,45 @@ export default {
         return this.changeViewer('Json');
       }
       // php unserialize
-      else if (this.$util.isPHPSerialize(this.content)) {
+      if (this.$util.isPHPSerialize(this.content)) {
         return this.changeViewer('Unserialize');
       }
       // msgpack
-      else if (this.$util.isMsgpack(this.content)) {
+      if (this.$util.isMsgpack(this.content)) {
         return this.changeViewer('Msgpack');
       }
       // brotli unserialize
-      else if (this.$util.isBrotli(this.content)) {
+      if (this.$util.isBrotli(this.content)) {
         return this.changeViewer('Brotli');
       }
       // gzip
-      else if (this.$util.isGzip(this.content)) {
+      if (this.$util.isGzip(this.content)) {
         return this.changeViewer('Gzip');
       }
       // deflate
-      else if (this.$util.isDeflate(this.content)) {
+      if (this.$util.isDeflate(this.content)) {
         return this.changeViewer('Deflate');
       }
       // protobuf
-      else if (this.$util.isProtobuf(this.content)) {
+      if (this.$util.isProtobuf(this.content)) {
         return this.changeViewer('Protobuf');
       }
-
+      // deflateRaw
+      if (this.$util.isDeflateRaw(this.content)) {
+        return this.changeViewer('DeflateRaw');
+      }
 
       // hex
-      else if (!this.contentVisible) {
+      if (!this.contentVisible) {
         return this.changeViewer('Hex');
       }
-      else {
-        return this.changeViewer('Text');
-      }
+
+      return this.changeViewer('Text');
     },
     copyContent() {
-      let content = (typeof this.$refs.viewer.copyContent == 'function') ?
-                    this.$refs.viewer.copyContent() :
-                    this.content;
+      const content = (typeof this.$refs.viewer.copyContent === 'function')
+        ? this.$refs.viewer.copyContent()
+        : this.content;
 
       this.$util.copyToClipboard(content);
       this.$message.success(this.$t('message.copy_success'));
@@ -210,14 +227,12 @@ export default {
         return;
       }
 
-      formatters.forEach(formatter => {
-        this.viewers.push({value: 'ViewerCustom', text: formatter.name, type: 'custom'});
+      formatters.forEach((formatter) => {
+        this.viewers.push({ value: 'ViewerCustom', text: formatter.name, type: 'custom' });
       });
     },
     removeCustom() {
-      this.viewers = this.viewers.filter(item => {
-        return item.type !== 'custom';
-      });
+      this.viewers = this.viewers.filter(item => item.type !== 'custom');
     },
   },
   mounted() {
@@ -229,7 +244,7 @@ export default {
 
 <style type="text/css">
   .format-selector {
-    width: 122px;
+    width: 130px;
   }
   .format-selector .el-input__inner {
     height: 22px !important;
