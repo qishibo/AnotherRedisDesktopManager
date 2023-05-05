@@ -151,8 +151,8 @@ export default {
 
       // create SSH tunnel failed
       }).catch(e => {
-        vue.$message.error('SSH errror: ' + e.message);
-        vue.$bus.$emit('closeConnection');
+        // vue.$message.error('SSH errror: ' + e.message);
+        // vue.$bus.$emit('closeConnection');
         reject(e);
       });
     });
