@@ -40,7 +40,7 @@
     "protobufjs": "^6.11.2",
     "rawproto": "^0.7.6",
     "sortablejs": "^1.14.0",
-    "tunnel-ssh": "^4.1.6",
+    "tunnel-ssh": "^5.0.5",
     "vue": "^2.6.11",
     "vue-i18n": "^8.7.0"
   },
