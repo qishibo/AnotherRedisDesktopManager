@@ -1,5 +1,5 @@
 import Redis from '@qii404/ioredis';
-import tunnelssh from 'tunnel-ssh';
+import {createTunnel} from 'tunnel-ssh';
 import vue from '@/main.js';
 import {remote} from 'electron';
 import {writeCMD} from '@/commands.js';
@@ -85,37 +85,13 @@ export default {
   },
 
   createSSHConnection(sshOptions, host, port, auth, config) {
-    const sshConfig = {
-      username: sshOptions.username,
-      password: sshOptions.password,
-      host: sshOptions.host,
-      port: sshOptions.port,
-      readyTimeout: (sshOptions.timeout) > 0 ? (sshOptions.timeout * 1000) : 30000,
-      dstHost: host,
-      dstPort: port,
-      localHost: '127.0.0.1',
-      localPort: null, // set null to use available port in local machine
-      privateKey: this.getFileContent(sshOptions.privatekey, sshOptions.privatekeybookmark),
-      passphrase: sshOptions.passphrase ? sshOptions.passphrase : undefined,
-      keepaliveInterval: 10000,
-    };
+    const sshOptionsDict = this.getSSHOptions(sshOptions, host, port);
 
     const configRaw = JSON.parse(JSON.stringify(config));
-    const sshConfigRaw = JSON.parse(JSON.stringify(sshConfig));
+    const sshConfigRaw = JSON.parse(JSON.stringify(sshOptionsDict));
 
     const sshPromise = new Promise((resolve, reject) => {
-      var server = tunnelssh(sshConfig, (error, server) => {
-        // ssh error only on this, not the 'error' argument...
-        server.on('error', error => {
-          vue.$message.error(error.message + ' SSH config right?');
-          vue.$bus.$emit('closeConnection');
-          // return reject(error);
-        });
-
-        if (error) {
-          return reject(error);
-        }
-
+      createTunnel(...Object.values(sshOptionsDict)).then(([server, connection]) => {
         const listenAddress = server.address();
 
         // sentinel mode
@@ -172,10 +148,48 @@ export default {
           let client = this.createConnection(listenAddress.address, listenAddress.port, auth, configRaw, false);
           return resolve(client);
         }
+
+      // create SSH tunnel failed
+      }).catch(e => {
+        // vue.$message.error('SSH errror: ' + e.message);
+        // vue.$bus.$emit('closeConnection');
+        reject(e);
       });
     });
 
     return sshPromise;
+  },
+
+  getSSHOptions(options, host, port) {
+    const tunnelOptions = {
+      autoClose: false,
+    };
+    // where your localTCP Server is listening
+    const serverOptions = {
+      host: '127.0.0.1',
+      port: 0,
+    };
+    // ssh server
+    const sshOptions = {
+      host: options.host,
+      port: options.port,
+      username: options.username,
+      password: options.password,
+      privateKey: this.getFileContent(options.privatekey, options.privatekeybookmark),
+      passphrase: options.passphrase ? options.passphrase : undefined,
+      readyTimeout: (options.timeout) > 0 ? (options.timeout * 1000) : 30000,
+      keepaliveInterval: 10000,
+    };
+    // forward link in ssh server
+    const forwardOptions = {
+      srcAddr: '127.0.0.1',
+      srcPort: 0,
+      dstAddr: host,
+      dstPort: port
+    };
+
+    // Tips: small dict is ordered, should replace to Map if dict is large
+    return { tunnelOptions, serverOptions, sshOptions, forwardOptions };
   },
 
   getRedisOptions(host, port, auth, config) {
@@ -260,17 +274,16 @@ export default {
       let sshConfigCopy = JSON.parse(JSON.stringify(sshConfig));
 
       // revocery the buffer after json.parse
-      sshConfigCopy.privateKey && (sshConfigCopy.privateKey = Buffer.from(sshConfigCopy.privateKey));
+      if (sshConfigCopy.sshOptions.privateKey) {
+        sshConfigCopy.sshOptions.privateKey = Buffer.from(sshConfigCopy.sshOptions.privateKey)
+      }
 
-      sshConfigCopy.dstHost = node.host;
-      sshConfigCopy.dstPort = node.port;
+      sshConfigCopy.forwardOptions.dstHost = node.host;
+      sshConfigCopy.forwardOptions.dstPort = node.port;
 
       let promise = new Promise((resolve, reject) => {
-        tunnelssh(sshConfigCopy, (error, server) => {
-          if (error) {
-            return reject(error);
-          }
-
+        const sshPromise = createTunnel(...Object.values(sshConfigCopy));
+        sshPromise.then(([server, connection]) => {
           let addr = server.address();
           let line = {
             localHost: addr.address, localPort: addr.port,
@@ -278,6 +291,8 @@ export default {
           };
 
           resolve(line);
+        }).catch(e => {
+          reject(e);
         });
       });
 
