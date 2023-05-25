@@ -223,35 +223,42 @@ export default {
 
       this.editDialog = false;
 
-      client.rpush(
-        key,
-        afterValue
-      ).then((reply) => {
-        // reply return list length if success
-        if (reply > 0) {
-          // edit key remove previous value
-          if (before.value) {
+      // edit line
+      if (this.rowUniq) {
+        // fix #1082
+        client.linsert(key, 'AFTER', before.value, afterValue).then(reply => {
+          if (reply > 0) {
             client.lrem(key, 1, before.value);
+            this.$message.success({
+              message: this.$t('message.add_success'),
+              duration: 1000,
+            });
           }
+        }).catch(e => {this.$message.error(e.message);});
+      }
+      // new line
+      else {
+        client.rpush(key, afterValue).then(reply => {
+          if (reply > 0) {
+            this.$message.success({
+              message: this.$t('message.add_success'),
+              duration: 1000,
+            });
+          }
+        }).catch(e => {this.$message.error(e.message);});
+      }
 
-          // this.initShow(); // do not reinit, #786
-          const newLine = {value: afterValue, uniq: Math.random()};
-          // edit line
-          if (this.rowUniq) {
-            this.$util.listSplice(this.listData, this.rowUniq, newLine);
-          }
-          // new line
-          else {
-            this.listData.push(newLine);
-            this.total++;
-          }
-
-          this.$message.success({
-            message: this.$t('message.add_success'),
-            duration: 1000,
-          });
-        }
-      }).catch(e => {this.$message.error(e.message);});
+      // this.initShow(); // do not reinit, #786
+      const newLine = {value: afterValue, uniq: Math.random()};
+      // edit line
+      if (this.rowUniq) {
+        this.$util.listSplice(this.listData, this.rowUniq, newLine);
+      }
+      // new line
+      else {
+        this.listData.push(newLine);
+        this.total++;
+      }
     },
     deleteLine(row) {
       this.$confirm(
