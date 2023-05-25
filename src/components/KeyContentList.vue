@@ -222,16 +222,27 @@ export default {
       }
 
       this.editDialog = false;
+      const newLine = {value: afterValue, uniq: Math.random()};
 
       // edit line
       if (this.rowUniq) {
-        // fix #1082
+        // fix #1082, keep list order
         client.linsert(key, 'AFTER', before.value, afterValue).then(reply => {
           if (reply > 0) {
             client.lrem(key, 1, before.value);
+            // this.initShow(); // do not reinit, #786
+            this.$util.listSplice(this.listData, this.rowUniq, newLine);
+
             this.$message.success({
-              message: this.$t('message.add_success'),
+              message: this.$t('message.modify_success'),
               duration: 1000,
+            });
+          }
+          // reply == -1, before.value has been removed
+          else {
+            this.$message.error({
+              message: `${this.$t('message.modify_failed')}, ${this.$t('message.value_not_exists')}`,
+              duration: 2000,
             });
           }
         }).catch(e => {this.$message.error(e.message);});
@@ -240,24 +251,16 @@ export default {
       else {
         client.rpush(key, afterValue).then(reply => {
           if (reply > 0) {
+            // this.initShow(); // do not reinit, #786
+            this.listData.push(newLine);
+            this.total++;
+
             this.$message.success({
               message: this.$t('message.add_success'),
               duration: 1000,
             });
           }
         }).catch(e => {this.$message.error(e.message);});
-      }
-
-      // this.initShow(); // do not reinit, #786
-      const newLine = {value: afterValue, uniq: Math.random()};
-      // edit line
-      if (this.rowUniq) {
-        this.$util.listSplice(this.listData, this.rowUniq, newLine);
-      }
-      // new line
-      else {
-        this.listData.push(newLine);
-        this.total++;
       }
     },
     deleteLine(row) {
@@ -270,7 +273,7 @@ export default {
           1,
           row.value
         ).then((reply) => {
-          if (reply == 1) {
+          if (reply > 0) {
             this.$message.success({
               message: this.$t('message.delete_success'),
               duration: 1000,
@@ -279,6 +282,12 @@ export default {
             // this.initShow(); // do not reinit, #786
             this.$util.listSplice(this.listData, row.uniq);
             this.total--;
+          }
+          else {
+            this.$message.error({
+              message: this.$t('message.delete_failed'),
+              duration: 1000,
+            });
           }
         }).catch(e => {this.$message.error(e.message);});
       }).catch(() => {});

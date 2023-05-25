@@ -33,6 +33,7 @@ const cn = {
     add_success: '添加成功',
     add_failed: '添加失败',
     value_exists: '值已存在',
+    value_not_exists: '该值不存在',
     refresh_success: '刷新成功',
     click_enter_to_rename: '点击或者按Enter键来重命名',
     click_enter_to_ttl: '点击或者按Enter键来修改过期时间',

@@ -33,6 +33,7 @@ const tr = {
     add_success: 'Ekleme Başarılı',
     add_failed: 'Ekleme Başarısız',
     value_exists: 'Değer Mevcut',
+    value_not_exists: 'Değer mevcut değil',
     refresh_success: 'Yenileme Başarılı',
     click_enter_to_rename: 'Yeniden Adlandırmak için Tıklayın veya Enter Tuşuna Basın',
     click_enter_to_ttl: 'TTLyi Değiştirmek için Tıklayın veya Enter Tuşuna Basın',

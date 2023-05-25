@@ -33,6 +33,7 @@ const de = {
     add_success: 'Hinzufügen erfolgreich',
     add_failed: 'Hinzufügen fehlgeschlagen',
     value_exists: 'Wert existiert',
+    value_not_exists: 'Der Wert existiert nicht',
     refresh_success: 'Aktualisierung erfolgreich',
     click_enter_to_rename: 'Klicken oder Enter drücken zum Umbenennen',
     click_enter_to_ttl: 'Klicken oder Enter drücken zum Modifizieren TTL',

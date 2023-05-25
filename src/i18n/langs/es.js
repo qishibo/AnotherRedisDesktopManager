@@ -33,6 +33,7 @@ const es = {
     add_success: 'Añadido Correctamente',
     add_failed: 'Añadido Fallido',
     value_exists: 'Valor ya existente',
+    value_not_exists: 'El valor no existe',
     refresh_success: 'Refresco Correcto',
     click_enter_to_rename: 'Click o Presiona Enter para Renombrar',
     click_enter_to_ttl: 'lick o Presiona Enter para Modificar el TTL',

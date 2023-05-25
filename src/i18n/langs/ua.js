@@ -33,6 +33,7 @@ const ua = {
     add_success: 'Успішно додано',
     add_failed: 'Додати не вдалося',
     value_exists: 'Значення вже існує',
+    value_not_exists: 'Значення не існує',
     refresh_success: 'Успішно оновлено',
     click_enter_to_rename: 'Натисніть сюди або Enter, щоб перейменувати ключ',
     click_enter_to_ttl: 'Натисніть сюди або Enter, щоб змінити час життя ключа TTL',

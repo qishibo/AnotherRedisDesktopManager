@@ -33,6 +33,7 @@ const ru = {
     add_success: 'Успешно добавлено',
     add_failed: 'Добавить не удалось',
     value_exists: 'Значение существует',
+    value_not_exists: 'Значение не существует',
     refresh_success: 'Успешно обновлено',
     click_enter_to_rename: 'Нажмите сюда или нажмите Enter, чтобы переименовать ключ.',
     click_enter_to_ttl: 'Нажмите сюда или нажмите Enter, чтобы изменить время жизни ключа.',

@@ -33,6 +33,7 @@ const en = {
     add_success: 'Add Success',
     add_failed: 'Add Failed',
     value_exists: 'Value Exists',
+    value_not_exists: 'The value does not exist',
     refresh_success: 'Refresh Success',
     click_enter_to_rename: 'Click Or Press Enter To Rename',
     click_enter_to_ttl: 'Click Or Press Enter To Modify TTL',

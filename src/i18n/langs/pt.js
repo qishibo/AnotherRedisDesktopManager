@@ -33,6 +33,7 @@ const pt = {
     add_success: 'Sucesso ao adicionar',
     add_failed: 'Falha ao adicionar',
     value_exists: 'Valor existente',
+    value_not_exists: 'O valor não existe',
     refresh_success: 'Sucesso ao atualizar',
     click_enter_to_rename: 'Clique ou pressione Enter para renomear',
     click_enter_to_ttl: 'Clique ou pressione Enter para modificar TTL',

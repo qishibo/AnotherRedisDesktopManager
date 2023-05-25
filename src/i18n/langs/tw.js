@@ -33,6 +33,7 @@ const tw = {
     add_success: '新增成功',
     add_failed: '新增失敗',
     value_exists: '值已存在',
+    value_not_exists: '該值不存在',
     refresh_success: '重新整理成功',
     click_enter_to_rename: '點擊或者按 Enter 鍵來重新命名',
     click_enter_to_ttl: '點擊或者按 Enter 鍵來修改過期時間',
