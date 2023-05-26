@@ -165,6 +165,7 @@ const tw = {
     close_left: '關閉左側標籤',
     close_right: '關閉右側標籤',
     close_other: '關閉其他標籤',
+    slow_log: '慢查詢',
   },
 };
 

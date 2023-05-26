@@ -165,6 +165,7 @@ const de = {
     close_left: 'Schließen Sie die linken Registerkarten',
     close_right: 'Schließen Sie die rechten Registerkarten',
     close_other: 'Schließen Sie andere Registerkarten',
+    slow_log: 'Langsame Abfrage',
   },
 };
 

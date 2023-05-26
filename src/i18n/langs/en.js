@@ -165,6 +165,7 @@ const en = {
     close_left: 'Close Left Tabs',
     close_right: 'Close Right Tabs',
     close_other: 'Close Other Tabs',
+    slow_log: 'Slow Query',
   },
 };
 

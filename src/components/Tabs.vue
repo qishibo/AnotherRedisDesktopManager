@@ -14,6 +14,7 @@
         <CliTab v-else-if="item.component === 'cli'" :client='item.client' class='tab-content-wrappe' :hotKeyScope='item.name'></CliTab>
         <DeleteBatch v-else-if="item.component === 'delbatch'" :client='item.client' :rule="item.rule" class='tab-content-wrappe' :hotKeyScope='item.name'></DeleteBatch>
         <MemoryAnalysis v-else-if="item.component === 'memory'" :client='item.client' :pattern="item.pattern" class='tab-content-wrappe' :hotKeyScope='item.name'></MemoryAnalysis>
+        <SlowLog v-else-if="item.component === 'slowlog'" :client='item.client' class='tab-content-wrappe' :hotKeyScope='item.name'></SlowLog>
         <KeyDetail v-else :client='item.client' :redisKey="item.redisKey" :keyType="item.keyType" class='tab-content-wrappe' :hotKeyScope='item.name'></KeyDetail>
       </el-tab-pane>
     </el-tabs>
@@ -35,6 +36,7 @@ import CliTab from '@/components/CliTab';
 import KeyDetail from '@/components/KeyDetail';
 import DeleteBatch from '@/components/DeleteBatch';
 import MemoryAnalysis from '@/components/MemoryAnalysis';
+import SlowLog from '@/components/SlowLog';
 
 export default {
   data() {
@@ -43,7 +45,7 @@ export default {
       tabs: [],
     };
   },
-  components: { Status, KeyDetail, CliTab, DeleteBatch, MemoryAnalysis },
+  components: { Status, KeyDetail, CliTab, DeleteBatch, MemoryAnalysis, SlowLog },
   watch: {
     selectedTabName(value) {
       // for mousewheel toggle tabs
@@ -74,6 +76,11 @@ export default {
     // open memory anaysis tab
     this.$bus.$on('memoryAnalysis', (client, tabName, pattern = '') => {
       this.addMemoryTab(client, tabName, pattern);
+    });
+
+    // open slowlog tab
+    this.$bus.$on('slowLog', (client, tabName) => {
+      this.addSlowLogTab(client, tabName);
     });
 
     // remove pre tab
@@ -176,6 +183,17 @@ export default {
 
       this.addTab(newTabItem, true);
     },
+    addSlowLogTab(client, tabName) {
+      const newTabItem = {
+        name: `slowlog_${tabName}_${Math.random()}`,
+        label: this.$util.cutString(tabName),
+        title: tabName,
+        client: client,
+        component: 'slowlog',
+      }
+
+      this.addTab(newTabItem, true);
+    },
     addKeyTab(client, key, newTab = false) {
       client.type(key).then((type) => {
         // key not exists
@@ -254,6 +272,7 @@ export default {
         status: 'el-icon-info',
         delbatch: 'el-icon-delete',
         memory: 'fa fa-table',
+        slowlog: 'fa fa-hourglass-start',
       };
 
       const icon = map[component];

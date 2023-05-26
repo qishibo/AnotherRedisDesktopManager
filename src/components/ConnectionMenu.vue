@@ -56,6 +56,9 @@
         <el-dropdown-item @click.native='memoryAnalisys'>
           <span><i class='more-operate-ico fa fa-table'></i>&nbsp;{{ $t('message.memory_analysis') }}</span>
         </el-dropdown-item>
+        <el-dropdown-item @click.native='slowLog'>
+          <span><i class='more-operate-ico fa fa-hourglass-start'></i>&nbsp;{{ $t('message.slow_log') }}</span>
+        </el-dropdown-item>
         <el-dropdown-item @click.native='flushDB' divided>
           <span><i class='more-operate-ico fa fa-exclamation-triangle'></i>&nbsp;{{ $t('message.flushdb') }}</span>
         </el-dropdown-item>
@@ -192,6 +195,13 @@ export default {
       }
 
       this.$bus.$emit('memoryAnalysis', this.client, this.config.connectionName);
+    },
+    slowLog() {
+      if (!this.client) {
+        return;
+      }
+
+      this.$bus.$emit('slowLog', this.client, this.config.connectionName);
     },
     flushDB() {
       if (!this.client) {

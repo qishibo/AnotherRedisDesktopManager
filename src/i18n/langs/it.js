@@ -165,6 +165,7 @@ const it = {
     close_left: 'Chiudi le schede a sinistra',
     close_right: 'Chiudi le schede a destra',
     close_other: 'Chiudi altre schede',
+    slow_log: 'Interrogazione lenta',
   },
 };
 
