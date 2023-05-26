@@ -165,6 +165,7 @@ const fr = {
     close_left: 'Fermer les onglets de gauche',
     close_right: 'Fermer les onglets de droite',
     close_other: 'Fermer les autres onglets',
+    slow_log: 'Requête lente',
   },
 };
 

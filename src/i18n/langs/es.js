@@ -165,6 +165,7 @@ const es = {
     close_left: 'Cerrar pestañas izquierdas',
     close_right: 'Cerrar pestañas derechas',
     close_other: 'Cerrar otras pestañas',
+    slow_log: 'Consulta lenta',
   },
 };
 

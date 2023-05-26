@@ -165,6 +165,7 @@ const cn = {
     close_left: '关闭左侧标签',
     close_right: '关闭右侧标签',
     close_other: '关闭其他标签',
+    slow_log: '慢查询',
   },
 };
 

@@ -165,6 +165,7 @@ const pt = {
     close_left: 'Fechar abas esquerdas',
     close_right: 'Fechar abas direitas',
     close_other: 'Fechar outras guias',
+    slow_log: 'Consulta lenta',
   },
 };
 

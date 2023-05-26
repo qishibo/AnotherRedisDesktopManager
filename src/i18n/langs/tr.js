@@ -165,6 +165,7 @@ const tr = {
     close_left: 'Sol Sekmeleri Kapat',
     close_right: 'Sağ Sekmeleri Kapat',
     close_other: 'Diğer Sekmeleri Kapat',
+    slow_log: 'Yavaş Sorgu',
   },
 };
 

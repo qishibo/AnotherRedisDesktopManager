@@ -190,6 +190,7 @@ li .list-index {
   /*font-size: 80%;*/
   user-select: none;
   margin-right: 10px;
+  min-width: 28px;
 }
 .dark-mode li .list-index {
   color: #adacac;
