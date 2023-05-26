@@ -5,7 +5,7 @@
     <div slot="header" class="clearfix">
       <el-popover trigger="hover">
         <i slot="reference" class="el-icon-question"></i>
-        Via <b><code>SLOWLOG GET</code></b>, the time threshold is: <b><pre>CONFIG GET slowlog-log-slower-than</pre></b>, and the total number is: <b><pre>CONFIG GET slowlog-log-slower-than</pre></b>
+        Via <b><code>SLOWLOG GET</code></b>, the time threshold is: <b><pre>CONFIG GET slowlog-log-slower-than</pre></b>, and the total number is: <b><pre>CONFIG GET slowlog-max-len</pre></b>
         Unit: <b>μs, 1000μs = 1ms</b>
       </el-popover>
       
