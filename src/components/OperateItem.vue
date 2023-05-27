@@ -191,8 +191,9 @@ export default {
         // clear the search input
         this.searchMatch = '';
         this.$parent.$parent.$parent.$refs.keyList.refreshKeyList();
+        const dbKey = this.$storage.getStorageKeyByName('last_db', this.config.connectionName);
         // store the last selected db
-        localStorage.setItem('lastSelectedDb_' + this.config.connectionName, this.selectedDbIndex);
+        localStorage.setItem(dbKey, this.selectedDbIndex);
         // tell cli to change db
         this.client.options.db = this.selectedDbIndex;
         this.$bus.$emit('changeDb', this.client, this.selectedDbIndex);

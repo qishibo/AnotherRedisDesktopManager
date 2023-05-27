@@ -430,7 +430,7 @@ export default {
       });
     },
     storeCommandTips() {
-      const key = `cliTips_${this.client.options.connectionName}`;
+      const key = this.$storage.getStorageKeyByName('cli_tip', this.client.options.connectionName);
       localStorage.setItem(key, JSON.stringify(this.inputSuggestionItems.slice(-200)));
     },
   },
