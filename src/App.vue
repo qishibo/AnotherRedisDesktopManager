@@ -141,6 +141,9 @@ body {
 button, input, textarea, .vjs__tree {
   font-family: inherit !important;
 }
+a {
+  color: #8e8d8d;
+}
 
 
 /*fix el-select bottom scroll bar*/

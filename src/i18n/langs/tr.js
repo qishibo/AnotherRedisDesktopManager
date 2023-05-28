@@ -89,8 +89,8 @@ const tr = {
     update_downloaded: 'Güncelleme İndirme Tamamlandı, Lütfen Uygulamanızı Yeniden Başlatın.\
     [Tips]: Windows kullanıyorsanız, uygulamayı kapattıktan sonra masaüstü simgesinin normal duruma (yaklaşık 10 saniye) dönmesini bekleyin ve ardından yeniden açabilirsiniz',
     mac_not_support_auto_update: 'Mac Otomatik Güncellemeyi Desteklemez, Lütfen Manuel Olarak <a href="https://github.com/qishibo/AnotherRedisDesktopManager/releases">İndirin</a> ve Yükleyin,\
-    veya Yükleme Komutunu Çalıştırın "brew reinstall --cask another-redis-desktop-manager"\
-    <br><br>🧡sizin için yararlı olursa, <a href="https://apps.apple.com/app/id1516451072">AppStore</a> üzerinden sponsor olabilirsiniz ve AppStore sizin için otomatik olarak güncelleyecektir.',
+    veya Yükleme Komutunu Çalıştırın <br><code>brew reinstall --cask another-redis-desktop-manager </code>\
+    <br><hr><br>❤️sizin için yararlı olursa, <a href="https://apps.apple.com/app/id1516451072">AppStore</a> üzerinden sponsor olabilirsiniz ve AppStore sizin için otomatik olarak güncelleyecektir.',
     font_family: 'Yazı Tipi Ailesi',
     font_faq_title: 'Yazı Tipi Ayar Talimatları',
     font_faq: '1. Birden fazla yazı tipi ayarlanabilir<br>\
