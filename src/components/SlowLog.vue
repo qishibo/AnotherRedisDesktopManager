@@ -13,33 +13,40 @@
       <i v-if="isScanning" class='el-icon-loading'></i>
     </div>
 
-    <!-- table header -->
-    <div class="table-header">
-      <span @click="toggleOrder" class="reorder-container" title="μs, 1000μs = 1ms">
-        <span>Cost</span>
-        <span class="el-icon-d-caret"></span>
-      </span>
+    <div v-if="cmdList.length">
+      <!-- table header -->
+      <div class="table-header">
+        <span @click="toggleOrder" class="reorder-container" title="μs, 1000μs = 1ms">
+          <span>Cost</span>
+          <span class="el-icon-d-caret"></span>
+        </span>
+      </div>
+
+      <!-- content list -->
+      <RecycleScroller
+        class="list-body"
+        :items="cmdList"
+        :item-size="20"
+        key-field="id"
+        v-slot="{ item, index }"
+      >
+        <li>
+          <span class="list-index">{{ index + 1 }}.</span>
+          <span class="time" :title="item.timestring">{{ item.timestring }}</span>
+          <span class="cmd" :title="item.cmd">{{ item.cmd }}</span>
+          <span class="cost" :title="item.cost">{{ item.cost }}</span>
+        </li>
+      </RecycleScroller>
     </div>
 
-    <!-- content list -->
-    <RecycleScroller
-      class="list-body"
-      :items="cmdList"
-      :item-size="20"
-      key-field="id"
-      v-slot="{ item, index }"
-    >
-      <li>
-        <span class="list-index">{{ index + 1 }}.</span>
-        <span class="time" :title="item.timestring">{{ item.timestring }}</span>
-        <span class="cmd" :title="item.cmd">{{ item.cmd }}</span>
-        <span class="cost" :title="item.cost">{{ item.cost }}</span>
-      </li>
-    </RecycleScroller>
+    <p v-else class="list-body" style="text-align: center;">
+      <b class="el-icon-star-on"> No Slow Log</b>
+    </p>
 
     <!-- table footer -->
     <div class="table-footer">
-      <el-tag>{{ $t('message.max_display', {num: scanMax}) }}</el-tag>
+      <!-- <el-tag>{{ $t('message.max_display', {num: scanMax}) }}</el-tag> -->
+      <el-tag>slowlog-log-slower-than: {{ slowerThan }} &nbsp;&nbsp; slowlog-max-len: {{ maxLen }}</el-tag>
     </div>
   </el-card>
 </div>
@@ -55,15 +62,18 @@ export default {
       isScanning: false,
       sortOrder: '',
       scanMax: 20000,
+      slowerThan: 0,
+      maxLen: 0,
     };
   },
   props: ['client', 'hotKeyScope'],
   components: { RecycleScroller },
   methods: {
-    initKeys() {
+    initShow() {
       this.cmdList = [];
       this.isScanning = true;
       this.initCmdList();
+      this.initConfig();
     },
     initCmdList() {
       const nodes = this.client.nodes ? this.client.nodes('master') : [this.client];
@@ -90,6 +100,14 @@ export default {
           this.isScanning = false;
           this.$message.error(e.message);
         });
+      });
+    },
+    initConfig() {
+      this.client.call('CONFIG', 'GET', 'slowlog-log-slower-than').then(reply => {
+        this.slowerThan = reply[1];
+      });
+      this.client.call('CONFIG', 'GET', 'slowlog-max-len').then(reply => {
+        this.maxLen = reply[1];
       });
     },
     toLocalTime(timestamp) {
@@ -127,13 +145,13 @@ export default {
           return false;
         }
 
-        this.initKeys();
+        this.initShow();
         return false;
       });
     },
   },
   mounted() {
-    this.initKeys();
+    this.initShow();
     this.initShortcut();
   },
   beforeDestroy() {

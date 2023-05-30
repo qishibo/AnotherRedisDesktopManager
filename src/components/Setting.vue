@@ -239,18 +239,8 @@ export default {
     exportConnection() {
       let connections = storage.getConnections(true);
       connections = this.$util.base64Encode(JSON.stringify(connections));
-      this.createAndDownloadFile('connections.ano', connections);
+      this.$util.createAndDownloadFile('connections.ano', connections);
       this.visible = false;
-    },
-    createAndDownloadFile(fileName, content) {
-      const aTag = document.createElement('a');
-      const blob = new Blob([content]);
-
-      aTag.download = fileName;
-      aTag.href = URL.createObjectURL(blob);
-
-      aTag.click();
-      URL.revokeObjectURL(blob);
     },
     checkUpdate() {
       this.$message.info({

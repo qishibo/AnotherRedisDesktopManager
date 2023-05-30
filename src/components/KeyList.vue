@@ -5,7 +5,8 @@
       :is="keyListType"
       :config="config"
       :client="client"
-      :keyList="keyList">
+      :keyList="keyList"
+      @exportBatch="exportBatch">
     </component>
 
     <div class='keys-load-more-wrapper'>
@@ -287,6 +288,35 @@ export default {
 
       this.keyList.push(key);
     },
+    exportBatch(keys) {
+      let lines = [];
+      let failed = [];
+      let promiseQueue = [];
+
+      for (const key of keys) {
+        const promise = this.client.callBuffer('DUMP', key);
+        promiseQueue.push(promise);
+      }
+
+      Promise.allSettled(promiseQueue).then(reply => {
+        for (const index in reply) {
+          const item = reply[index];
+
+          if (item.status === "fulfilled") {
+            const line = `${keys[index].toString('hex')},${item.value.toString('hex')}`;
+            lines.push(line);
+          }
+          // dump failed
+          else {
+            failed.push(keys[index]);
+          }
+        }
+
+        // save to file
+        const file = `Dump_${(new Date).toISOString().substr(0, 10).replaceAll('-', '')}.csv`
+        this.$util.createAndDownloadFile(file, lines.join('\n'));
+      });
+    }
   },
   watch: {
     globalSettings(newSetting, oldSetting) {
