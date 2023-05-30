@@ -105,10 +105,10 @@ export default {
     initConfig() {
       this.client.call('CONFIG', 'GET', 'slowlog-log-slower-than').then(reply => {
         this.slowerThan = reply[1];
-      });
+      }).catch(e => {});
       this.client.call('CONFIG', 'GET', 'slowlog-max-len').then(reply => {
         this.maxLen = reply[1];
-      });
+      }).catch(e => {});
     },
     toLocalTime(timestamp) {
       const d = new Date(timestamp);
