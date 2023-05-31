@@ -69,7 +69,7 @@
       </el-dropdown-menu>
     </el-dropdown>
   </div>
-  <div :title="config.connectionName" class="connection-name">{{config.connectionName}}</div>
+  <div :title="connectionTitle()" class="connection-name">{{config.connectionName}}</div>
 
   <!-- edit connection dialog -->
   <NewConnectionDialog
@@ -105,6 +105,38 @@ export default {
     });
   },
   methods: {
+    connectionTitle() {
+      const config = this.config;
+      const sep = '-----------';
+      const lines = [
+        config.connectionName,
+        sep,
+        `${this.$t('message.host')}: ${config.host}`,
+        `${this.$t('message.port')}: ${config.port}`,
+      ];
+
+      config.username && lines.push(`${this.$t('message.username')}: ${config.username}`);
+      config.separator && lines.push(`${this.$t('message.separator')}: "${config.separator}"`);
+
+      if (config.connectionReadOnly) {
+        lines.push(`${sep}\nREADONLY`);
+      }
+      if (config.sshOptions) {
+        lines.push(`${sep}\nSSH:`);
+        lines.push(`  ${this.$t('message.host')}: ${config.sshOptions.host}`);
+        lines.push(`  ${this.$t('message.port')}: ${config.sshOptions.port}`);
+        lines.push(`  ${this.$t('message.username')}: ${config.sshOptions.username}`);
+      }
+      if (config.cluster) {
+        lines.push(`${sep}\nCLUSTER`);
+      }
+      if (config.sentinelOptions) {
+        lines.push(`${sep}\nSENTINEL:`);
+        lines.push(`  ${this.$t('message.master_group_name')}: ${config.sentinelOptions.masterName}`);
+      }
+
+      return lines.join('\n');
+    },
     refreshConnection() {
       this.$emit('refreshConnection');
     },
