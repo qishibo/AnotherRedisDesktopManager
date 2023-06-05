@@ -233,6 +233,16 @@ export default {
         return this.scrollToBottom('OK');
       }
 
+      //multi-discard-mode
+      if (params == 'discard') {
+      // discard when not multi condition
+        if (!Array.isArray(this.multiQueue)) {
+          return this.scrollToBottom('(error) ERR DISCARD without MULTI');
+        }
+        this.multiQueue = null;
+        return this.scrollToBottom('OK');
+      }
+
       // multi dequeue
       if (params == 'exec') {
         // exec when not multi condition
