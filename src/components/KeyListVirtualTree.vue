@@ -400,7 +400,7 @@ export default {
         this.$refs.veTree.setCheckedLeafKeys(this.checkedKeys);
 
         // little keys such as extract search, expand all
-        if (newListCopy.length <= 10) {
+        if (newListCopy.length <= 20) {
           this.$refs.veTree.setExpandAll(true);
         }
       });
