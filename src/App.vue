@@ -30,6 +30,22 @@ import Aside from '@/Aside';
 import Tabs from '@/components/Tabs';
 import UpdateCheck from '@/components/UpdateCheck';
 import addon from './addon';
+import customCssLoader from './customCssLoader';
+
+const injectStylesheet = (src) => {
+  customCssLoader.loadCustomCss(src);
+  customCssLoader.onCustomCssLoaded((content) => {
+    let styleElement = document.getElementById('custom-css');
+    if (!styleElement) {
+      styleElement = document.createElement('style');
+      styleElement.id = 'custom-css';
+      document.head.append(styleElement);
+    }
+    styleElement.innerHTML = content;
+  }, (code, message) => {
+    alert(message || code);
+  });
+};
 
 export default {
   name: 'App',
@@ -81,6 +97,42 @@ export default {
     restoreSideBarWidth() {
       let sideWidth = localStorage.sideWidth;
       sideWidth && (this.sideWidth = sideWidth);
+    },
+    openHrefInBrowser() {
+      const shell = require('electron').shell;
+
+      document.addEventListener('click', function (event) {
+        const ele = event.target;
+
+        if (ele && (ele.nodeName.toLowerCase() === 'a') && ele.href.startsWith('http')) {
+          event.preventDefault();
+          shell.openExternal(ele.href);
+        }
+      });
+    },
+    reloadSettings() {
+      this.initFont();
+      this.initZoom();
+      this.loadCustomCss();
+    },
+    initFont() {
+      const fontFamily = this.$storage.getFontFamily();
+      document.body.style.fontFamily = fontFamily;
+      // tell monaco editor
+      this.$bus.$emit('fontInited', fontFamily);
+    },
+    initZoom() {
+      let zoomFactor = this.$storage.getSetting('zoomFactor');
+      zoomFactor = zoomFactor ? zoomFactor : 1.0;
+
+      const {webFrame} = require('electron');
+      webFrame.setZoomFactor(zoomFactor);
+    },
+    loadCustomCss() {
+      const customCss = this.$storage.getCustomCss();
+      if (customCss) {
+        injectStylesheet(customCss);
+      }
     },
   },
   mounted() {

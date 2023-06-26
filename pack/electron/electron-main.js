@@ -1,6 +1,7 @@
 // Modules to control application life and create native browser window
 const { app, BrowserWindow, Menu, ipcMain, dialog } = require('electron');
 const fontManager = require('./font-manager');
+require('./custom-css-loader');
 const winState = require('./win-state');
 
 const url = require('url');
@@ -24,7 +25,7 @@ process.on('uncaughtException', (err, origin) => {
 
   dialog.showMessageBoxSync(mainWindow, {
     type: 'error',
-    title: 'Whoops! Uncaught Exception', 
+    title: 'Whoops! Uncaught Exception',
     message: err.stack,
     detail: '\nDon\'t worry, I will fix it! 😎😎\n\n'
             + 'Submit issue to: \nhttps://github.com/qishibo/AnotherRedisDesktopManager/'
