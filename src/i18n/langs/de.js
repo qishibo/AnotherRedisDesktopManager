@@ -167,6 +167,8 @@ const de = {
     close_other: 'Schließen Sie andere Registerkarten',
     slow_log: 'Langsame Abfrage',
     load_current_folder: 'Nur aktuellen Ordner laden',
+    custom_css: 'Benutzerdefinierter Stil',
+    custom_css_placeholder: 'Bitte geben Sie den Dateipfad ein',
   },
 };
 

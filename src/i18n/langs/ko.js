@@ -167,6 +167,8 @@ const ko = {
     close_other: '다른 탭 닫기',
     slow_log: '저성능 쿼리',
     load_current_folder: '현재 폴더만 로드',
+    custom_css: '맞춤 스타일',
+    custom_css_placeholder: '파일 경로를 입력해주세요',
   },
 };
 

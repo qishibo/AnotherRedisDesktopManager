@@ -167,6 +167,8 @@ const it = {
     close_other: 'Chiudi altre schede',
     slow_log: 'Interrogazione lenta',
     load_current_folder: 'Carica solo la cartella corrente',
+    custom_css: 'Stile personalizzato',
+    custom_css_placeholder: 'Inserisci il percorso del file',
   },
 };
 

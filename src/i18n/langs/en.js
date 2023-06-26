@@ -167,6 +167,8 @@ const en = {
     close_other: 'Close Other Tabs',
     slow_log: 'Slow Query',
     load_current_folder: 'Only Load Current Folder',
+    custom_css: 'Custom CSS',
+    custom_css_placeholder: 'Please enter file path',
   },
 };
 
