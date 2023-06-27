@@ -23,7 +23,7 @@
 - Or by **chocolatey**: `choco install another-redis-desktop-manager`
 - Or by **winget**: `winget install qishibo.AnotherRedisDesktopManager`
 - Or **sponsor** by win store, It's not free, and I will be very grateful to you.
-<br/><a href="https://www.microsoft.com/store/apps/9MTD84X0JFHZ?cid=storebadge&ocid=badge"><img src="https://cdn.jsdelivr.net/gh/qishibo/img/microsoft-store.png" height="58" width="180" alt="get from microsoft store"></a>
+<br/><a href="https://apps.microsoft.com/store/detail/9MTD84X0JFHZ?launch=true&cid=github&mode=mini"><img src="https://cdn.jsdelivr.net/gh/qishibo/img/microsoft-store.png" height="58" width="180" alt="get from microsoft store"></a>
 
 ## Linux
 
@@ -63,6 +63,9 @@
 
 ## Feature Log
 
+- 2023-06-22: Export\Import keys support
+- 2023-05-26: Search support in Stream && Slow log support
+- 2023-04-01: Search support in List && Deflate raw support
 - 2022-10-07: Arrow Keys support in key list && Memory Analysis in folder
 - 2022-08-05: Clone Connection && Tabs Contextmenu\Mousewheel Support
 - 2022-04-01: Protobuf Support && Memory Analysis

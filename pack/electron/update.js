@@ -14,7 +14,7 @@ const update = () => {
     autoUpdater.checkForUpdates()
       .then(() => {})
       .catch(err => {
-        mainEvent.sender.send('update-error', err);
+        // mainEvent.sender.send('update-error', err);
       });
   });
 
@@ -22,7 +22,7 @@ const update = () => {
     autoUpdater.downloadUpdate()
       .then(() => {})
       .catch(err => {
-        mainEvent.sender.send('update-error', err);
+        // mainEvent.sender.send('update-error', err);
       });
   });
 };

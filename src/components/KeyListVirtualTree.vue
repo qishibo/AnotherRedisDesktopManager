@@ -64,6 +64,7 @@
         <li @click='clickItem("delete")'>{{ $t('el.upload.delete') }}</li>
         <li @click='clickItem("multiple_select")'>{{ $t('message.multiple_select') }}</li>
         <li @click='clickItem("open")'>{{ $t('message.open_new_tab') }}</li>
+        <li @click='clickItem("export")'>{{ $t('message.export') }}Key</li>
       </ul>
     </div>
   </div>
@@ -252,6 +253,10 @@ export default {
           this.$bus.$emit('memoryAnalysis', this.client, this.config.connectionName, pattern);
           break;
         }
+        case 'export': {
+          this.showMultiSelect();
+          this.exportBatch();
+        }
       }
     },
     toggleCheckAll(checked) {
@@ -269,6 +274,24 @@ export default {
       }
 
       this.$bus.$emit('openDelBatch', this.client, this.config.connectionName, rule);
+    },
+    exportBatch() {
+      let checkedNodes = this.$refs.veTree.getCheckedNodes();
+      let keys = [];
+
+      if (!checkedNodes.length) {
+        this.$message.warning('Please select keys!');
+        return;
+      }
+
+      for (let node of checkedNodes) {
+        // key node
+        if (!node.children) {
+          keys.push(Buffer.from(node.nameBuffer.data));
+        }
+      }
+
+      this.$emit('exportBatch', keys);
     },
     clickKey(key, newTab = false) {
       this.$bus.$emit('clickedKey', this.client, key, newTab);
@@ -377,7 +400,7 @@ export default {
         this.$refs.veTree.setCheckedLeafKeys(this.checkedKeys);
 
         // little keys such as extract search, expand all
-        if (newListCopy.length <= 10) {
+        if (newListCopy.length <= 20) {
           this.$refs.veTree.setExpandAll(true);
         }
       });
@@ -390,6 +413,9 @@ export default {
 </script>
 
 <style>
+.key-list-vtree {
+  height: calc(100vh - 250px);
+}
 /*vtree container*/
 .key-list-vtree .vue-recycle-scroller {
   width: calc(100% + 2px);

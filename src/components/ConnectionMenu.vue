@@ -56,16 +56,20 @@
         <el-dropdown-item @click.native='memoryAnalisys'>
           <span><i class='more-operate-ico fa fa-table'></i>&nbsp;{{ $t('message.memory_analysis') }}</span>
         </el-dropdown-item>
-        <el-dropdown-item @click.native='flushDB' divided>
+        <el-dropdown-item @click.native='slowLog'>
+          <span><i class='more-operate-ico fa fa-hourglass-start'></i>&nbsp;{{ $t('message.slow_log') }}</span>
+        </el-dropdown-item>
+        <el-dropdown-item @click.native='importKeys' divided>
+          <span><i class='more-operate-ico el-icon-download'></i>&nbsp;{{ $t('message.import') }}Key</span>
+        </el-dropdown-item>
+        <el-dropdown-item @click.native='flushDB'>
           <span><i class='more-operate-ico fa fa-exclamation-triangle'></i>&nbsp;{{ $t('message.flushdb') }}</span>
         </el-dropdown-item>
-
-
 
       </el-dropdown-menu>
     </el-dropdown>
   </div>
-  <div :title="config.connectionName" class="connection-name">{{config.connectionName}}</div>
+  <div :title="connectionTitle()" class="connection-name">{{config.connectionName}}</div>
 
   <!-- edit connection dialog -->
   <NewConnectionDialog
@@ -79,6 +83,7 @@
 
 <script type="text/javascript">
 import storage from '@/storage.js';
+import {remote} from 'electron';
 import NewConnectionDialog from '@/components/NewConnectionDialog';
 
 export default {
@@ -100,6 +105,38 @@ export default {
     });
   },
   methods: {
+    connectionTitle() {
+      const config = this.config;
+      const sep = '-----------';
+      const lines = [
+        config.connectionName,
+        sep,
+        `${this.$t('message.host')}: ${config.host}`,
+        `${this.$t('message.port')}: ${config.port}`,
+      ];
+
+      config.username && lines.push(`${this.$t('message.username')}: ${config.username}`);
+      config.separator && lines.push(`${this.$t('message.separator')}: "${config.separator}"`);
+
+      if (config.connectionReadOnly) {
+        lines.push(`${sep}\nREADONLY`);
+      }
+      if (config.sshOptions) {
+        lines.push(`${sep}\nSSH:`);
+        lines.push(`  ${this.$t('message.host')}: ${config.sshOptions.host}`);
+        lines.push(`  ${this.$t('message.port')}: ${config.sshOptions.port}`);
+        lines.push(`  ${this.$t('message.username')}: ${config.sshOptions.username}`);
+      }
+      if (config.cluster) {
+        lines.push(`${sep}\nCLUSTER`);
+      }
+      if (config.sentinelOptions) {
+        lines.push(`${sep}\nSENTINEL:`);
+        lines.push(`  ${this.$t('message.master_group_name')}: ${config.sentinelOptions.masterName}`);
+      }
+
+      return lines.join('\n');
+    },
     refreshConnection() {
       this.$emit('refreshConnection');
     },
@@ -192,6 +229,77 @@ export default {
       }
 
       this.$bus.$emit('memoryAnalysis', this.client, this.config.connectionName);
+    },
+    slowLog() {
+      if (!this.client) {
+        return;
+      }
+
+      this.$bus.$emit('slowLog', this.client, this.config.connectionName);
+    },
+    importKeys() {
+      remote.dialog.showOpenDialog(remote.getCurrentWindow(), {
+        properties: ['openFile']
+      }).then(reply => {
+        if (reply.canceled) {
+          return;
+        }
+
+        let succ = [];
+        let fail = [];
+        let count = 0;
+
+        const rl = require('readline').createInterface({
+            input: require('fs').createReadStream(reply.filePaths[0]),
+        });
+
+        rl.on('line', line => {
+          let [key, content] = line.split(',');
+
+          if (!key || !content) {
+            return;
+          }
+
+          count++;
+
+          // show notify in first time
+          if (count === 1) {
+            this.$notify.success({
+              message: this.$createElement('p', {ref: 'importKeysNotify'}, ''),
+              duration: 0,
+            });
+          }
+
+          key = Buffer.from(key, 'hex');
+          content = Buffer.from(content, 'hex');
+
+          this.client.callBuffer('RESTORE', key, 0, content).then(reply => {
+            // reply == 'OK'
+            succ.push(key);
+            this.$set(this.$refs.importKeysNotify,
+              'innerHTML',
+              `Succ: ${succ.length}, Fail: ${fail.length}`
+            );
+          }).catch(e => {
+            fail.push(key);
+            this.$set(this.$refs.importKeysNotify,
+              'innerHTML',
+              `Succ: ${succ.length}, Fail: ${fail.length}`
+            );
+          });
+        });
+
+        rl.on('close', () => {
+          if (count === 0) {
+            return this.$message.error('File parse failed.');
+          }
+
+          (count > 10000) && this.$message.success({
+            message: this.$t('message.import_success'),
+            duration: 800,
+          });
+        });
+      });
     },
     flushDB() {
       if (!this.client) {

@@ -33,6 +33,7 @@ const de = {
     add_success: 'Hinzufügen erfolgreich',
     add_failed: 'Hinzufügen fehlgeschlagen',
     value_exists: 'Wert existiert',
+    value_not_exists: 'Der Wert existiert nicht',
     refresh_success: 'Aktualisierung erfolgreich',
     click_enter_to_rename: 'Klicken oder Enter drücken zum Umbenennen',
     click_enter_to_ttl: 'Klicken oder Enter drücken zum Modifizieren TTL',
@@ -88,8 +89,8 @@ const de = {
     update_downloaded: 'Update Download abgeschlossen, bitte starten Sie Ihre App neu.\
     [Tips]: Wenn Sie Windows verwenden, warten Sie nach dem Schließen der App darauf, dass das Desktopsymbol auf einen normalen Zustand (ca. 10 Sekunden) aktualisiert wird, und öffnen Sie es dann erneut',
     mac_not_support_auto_update: 'Mac unterstützt keine automatische Aktualisierung, bitte manuell <a href="https://github.com/qishibo/AnotherRedisDesktopManager/releases">herunterladen</a> und neu installieren,\
-    or ausführen "brew reinstall --cask another-redis-desktop-manager"\
-    <br><br>🧡Wenn es für Sie nützlich ist, können Sie über den <a href="https://apps.apple.com/app/id1516451072">AppStore</a> sponsern, und der AppStore aktualisiert es automatisch für Sie.',
+    or ausführen <br><code>brew reinstall --cask another-redis-desktop-manager </code>\
+    <br><hr><br>❤️Wenn es für Sie nützlich ist, können Sie über den <a href="https://apps.apple.com/app/id1516451072">AppStore</a> sponsern, und der AppStore aktualisiert es automatisch für Sie.',
     font_family: 'Schrift familie',
     font_faq_title: 'Anweisungen zum Einstellen der Schriftart',
     font_faq: '1. Mehrere Schriftarten können eingestellt werden<br>\
@@ -164,6 +165,7 @@ const de = {
     close_left: 'Schließen Sie die linken Registerkarten',
     close_right: 'Schließen Sie die rechten Registerkarten',
     close_other: 'Schließen Sie andere Registerkarten',
+    slow_log: 'Langsame Abfrage',
   },
 };
 
