@@ -380,4 +380,26 @@ export default {
       arr.splice(0, size)
     );
   },
+  splitArgs(argsArr) {
+    let dict = {};
+
+    for (let i = 0; i < argsArr.length; i++) {
+      let key = argsArr[i];
+      let value = argsArr[i+1];
+
+      if (key.startsWith('--')) {
+        if (value !== undefined && !value.startsWith('--')) {
+          // remove "--" prefix
+          dict[key.substring(2)] = value;
+          i++;
+        }
+        // single key as --test
+        else {
+          dict[key.substring(2)] = true;
+        }
+      }
+    }
+
+    return dict;
+  }
 };

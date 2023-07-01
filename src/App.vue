@@ -29,6 +29,7 @@
 import Aside from '@/Aside';
 import Tabs from '@/components/Tabs';
 import UpdateCheck from '@/components/UpdateCheck';
+import { ipcRenderer } from 'electron';
 
 export default {
   name: 'App',
@@ -44,6 +45,9 @@ export default {
 
     // restore side bar width
     this.restoreSideBarWidth();
+
+    // bind cli args
+    this.bindCliArgs();
   },
   components: {Aside, Tabs, UpdateCheck},
   methods: {
@@ -80,6 +84,38 @@ export default {
     restoreSideBarWidth() {
       let sideWidth = localStorage.sideWidth;
       sideWidth && (this.sideWidth = sideWidth);
+    },
+    bindCliArgs() {
+      ipcRenderer.invoke('getMainArgs').then(result => {
+        if (!result.argv) {
+          return;
+        }
+        const mainArgs = this.$util.splitArgs(result.argv);
+
+        // with --host xxxx
+        if (mainArgs.host && mainArgs.host.length > 0) {
+          let port = parseInt(mainArgs.port);
+          !port && (port = 6379);
+
+          const connection = {
+            host: mainArgs.host,
+            port: port,
+            auth: mainArgs.auth,
+          };
+
+          // add to storage
+          this.$storage.addConnection(connection);
+          this.$bus.$emit('refreshConnections');
+          // open connection after added
+          setTimeout(() => {
+            this.$bus.$emit('openConnection', connection.name);
+            // tmp connection, delete it after opened
+            if (!mainArgs.save) {
+              this.$storage.deleteConnection(connection);
+            }
+          }, 300);
+        }
+      });
     },
     openHrefInBrowser() {
       const shell = require('electron').shell;
