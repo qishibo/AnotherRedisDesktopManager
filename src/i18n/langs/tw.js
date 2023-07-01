@@ -3,6 +3,7 @@ const tw = {
     new_connection: '新增連線',
     refresh_connection: '重新整理',
     edit_connection: '編輯連線',
+    duplicate_connection: '複製連接',
     del_connection: '刪除連線',
     close_connection: '關閉連線',
     add_new_line: '新增行',
@@ -21,6 +22,9 @@ const tw = {
     memory: '記憶體',
     stats: '狀態',
     settings: '基本設定',
+    ui_settings: '外觀',
+    feature_settings: '功能',
+    common_settings: '通用',
     confirm_to_delete_row_data: '確認刪除該行資料？',
     delete_success: '刪除成功',
     delete_failed: '刪除失敗',
@@ -29,6 +33,7 @@ const tw = {
     add_success: '新增成功',
     add_failed: '新增失敗',
     value_exists: '值已存在',
+    value_not_exists: '該值不存在',
     refresh_success: '重新整理成功',
     click_enter_to_rename: '點擊或者按 Enter 鍵來重新命名',
     click_enter_to_ttl: '點擊或者按 Enter 鍵來修改過期時間',
@@ -84,8 +89,8 @@ const tw = {
     update_downloaded: '更新下載完成，重啟用戶端生效.\
     [Tips]: 如果您使用的是Windows，請在關閉應用程序後等待桌面圖標刷新到正常狀態（大約10秒），然後重新打開',
     mac_not_support_auto_update: 'Mac 暫時不支援自動更新，請手動<a href="https://github.com/qishibo/AnotherRedisDesktopManager/releases">下載</a>後重新安裝，\
-    或者執行brew reinstall --cask another-redis-desktop-manager\
-    <br><br>🧡如果對您有用，您可以通過<a href="https://apps.apple.com/app/id1516451072">AppStore</a>贊助，AppStore會自動為您更新。',
+    或者執行<br><code>brew reinstall --cask another-redis-desktop-manager </code>\
+    <br><hr><br>❤️如果對您有用，您可以通過<a href="https://apps.apple.com/app/id1516451072">AppStore</a>贊助，AppStore會自動為您更新。',
     font_family: '字體選擇',
     font_faq_title: '字體設定說明',
     font_faq: '1. 可以設定多個字體<br>2. 字體選擇是有分先後順序的，建議首先選擇英文字體，然後再選擇中文字體<br>\
@@ -157,6 +162,10 @@ const tw = {
     restart: '重新開始',
     max_display: '最大顯示數量：{num}',
     max_scan: '最大掃描數量：{num}',
+    close_left: '關閉左側標籤',
+    close_right: '關閉右側標籤',
+    close_other: '關閉其他標籤',
+    slow_log: '慢查詢',
   },
 };
 

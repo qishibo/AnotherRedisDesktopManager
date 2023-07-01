@@ -3,6 +3,7 @@ const en = {
     new_connection: 'New Connection',
     refresh_connection: 'Refresh',
     edit_connection: 'Edit Connection',
+    duplicate_connection: 'Duplicate Connection',
     del_connection: 'Delete Connection',
     close_connection: 'Close Connection',
     add_new_line: 'Add New Line',
@@ -21,6 +22,9 @@ const en = {
     memory: 'Memory',
     stats: 'Stats',
     settings: 'Settings',
+    ui_settings: 'Appearance',
+    feature_settings: 'Function',
+    common_settings: 'General',
     confirm_to_delete_row_data: 'Confirm To Delete The Row Data?',
     delete_success: 'Delete Success',
     delete_failed: 'Delete Failed',
@@ -29,6 +33,7 @@ const en = {
     add_success: 'Add Success',
     add_failed: 'Add Failed',
     value_exists: 'Value Exists',
+    value_not_exists: 'The value does not exist',
     refresh_success: 'Refresh Success',
     click_enter_to_rename: 'Click Or Press Enter To Rename',
     click_enter_to_ttl: 'Click Or Press Enter To Modify TTL',
@@ -84,8 +89,8 @@ const en = {
     update_downloaded: 'Update Download Completed, Restart Your App Please.\
     [Tips]: If you are using Windows, after closing the app, waiting the desktop icon to refresh to a normal state(about 10 seconds), and then you can reopen it',
     mac_not_support_auto_update: 'Mac Does Not Support Automatic Update, Please Manually <a href="https://github.com/qishibo/AnotherRedisDesktopManager/releases">Download</a> And Reinstall,\
-    Or Run "brew reinstall --cask another-redis-desktop-manager"\
-    <br><br>🧡if it\'s useful to you ,you can sponsor through <a href="https://apps.apple.com/app/id1516451072">AppStore</a>, and AppStore will automatically update it for you.',
+    Or Run <br><code>brew reinstall --cask another-redis-desktop-manager </code>\
+    <br><hr><br>❤️if it\'s useful to you ,you can sponsor through <a href="https://apps.apple.com/app/id1516451072">AppStore</a>, and AppStore will automatically update it for you.',
     font_family: 'Font Family',
     font_faq_title: 'Font Setting Instructions',
     font_faq: '1. Multiple fonts can be set<br>\
@@ -157,6 +162,10 @@ const en = {
     restart: 'Restart',
     max_display: 'Maximum number of displays:  {num}',
     max_scan: 'Maximum number of scans:  {num}',
+    close_left: 'Close Left Tabs',
+    close_right: 'Close Right Tabs',
+    close_other: 'Close Other Tabs',
+    slow_log: 'Slow Query',
   },
 };
 

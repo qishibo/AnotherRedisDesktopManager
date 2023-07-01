@@ -59,7 +59,6 @@ export default {
         set   : 'KeyContentSet',
         list  : 'KeyContentList',
         stream  : 'KeyContentStream',
-        stream  : 'KeyContentStream',
         'ReJSON-RL': 'KeyContentReJson',
       };
 
@@ -74,8 +73,13 @@ export default {
     },
     refreshContent() {
       this.client.exists(this.redisKey).then(reply => {
-        if (!reply) {
-          return this.$message.error(this.$t('message.key_not_exists'));
+        if (reply == 0) {
+          // clear interval if auto refresh opened
+          // this.$refs.keyHeader.removeInterval();
+          return this.$message.error({
+            message: this.$t('message.key_not_exists'),
+            duration: 1000,
+          });
         }
 
         this.$refs.keyContent && this.$refs.keyContent.initShow();
@@ -117,5 +121,21 @@ export default {
   }
   .content-more-container .content-more-btn {
     width: 95%;
+    padding-top: 5px;
+    padding-bottom: 5px;
+  }
+
+  /*data table list styles*/
+  .key-content-container .el-table {
+    border-radius: 3px;
+  }
+  /*table list height*/
+  .key-content-container .el-table .el-table__body td {
+    padding: 0px 0px;
+  }
+
+  /*table list border*/
+  .key-content-container .el-table--border td, .key-content-container .el-table--border th {
+    border-right-width: 0;
   }
 </style>

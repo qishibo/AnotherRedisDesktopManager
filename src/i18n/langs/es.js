@@ -3,6 +3,7 @@ const es = {
     new_connection: 'Nueva Conexión',
     refresh_connection: 'Refrescar',
     edit_connection: 'Editar Conexión',
+    duplicate_connection: 'Copiar Conexión',
     del_connection: 'Eliminar Conexión',
     close_connection: 'Cerrar Conexión',
     add_new_line: 'Añadir Nueva Linea',
@@ -21,6 +22,9 @@ const es = {
     memory: 'Memoria',
     stats: 'Estadísticas',
     settings: 'Ajustes',
+    ui_settings: 'Apariencia',
+    feature_settings: 'Función',
+    common_settings: 'General',
     confirm_to_delete_row_data: '¿Seguro quiere eliminar los datos de la fila?',
     delete_success: 'Eliminado Correcto',
     delete_failed: 'Eliminado Fallido',
@@ -29,6 +33,7 @@ const es = {
     add_success: 'Añadido Correctamente',
     add_failed: 'Añadido Fallido',
     value_exists: 'Valor ya existente',
+    value_not_exists: 'El valor no existe',
     refresh_success: 'Refresco Correcto',
     click_enter_to_rename: 'Click o Presiona Enter para Renombrar',
     click_enter_to_ttl: 'lick o Presiona Enter para Modificar el TTL',
@@ -84,8 +89,8 @@ const es = {
     update_downloaded: 'Descarga de actualización completada, por favor, reinicia la aplicaicón.\
     [Consejo]: Si está utilizando Windows, después de cerrar la aplicación, espere que el ícono del escritorio se actualice a un estado normal (alrededor de 10 segundos) y luego puede volver a abrirlo',
     mac_not_support_auto_update: 'Mac no soporte actualizaciones automáticas. Manualmente puede <a href="https://github.com/qishibo/AnotherRedisDesktopManager/releases">Descargarla</a> y reinstalarla,\
-    o ejecute "brew reinstall --cask another-redis-desktop-manager"\
-    <br><br>🧡si es útil para ti, puedes patronizarnos a través de <a href="https://apps.apple.com/app/id1516451072">AppStore</a>, y AppStore lo actualizará automáticamente por usted.',
+    o ejecute <br><code>brew reinstall --cask another-redis-desktop-manager </code>\
+    <br><hr><br>❤️si es útil para ti, puedes patronizarnos a través de <a href="https://apps.apple.com/app/id1516451072">AppStore</a>, y AppStore lo actualizará automáticamente por usted.',
     font_family: 'Familia de la Fuente',
     font_faq_title: 'Instrucciones Ajuste Fuente',
     font_faq: '1. Se pueden configurar varias fuentes<br>\
@@ -103,7 +108,7 @@ const es = {
     flushdb: 'Vaciar DB',
     flushdb_prompt: 'Input "{txt}"',
     info_disabled: 'Excepción de ejecución de comando de información (puede haberse deshabilitado), no se puede mostrar la información de redis',
-    page_zoom: 'Zoom Págiona',
+    page_zoom: 'Zoom Página',
     scan_disabled: 'Excepción de ejecución de comando de escaneo (puede haberse deshabilitado), no se puede mostrar la lista de claves',
     key_type_not_support: 'La visualización visual no es compatible con este tipo. Utilice la consola',
     delete_folder: 'Escanear y eliminar toda la carpeta',
@@ -146,7 +151,7 @@ const es = {
     hide_window: 'Ocultar Ventana',
     minimize_window: 'Minimizar Ventana',
     maximize_window: 'Maximizar Ventana',
-    load_all_keys: 'cargar todo',
+    load_all_keys: 'Cargar todo',
     show_load_all_keys: 'Habilitar botón para cargar todas las claves',
     load_all_keys_tip: 'Cargue todas las claves a la vez. Si el número de claves es demasiado grande, el cliente puede atascarse. Por favor úsalo correctamente',
     tree_node_overflow: 'Demasiadas claves o carpetas, mantenga solo {num} para mostrar. Si su clave no está aquí, se recomienda una búsqueda aproximada o configure el separador para distribuir las claves en carpetas',
@@ -157,6 +162,10 @@ const es = {
     restart: 'Reiniciar',
     max_display: 'Número máximo de visualizaciones:  {num}',
     max_scan: 'Número máximo de escaneos:  {num}',
+    close_left: 'Cerrar pestañas izquierdas',
+    close_right: 'Cerrar pestañas derechas',
+    close_other: 'Cerrar otras pestañas',
+    slow_log: 'Consulta lenta',
   },
 };
 

@@ -1,3 +1,7 @@
+import utils from './util';
+
+const { randomString } = utils;
+
 export default {
   getSetting(key) {
     let settings = localStorage.getItem('settings');
@@ -93,7 +97,7 @@ export default {
     for (let key in connections) {
       // if 'name' same with others, add random suffix
       if (this.getConnectionName(connections[key]) == name) {
-        name += ` (${Math.random().toString(36).substr(-3)})`;
+        name += ` (${randomString(3)})`;
         break;
       }
     }
@@ -112,6 +116,7 @@ export default {
 
     delete connections[key];
 
+    this.hookAfterDelConnection(connection);
     this.setConnections(connections);
   },
   getConnectionKey(connection, forceUnique = false) {
@@ -124,7 +129,7 @@ export default {
     }
 
     if (forceUnique) {
-      return new Date().getTime() + '_' + Math.random().toString(36).substr(-5);
+      return new Date().getTime() + '_' + randomString(5);
     }
 
     return connection.host + connection.port + connection.name;
@@ -156,5 +161,31 @@ export default {
     this.setConnections(newConnections);
 
     return newConnections;
+  },
+  getStorageKeyMap(type) {
+    const typeMap = {
+      'cli_tip': 'cliTips',
+      'last_db': 'lastSelectedDb',
+    };
+
+    return type ? typeMap[type] : typeMap;
+  },
+  initStorageKey(prefix, connectionName) {
+    return `${prefix}_${connectionName}`;
+  },
+  getStorageKeyByName(type = 'cli_tip', connectionName = '') {
+    return this.initStorageKey(this.getStorageKeyMap(type), connectionName)
+  },
+  hookAfterDelConnection(connection) {
+    const connectionName = this.getConnectionName(connection);
+    const types = Object.keys(this.getStorageKeyMap());
+
+    let willRemovedKeys = [];
+
+    for (let type of types) {
+      willRemovedKeys.push(this.getStorageKeyByName(type, connectionName));
+    }
+
+    willRemovedKeys.forEach(k => localStorage.removeItem(k));
   },
 };

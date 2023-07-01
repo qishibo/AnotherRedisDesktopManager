@@ -106,7 +106,7 @@ export default {
       beforeEditItem: {},
       editLineItem: {},
       loadingIcon: '',
-      pageSize: 200,
+      pageSize: 100,
       pageIndex: 0,
       searchPageSize: 1000,
       oneTimeListLength: 0,
@@ -235,9 +235,9 @@ export default {
       return this.filterValue ? `*${this.filterValue}*` : '*';
     },
     openDialog() {
-      // this.$nextTick(() => {
-      //   this.$refs.formatViewer.autoFormat();
-      // });
+      this.$nextTick(() => {
+        this.$refs.formatViewer.autoFormat();
+      });
     },
     showEditDialog(row) {
       this.editLineItem = row;
@@ -294,7 +294,7 @@ export default {
         }
 
         this.$message.success({
-          message: reply ? this.$t('message.add_success') : this.$t('message.modify_success'),
+          message: reply == 1 ? this.$t('message.add_success') : this.$t('message.modify_success'),
           duration: 1000,
         });
       }).catch(e => {this.$message.error(e.message);});
@@ -308,7 +308,7 @@ export default {
           this.redisKey,
           row.member
         ).then((reply) => {
-          if (reply === 1) {
+          if (reply == 1) {
             this.$message.success({
               message: this.$t('message.delete_success'),
               duration: 1000,

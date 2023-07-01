@@ -3,9 +3,14 @@ const { app, BrowserWindow, Menu, ipcMain, dialog } = require('electron');
 const fontManager = require('./font-manager');
 const winState = require('./win-state');
 
+const url = require('url');
+const path = require('path');
 
-global.APP_ENV = (process.env.NODE_ENV === 'dev') ? 'dev' : 'production';
+// disable GPU for some white screen issues
+// app.disableHardwareAcceleration();
+// app.commandLine.appendSwitch('disable-gpu');
 
+global.APP_ENV = (process.env.ARDM_ENV === 'development') ? 'development' : 'production';
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -39,10 +44,10 @@ function createWindow() {
 
   // Create the browser window.
   mainWindow = new BrowserWindow({
-    x: (lastWinStage.x > 0) ? lastWinStage.x : null,
-    y: (lastWinStage.y > 0) ? lastWinStage.y : null,
-    width: (lastWinStage.width > 250) ? lastWinStage.width : 1100,
-    height: (lastWinStage.height > 250) ? lastWinStage.height : 728,
+    x: lastWinStage.x,
+    y: lastWinStage.y,
+    width: lastWinStage.width,
+    height: lastWinStage.height,
     icon: `${__dirname}/icons/icon.png`,
     autoHideMenuBar: true,
     webPreferences: {
@@ -62,7 +67,12 @@ function createWindow() {
   // and load the index.html of the app.
   if (APP_ENV === 'production') {
     // mainWindow.loadFile('index.html');
-    mainWindow.loadURL(`file://${__dirname}/index.html?version=${app.getVersion()}`);
+    mainWindow.loadURL(url.format({
+      protocol: 'file',
+      slashes: true,
+      pathname: path.join(__dirname, 'index.html'),
+      query: {version: app.getVersion()},
+    }));
   } else {
     mainWindow.loadURL(`http://localhost:9988/?version=${app.getVersion()}`);
   }

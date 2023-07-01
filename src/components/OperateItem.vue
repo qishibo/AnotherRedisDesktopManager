@@ -59,18 +59,22 @@
         :placeholder="$t('message.enter_to_search')"
         :trigger-on-focus="false"
         :select-when-unmatched='true'>
-        <span slot="suffix">
+        <template slot="suffix">
+          <!-- cancel search -->
+          <i v-if="(searchIcon=='el-icon-loading') && showCancelIcon" class="el-input__icon search-icon el-icon-error" @click="cancelSearch()" :title="$t('el.messagebox.cancel')"></i>
+          <!-- start search -->
           <i class="el-input__icon search-icon" :class="searchIcon"  @click="changeMatchMode()"></i>
 
+          <!-- extract search -->
           <el-tooltip effect="dark" :content="$t('message.exact_search')" placement="bottom">
             <el-checkbox v-model="searchExact"></el-checkbox>
           </el-tooltip>
-        </span>
+        </template>
       </el-autocomplete>
     </el-form-item>
 
     <!-- new key dialog -->
-    <el-dialog :title="$t('message.add_new_key')" :visible.sync="newKeyDialog" :close-on-click-modal='false'>
+    <el-dialog :title="$t('message.add_new_key')" :visible.sync="newKeyDialog" :close-on-click-modal='false' append-to-body>
       <el-form label-position="top" size="mini">
         <el-form-item :label="$t('message.key_name')">
           <el-input v-model='newKeyName'></el-input>
@@ -115,6 +119,8 @@ export default {
         Stream: 'stream', ReJSON: 'rejson',
       },
       dbKeysCount: {},
+      showCancelIcon: false,
+      rmCancelIconTimer: null,
     };
   },
   props: ['client', 'config'],
@@ -188,9 +194,12 @@ export default {
 
       this.client.select(this.selectedDbIndex)
       .then(() => {
+        // clear the search input
+        this.searchMatch = '';
         this.$parent.$parent.$parent.$refs.keyList.refreshKeyList();
+        const dbKey = this.$storage.getStorageKeyByName('last_db', this.config.connectionName);
         // store the last selected db
-        localStorage.setItem('lastSelectedDb_' + this.config.connectionName, this.selectedDbIndex);
+        localStorage.setItem(dbKey, this.selectedDbIndex);
         // tell cli to change db
         this.client.options.db = this.selectedDbIndex;
         this.$bus.$emit('changeDb', this.client, this.selectedDbIndex);
@@ -250,11 +259,21 @@ export default {
         }
       }
     },
+    toggleCancelIcon(show = false) {
+      this.showCancelIcon = false;
+      clearTimeout(this.rmCancelIconTimer);
+
+      if (show) {
+        this.rmCancelIconTimer = setTimeout(() => {
+          this.showCancelIcon = true;
+        }, 800);
+      }
+    },
     changeMatchMode() {
       // already searching status
-      if (this.searchIcon == 'el-icon-loading') {
-        return false;
-      }
+      // if (this.searchIcon == 'el-icon-loading') {
+      //   return false;
+      // }
 
       // prevent enter too fast but show candidate query
       setTimeout(() => {
@@ -277,6 +296,12 @@ export default {
       });
 
       cb(items);
+    },
+    cancelSearch() {
+      // stop scanning in keyList
+      this.$parent.$parent.$parent.$refs.keyList.cancelScanning();
+      // reset search status
+      this.$parent.$parent.$parent.$refs.keyList.resetSearchStatus();
     },
   },
 }
@@ -310,7 +335,7 @@ export default {
     width: 100%;
   }
   .connection-menu .search-input .el-input__inner {
-    padding-right: 43px;
+    padding-right: 62px;
     /*margin-top: -10px;;
     margin-bottom: 15px;*/
   }
@@ -339,6 +364,7 @@ export default {
     font-size: 128%;
     color: #a5a8ad;
     cursor: pointer;
+    width: 20px;
   }
   .connection-menu .search-item .el-checkbox__input {
     /*line-height: 28px;*/

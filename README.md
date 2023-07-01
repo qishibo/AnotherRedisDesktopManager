@@ -9,7 +9,7 @@
 [![MIT](https://img.shields.io/badge/license-MIT-000000.svg)](LICENSE)
 [![Download](https://img.shields.io/github/release/qishibo/AnotherRedisDesktopManager.svg?label=Download)](https://github.com/qishibo/AnotherRedisDesktopManager/releases)
 [![Download Analysis](https://img.shields.io/badge/Download-Analysis-blue.svg)](https://qii404.me/github-release-statistics/?repo=/qishibo/AnotherRedisDesktopManager/)
-[![shiboooo](https://img.shields.io/badge/Weibo-@shiboooo-blue.svg)](https://weibo.com/shiboooo?is_hot=1)
+[![Twitter](https://img.shields.io/badge/Twitter-@shibo-blue.svg)](https://twitter.com/qii404)
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fqishibo%2FAnotherRedisDesktopManager.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fqishibo%2FAnotherRedisDesktopManager?ref=badge_shield)
 <a href="https://www.producthunt.com/posts/another-redis-desktop-manager?utm_source=badge-featured"><img src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=340552&theme=dark" height="20" width="93" /></a>
 
@@ -19,14 +19,15 @@
 
 ## Windows
 
-- Download latest [exe](https://github.com/qishibo/AnotherRedisDesktopManager/releases) package from [release](https://github.com/qishibo/AnotherRedisDesktopManager/releases) [or [gitee](https://gitee.com/qishibo/AnotherRedisDesktopManager/releases) in China], double click to install.
+- Download latest [exe](https://github.com/qishibo/AnotherRedisDesktopManager/releases) package from release [or [gitee](https://gitee.com/qishibo/AnotherRedisDesktopManager/releases) in China], double click to install.
+- Or by **chocolatey**: `choco install another-redis-desktop-manager`
 - Or by **winget**: `winget install qishibo.AnotherRedisDesktopManager`
 - Or **sponsor** by win store, It's not free, and I will be very grateful to you.
-<br/><a href="https://www.microsoft.com/store/apps/9MTD84X0JFHZ?cid=storebadge&ocid=badge"><img src="https://cdn.jsdelivr.net/gh/qishibo/img/microsoft-store.png" height="58" width="180" alt="get from microsoft store"></a>
+<br/><a href="https://apps.microsoft.com/store/detail/9MTD84X0JFHZ?launch=true&cid=github&mode=mini"><img src="https://cdn.jsdelivr.net/gh/qishibo/img/microsoft-store.png" height="58" width="180" alt="get from microsoft store"></a>
 
 ## Linux
 
-- Download latest [AppImage](https://github.com/qishibo/AnotherRedisDesktopManager/releases) package from [release](https://github.com/qishibo/AnotherRedisDesktopManager/releases) [or [gitee](https://gitee.com/qishibo/AnotherRedisDesktopManager/releases) in China], `chmod +x`, double click to run.
+- Download latest [AppImage](https://github.com/qishibo/AnotherRedisDesktopManager/releases) package from release [or [gitee](https://gitee.com/qishibo/AnotherRedisDesktopManager/releases) in China], `chmod +x`, double click to run.
  - Or by **snap**: `sudo snap install another-redis-desktop-manager`
  **Tips**: If permission denied when selecting private key, run `sudo snap connect another-redis-desktop-manager:ssh-keys` to give access to ~/.ssh folder.
 <br/>[![Get it from the Snap Store](https://snapcraft.io/static/images/badges/en/snap-store-black.svg)](https://snapcraft.io/another-redis-desktop-manager)
@@ -34,7 +35,9 @@
 
 ## Mac
 
-- Download latest [dmg](https://github.com/qishibo/AnotherRedisDesktopManager/releases) package from [release](https://github.com/qishibo/AnotherRedisDesktopManager/releases) [or [gitee](https://gitee.com/qishibo/AnotherRedisDesktopManager/releases) in China], double click to install.
+> If you can't open it after installation by brew or dmg, exec the following command then reopen:<br>`sudo xattr -rd com.apple.quarantine /Applications/Another\ Redis\ Desktop\ Manager.app`
+
+- Download latest [dmg](https://github.com/qishibo/AnotherRedisDesktopManager/releases) package from release [or [gitee](https://gitee.com/qishibo/AnotherRedisDesktopManager/releases) in China], double click to install.
 - Or by **brew**: `brew install --cask another-redis-desktop-manager`
 - Or **sponsor** by app store, It's not free, and I will be very grateful to you.
 <br/>[![get from app store](https://cdn.jsdelivr.net/gh/qishibo/img/avail_app_store180.svg)](https://apps.apple.com/app/id1516451072)
@@ -60,6 +63,11 @@
 
 ## Feature Log
 
+- 2023-06-22: Export\Import keys support
+- 2023-05-26: Search support in Stream && Slow log support
+- 2023-04-01: Search support in List && Deflate raw support
+- 2022-10-07: Arrow Keys support in key list && Memory Analysis in folder
+- 2022-08-05: Clone Connection && Tabs Contextmenu\Mousewheel Support
 - 2022-04-01: Protobuf Support && Memory Analysis
 - 2022-03-03: Readonly Mode && Mointor Support
 - 2022-01-24: Command Dump Support
@@ -191,6 +199,34 @@ This project exists thanks to all the people who contribute.
 [![backers](https://opencollective.com/AnotherRedisDesktopManager/backers.svg)](https://opencollective.com/AnotherRedisDesktopManager)
 
 
+## Custom Viewer
+
+> When the default viewer does not meet the needs, you can format your content via customize script.
+<br>Method: Pull down the viewer list to the bottom, click "Custom -> Add", and then refer to the instructions below
+<br>Note: The script needs to output formatted content through `print` `console.log` `echo` etc., which can be any string or JSON string
+
+| Config | Description |
+| ------ | ------ |
+| `Name` | Custom name |
+| `Command` | Executable commands, such as `xxx.py` `xxx.js` `xxx.class` etc. The file needs `x` permission, which can be executed in the form of `./xxx.py`; It can also be set to `/bin/node` `/bin/bash` or other system commands, and the script path needs to be placed in Params |
+| `Params` | Parameters spliced after `Command`, such as "--key `{KEY}` --value `{VALUE}`", where `{KEY}` and `{VALUE}` will be replaced with the corresponding Redis key and value. Note that if the content is invisible such as binary, you can use `{HEX}` instead of `{VALUE}`, and `{HEX}` will be replaced with the hexadecimal string |
+
+### Configuration example：
+> Add env to the first line of the script, the final executed command is: `./home/qii/pickle_decoder.py {HEX}`, the script can receive parameters via `argv[1]`
+
+| Command | Params |
+| ------ | ------ |
+| `/home/qii/pickle_decoder.py` | `{HEX}` |
+| `/home/qii/shell_decoder.sh` | `{VALUE}` |
+
+### Without execute permission `x`：
+> The final executed command is: `/bin/node /home/qii/node_decoder.js {HEX} --key={KEY}`, the script can receive parameters via `argv[1]`
+
+| Command | Params |
+| ------ | ------ |
+| `/bin/bash` | `/home/qii/shell_decoder.sh {VALUE}` |
+| `/bin/node` | `/home/qii/node_decoder.js {HEX} --key={KEY}` |
+
 
 ## License
 
@@ -199,5 +235,5 @@ This project exists thanks to all the people who contribute.
 
 ## Support
 
-[goanother.com](https://goanother.com/) &nbsp; [Producthunt](https://www.producthunt.com/posts/another-redis-desktop-manager) &nbsp; [wb@shiboooo](https://weibo.com/shiboooo?is_hot=1) &nbsp; [Download Analysis](https://qii404.me/github-release-statistics/?repo=/qishibo/AnotherRedisDesktopManager/)
+[goanother.com](https://goanother.com/) &nbsp; [Producthunt](https://www.producthunt.com/posts/another-redis-desktop-manager) &nbsp; [Twitter@shibo](https://twitter.com/qii404) &nbsp; [Download Analysis](https://qii404.me/github-release-statistics/?repo=/qishibo/AnotherRedisDesktopManager/)
 

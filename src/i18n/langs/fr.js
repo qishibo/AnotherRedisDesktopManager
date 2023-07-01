@@ -3,6 +3,7 @@ const fr = {
     new_connection: 'Nouvelle connexion',
     refresh_connection: 'Actualiser',
     edit_connection: 'Éditer connexion',
+    duplicate_connection: 'Copier la connexion',
     del_connection: 'Supprimer connexion',
     close_connection: 'Fermer connexion',
     add_new_line: 'Ajouter nouvelle ligne',
@@ -21,6 +22,9 @@ const fr = {
     memory: 'Mémoire',
     stats: 'Statistiques',
     settings: 'Paramètres',
+    ui_settings: 'Apparence',
+    feature_settings: 'Fonction',
+    common_settings: 'Général',
     confirm_to_delete_row_data: 'Supprimer les données de cette ligne ?',
     delete_success: 'Suppression réussie',
     delete_failed: 'Suppression échouée',
@@ -29,6 +33,7 @@ const fr = {
     add_success: 'Ajout réussi',
     add_failed: 'Ajout échoué',
     value_exists: 'La valeur existe',
+    value_not_exists: 'La valeur n\'existe pas',
     refresh_success: 'Actualisation réussie',
     click_enter_to_rename: 'Cliquez ou pressez Entrée pour renommer',
     click_enter_to_ttl: 'Cliquez ou pressez Entrée pour modifier le TTL',
@@ -84,8 +89,8 @@ const fr = {
     update_downloaded: 'Téléchargement de la mise à jour terminé, redémarrez l\'application s\'il vous plaît.\
     [Tips]: Si vous utilisez Windows, après avoir fermé l\'application, attendez que l\'icône du bureau soit actualisée à un état normal (environ 10 secondes), puis vous pouvez la rouvrir',
     mac_not_support_auto_update: 'Les Mac ne supportent pas les mises à jour automatique, vous pouvez <a href="https://github.com/qishibo/AnotherRedisDesktopManager/releases">télécharger</a> et réinstaller manuellement,\
-    ou lancer "brew reinstall --cask another-redis-desktop-manager"\
-    <br><br>🧡si cela vous est utile, vous pouvez sponsoriser via l\'<a href="https://apps.apple.com/app/id1516451072">AppStore</a>, et l\'AppStore le mettra automatiquement à jour pour vous.',
+    ou lancer <br><code>brew reinstall --cask another-redis-desktop-manager </code>\
+    <br><hr><br>❤️si cela vous est utile, vous pouvez sponsoriser via l\'<a href="https://apps.apple.com/app/id1516451072">AppStore</a>, et l\'AppStore le mettra automatiquement à jour pour vous.',
     font_family: 'Famille de polices',
     font_faq_title: 'Instructions de configuration de polices',
     font_faq: '1. Plusieurs polices peuvent être paramétrées<br>\
@@ -157,6 +162,10 @@ const fr = {
     restart: 'Redémarrage',
     max_display: 'Nombre maximal d\'affichages : {num}',
     max_scan: 'Nombre maximal d\'analyses : {num}',
+    close_left: 'Fermer les onglets de gauche',
+    close_right: 'Fermer les onglets de droite',
+    close_other: 'Fermer les autres onglets',
+    slow_log: 'Requête lente',
   },
 };
 

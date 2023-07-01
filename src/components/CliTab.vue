@@ -3,14 +3,17 @@
   <el-form @submit.native.prevent>
     <el-form-item>
       <!-- content textarea -->
-      <el-input
+      <!-- <el-input
         ref="cliContent"
         type="textarea"
-        v-model="content"
+        :value="contentStr"
         rows='22'
         :disabled="true"
+        :readonly="true"
         id='cli-content'>
-      </el-input>
+      </el-input> -->
+
+      <CliContent ref="editor" :content="contentStr"></CliContent>
 
       <!-- input params -->
       <el-autocomplete
@@ -42,20 +45,23 @@
 import { allCMD } from '@/commands';
 import splitargs from '@qii404/redis-splitargs';
 import { ipcRenderer } from 'electron';
+import CliContent from '@/components/CliContent';
 
 export default {
   data() {
     return {
       params: '',
-      content: '',
+      content: [],
       historyIndex: 0,
       inputSuggestionItems: [],
       multiQueue: null,
       subscribeMode: false,
       monitorMode: false,
+      maxHistory: 2000,
     };
   },
   props: ['client', 'hotKeyScope'],
+  components: { CliContent },
   computed: {
     paramsTrim() {
       return this.params.replace(/^\s+|\s+$/g, '');
@@ -72,7 +78,15 @@ export default {
       catch(e) {
         return [this.paramsTrim];
       }
-    }
+    },
+    contentStr() {
+      if (this.content.length > this.maxHistory) {
+        // this.content = this.content.slice(-this.maxHistory);
+        this.content.splice(0, this.content.length - this.maxHistory);
+      }
+
+      return this.content.join("\n") + "\n";
+    },
   },
   created() {
     this.$bus.$on('changeDb', (client, dbIndex) => {
@@ -108,7 +122,7 @@ export default {
       });
     },
     initCliContent() {
-      this.content += `> ${this.anoClient.options.connectionName} connected!\n`;
+      this.content.push(`\n> ${this.anoClient.options.connectionName} connected!`);
       this.scrollToBottom();
     },
     tabClick() {
@@ -195,7 +209,7 @@ export default {
       const paramsArr = this.paramsArr;
 
       this.params = '';
-      this.content += `> ${params}\n`;
+      this.content.push(`> ${params}`);
 
       // append to history command
       this.appendToHistory(params);
@@ -205,12 +219,27 @@ export default {
       }
 
       if (params == 'clear') {
-        return this.content = '';
+        return this.content = [];
+      }
+
+      // mock help command
+      if (paramsArr[0].toLowerCase() == 'help') {
+        return this.scrollToBottom('Input your command and select from tips');
       }
 
       // multi-exec mode
       if (params == 'multi') {
         this.multiQueue = [];
+        return this.scrollToBottom('OK');
+      }
+
+      //multi-discard-mode
+      if (params == 'discard') {
+      // discard when not multi condition
+        if (!Array.isArray(this.multiQueue)) {
+          return this.scrollToBottom('(error) ERR DISCARD without MULTI');
+        }
+        this.multiQueue = null;
         return this.scrollToBottom('OK');
       }
 
@@ -223,10 +252,10 @@ export default {
 
         this.anoClient.multi(this.multiQueue).execBuffer((err, reply) => {
           if (err) {
-            this.content += `${err}\n`;
+            this.content.push(`${err}`);
           }
           else {
-            this.content += this.resolveResult(reply);
+            this.content.push(this.resolveResult(reply).trim());
           }
 
           this.scrollToBottom();
@@ -265,7 +294,7 @@ export default {
 
       // normal command promise
       promise.then((reply) => {
-        this.content += this.resolveResult(reply);
+        this.content.push(this.resolveResult(reply).trim());
         this.execFinished(paramsArr);
         this.scrollToBottom();
       }).catch((err) => {
@@ -289,9 +318,17 @@ export default {
       }
     },
     scrollToBottom(append = '') {
-      append && (this.content += `${append}\n`);
+      append && (this.content.push(`${append}`));
 
       this.$nextTick(() => {
+        if (this.$refs.editor) {
+          return this.$refs.editor.scrollToBottom();
+        }
+        
+        if (!this.$refs.cliContent) {
+          return;
+        }
+
         const textarea = this.$refs.cliContent.$el.firstChild;
         textarea.scrollTop = textarea.scrollHeight;
       });
@@ -389,7 +426,7 @@ export default {
       //   (typeof this.cb == 'function') && this.cb([]);
       // });
       this.$shortcut.bind('ctrl+l, ⌘+l', this.hotKeyScope, () => {
-        this.content = '';
+        this.content = [];
       });
     },
     initHistoryTips() {
@@ -403,7 +440,7 @@ export default {
       });
     },
     storeCommandTips() {
-      const key = `cliTips_${this.client.options.connectionName}`;
+      const key = this.$storage.getStorageKeyByName('cli_tip', this.client.options.connectionName);
       localStorage.setItem(key, JSON.stringify(this.inputSuggestionItems.slice(-200)));
     },
   },
