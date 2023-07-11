@@ -232,7 +232,7 @@ npm run pack:linux
 
 #### 1. 内网中的Redis集群如何连接（如Docker内，局域网内，AWS内）？
    
-   答：使用`SSH+Cluster`的方式连接（等价于先SSH到内网，再使用内网ip连接Cluster），Redis的Host填写Redis**内网ip**地址。
+   答：使用`SSH+Cluster`的方式连接（等价于先SSH到内网，再使用内网ip连接Cluster），Redis的Host填写Redis**内网ip**地址如`127.0.0.1` `192.168.x.x`。
    
    Redis内网地址如何获得？直接以SSH的方式连接，不勾选Cluster，然后打开命令行，直接执行`CLUSTER NODES`， 在结果中选一ip即可。
 
