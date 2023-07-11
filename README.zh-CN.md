@@ -228,6 +228,19 @@ npm run pack:linux
 | `/bin/node` | `/home/qii/node_decoder.js {HEX} --key={KEY}` |
 
 
+## FAQ
+
+#### 1. 内网中的Redis集群如何连接（如Docker内，局域网内，AWS内）？
+   
+   答：使用`SSH+Cluster`的方式连接（等价于先SSH到内网，再使用内网ip连接Cluster），Redis的Host填写Redis**内网ip**地址。
+   
+   Redis内网地址如何获得？直接以SSH的方式连接，不勾选Cluster，然后打开命令行，直接执行`CLUSTER NODES`， 在结果中选一ip即可。
+
+#### 2. Redis配置中的`Username`用户名是否需要填写？
+   
+   答：用户名为`Redis>=6.0`才支持的访问控制列表（`ACL`），默认不需要填写（为default），指定特殊用户时才填写。
+
+
 ## License
 
 [MIT](LICENSE)
