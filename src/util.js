@@ -365,4 +365,19 @@ export default {
   randomString(len = 5) {
     return Math.random().toString(36).substr(-len);
   },
+  createAndDownloadFile(fileName, content) {
+    const aTag = document.createElement('a');
+    const blob = new Blob([content]);
+
+    aTag.download = fileName;
+    aTag.href = URL.createObjectURL(blob);
+
+    aTag.click();
+    URL.revokeObjectURL(blob);
+  },
+  arrayChunk(arr, size) {
+    return Array.from({ length: Math.ceil(arr.length / size) }, (v, i) =>
+      arr.splice(0, size)
+    );
+  },
 };

@@ -67,6 +67,14 @@
       </el-table-column>
 
       <el-table-column label="Operation">
+        <template slot="header" slot-scope="scope">
+          <input
+            class="el-input__inner key-detail-filter-value"
+            v-model="filterValue"
+            @keyup.enter='initShow()'
+            :placeholder="$t('message.key_to_search')"/>
+          <i :class='loadingIcon'></i>
+        </template>
         <template slot-scope="scope">
           <el-button type="text" @click="$util.copyToClipboard(JSON.stringify(scope.row.content))" icon="el-icon-document" :title="$t('message.copy')"></el-button>
           <el-button type="text" @click="showEditDialog(scope.row)" icon="el-icon-view" :title="$t('message.detail')"></el-button>
@@ -107,7 +115,9 @@ export default {
       loadMoreDisable: false,
       minId: '-',
       maxId: '+',
-      lastId: '',
+      lastId: Buffer.from(''),
+      oneTimeListLength: 0,
+      filterValue: '',
     };
   },
   components: {FormatViewer, InputBinary},
@@ -123,48 +133,89 @@ export default {
       resetTable && this.resetTable();
       this.loadingIcon = 'el-icon-loading';
 
-      let maxId = this.lastId ? this.lastId : (this.maxId ? this.maxId : '+');
+      // scan
+      this.listScan();
+      // total lines
+      this.initTotal();
+    },
+    listScan() {
+      let maxId = this.lastId.equals(Buffer.from('')) ?
+                  (this.maxId ? this.maxId : '+') :
+                  this.lastId;
+      // +1 for padding the repeat
+      const pageSize = this.filterValue ? 500 :
+                      (this.lineData.length ? this.pageSize + 1 : this.pageSize);
 
       this.client.xrevrangeBuffer([
         this.redisKey,
         maxId,
         this.minId ? this.minId : '-',
         'COUNT',
-        this.pageSize
+        pageSize
       ]).then(reply => {
         if (!reply.length) {
           return this.loadingIcon = '';
         }
 
+        // last line of this page
+        const lastLine = reply[reply.length - 1];
+
+        // scanning end
+        if (this.lastId.equals(lastLine[0])) {
+          this.loadingIcon = '';
+          this.oneTimeListLength = 0;
+          return;
+        }
+
         let lineData = [];
 
         for (let stream of reply) {
+          const streamId = stream[0];
+          const flatDict = stream[1];
+
+          // skip first line, it is repeat with the last one of previous page
+          if (this.lastId.equals(streamId)) {
+            continue;
+          }
+
           let content = {};
-          let line = {id: stream[0], content: content, uniq: Math.random()};
+          let line = {id: streamId, content: content, uniq: Math.random()};
           // add key value map
-          for (var i = 0; i < stream[1].length; i+=2) {
-            content[this.$util.bufToString(stream[1][i])] =
-              this.$util.bufToString(stream[1][i+1]);
+          for (var i = 0; i < flatDict.length; i+=2) {
+            content[this.$util.bufToString(flatDict[i])] =
+              this.$util.bufToString(flatDict[i+1]);
           }
 
           line.contentString = JSON.stringify(line.content);
+
+          // filter k&v
+          if (this.filterValue && !line.contentString.includes(this.filterValue)) {
+            continue;
+          }
           lineData.push(line);
         }
 
         // record last id for next load
-        this.lastId = reply[reply.length - 1][0];
-        // remove the first[repeated with last one of previous page] when append
-        this.lineData.length && lineData.shift();
+        this.lastId = lastLine[0];
 
-        this.lineData = resetTable ? lineData : this.lineData.concat(lineData);
-        this.loadingIcon = '';
+        this.oneTimeListLength += lineData.length;
+        this.lineData = this.lineData.concat(lineData);
+
+        if (this.oneTimeListLength >= this.pageSize) {
+          this.loadingIcon = '';
+          this.oneTimeListLength = 0;
+          return;
+        }
+
+        if (this.cancelScanning) {
+          return;
+        }
+        // continue scanning until to pagesize
+        this.listScan();
       }).catch(e => {
         this.loadingIcon = '';
         this.$message.error(e.message);
       });
-
-      // total lines
-      this.initTotal();
     },
     initTotal() {
       this.client.xlen(this.redisKey).then((reply) => {
@@ -173,7 +224,8 @@ export default {
     },
     resetTable() {
       this.lineData = [];
-      this.lastId = '';
+      this.lastId = Buffer.from('');
+      this.oneTimeListLength = 0;
       this.loadMoreDisable = false;
     },
     openDialog() {
@@ -266,6 +318,9 @@ export default {
   },
   mounted() {
     this.initShow();
+  },
+  beforeDestroy() {
+    this.cancelScanning = true;
   },
 };
 </script>

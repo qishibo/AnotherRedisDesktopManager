@@ -116,6 +116,7 @@ export default {
 
     delete connections[key];
 
+    this.hookAfterDelConnection(connection);
     this.setConnections(connections);
   },
   getConnectionKey(connection, forceUnique = false) {
@@ -160,5 +161,31 @@ export default {
     this.setConnections(newConnections);
 
     return newConnections;
+  },
+  getStorageKeyMap(type) {
+    const typeMap = {
+      'cli_tip': 'cliTips',
+      'last_db': 'lastSelectedDb',
+    };
+
+    return type ? typeMap[type] : typeMap;
+  },
+  initStorageKey(prefix, connectionName) {
+    return `${prefix}_${connectionName}`;
+  },
+  getStorageKeyByName(type = 'cli_tip', connectionName = '') {
+    return this.initStorageKey(this.getStorageKeyMap(type), connectionName)
+  },
+  hookAfterDelConnection(connection) {
+    const connectionName = this.getConnectionName(connection);
+    const types = Object.keys(this.getStorageKeyMap());
+
+    let willRemovedKeys = [];
+
+    for (let type of types) {
+      willRemovedKeys.push(this.getStorageKeyByName(type, connectionName));
+    }
+
+    willRemovedKeys.forEach(k => localStorage.removeItem(k));
   },
 };

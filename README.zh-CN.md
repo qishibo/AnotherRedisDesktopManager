@@ -60,6 +60,9 @@
 
 ## 里程碑
 
+- 2023-06-22: 不同db\数据库之间支持导入导出key
+- 2023-05-26: Stream类型搜索支持 && 支持慢日志查询
+- 2023-04-01: List类型搜索支持 && Deflate raw 支持
 - 2022-10-07: Key列表方向键 && 内存分析支持指定文件夹
 - 2022-08-05: 克隆连接 && Tabs右键和滚轮支持
 - 2022-04-01: Protobuf 支持 && 内存占用分析
@@ -223,6 +226,19 @@ npm run pack:linux
 | ------ | ------ |
 | `/bin/bash` | `/home/qii/shell_decoder.sh {VALUE}` |
 | `/bin/node` | `/home/qii/node_decoder.js {HEX} --key={KEY}` |
+
+
+## FAQ
+
+#### 1. 内网中的Redis集群如何连接（如Docker内，局域网内，AWS内）？
+   
+   答：使用`SSH+Cluster`的方式连接（等价于先SSH到内网，再使用内网ip连接Cluster），Redis的Host填写Redis**内网ip**地址如`127.0.0.1` `192.168.x.x`。
+   
+   Redis内网地址如何获得？直接以SSH的方式连接，不勾选Cluster，然后打开命令行，直接执行`CLUSTER NODES`， 在结果中选一ip即可。
+
+#### 2. Redis配置中的`Username`用户名是否需要填写？
+   
+   答：用户名为`Redis>=6.0`才支持的访问控制列表（`ACL`），默认不需要填写（为default），指定特殊用户时才填写。
 
 
 ## License

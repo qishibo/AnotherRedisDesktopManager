@@ -5,7 +5,8 @@
       :is="keyListType"
       :config="config"
       :client="client"
-      :keyList="keyList">
+      :keyList="keyList"
+      @exportBatch="exportBatch">
     </component>
 
     <div class='keys-load-more-wrapper'>
@@ -50,9 +51,7 @@ export default {
       scanStreams: [],
       scanningCount: 0,
       scanMoreDisabled: false,
-      onePageList: [],
-      onePageFinishedCount: 0,
-      firstPageFinished: false,
+      onePageKeysCount: 0,
       loadAllTooltip: true,
       loadingAll: false,
     };
@@ -62,7 +61,20 @@ export default {
   computed: {
     keysPageSize() {
       let keysPageSize = parseInt(this.globalSettings['keysPageSize']);
-      return keysPageSize ? keysPageSize : 500;
+
+      // custom defined size
+      if (keysPageSize) {
+        // cluster mode, pageSize = size / masterNodes
+        if (this.client.nodes) {
+          let nodeCount = this.client.nodes('master').length;
+          return nodeCount ? parseInt(keysPageSize / nodeCount) : keysPageSize;
+        }
+
+        // common mode
+        return keysPageSize;
+      }
+
+      return 500;
     },
     showLoadAllKeys(){
       // force show
@@ -101,13 +113,13 @@ export default {
       // reset previous list, not append mode
       resetKeyList && this.resetKeyList();
 
+      // show searching status
+      this.setSearchStatus();
+
       // extract search
       if (this.$parent.$parent.$parent.$refs.operateItem.searchExact === true) {
         return this.refreshKeyListExact();
       }
-
-      // search loading
-      this.$parent.$parent.$parent.$refs.operateItem.searchIcon = 'el-icon-loading';
 
       // init scanStream
       if (!this.scanStreams.length) {
@@ -117,8 +129,7 @@ export default {
       // scan more, resume previous scanStream
       else {
         // reset one page scan param
-        this.onePageList = [];
-        this.onePageFinishedCount = 0;
+        this.onePageKeysCount = 0;
 
         for (var stream of this.scanStreams) {
           stream.resume();
@@ -128,7 +139,9 @@ export default {
     loadAllKeys(){
       this.resetKeyList();
       this.loadingAll = true;
-      this.$parent.$parent.$parent.$refs.operateItem.searchIcon = 'el-icon-loading';
+
+      // show searching status
+      this.setSearchStatus();
       this.initScanStreamsAndScan(true);
     },
     initScanStreamsAndScan(loadAll = false) {
@@ -149,45 +162,33 @@ export default {
         this.scanStreams.push(stream);
 
         stream.on('data', keys => {
-          this.onePageList = this.onePageList.concat(keys);
+          if (!keys.length) {
+            return;
+          }
+
+          this.keyList = this.keyList.concat(keys);
+          this.onePageKeysCount += keys.length;
 
           // scan once reaches page size
-          if (this.onePageList.length >= keysPageSize && loadAll === false) {
+          if (this.onePageKeysCount >= keysPageSize && loadAll === false) {
             // temp stop
             stream.pause();
-
-            // last node refresh keylist
-            if (++this.onePageFinishedCount >= this.scanningCount) {
-              // clear key list only after data scaned, to prevent list jitter
-              // empty keyList only when first click, if click 'load more' again, do not empty it
-              if (!this.firstPageFinished) {
-                this.firstPageFinished = true;
-                this.keyList = [];
-              }
-
-              // this page key list append to raw key list
-              this.keyList = this.keyList.concat(this.onePageList);
-              // search input icon recover
-              this.$parent.$parent.$parent.$refs.operateItem.searchIcon = 'el-icon-search';
-            }
+            this.resetSearchStatus();
           }
         });
 
         stream.on('error', (e) => {
-          this.$parent.$parent.$parent.$refs.operateItem.searchIcon = 'el-icon-search';
-          this.loadingAll = false;
+          this.resetSearchStatus();
 
           // scan command disabled, other functions may be used normally
           if (
             (e.message.includes('unknown command') && e.message.includes('scan')) ||
             e.message.includes("command 'SCAN' is not allowed")
           ) {
-            this.$message.error({
+            return this.$message.error({
               message: this.$t('message.scan_disabled'),
               duration: 1500,
             });
-
-            return;
           }
 
           // other errors
@@ -204,33 +205,34 @@ export default {
         stream.on('end', () => {
           // all nodes scan finished(cusor back to 0)
           if (--this.scanningCount <= 0) {
-            // clear key list only after data scaned, to prevent list jitter
-            // empty keyList only when first click, if click 'load more' again, do not empty it
-            if (!this.firstPageFinished) {
-              this.firstPageFinished = true;
-              this.keyList = [];
-            }
-
-            // this page key list append to raw key list
-            this.keyList = this.keyList.concat(this.onePageList);
             this.scanMoreDisabled = true;
-            // search input icon recover
-            this.$parent.$parent.$parent.$refs.operateItem.searchIcon = 'el-icon-search';
-            this.loadingAll = false;
+            this.resetSearchStatus();
           }
         });
       });
     },
-    resetKeyList(clearKeys = false) {
+    resetKeyList() {
       // cancel scanning
       this.cancelScanning();
-
-      clearKeys && (this.keyList = []);
-      this.firstPageFinished = false;
+      this.keyList = [];
       this.scanStreams = [];
-      this.onePageList = [];
-      this.onePageFinishedCount = 0;
+      this.onePageKeysCount = 0;
       this.scanMoreDisabled = false;
+      this.loadingAll = false;
+    },
+    setSearchStatus() {
+      // search loading
+      this.$parent.$parent.$parent.$refs.operateItem.searchIcon = 'el-icon-loading';
+      // show cancel scanning btn after scanning for a while
+      this.$parent.$parent.$parent.$refs.operateItem.toggleCancelIcon(true);
+    },
+    resetSearchStatus() {
+      // search input icon recover
+      this.$parent.$parent.$parent.$refs.operateItem.searchIcon = 'el-icon-search';
+      // remove cancel scanning btn
+      this.$parent.$parent.$parent.$refs.operateItem.toggleCancelIcon(false);
+      // reset loading all status
+      this.loadingAll = false;
     },
     refreshKeyListExact() {
       const match = this.getMatchMode(false);
@@ -239,9 +241,10 @@ export default {
         this.keyList = (reply == 1) ? [Buffer.from(match)] : [];
       }).catch(e => {
         this.$message.error(e.message);
+      }).finally(() => {
+        this.scanMoreDisabled = true;
+        this.resetSearchStatus();
       });
-
-      this.scanMoreDisabled = true;
     },
     cancelScanning() {
       if (this.scanStreams.length) {
@@ -287,6 +290,35 @@ export default {
 
       this.keyList.push(key);
     },
+    exportBatch(keys) {
+      let lines = [];
+      let failed = [];
+      let promiseQueue = [];
+
+      for (const key of keys) {
+        const promise = this.client.callBuffer('DUMP', key);
+        promiseQueue.push(promise);
+      }
+
+      Promise.allSettled(promiseQueue).then(reply => {
+        for (const index in reply) {
+          const item = reply[index];
+
+          if (item.status === "fulfilled") {
+            const line = `${keys[index].toString('hex')},${item.value.toString('hex')}`;
+            lines.push(line);
+          }
+          // dump failed
+          else {
+            failed.push(keys[index]);
+          }
+        }
+
+        // save to file
+        const file = `Dump_${(new Date).toISOString().substr(0, 10).replaceAll('-', '')}.csv`
+        this.$util.createAndDownloadFile(file, lines.join('\n'));
+      });
+    }
   },
   watch: {
     globalSettings(newSetting, oldSetting) {

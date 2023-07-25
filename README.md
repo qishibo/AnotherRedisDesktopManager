@@ -23,7 +23,7 @@
 - Or by **chocolatey**: `choco install another-redis-desktop-manager`
 - Or by **winget**: `winget install qishibo.AnotherRedisDesktopManager`
 - Or **sponsor** by win store, It's not free, and I will be very grateful to you.
-<br/><a href="https://www.microsoft.com/store/apps/9MTD84X0JFHZ?cid=storebadge&ocid=badge"><img src="https://cdn.jsdelivr.net/gh/qishibo/img/microsoft-store.png" height="58" width="180" alt="get from microsoft store"></a>
+<br/><a href="https://apps.microsoft.com/store/detail/9MTD84X0JFHZ?launch=true&cid=github&mode=mini"><img src="https://cdn.jsdelivr.net/gh/qishibo/img/microsoft-store.png" height="58" width="180" alt="get from microsoft store"></a>
 
 ## Linux
 
@@ -63,6 +63,9 @@
 
 ## Feature Log
 
+- 2023-06-22: Export\Import keys support
+- 2023-05-26: Search support in Stream && Slow log support
+- 2023-04-01: Search support in List && Deflate raw support
 - 2022-10-07: Arrow Keys support in key list && Memory Analysis in folder
 - 2022-08-05: Clone Connection && Tabs Contextmenu\Mousewheel Support
 - 2022-04-01: Protobuf Support && Memory Analysis
@@ -223,6 +226,19 @@ This project exists thanks to all the people who contribute.
 | ------ | ------ |
 | `/bin/bash` | `/home/qii/shell_decoder.sh {VALUE}` |
 | `/bin/node` | `/home/qii/node_decoder.js {HEX} --key={KEY}` |
+
+
+## FAQ
+
+#### 1. How to connect to Redis Cluster in internal network (such as Docker, LAN, AWS)?
+   
+   Answer: Connect via `SSH+Cluster` (SSH to the internal network and then connecting to Cluster with internal IP such as `127.0.0.1`, `192.168.x.x`), you need to fill Redis Host with the internal IP.
+   
+   How to get Redis internal IP? Connect through SSH, uncheck Cluster option, and then open the console to execute `CLUSTER NODES`, select any IP in the result.
+
+#### 2. Do I need to fill in the 'Username' in the Redis configuration?
+   
+   Answer: The access control list (ACL) is only supported in `Redis>=6.0`, so do not fill it unless you need a special user.
 
 
 ## License

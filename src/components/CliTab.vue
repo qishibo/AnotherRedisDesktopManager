@@ -233,6 +233,16 @@ export default {
         return this.scrollToBottom('OK');
       }
 
+      //multi-discard-mode
+      if (params == 'discard') {
+      // discard when not multi condition
+        if (!Array.isArray(this.multiQueue)) {
+          return this.scrollToBottom('(error) ERR DISCARD without MULTI');
+        }
+        this.multiQueue = null;
+        return this.scrollToBottom('OK');
+      }
+
       // multi dequeue
       if (params == 'exec') {
         // exec when not multi condition
@@ -430,7 +440,7 @@ export default {
       });
     },
     storeCommandTips() {
-      const key = `cliTips_${this.client.options.connectionName}`;
+      const key = this.$storage.getStorageKeyByName('cli_tip', this.client.options.connectionName);
       localStorage.setItem(key, JSON.stringify(this.inputSuggestionItems.slice(-200)));
     },
   },

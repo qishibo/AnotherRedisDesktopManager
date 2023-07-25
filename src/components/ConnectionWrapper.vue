@@ -170,7 +170,7 @@ export default {
 
         client.on('error', (error) => {
           this.$message.error({
-            message: 'Redis Client On Error: ' + error + ' Config right?',
+            message: 'Client On Error: ' + error + ' Config right?',
             duration: 3000,
             customClass: 'redis-on-error-message'
           });
