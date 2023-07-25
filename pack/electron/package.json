@@ -48,7 +48,7 @@
     "appx": {
       "applicationId": "qii404.AnotherRedisDesktopManager",
       "identityName": "8437qii404.AnotherRedisDesktopManager",
-      "backgroundColor": "#e7e7e7",
+      "backgroundColor": "#fff",
       "publisher": "CN=B77E3FE8-0A5F-4F5F-B616-1DFC90AA393B",
       "publisherDisplayName": "qii404",
       "languages": ["en-US", "zh-CN", "zh-TW", "de", "fr", "it", "pt", "ru", "tr", "uk", "es"]
