@@ -14,7 +14,7 @@
     "appId": "me.qii404.another-redis-desktop-manager",
     "productName": "Another Redis Desktop Manager",
     "artifactName": "${productName}.${version}.${ext}",
-    "copyright": "Copyright © 2022 qii404.me",
+    "copyright": "Copyright © 2023 qii404.me",
     "asar": true,
     "directories": {
       "output": "build-apps",
