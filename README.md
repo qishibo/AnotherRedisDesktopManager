@@ -228,6 +228,19 @@ This project exists thanks to all the people who contribute.
 | `/bin/node` | `/home/qii/node_decoder.js {HEX} --key={KEY}` |
 
 
+## FAQ
+
+#### 1. How to connect to Redis Cluster in internal network (such as Docker, LAN, AWS)?
+   
+   Answer: Connect via `SSH+Cluster` (SSH to the internal network and then connecting to Cluster with internal IP such as `127.0.0.1`, `192.168.x.x`), you need to fill Redis Host with the internal IP.
+   
+   How to get Redis internal IP? Connect through SSH, uncheck Cluster option, and then open the console to execute `CLUSTER NODES`, select any IP in the result.
+
+#### 2. Do I need to fill in the 'Username' in the Redis configuration?
+   
+   Answer: The access control list (ACL) is only supported in `Redis>=6.0`, so do not fill it unless you need a special user.
+
+
 ## License
 
 [MIT](LICENSE)

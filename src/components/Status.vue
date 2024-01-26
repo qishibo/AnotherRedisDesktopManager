@@ -210,15 +210,17 @@ export default {
       const dbs = [];
 
       for (const i in this.connectionStatus) {
-        if (i.startsWith('db')) {
+        // fix #1101 unexpected db prefix
+        // if (i.startsWith('db')) {
+        if (/^db\d+/.test(i)) {
           const item = this.connectionStatus[i];
           const array = item.split(',');
 
           dbs.push({
             db: i,
-            keys: array[0].split('=')[1],
-            expires: array[1].split('=')[1],
-            avg_ttl: array[2].split('=')[1],
+            keys: array[0] ? array[0].split('=')[1] : NaN,
+            expires: array[1] ? array[1].split('=')[1] : NaN,
+            avg_ttl: array[2] ? array[2].split('=')[1] : NaN,
           });
         }
       }
