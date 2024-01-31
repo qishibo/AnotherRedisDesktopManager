@@ -63,6 +63,7 @@
 
 ## Feature Log
 
+- 2024-01-31: Hey, long time! Command line(CLI) args support
 - 2023-06-22: Export\Import keys support
 - 2023-05-26: Search support in Stream && Slow log support
 - 2023-04-01: Search support in List && Deflate raw support
