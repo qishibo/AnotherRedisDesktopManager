@@ -30,6 +30,7 @@ import Aside from '@/Aside';
 import Tabs from '@/components/Tabs';
 import UpdateCheck from '@/components/UpdateCheck';
 import { ipcRenderer } from 'electron';
+import addon from './addon';
 
 export default {
   name: 'App',
@@ -40,14 +41,11 @@ export default {
   },
   created() {
     this.$bus.$on('reloadSettings', () => {
-      this.reloadSettings();
+      addon.reloadSettings();
     });
 
     // restore side bar width
     this.restoreSideBarWidth();
-
-    // bind cli args
-    this.bindCliArgs();
   },
   components: {Aside, Tabs, UpdateCheck},
   methods: {
@@ -85,76 +83,15 @@ export default {
       let sideWidth = localStorage.sideWidth;
       sideWidth && (this.sideWidth = sideWidth);
     },
-    bindCliArgs() {
-      ipcRenderer.invoke('getMainArgs').then(result => {
-        if (!result.argv) {
-          return;
-        }
-        const mainArgs = this.$util.splitArgs(result.argv);
-
-        // with --host xxxx
-        if (mainArgs.host && mainArgs.host.length > 0) {
-          let port = parseInt(mainArgs.port);
-          !port && (port = 6379);
-
-          const connection = {
-            host: mainArgs.host,
-            port: port,
-            auth: mainArgs.auth,
-          };
-
-          // add to storage
-          this.$storage.addConnection(connection);
-          this.$bus.$emit('refreshConnections');
-          // open connection after added
-          setTimeout(() => {
-            this.$bus.$emit('openConnection', connection.name);
-            // tmp connection, delete it after opened
-            if (!mainArgs.save) {
-              this.$storage.deleteConnection(connection);
-            }
-          }, 300);
-        }
-      });
-    },
-    openHrefInBrowser() {
-      const shell = require('electron').shell;
-
-      document.addEventListener('click', function (event) {
-        const ele = event.target;
-
-        if (ele && (ele.nodeName.toLowerCase() === 'a') && ele.href.startsWith('http')) {
-          event.preventDefault();
-          shell.openExternal(ele.href);
-        }
-      });
-    },
-    reloadSettings() {
-      this.initFont();
-      this.initZoom();
-    },
-    initFont() {
-      const fontFamily = this.$storage.getFontFamily();
-      document.body.style.fontFamily = fontFamily;
-      // tell monaco editor
-      this.$bus.$emit('fontInited', fontFamily);
-    },
-    initZoom() {
-      let zoomFactor = this.$storage.getSetting('zoomFactor');
-      zoomFactor = zoomFactor ? zoomFactor : 1.0;
-
-      const {webFrame} = require('electron');
-      webFrame.setZoomFactor(zoomFactor);
-    },
   },
   mounted() {
     setTimeout(() => {
       this.$bus.$emit('update-check');
     }, 2000);
 
-    this.reloadSettings();
     this.bindSideBarDrag();
-    this.openHrefInBrowser();
+    // addon init setup
+    addon.setup();
   },
 };
 </script>
