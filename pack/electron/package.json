@@ -1,6 +1,6 @@
 {
   "name": "another-redis-desktop-manager",
-  "version": "1.6.1",
+  "version": "1.6.2",
   "description": "A faster, better and more stable redis desktop manager.",
   "author": "Another",
   "private": true,
@@ -14,7 +14,7 @@
     "appId": "me.qii404.another-redis-desktop-manager",
     "productName": "Another Redis Desktop Manager",
     "artifactName": "${productName}.${version}.${ext}",
-    "copyright": "Copyright © 2023 qii404.me",
+    "copyright": "Copyright © 2024 qii404",
     "asar": true,
     "directories": {
       "output": "build-apps",

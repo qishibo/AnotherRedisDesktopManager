@@ -29,6 +29,7 @@
 import Aside from '@/Aside';
 import Tabs from '@/components/Tabs';
 import UpdateCheck from '@/components/UpdateCheck';
+import addon from './addon';
 
 export default {
   name: 'App',
@@ -39,7 +40,7 @@ export default {
   },
   created() {
     this.$bus.$on('reloadSettings', () => {
-      this.reloadSettings();
+      addon.reloadSettings();
     });
 
     // restore side bar width
@@ -81,44 +82,15 @@ export default {
       let sideWidth = localStorage.sideWidth;
       sideWidth && (this.sideWidth = sideWidth);
     },
-    openHrefInBrowser() {
-      const shell = require('electron').shell;
-
-      document.addEventListener('click', function (event) {
-        const ele = event.target;
-
-        if (ele && (ele.nodeName.toLowerCase() === 'a') && ele.href.startsWith('http')) {
-          event.preventDefault();
-          shell.openExternal(ele.href);
-        }
-      });
-    },
-    reloadSettings() {
-      this.initFont();
-      this.initZoom();
-    },
-    initFont() {
-      const fontFamily = this.$storage.getFontFamily();
-      document.body.style.fontFamily = fontFamily;
-      // tell monaco editor
-      this.$bus.$emit('fontInited', fontFamily);
-    },
-    initZoom() {
-      let zoomFactor = this.$storage.getSetting('zoomFactor');
-      zoomFactor = zoomFactor ? zoomFactor : 1.0;
-
-      const {webFrame} = require('electron');
-      webFrame.setZoomFactor(zoomFactor);
-    },
   },
   mounted() {
     setTimeout(() => {
       this.$bus.$emit('update-check');
     }, 2000);
 
-    this.reloadSettings();
     this.bindSideBarDrag();
-    this.openHrefInBrowser();
+    // addon init setup
+    addon.setup();
   },
 };
 </script>
