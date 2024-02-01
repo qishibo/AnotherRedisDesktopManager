@@ -229,6 +229,79 @@ This project exists thanks to all the people who contribute.
 | `/bin/node` | `/home/qii/node_decoder.js {HEX} --key={KEY}` |
 
 
+
+## Start From Command Line(CLI)
+
+> If you want to start from command line(CLI), you can pass args to the App.
+
+### Examples
+
+```bash
+# Linux
+# ./Another Redis Desktop Manager.AppImage
+
+# Mac
+# open /Applications/Another\ Redis\ Desktop\ Manager.app --args
+
+# Windows
+"D:\xxxx\Another Redis Desktop Manager.exe"
+
+# COMMON
+--host 127.0.0.1 --port 6379 --auth 123
+--name tmp_connection
+
+# CLUSTER
+--cluster
+
+# SSH
+--ssh-host 192.168.0.110
+--ssh-username root --ssh-password 123
+
+# SENTINEL
+--sentinel-master-name mymaster
+--sentinel-node-password 123
+
+# save connection
+--save
+# readonly mode
+--readonly
+```
+
+### Parameter Description
+
+#### Common
+
+| Args | Description | Args | Description |
+| ------ | ------ | ------ | ------ |
+| --host | Redis host* | --port | Redis port|
+| --auth | Password | --name | Custom name|
+| --separator | Key separator | --readonly | Readonly mode|
+| --username | Username（Redis6 ACL）| --save| Save connection|
+
+#### SSH
+
+| Args | Description | Args | Description |
+| ------ | ------ | ------ | ------ |
+| --ssh-host | SSH host | --ssh-port | SSH port（default:22）|
+| --ssh-username | Username | --ssh-password | Password|
+| --ssh-private-key | Path of private key | --ssh-passphrase | Password of private key|
+| --ssh-timeout | SSH timeout(s) | | &nbsp;|
+
+#### CLUSTER
+
+| Args | Description |
+| ------ | ------ |
+| --cluster | Enable CLUSTER mode |
+
+#### SENTINEL
+
+| Args | Description |
+| ------ | ------ |
+| --sentinel-master-name | Name of master group，like 'mymaster' |
+| --sentinel-node-password | Password of Redis node |
+
+
+
 ## FAQ
 
 #### 1. How to connect to Redis Cluster in internal network (such as Docker, LAN, AWS)?

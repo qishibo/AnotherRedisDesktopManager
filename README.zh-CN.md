@@ -229,6 +229,79 @@ npm run pack:linux
 | `/bin/node` | `/home/qii/node_decoder.js {HEX} --key={KEY}` |
 
 
+
+## 命令行启动
+
+> 如果你有需求从命令行启动程序，可以通过如下方式，自定义不同的连接参数。
+
+### 示例
+
+```bash
+# Linux
+# ./Another Redis Desktop Manager.AppImage
+
+# Mac
+# open /Applications/Another\ Redis\ Desktop\ Manager.app --args
+
+# Windows
+"D:\xxxx\Another Redis Desktop Manager.exe"
+
+# COMMON
+--host 127.0.0.1 --port 6379 --auth 123
+--name tmp_connection
+
+# CLUSTER
+--cluster
+
+# SSH
+--ssh-host 192.168.0.110
+--ssh-username root --ssh-password 123
+
+# SENTINEL
+--sentinel-master-name mymaster
+--sentinel-node-password 123
+
+# save connection
+--save
+# readonly mode
+--readonly
+```
+
+### 参数说明
+
+#### 通用
+
+| 参数 | 说明 | 参数 | 说明 |
+| ------ | ------ | ------ | ------ |
+| --host | 地址* | --port | 端口|
+| --auth | 密码 | --name | 自定义名称|
+| --separator | 分隔符 | --readonly | 开启只读模式|
+| --username | 用户名（Redis6 ACL）| --save| 保存连接（默认不保存）|
+
+#### SSH
+
+| 参数 | 说明 | 参数 | 说明 |
+| ------ | ------ | ------ | ------ |
+| --ssh-host | 地址 | --ssh-port | 端口（默认22）|
+| --ssh-username | 用户名 | --ssh-password | 密码|
+| --ssh-private-key | 私钥路径 | --ssh-passphrase | 私钥密码|
+| --ssh-timeout | 超时（秒） | | &nbsp;|
+
+#### CLUSTER
+
+| 参数 | 说明 |
+| ------ | ------ |
+| --cluster | 开启集群模式 |
+
+#### SENTINEL
+
+| 参数 | 说明 |
+| ------ | ------ |
+| --sentinel-master-name | Master组名称，如mymaster |
+| --sentinel-node-password | Redis节点密码 |
+
+
+
 ## FAQ
 
 #### 1. 内网中的Redis集群如何连接（如Docker内，局域网内，AWS内）？
