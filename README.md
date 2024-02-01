@@ -275,8 +275,8 @@ This project exists thanks to all the people who contribute.
 | ------ | ------ | ------ | ------ |
 | --host | Redis host* | --port | Redis port|
 | --auth | Password | --name | Custom name|
-| --separator | Key separator | --readonly | Readonly mode|
-| --username | Username（Redis6 ACL）| --save| Save connection|
+| --separator | Key separator | --readonly | Enable readonly mode|
+| --username | Username（Redis6 ACL）| --save| Enable saving, one-time link by default|
 
 #### SSH
 
