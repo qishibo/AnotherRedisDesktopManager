@@ -29,7 +29,6 @@
 import Aside from '@/Aside';
 import Tabs from '@/components/Tabs';
 import UpdateCheck from '@/components/UpdateCheck';
-import { ipcRenderer } from 'electron';
 import addon from './addon';
 
 export default {
