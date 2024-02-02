@@ -133,6 +133,7 @@ const tw = {
     username: '用戶名',
     password: '密碼',
     connection_name: '連接名稱',
+    connection_description: '描述',
     separator: '分隔符',
     timeout: '超時',
     private_key: '私鑰',

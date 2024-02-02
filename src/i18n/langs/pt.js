@@ -133,6 +133,7 @@ const pt = {
     username: 'Nome do usuário',
     password: 'Senha',
     connection_name: 'Nome personalizado',
+    connection_description: 'Descrição',
     separator: 'Separador',
     timeout: 'Tempo esgotado',
     private_key: 'Chave privada',

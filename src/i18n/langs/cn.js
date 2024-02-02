@@ -133,6 +133,7 @@ const cn = {
     username: '用户名',
     password: '密码',
     connection_name: '连接名称',
+    connection_description: '描述',
     separator: '分隔符',
     timeout: '超时',
     private_key: '私钥',

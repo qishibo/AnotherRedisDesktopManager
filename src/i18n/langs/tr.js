@@ -133,6 +133,7 @@ const tr = {
     username: 'Kullanıcı adı',
     password: 'Parola',
     connection_name: 'Bağlantı adı',
+    connection_description: 'Tanım',
     separator: 'Ayırıcı',
     timeout: 'Zaman aşımı',
     private_key: 'Özel anahtar',

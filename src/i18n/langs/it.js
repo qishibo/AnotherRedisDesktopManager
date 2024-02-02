@@ -133,6 +133,7 @@ const it = {
     username: 'Nome utente',
     password: 'Parola d\'ordine',
     connection_name: 'Nome personalizzato',
+    connection_description: 'Descrizione',
     separator: 'Delimitatore',
     timeout: 'Tempo scaduto',
     private_key: 'Chiave privata',

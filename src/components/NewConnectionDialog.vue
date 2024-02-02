@@ -37,6 +37,16 @@
         </el-col>
       </el-row>
 
+      <!-- description/notes -->
+      <el-row :gutter=20>
+        <!-- full col -->
+        <el-col :span=24>
+          <el-form-item :label="$t('message.connection_description')">
+            <el-input v-model="connection.description" autocomplete="off"></el-input>
+          </el-form-item>
+        </el-col>
+      </el-row>
+
       <!-- other operation -->
       <el-form-item label="">
         <el-checkbox v-model="sshOptionsShow">SSH</el-checkbox>
@@ -219,6 +229,7 @@ export default {
           masterName: 'mymaster',
           nodePassword: '',
         },
+        description: '',
       },
       connectionEmpty: {},
       sshOptionsShow: false,

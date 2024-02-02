@@ -133,6 +133,7 @@ const en = {
     username: 'Username',
     password: 'Password',
     connection_name: 'Connection Name',
+    connection_description: 'Description',
     separator: 'Separator',
     timeout: 'Timeout',
     private_key: 'Private Key',

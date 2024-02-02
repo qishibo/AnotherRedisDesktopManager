@@ -133,6 +133,7 @@ const de = {
     username: 'Nutzername',
     password: 'Passwort',
     connection_name: 'Benutzerdefinierter Name',
+    connection_description: 'Beschreibung',
     separator: 'Separator',
     timeout: 'Auszeit',
     private_key: 'Privat Schlüssel',

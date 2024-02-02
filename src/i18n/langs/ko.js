@@ -133,6 +133,7 @@ const ko = {
     username: '사용자명',
     password: '비밀번호',
     connection_name: '이름',
+    connection_description: '설명',
     separator: '구분자',
     timeout: '연결시도 시간제한',
     private_key: '개인키',
