@@ -41,7 +41,7 @@ import ViewerText from '@/components/ViewerText';
 import ViewerHex from '@/components/ViewerHex';
 import ViewerJson from '@/components/ViewerJson';
 import ViewerBinary from '@/components/ViewerBinary';
-import ViewerUnserialize from '@/components/ViewerUnserialize';
+import ViewerPHPSerialize from '@/components/ViewerPHPSerialize';
 import ViewerBrotli from '@/components/ViewerBrotli';
 import ViewerGzip from '@/components/ViewerGzip';
 import ViewerDeflate from '@/components/ViewerDeflate';
@@ -50,6 +50,7 @@ import ViewerOverSize from '@/components/ViewerOverSize';
 import ViewerCustom from '@/components/ViewerCustom';
 import ViewerProtobuf from '@/components/ViewerProtobuf';
 import ViewerDeflateRaw from '@/components/ViewerDeflateRaw';
+import ViewerJavaSerialize from '@/components/ViewerJavaSerialize';
 
 export default {
   data() {
@@ -62,7 +63,8 @@ export default {
         { value: 'ViewerJson', text: 'Json' },
         { value: 'ViewerBinary', text: 'Binary' },
         { value: 'ViewerMsgpack', text: 'Msgpack' },
-        { value: 'ViewerUnserialize', text: 'Unserialize' },
+        { value: 'ViewerPHPSerialize', text: 'PHPSerialize' },
+        { value: 'ViewerJavaSerialize', text: 'JavaSerialize' },
         { value: 'ViewerBrotli', text: 'Brotli' },
         { value: 'ViewerGzip', text: 'Gzip' },
         { value: 'ViewerDeflate', text: 'Deflate' },
@@ -81,7 +83,7 @@ export default {
     ViewerHex,
     ViewerJson,
     ViewerBinary,
-    ViewerUnserialize,
+    ViewerPHPSerialize,
     ViewerMsgpack,
     ViewerOverSize,
     ViewerCustom,
@@ -90,6 +92,7 @@ export default {
     ViewerDeflate,
     ViewerProtobuf,
     ViewerDeflateRaw,
+    ViewerJavaSerialize,
   },
   props: {
     float: { default: 'right' },
@@ -178,7 +181,11 @@ export default {
       }
       // php unserialize
       if (this.$util.isPHPSerialize(this.content)) {
-        return this.changeViewer('Unserialize');
+        return this.changeViewer('PHPSerialize');
+      }
+      // Java unserialize
+      if (this.$util.isJavaSerialize(this.content)) {
+        return this.changeViewer('JavaSerialize');
       }
       // msgpack
       if (this.$util.isMsgpack(this.content)) {

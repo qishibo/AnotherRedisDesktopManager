@@ -35,6 +35,7 @@
     "element-ui": "^2.4.11",
     "font-awesome": "^4.7.0",
     "getopts": "^2.3.0",
+    "java-object-serialization": "^0.1.1",
     "keymaster": "^1.6.2",
     "monaco-editor": "^0.30.1",
     "php-serialize": "^4.0.2",
