@@ -51,6 +51,7 @@ import ViewerCustom from '@/components/ViewerCustom';
 import ViewerProtobuf from '@/components/ViewerProtobuf';
 import ViewerDeflateRaw from '@/components/ViewerDeflateRaw';
 import ViewerJavaSerialize from '@/components/ViewerJavaSerialize';
+import ViewerPickle from '@/components/ViewerPickle';
 
 export default {
   data() {
@@ -65,6 +66,7 @@ export default {
         { value: 'ViewerMsgpack', text: 'Msgpack' },
         { value: 'ViewerPHPSerialize', text: 'PHPSerialize' },
         { value: 'ViewerJavaSerialize', text: 'JavaSerialize' },
+        { value: 'ViewerPickle', text: 'Pickle' },
         { value: 'ViewerBrotli', text: 'Brotli' },
         { value: 'ViewerGzip', text: 'Gzip' },
         { value: 'ViewerDeflate', text: 'Deflate' },
@@ -93,6 +95,7 @@ export default {
     ViewerProtobuf,
     ViewerDeflateRaw,
     ViewerJavaSerialize,
+    ViewerPickle,
   },
   props: {
     float: { default: 'right' },
@@ -183,9 +186,13 @@ export default {
       if (this.$util.isPHPSerialize(this.content)) {
         return this.changeViewer('PHPSerialize');
       }
-      // Java unserialize
+      // java unserialize
       if (this.$util.isJavaSerialize(this.content)) {
         return this.changeViewer('JavaSerialize');
+      }
+      // pickle
+      if (this.$util.isPickle(this.content)) {
+        return this.changeViewer('Pickle');
       }
       // msgpack
       if (this.$util.isMsgpack(this.content)) {

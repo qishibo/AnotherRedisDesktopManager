@@ -106,6 +106,16 @@ export default {
       return false;
     }
   },
+  isPickle(buf) {
+    try {
+      const Parser = require('pickleparser').Parser;
+      const result = (new Parser()).parse(buf);
+      return !!result;
+    }
+    catch (e) {
+      return false;
+    }
+  },
   isMsgpack(buf) {
     const { decode } = require('algo-msgpack-with-bigint');
 
