@@ -37,21 +37,21 @@
 
 <script type="text/javascript">
 import storage from '@/storage';
-import ViewerText from '@/components/ViewerText';
-import ViewerHex from '@/components/ViewerHex';
-import ViewerJson from '@/components/ViewerJson';
-import ViewerBinary from '@/components/ViewerBinary';
-import ViewerPHPSerialize from '@/components/ViewerPHPSerialize';
-import ViewerBrotli from '@/components/ViewerBrotli';
-import ViewerGzip from '@/components/ViewerGzip';
-import ViewerDeflate from '@/components/ViewerDeflate';
-import ViewerMsgpack from '@/components/ViewerMsgpack';
-import ViewerOverSize from '@/components/ViewerOverSize';
-import ViewerCustom from '@/components/ViewerCustom';
-import ViewerProtobuf from '@/components/ViewerProtobuf';
-import ViewerDeflateRaw from '@/components/ViewerDeflateRaw';
-import ViewerJavaSerialize from '@/components/ViewerJavaSerialize';
-import ViewerPickle from '@/components/ViewerPickle';
+import ViewerText from '@/components/viewers/ViewerText';
+import ViewerHex from '@/components/viewers/ViewerHex';
+import ViewerJson from '@/components/viewers/ViewerJson';
+import ViewerBinary from '@/components/viewers/ViewerBinary';
+import ViewerPHPSerialize from '@/components/viewers/ViewerPHPSerialize';
+import ViewerBrotli from '@/components/viewers/ViewerBrotli';
+import ViewerGzip from '@/components/viewers/ViewerGzip';
+import ViewerDeflate from '@/components/viewers/ViewerDeflate';
+import ViewerMsgpack from '@/components/viewers/ViewerMsgpack';
+import ViewerOverSize from '@/components/viewers/ViewerOverSize';
+import ViewerCustom from '@/components/viewers/ViewerCustom';
+import ViewerProtobuf from '@/components/viewers/ViewerProtobuf';
+import ViewerDeflateRaw from '@/components/viewers/ViewerDeflateRaw';
+import ViewerJavaSerialize from '@/components/viewers/ViewerJavaSerialize';
+import ViewerPickle from '@/components/viewers/ViewerPickle';
 
 export default {
   data() {

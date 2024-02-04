@@ -213,7 +213,7 @@ npm run pack:linux
 | `Params` | 拼接在`Command`后的参数，如"--key `{KEY}` --value `{VALUE}`"，其中`{KEY}`和`{VALUE}`在执行时会被替换成对应的Redis key和value。注意如果内容为二进制等不可见字符时，可以使用`{HEX}`代替`{VALUE}`，`{HEX}`会被替换成对应value的16进制即hex编码 |
 
 ### 配置样例：
-> 脚本文件首行要增加env说明，最终执行的命令如: `./home/qii/pickle_decoder.py {HEX}`, 脚本中可以使用`argv[1]`接收参数
+> 脚本文件首行要增加env说明，最终执行的命令如: `./home/qii/pickle_decoder.py {HEX}`, 脚本中可以使用`argv[1]`接收参数，参考 [#978](https://github.com/qishibo/AnotherRedisDesktopManager/issues/987#issuecomment-1294844707)
 
 | Command | Params |
 | ------ | ------ |
