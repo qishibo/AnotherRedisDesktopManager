@@ -133,7 +133,6 @@ const ua = {
     username: 'Ім\'я користувача',
     password: 'Пароль',
     connection_name: 'Спеціальна назва',
-    connection_description: 'опис',
     separator: 'Cепаратор',
     timeout: 'Час вийшов',
     private_key: 'Приватний ключ',

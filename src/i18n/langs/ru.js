@@ -133,7 +133,6 @@ const ru = {
     username: 'Имя пользователя',
     password: 'Пароль',
     connection_name: 'Имя соединения',
-    connection_description: 'Описание',
     separator: 'Pазделитель',
     timeout: 'Tайм-аут',
     private_key: 'Закрытый ключ',

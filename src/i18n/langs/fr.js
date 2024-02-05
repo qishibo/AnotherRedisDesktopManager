@@ -133,7 +133,6 @@ const fr = {
     username: 'Nom d\'utilisateur',
     password: 'Le mot de passe',
     connection_name: 'Nom d\'usage',
-    connection_description: 'Description',
     separator: 'Délimiteur',
     timeout: 'Temps libre',
     private_key: 'Clé privée',
