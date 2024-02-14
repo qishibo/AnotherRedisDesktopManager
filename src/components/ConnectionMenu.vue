@@ -45,7 +45,7 @@
             slot='content'
             v-model="menuColor"
             @change='changeColor'
-            :predefine="['#f56c6c', '#409EFF', '#85ce61', '#c6e2ff']">
+            :predefine="['#f56c6c', '#F5C800', '#409EFF', '#85ce61', '#c6e2ff']">
           </el-color-picker>
 
           <el-dropdown-item divided>
