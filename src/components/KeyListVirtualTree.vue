@@ -8,10 +8,11 @@
       <div class="flex-col">
         <el-row :gutter="10">
           <el-col :span="12">
-            <el-button @click='deleteBatch' type="danger" style="width: 100%" size="mini">{{ $t('el.upload.delete') }}</el-button>
+            <el-button v-if='rightClickItem == "export"' @click='clickItem("export")' type="primary" style="width: 100%" size="mini">{{ $t('message.export') }}</el-button>
+            <el-button v-else @click='deleteBatch' type="danger" style="width: 100%" size="mini">{{ $t('el.upload.delete') }}</el-button>
           </el-col>
           <el-col :span="12">
-            <el-button @click="hideMultiSelect" type="primary" style="width: 100%" size="mini">{{ $t('el.messagebox.cancel') }}</el-button>
+            <el-button @click="hideMultiSelect" type="primary" plain style="width: 100%" size="mini">{{ $t('el.messagebox.cancel') }}</el-button>
           </el-col>
         </el-row>
       </div>
@@ -90,6 +91,7 @@ export default {
       },
       expandedKeys: new Set(),
       checkedKeys: [],
+      rightClickItem: '',
     };
   },
   props: ['client', 'config', 'keyList'],
@@ -200,6 +202,8 @@ export default {
       }
     },
     clickItem(type) {
+      this.rightClickItem = type;
+
       switch(type) {
         // copy key name
         case 'copy': {
