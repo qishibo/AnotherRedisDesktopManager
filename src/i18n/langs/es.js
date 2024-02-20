@@ -166,6 +166,7 @@ const es = {
     close_right: 'Cerrar pestañas derechas',
     close_other: 'Cerrar otras pestañas',
     slow_log: 'Consulta lenta',
+    load_current_folder: 'Cargar solo la carpeta actual',
   },
 };
 

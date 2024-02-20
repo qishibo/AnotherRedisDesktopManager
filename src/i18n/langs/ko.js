@@ -166,6 +166,7 @@ const ko = {
     close_right: '우측 탭 닫기',
     close_other: '다른 탭 닫기',
     slow_log: '저성능 쿼리',
+    load_current_folder: '현재 폴더만 로드',
   },
 };
 

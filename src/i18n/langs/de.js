@@ -166,6 +166,7 @@ const de = {
     close_right: 'Schließen Sie die rechten Registerkarten',
     close_other: 'Schließen Sie andere Registerkarten',
     slow_log: 'Langsame Abfrage',
+    load_current_folder: 'Nur aktuellen Ordner laden',
   },
 };
 

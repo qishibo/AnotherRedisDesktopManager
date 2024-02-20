@@ -57,6 +57,7 @@
       <ul v-if="!rightClickNode.isLeaf">
         <li @click='clickItem("multiple_select")'>{{ $t('message.multiple_select') }}</li>
         <li @click='clickItem("memory_analysis")'>{{ $t('message.memory_analysis') }}</li>
+        <li @click='clickItem("load_cur_folder")'>{{ $t('message.load_current_folder') }}</li>
         <li @click='clickItem("delete_folder")'>{{ $t('message.delete_folder') }}</li>
       </ul>
       <!-- key right menu -->
@@ -260,6 +261,12 @@ export default {
         case 'export': {
           this.showMultiSelect();
           this.exportBatch();
+          break;
+        }
+        case 'load_cur_folder': {
+          const pattern = this.rightClickNode.data.fullName;
+          this.$bus.$emit('changeMatchMode', this.client, pattern);
+          break;
         }
       }
     },

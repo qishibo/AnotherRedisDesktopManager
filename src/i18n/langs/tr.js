@@ -166,6 +166,7 @@ const tr = {
     close_right: 'Sağ Sekmeleri Kapat',
     close_other: 'Diğer Sekmeleri Kapat',
     slow_log: 'Yavaş Sorgu',
+    load_current_folder: 'Yalnızca Geçerli Klasörü Yükle',
   },
 };
 
