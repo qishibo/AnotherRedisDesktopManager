@@ -63,6 +63,8 @@
 
 ## Feature Log
 
+- 2024-02-21: Java/Pickle viewers support
+- 2024-02-15: Groups/Consumers in STREAM view
 - 2024-01-31: Hey, long time! Command line(CLI) args support
 - 2023-06-22: Export\Import keys support
 - 2023-05-26: Search support in Stream && Slow log support
