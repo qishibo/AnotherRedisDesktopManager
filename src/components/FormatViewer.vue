@@ -37,19 +37,21 @@
 
 <script type="text/javascript">
 import storage from '@/storage';
-import ViewerText from '@/components/ViewerText';
-import ViewerHex from '@/components/ViewerHex';
-import ViewerJson from '@/components/ViewerJson';
-import ViewerBinary from '@/components/ViewerBinary';
-import ViewerUnserialize from '@/components/ViewerUnserialize';
-import ViewerBrotli from '@/components/ViewerBrotli';
-import ViewerGzip from '@/components/ViewerGzip';
-import ViewerDeflate from '@/components/ViewerDeflate';
-import ViewerMsgpack from '@/components/ViewerMsgpack';
-import ViewerOverSize from '@/components/ViewerOverSize';
-import ViewerCustom from '@/components/ViewerCustom';
-import ViewerProtobuf from '@/components/ViewerProtobuf';
-import ViewerDeflateRaw from '@/components/ViewerDeflateRaw';
+import ViewerText from '@/components/viewers/ViewerText';
+import ViewerHex from '@/components/viewers/ViewerHex';
+import ViewerJson from '@/components/viewers/ViewerJson';
+import ViewerBinary from '@/components/viewers/ViewerBinary';
+import ViewerPHPSerialize from '@/components/viewers/ViewerPHPSerialize';
+import ViewerBrotli from '@/components/viewers/ViewerBrotli';
+import ViewerGzip from '@/components/viewers/ViewerGzip';
+import ViewerDeflate from '@/components/viewers/ViewerDeflate';
+import ViewerMsgpack from '@/components/viewers/ViewerMsgpack';
+import ViewerOverSize from '@/components/viewers/ViewerOverSize';
+import ViewerCustom from '@/components/viewers/ViewerCustom';
+import ViewerProtobuf from '@/components/viewers/ViewerProtobuf';
+import ViewerDeflateRaw from '@/components/viewers/ViewerDeflateRaw';
+import ViewerJavaSerialize from '@/components/viewers/ViewerJavaSerialize';
+import ViewerPickle from '@/components/viewers/ViewerPickle';
 
 export default {
   data() {
@@ -62,7 +64,9 @@ export default {
         { value: 'ViewerJson', text: 'Json' },
         { value: 'ViewerBinary', text: 'Binary' },
         { value: 'ViewerMsgpack', text: 'Msgpack' },
-        { value: 'ViewerUnserialize', text: 'Unserialize' },
+        { value: 'ViewerPHPSerialize', text: 'PHPSerialize' },
+        { value: 'ViewerJavaSerialize', text: 'JavaSerialize' },
+        { value: 'ViewerPickle', text: 'Pickle' },
         { value: 'ViewerBrotli', text: 'Brotli' },
         { value: 'ViewerGzip', text: 'Gzip' },
         { value: 'ViewerDeflate', text: 'Deflate' },
@@ -81,7 +85,7 @@ export default {
     ViewerHex,
     ViewerJson,
     ViewerBinary,
-    ViewerUnserialize,
+    ViewerPHPSerialize,
     ViewerMsgpack,
     ViewerOverSize,
     ViewerCustom,
@@ -90,6 +94,8 @@ export default {
     ViewerDeflate,
     ViewerProtobuf,
     ViewerDeflateRaw,
+    ViewerJavaSerialize,
+    ViewerPickle,
   },
   props: {
     float: { default: 'right' },
@@ -178,7 +184,15 @@ export default {
       }
       // php unserialize
       if (this.$util.isPHPSerialize(this.content)) {
-        return this.changeViewer('Unserialize');
+        return this.changeViewer('PHPSerialize');
+      }
+      // java unserialize
+      if (this.$util.isJavaSerialize(this.content)) {
+        return this.changeViewer('JavaSerialize');
+      }
+      // pickle
+      if (this.$util.isPickle(this.content)) {
+        return this.changeViewer('Pickle');
       }
       // msgpack
       if (this.$util.isMsgpack(this.content)) {

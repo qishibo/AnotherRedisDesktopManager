@@ -318,7 +318,7 @@ export default {
         const file = `Dump_${(new Date).toISOString().substr(0, 10).replaceAll('-', '')}.csv`
         this.$util.createAndDownloadFile(file, lines.join('\n'));
       });
-    }
+    },
   },
   watch: {
     globalSettings(newSetting, oldSetting) {

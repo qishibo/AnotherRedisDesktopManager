@@ -96,6 +96,26 @@ export default {
 
     return false;
   },
+  isJavaSerialize(buf) {
+    try {
+      const ObjectInputStream = require("java-object-serialization").ObjectInputStream;
+      const result = (new ObjectInputStream(buf)).readObject();
+      return typeof result == 'object';
+    }
+    catch (e) {
+      return false;
+    }
+  },
+  isPickle(buf) {
+    try {
+      const Parser = require('pickleparser').Parser;
+      const result = (new Parser()).parse(buf);
+      return !!result;
+    }
+    catch (e) {
+      return false;
+    }
+  },
   isMsgpack(buf) {
     const { decode } = require('algo-msgpack-with-bigint');
 

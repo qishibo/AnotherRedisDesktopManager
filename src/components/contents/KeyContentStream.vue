@@ -2,9 +2,11 @@
   <div>
     <div>
       <el-form :inline="true">
-        <!-- add button -->
         <el-form-item>
+          <!-- add button -->
           <el-button type="primary" @click='showEditDialog({id:"*"})'>{{ $t('message.add_new_line') }}</el-button>
+          <!-- groups info -->
+          <el-button type='primary' @click="initGroups">Groups</el-button>
         </el-form-item>
         <!-- max value -->
         <el-form-item label="Max">
@@ -32,6 +34,54 @@
           <el-button @click="editDialog = false">{{ $t('el.messagebox.cancel') }}</el-button>
           <el-button v-if='!beforeEditItem.contentString' type="primary" @click="editLine">{{ $t('el.messagebox.confirm') }}</el-button>
         </div>
+      </el-dialog>
+
+      <!-- groups info dialog -->
+      <el-dialog width='760px' title='Groups' :visible.sync="groupsVisible">
+        <el-table
+          size='mini'
+          ref='groupsTable'
+          min-height=300
+          @expand-change='initCousumers'
+          @row-click='toggleGroupRow'
+          :data="groups">
+          <el-table-column type="expand">
+            <template slot-scope="props">
+              <el-table :data='consumersDict[props.row.name]'>
+                <el-table-column width='62px'>
+                </el-table-column>
+                <el-table-column
+                  label="Consumer Name"
+                  prop="name">
+                </el-table-column>
+                <el-table-column
+                  label="Pending"
+                  prop="pending">
+                </el-table-column>
+                <el-table-column
+                  label="Idle"
+                  prop="idle">
+                </el-table-column>
+              </el-table>
+            </template>
+          </el-table-column>
+          <el-table-column
+            label="Group Name"
+            prop="name">
+          </el-table-column>
+          <el-table-column
+            label="Consumers"
+            prop="consumers">
+          </el-table-column>
+          <el-table-column
+            label="Pending"
+            prop="pending">
+          </el-table-column>
+          <el-table-column
+            label="Last Delivered Id"
+            prop="last-delivered-id">
+          </el-table-column>
+        </el-table>
       </el-dialog>
     </div>
 
@@ -118,6 +168,9 @@ export default {
       lastId: Buffer.from(''),
       oneTimeListLength: 0,
       filterValue: '',
+      groupsVisible: false,
+      groups: [],
+      consumersDict: {},
     };
   },
   components: {FormatViewer, InputBinary},
@@ -314,6 +367,45 @@ export default {
           }
         });
       }).catch(() => {});
+    },
+    initGroups() {
+      // reset status
+      this.groups = [];
+      this.consumersDict = {};
+      // show dialog
+      this.groupsVisible = true;
+
+      this.client.call('XINFO', 'GROUPS', this.redisKey).then(reply => {
+        this.groups = this.formatInfo(reply);
+      });
+    },
+    initCousumers(row, expandedRows) {
+      // exec only when opening
+      if (!expandedRows.filter(item => item.name === row.name).length) {
+        return;
+      }
+
+      this.client.call('XINFO', 'CONSUMERS', this.redisKey, row.name).then(reply => {
+        this.$set(this.consumersDict, row.name, this.formatInfo(reply));
+      });
+    },
+    toggleGroupRow(row) {
+      this.$refs.groupsTable.toggleRowExpansion(row);
+    },
+    formatInfo(lines) {
+      const formatted= [];
+
+      for (let line of lines) {
+        const dict = {};
+
+        for (let j = 0; j < line.length - 1; j += 2) {
+          dict[line[j]] = line[j + 1];
+        }
+
+        formatted.push(dict);
+      }
+
+      return formatted;
     },
   },
   mounted() {

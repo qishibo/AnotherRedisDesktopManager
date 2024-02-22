@@ -63,6 +63,9 @@
 
 ## Feature Log
 
+- 2024-02-21: Java/Pickle viewers support
+- 2024-02-15: Groups/Consumers in STREAM view
+- 2024-01-31: Hey, long time! Command line(CLI) args support
 - 2023-06-22: Export\Import keys support
 - 2023-05-26: Search support in Stream && Slow log support
 - 2023-04-01: Search support in List && Deflate raw support
@@ -212,7 +215,7 @@ This project exists thanks to all the people who contribute.
 | `Params` | Parameters spliced after `Command`, such as "--key `{KEY}` --value `{VALUE}`", where `{KEY}` and `{VALUE}` will be replaced with the corresponding Redis key and value. Note that if the content is invisible such as binary, you can use `{HEX}` instead of `{VALUE}`, and `{HEX}` will be replaced with the hexadecimal string |
 
 ### Configuration example：
-> Add env to the first line of the script, the final executed command is: `./home/qii/pickle_decoder.py {HEX}`, the script can receive parameters via `argv[1]`
+> Add env to the first line of the script, the final executed command is: `./home/qii/pickle_decoder.py {HEX}`, the script can receive parameters via `argv[1]`, ref [#978](https://github.com/qishibo/AnotherRedisDesktopManager/issues/987#issuecomment-1294844707)
 
 | Command | Params |
 | ------ | ------ |
@@ -226,6 +229,92 @@ This project exists thanks to all the people who contribute.
 | ------ | ------ |
 | `/bin/bash` | `/home/qii/shell_decoder.sh {VALUE}` |
 | `/bin/node` | `/home/qii/node_decoder.js {HEX} --key={KEY}` |
+
+
+
+## Start From Command Line(CLI)
+
+> If you want to start from command line(CLI), you can pass args to the App.
+
+### Examples
+
+```bash
+# Linux
+# ./Another Redis Desktop Manager.AppImage
+
+# Mac
+# open /Applications/Another\ Redis\ Desktop\ Manager.app --args
+
+# Windows
+"D:\xxxx\Another Redis Desktop Manager.exe"
+
+# COMMON
+--host 127.0.0.1 --port 6379 --auth 123
+--name tmp_connection
+
+# CLUSTER
+--cluster
+
+# SSH
+--ssh-host 192.168.0.110
+--ssh-username root --ssh-password 123
+
+# SENTINEL
+--sentinel-master-name mymaster
+--sentinel-node-password 123
+
+# save connection
+--save
+# readonly mode
+--readonly
+```
+
+### Parameter Description
+
+#### Common
+
+| Args | Description | Args | Description |
+| ------ | ------ | ------ | ------ |
+| --host | Redis host* | --port | Redis port|
+| --auth | Password | --name | Custom name|
+| --separator | Key separator | --readonly | Enable readonly mode|
+| --username | Username（Redis6 ACL）| --save| Enable saving, one-time link by default|
+
+#### SSH
+
+| Args | Description | Args | Description |
+| ------ | ------ | ------ | ------ |
+| --ssh-host | SSH host | --ssh-port | SSH port（default:22）|
+| --ssh-username | Username | --ssh-password | Password|
+| --ssh-private-key | Path of private key | --ssh-passphrase | Password of private key|
+| --ssh-timeout | SSH timeout(s) | | &nbsp;|
+
+#### CLUSTER
+
+| Args | Description |
+| ------ | ------ |
+| --cluster | Enable CLUSTER mode |
+
+#### SENTINEL
+
+| Args | Description |
+| ------ | ------ |
+| --sentinel-master-name | Name of master group，like 'mymaster' |
+| --sentinel-node-password | Password of Redis node |
+
+
+
+## FAQ
+
+#### 1. How to connect to Redis Cluster in internal network (such as Docker, LAN, AWS)?
+   
+   Answer: Connect via `SSH+Cluster` (SSH to the internal network and then connecting to Cluster with internal IP such as `127.0.0.1`, `192.168.x.x`), you need to fill Redis Host with the internal IP.
+   
+   How to get Redis internal IP? Connect through SSH, uncheck Cluster option, and then open the console to execute `CLUSTER NODES`, select any IP in the result.
+
+#### 2. Do I need to fill in the 'Username' in the Redis configuration?
+   
+   Answer: The access control list (ACL) is only supported in `Redis>=6.0`, so do not fill it unless you need a special user.
 
 
 ## License

@@ -71,7 +71,7 @@ export default {
         // buf array
         let paramsArr = splitargs(this.paramsTrim, true);
         // command to string
-        paramsArr[0] = paramsArr[0].toString();
+        paramsArr[0] = paramsArr[0].toString().toLowerCase();
 
         return paramsArr;
       }
@@ -214,27 +214,27 @@ export default {
       // append to history command
       this.appendToHistory(params);
 
-      if (params == 'exit' || params == 'quit') {
+      if (paramsArr[0] == 'exit' || paramsArr[0] == 'quit') {
         return this.$bus.$emit('removePreTab');
       }
 
-      if (params == 'clear') {
+      if (paramsArr[0] == 'clear') {
         return this.content = [];
       }
 
       // mock help command
-      if (paramsArr[0].toLowerCase() == 'help') {
+      if (paramsArr[0] == 'help') {
         return this.scrollToBottom('Input your command and select from tips');
       }
 
       // multi-exec mode
-      if (params == 'multi') {
+      if (paramsArr[0] == 'multi') {
         this.multiQueue = [];
         return this.scrollToBottom('OK');
       }
 
       //multi-discard-mode
-      if (params == 'discard') {
+      if (paramsArr[0] == 'discard') {
       // discard when not multi condition
         if (!Array.isArray(this.multiQueue)) {
           return this.scrollToBottom('(error) ERR DISCARD without MULTI');
@@ -244,7 +244,7 @@ export default {
       }
 
       // multi dequeue
-      if (params == 'exec') {
+      if (paramsArr[0] == 'exec') {
         // exec when not multi condition
         if (!Array.isArray(this.multiQueue)) {
           return this.scrollToBottom('(error) ERR EXEC without MULTI');
@@ -271,12 +271,12 @@ export default {
       }
 
       // subscribe command
-      if (/subscribe/.test(paramsArr[0].toLowerCase())) {
+      if (/subscribe/.test(paramsArr[0])) {
         this.subscribeMode = true;
       }
 
       // monitor command
-      if (paramsArr[0].toLowerCase() == 'monitor') {
+      if (paramsArr[0] == 'monitor') {
         this.anoClient.monitor().then(monitor => {
           this.monitorMode = true;
           this.scrollToBottom('OK');
@@ -290,7 +290,7 @@ export default {
       }
 
       // normal command
-      let promise = this.anoClient.callBuffer(paramsArr[0].toLowerCase(), paramsArr.slice(1));
+      let promise = this.anoClient.callBuffer(paramsArr[0], paramsArr.slice(1));
 
       // normal command promise
       promise.then((reply) => {
