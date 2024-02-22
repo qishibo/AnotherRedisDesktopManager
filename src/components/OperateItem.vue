@@ -136,6 +136,14 @@ export default {
 
       this.changeDb(dbIndex);
     });
+    this.$bus.$on('changeMatchMode', (client, pattern) => {
+      if (client !== this.client) {
+        return;
+      }
+
+      this.searchMatch = pattern;
+      this.changeMatchMode();
+    });
   },
   methods: {
     initShow() {

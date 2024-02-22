@@ -28,13 +28,13 @@
 
 <script>
 import KeyHeader from '@/components/KeyHeader';
-import KeyContentString from '@/components/KeyContentString';
-import KeyContentHash from '@/components/KeyContentHash';
-import KeyContentSet from '@/components/KeyContentSet';
-import KeyContentZset from '@/components/KeyContentZset';
-import KeyContentList from '@/components/KeyContentList';
-import KeyContentStream from '@/components/KeyContentStream';
-import KeyContentReJson from '@/components/KeyContentReJson';
+import KeyContentString from '@/components/contents/KeyContentString';
+import KeyContentHash from '@/components/contents/KeyContentHash';
+import KeyContentSet from '@/components/contents/KeyContentSet';
+import KeyContentZset from '@/components/contents/KeyContentZset';
+import KeyContentList from '@/components/contents/KeyContentList';
+import KeyContentStream from '@/components/contents/KeyContentStream';
+import KeyContentReJson from '@/components/contents/KeyContentReJson';
 
 export default {
   data() {
