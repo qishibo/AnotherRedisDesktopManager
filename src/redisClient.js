@@ -166,8 +166,10 @@ export default {
     };
     // where your localTCP Server is listening
     const serverOptions = {
-      host: '127.0.0.1',
-      port: 0,
+      // if port set to 0, the serverOptions will be null
+      // which means automatic assign by OS
+      // host: '127.0.0.1',
+      // port: 0,
     };
     // ssh server
     const sshOptions = {
@@ -182,8 +184,9 @@ export default {
     };
     // forward link in ssh server
     const forwardOptions = {
-      srcAddr: '127.0.0.1',
-      srcPort: 0,
+      // set srcAddr/srcPort undefined to use server.address() automatically
+      // srcAddr: '127.0.0.1',
+      // srcPort: 0,
       dstAddr: host,
       dstPort: port
     };

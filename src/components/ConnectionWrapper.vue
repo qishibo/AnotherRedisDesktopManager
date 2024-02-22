@@ -55,6 +55,13 @@ export default {
     this.$bus.$on('closeConnection', (connectionName = false) => {
       this.closeConnection(connectionName);
     });
+    // open connection
+    this.$bus.$on('openConnection', connectionName => {
+      if (connectionName && (connectionName == this.config.connectionName)) {
+        this.openConnection();
+        this.$refs.connectionMenu.open(this.config.connectionName);
+      }
+    });
   },
   computed: {
     connectionAnchor() {

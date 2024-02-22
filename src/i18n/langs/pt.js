@@ -166,6 +166,7 @@ const pt = {
     close_right: 'Fechar abas direitas',
     close_other: 'Fechar outras guias',
     slow_log: 'Consulta lenta',
+    load_current_folder: 'Carregar apenas a pasta atual',
   },
 };
 

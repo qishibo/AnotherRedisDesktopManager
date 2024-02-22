@@ -56,11 +56,16 @@ module.exports = {
         //   // resolve('node_modules/@qii404/vue-easy-tree/src/')
         // ],
       },
-      // {
-      //   test: /\.js$/,
-      //   loader: 'babel-loader',
-      //   include: [resolve('src'), resolve('test'), resolve('node_modules/webpack-dev-server/client'), resolve('node_modules/@qii404/vue-easy-tree/src/')]
-      // },
+      {
+        test: /\.js$/,
+        loader: 'babel-loader',
+        include: [
+          // resolve('src'),
+          // resolve('test'),
+          // resolve('node_modules/webpack-dev-server/client'),
+          resolve('node_modules/pickleparser')
+        ]
+      },
       {
         test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
         loader: 'url-loader',

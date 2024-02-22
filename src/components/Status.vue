@@ -113,8 +113,55 @@
     </el-col>
   </el-row>
 
+  <!-- cluster key statistics -->
+  <el-row v-if='connectionStatus.cluster_enabled=="1"' class="status-card">
+    <el-col>
+      <el-card class="box-card">
+        <div slot="header">
+          <i class="fa fa-bar-chart"></i>
+          <span>{{ $t('message.key_statistics') }}</span>
+        </div>
+
+        <el-table
+          :data="clusterKeysInfo"
+          stripe>
+          <el-table-column
+            prop="name"
+            sortable
+            label="Node">
+          </el-table-column>
+          <el-table-column
+            prop="db"
+            sortable
+            label="DB">
+          </el-table-column>
+          <el-table-column
+            sortable
+            prop="keys"
+            label="Keys"
+            :sort-method="sortByKeys">
+          </el-table-column>
+          <el-table-column
+            sortable
+            prop="expires"
+            label="Expires"
+            :sort-method="sortByExpires">
+          </el-table-column>
+          <!-- avg_ttl: tooltip can't be removed!, or the table's height will change -->
+          <el-table-column
+            sortable
+            prop="avg_ttl"
+            :show-overflow-tooltip='true'
+            label="Avg TTL"
+            :sort-method="sortByTTL">
+          </el-table-column>
+        </el-table>
+      </el-card>
+    </el-col>
+  </el-row>
+
   <!-- key statistics -->
-  <el-row class="status-card">
+  <el-row v-else class="status-card">
     <el-col>
       <el-card class="box-card">
         <div slot="header">
@@ -201,29 +248,14 @@ export default {
       connectionStatus: {},
       statusConnection: null,
       allInfoFilter: '',
+      clusterKeysInfo: [],
     };
   },
   props: ['client', 'hotKeyScope'],
   components: { ScrollToTop },
   computed: {
     DBKeys() {
-      const dbs = [];
-
-      for (const i in this.connectionStatus) {
-        if (i.startsWith('db')) {
-          const item = this.connectionStatus[i];
-          const array = item.split(',');
-
-          dbs.push({
-            db: i,
-            keys: array[0].split('=')[1],
-            expires: array[1].split('=')[1],
-            avg_ttl: array[2].split('=')[1],
-          });
-        }
-      }
-
-      return dbs;
+      return this.initDbKeys(this.connectionStatus);
     },
     AllRedisInfo() {
       const infos = [];
@@ -265,6 +297,9 @@ export default {
           this.$message.error(e.message)
         }
       });
+
+      // if cluster, init keys count in master nodes
+      this.initClusterKeys();
     },
     refreshInit() {
       this.refreshTimer && clearInterval(this.refreshTimer);
@@ -303,6 +338,56 @@ export default {
       }
 
       return lines;
+    },
+    initDbKeys(status, name = undefined) {
+      const dbs = [];
+
+      for (const i in status) {
+        // fix #1101 unexpected db prefix
+        // if (i.startsWith('db')) {
+        if (/^db\d+/.test(i)) {
+          const item = status[i];
+          const array = item.split(',');
+
+          dbs.push({
+            db: i,
+            keys: array[0] ? array[0].split('=')[1] : NaN,
+            expires: array[1] ? array[1].split('=')[1] : NaN,
+            avg_ttl: array[2] ? array[2].split('=')[1] : NaN,
+            name: name,
+          });
+        }
+      }
+
+      return dbs;
+    },
+    initClusterKeys() {
+      let nodes = this.client.nodes ? this.client.nodes('master') : [this.client];
+
+      // not in cluster mode
+      if (nodes.length < 2) {
+        return;
+      }
+
+      nodes.map(node => {
+        node.call('INFO', 'KEYSPACE').then(reply => {
+          const options = node.options;
+          const name = `${options.host}:${options.port}`;
+
+          const keys = this.initDbKeys(this.initStatus(reply), name);
+
+          // clear only when first reply, avoid jitter
+          if (this.clusterKeysInfo.length === nodes.length) {
+            this.clusterKeysInfo = [];
+          }
+
+          this.clusterKeysInfo = this.clusterKeysInfo.concat(keys);
+          // sort by node name
+          this.clusterKeysInfo.sort((a, b) => a.name > b.name ? 1 : -1);
+        }).catch(e => {
+          this.$message.error(e.message);
+        });
+      });
     },
     initShortcut() {
       this.$shortcut.bind('ctrl+r, ⌘+r, f5', this.hotKeyScope, () => {

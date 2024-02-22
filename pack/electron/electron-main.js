@@ -135,6 +135,13 @@ ipcMain.on('toggleMaximize',function() {
   }
 });
 
+ipcMain.handle('getMainArgs', (event, arg) => {
+  return {
+    argv: process.argv,
+    version: app.getVersion(),
+  };
+});
+
 // for mac copy paset shortcut
 if (process.platform === 'darwin') {
   const template = [

@@ -166,6 +166,7 @@ const en = {
     close_right: 'Close Right Tabs',
     close_other: 'Close Other Tabs',
     slow_log: 'Slow Query',
+    load_current_folder: 'Only Load Current Folder',
   },
 };
 

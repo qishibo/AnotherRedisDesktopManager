@@ -166,6 +166,7 @@ const it = {
     close_right: 'Chiudi le schede a destra',
     close_other: 'Chiudi altre schede',
     slow_log: 'Interrogazione lenta',
+    load_current_folder: 'Carica solo la cartella corrente',
   },
 };
 
