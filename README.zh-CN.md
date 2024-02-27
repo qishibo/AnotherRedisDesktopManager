@@ -284,8 +284,8 @@ npm run pack:linux
 
 | 参数 | 说明 | 参数 | 说明 |
 | ------ | ------ | ------ | ------ |
-| --ssh-host | 地址 | --ssh-port | 端口（默认22）|
-| --ssh-username | 用户名 | --ssh-password | 密码|
+| --ssh-host | 地址* | --ssh-port | 端口（默认22）|
+| --ssh-username | 用户名* | --ssh-password | 密码|
 | --ssh-private-key | 私钥路径 | --ssh-passphrase | 私钥密码|
 | --ssh-timeout | 超时（秒） | | &nbsp;|
 
@@ -295,11 +295,18 @@ npm run pack:linux
 | ------ | ------ |
 | --cluster | 开启集群模式 |
 
+#### SSL
+
+| 参数 | 说明 | 参数 | 说明 |
+| ------ | ------ | ------ | ------ |
+| --ssl | 开启SSL模式* | --ssl-key | SSL私钥路径|
+| --ssl-ca | SSL证书机构 | --ssl-cert | SSL公钥路径|
+
 #### SENTINEL
 
 | 参数 | 说明 |
 | ------ | ------ |
-| --sentinel-master-name | Master组名称，如mymaster |
+| --sentinel-master-name | Master组名称*，如mymaster |
 | --sentinel-node-password | Redis节点密码 |
 
 

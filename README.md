@@ -284,8 +284,8 @@ This project exists thanks to all the people who contribute.
 
 | Args | Description | Args | Description |
 | ------ | ------ | ------ | ------ |
-| --ssh-host | SSH host | --ssh-port | SSH port（default:22）|
-| --ssh-username | Username | --ssh-password | Password|
+| --ssh-host | SSH host* | --ssh-port | SSH port（default:22）|
+| --ssh-username | Username* | --ssh-password | Password|
 | --ssh-private-key | Path of private key | --ssh-passphrase | Password of private key|
 | --ssh-timeout | SSH timeout(s) | | &nbsp;|
 
@@ -295,11 +295,18 @@ This project exists thanks to all the people who contribute.
 | ------ | ------ |
 | --cluster | Enable CLUSTER mode |
 
+#### SSL
+
+| Args | Description | Args | Description |
+| ------ | ------ | ------ | ------ |
+| --ssl | Enable SSL* | --ssl-key | SSL Private Key Pem|
+| --ssl-ca | SSL Certificate Authority | --ssl-cert | SSL Public Key Pem|
+
 #### SENTINEL
 
 | Args | Description |
 | ------ | ------ |
-| --sentinel-master-name | Name of master group，like 'mymaster' |
+| --sentinel-master-name | Name of master group*，like 'mymaster' |
 | --sentinel-node-password | Password of Redis node |
 
 
