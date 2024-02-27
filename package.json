@@ -86,7 +86,7 @@
     "mini-css-extract-plugin": "^0.11.3",
     "monaco-editor-webpack-plugin": "^6.0.0",
     "node-loader": "^1.0.3",
-    "node-notifier": "^5.1.2",
+    "node-notifier": "^8.0.1",
     "optimize-css-assets-webpack-plugin": "^5.0.3",
     "ora": "^1.2.0",
     "portfinder": "^1.0.13",
