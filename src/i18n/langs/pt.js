@@ -167,6 +167,7 @@ const pt = {
     close_other: 'Fechar outras guias',
     slow_log: 'Consulta lenta',
     load_current_folder: 'Carregar apenas a pasta atual',
+    custom_name: 'Nome personalizado',
   },
 };
 

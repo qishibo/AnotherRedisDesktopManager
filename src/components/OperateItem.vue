@@ -14,6 +14,11 @@
               <span>
                 {{`DB${index}`}}
                 <span class="db-select-key-count" v-if="dbKeysCount[index]">[{{dbKeysCount[index]}}]</span>
+                <span class="db-select-custom-name">
+                  <span class="db-select-key-count">{{dbNames[index]}}</span>
+
+                  <span class="el-icon-edit-outline" @click.stop.prevent='customDbName(index)'></span>
+                </span>
               </span>
             </el-option>
             <!-- <span slot="prefix" class="fa fa-sitemap" style="font-size: 80%"></span> -->
@@ -119,6 +124,7 @@ export default {
         Stream: 'stream', ReJSON: 'rejson',
       },
       dbKeysCount: {},
+      dbNames: {},
       showCancelIcon: false,
       rmCancelIconTimer: null,
     };
@@ -148,6 +154,7 @@ export default {
   methods: {
     initShow() {
       this.initDatabaseSelect();
+      this.initCustomDbName();
     },
     setDb(db) {
       this.selectedDbIndex = db;
@@ -162,6 +169,14 @@ export default {
         // read dbs from info
         this.getDatabasesFromInfo(true);
       });
+    },
+    initCustomDbName() {
+      const dbKey = this.$storage.getStorageKeyByName('custom_db', this.config.connectionName);
+      const customNames = JSON.parse(localStorage.getItem(dbKey));
+
+      if (customNames) {
+        this.dbNames = customNames;
+      }
     },
     getDatabasesFromInfo(guessMaxDb = false) {
       if (!this.client) {
@@ -222,6 +237,13 @@ export default {
         // reset to db0
         this.selectedDbIndex = 0;
       });
+    },
+    customDbName(db) {
+      this.$prompt(this.$t('message.custom_name')).then(({ value }) => {
+        this.$set(this.dbNames, db, value);
+        const dbKey = this.$storage.getStorageKeyByName('custom_db', this.config.connectionName);
+        localStorage.setItem(dbKey, JSON.stringify(this.dbNames));
+      }).catch(() => {});
     },
     addNewKey() {
       if (!this.newKeyName) {
@@ -322,7 +344,13 @@ export default {
   .el-select-dropdown__item .db-select-key-count {
     color: #a9a9ab;
     font-size: 82%;
+    vertical-align: top;
   }
+  .el-select-dropdown__item .db-select-custom-name {
+    float: right;
+    margin-left: 4px;
+  }
+
   /*fix el-select height different from el-input*/
   .connection-menu .db-select .el-input__inner, .connection-menu .new-key-btn {
     /*margin-top: 0.5px;*/

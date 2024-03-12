@@ -167,6 +167,7 @@ const cn = {
     close_other: '关闭其他标签',
     slow_log: '慢查询',
     load_current_folder: '只加载该文件夹',
+    custom_name: '自定义名称',
   },
 };
 
