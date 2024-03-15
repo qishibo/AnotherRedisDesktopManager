@@ -169,6 +169,7 @@ const fr = {
     load_current_folder: 'Charger uniquement le dossier actuel',
     custom_css: 'Style personnalisé',
     custom_css_placeholder: 'Veuillez entrer le chemin du fichier',
+    custom_name: 'Nom d\'usage',
   },
 };
 

@@ -169,6 +169,7 @@ const ua = {
     load_current_folder: 'Завантажувати лише поточну папку',
     custom_css: 'Індивідуальний стиль',
     custom_css_placeholder: 'Введіть шлях до файлу',
+    custom_name: 'Спеціальна назва',
   },
 };
 

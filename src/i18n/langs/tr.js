@@ -169,6 +169,7 @@ const tr = {
     load_current_folder: 'Yalnızca Geçerli Klasörü Yükle',
     custom_css: 'Özel stil',
     custom_css_placeholder: 'Lütfen dosya yolunu girin',
+    custom_name: 'Özel Ad',
   },
 };
 

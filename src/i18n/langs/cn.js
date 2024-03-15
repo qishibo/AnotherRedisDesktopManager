@@ -169,6 +169,7 @@ const cn = {
     load_current_folder: '只加载该文件夹',
     custom_css: '自定义样式',
     custom_css_placeholder: '请输入文件路径',
+    custom_name: '自定义名称',
   },
 };
 

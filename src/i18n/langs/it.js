@@ -169,6 +169,7 @@ const it = {
     load_current_folder: 'Carica solo la cartella corrente',
     custom_css: 'Stile personalizzato',
     custom_css_placeholder: 'Inserisci il percorso del file',
+    custom_name: 'Nome personalizzato',
   },
 };
 

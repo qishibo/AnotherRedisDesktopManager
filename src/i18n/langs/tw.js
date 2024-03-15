@@ -169,6 +169,7 @@ const tw = {
     load_current_folder: '僅載入目前資料夾',
     custom_css: '自定義樣式',
     custom_css_placeholder: '请输入文件路径',
+    custom_name: '自訂名稱',
   },
 };
 

@@ -169,6 +169,7 @@ const ru = {
     load_current_folder: 'Загружать только текущую папку',
     custom_css: 'Пользовательский стиль',
     custom_css_placeholder: 'Пожалуйста, введите путь к файлу',
+    custom_name: 'Пользовательское имя',
   },
 };
 

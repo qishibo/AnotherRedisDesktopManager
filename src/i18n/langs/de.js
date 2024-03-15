@@ -169,6 +169,7 @@ const de = {
     load_current_folder: 'Nur aktuellen Ordner laden',
     custom_css: 'Benutzerdefinierter Stil',
     custom_css_placeholder: 'Bitte geben Sie den Dateipfad ein',
+    custom_name: 'Benutzerdefinierter Name',
   },
 };
 
