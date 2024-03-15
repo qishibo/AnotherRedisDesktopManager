@@ -167,6 +167,8 @@ const es = {
     close_other: 'Cerrar otras pestañas',
     slow_log: 'Consulta lenta',
     load_current_folder: 'Cargar solo la carpeta actual',
+    custom_css: 'Estilo personalizado',
+    custom_css_placeholder: 'Por favor ingrese la ruta del archivo',
     custom_name: 'Nombre personalizado',
   },
 };

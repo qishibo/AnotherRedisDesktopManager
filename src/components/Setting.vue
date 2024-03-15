@@ -60,6 +60,15 @@
               </el-select>
             </el-form-item>
           </el-col>
+          <el-col :sm="12" :lg="12">
+            <!-- custom css -->
+            <el-form-item :label="$t('message.custom_css')">
+              <el-input
+                :placeholder="$t('message.custom_css_placeholder')"
+                v-model='form.customCss'
+              ></el-input>
+            </el-form-item>
+          </el-col>
         </el-row>
       </el-card>
 
@@ -162,6 +171,7 @@ export default {
         zoomFactor: 1.0,
         keysPageSize: 500,
         showLoadAllKeys: false,
+        customCss: '',
       },
       importConnectionVisible: false,
       connectionFileContent: '',

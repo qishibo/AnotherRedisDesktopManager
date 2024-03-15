@@ -222,7 +222,7 @@ export default {
           }
 
           document.querySelector('.connections-list').scrollTo({
-            top: scrollTop, 
+            top: scrollTop,
             behavior: 'smooth',
           });
         }, 320);
@@ -242,7 +242,7 @@ export default {
   /*menu ul*/
   .connection-menu {
     margin-bottom: 8px;
-    padding-right: 6px;
+    padding-right: 8px;
     border-right: 0;
   }
 

@@ -167,6 +167,8 @@ const fr = {
     close_other: 'Fermer les autres onglets',
     slow_log: 'Requête lente',
     load_current_folder: 'Charger uniquement le dossier actuel',
+    custom_css: 'Style personnalisé',
+    custom_css_placeholder: 'Veuillez entrer le chemin du fichier',
     custom_name: 'Nom d\'usage',
   },
 };
