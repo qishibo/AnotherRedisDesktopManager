@@ -131,7 +131,8 @@ ipcMain.on('minimizeWindow',function() {
 // toggle maximize
 ipcMain.on('toggleMaximize',function() {
   if (mainWindow) {
-    mainWindow.isMaximized() ? mainWindow.restore() : mainWindow.maximize();
+    // restore failed on MacOS, use unmaximize instead
+    mainWindow.isMaximized() ? mainWindow.unmaximize() : mainWindow.maximize();
   }
 });
 
