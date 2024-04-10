@@ -63,6 +63,7 @@
 
 ## Feature Log
 
+- 2024-04-10: DB custom name support
 - 2024-02-21: Java/Pickle viewers support
 - 2024-02-15: Groups/Consumers in STREAM view
 - 2024-01-31: Hey, long time! Command line(CLI) args support
