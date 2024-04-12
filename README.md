@@ -6,9 +6,9 @@
 
 <br>
 
-[![MIT](https://img.shields.io/badge/license-MIT-000000.svg)](LICENSE)
-[![Download](https://img.shields.io/github/release/qishibo/AnotherRedisDesktopManager.svg?label=Download)](https://github.com/qishibo/AnotherRedisDesktopManager/releases)
-[![Download Analysis](https://img.shields.io/badge/Download-Analysis-blue.svg)](https://qii404.me/github-release-statistics/?repo=/qishibo/AnotherRedisDesktopManager/)
+[![LICENSE](https://img.shields.io/github/license/qishibo/AnotherRedisDesktopManager)](LICENSE)
+[![Release](https://img.shields.io/github/release/qishibo/AnotherRedisDesktopManager.svg)](https://github.com/qishibo/AnotherRedisDesktopManager/releases)
+[![Download](https://img.shields.io/github/downloads/qishibo/AnotherRedisDesktopManager/total)](https://github.com/qishibo/AnotherRedisDesktopManager/releases)
 [![Twitter](https://img.shields.io/badge/Twitter-@shibo-blue.svg)](https://twitter.com/qii404)
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fqishibo%2FAnotherRedisDesktopManager.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fqishibo%2FAnotherRedisDesktopManager?ref=badge_shield)
 <a href="https://www.producthunt.com/posts/another-redis-desktop-manager?utm_source=badge-featured"><img src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=340552&theme=dark" height="20" width="93" /></a>
