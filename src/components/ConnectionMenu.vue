@@ -254,7 +254,7 @@ export default {
         });
 
         rl.on('line', line => {
-          let [key, content] = line.split(',');
+          let [key, content, ttl] = line.split(',');
 
           if (!key || !content) {
             return;
@@ -272,8 +272,9 @@ export default {
 
           key = Buffer.from(key, 'hex');
           content = Buffer.from(content, 'hex');
+          ttl = ttl > 0 ? ttl : 0;
 
-          this.client.callBuffer('RESTORE', key, 0, content).then(reply => {
+          this.client.callBuffer('RESTORE', key, ttl, content).then(reply => {
             // reply == 'OK'
             succ.push(key);
             this.$set(this.$refs.importKeysNotify,
@@ -298,6 +299,9 @@ export default {
             message: this.$t('message.import_success'),
             duration: 800,
           });
+
+          // refresh keu list
+          this.$bus.$emit('refreshKeyList', this.client);
         });
       });
     },

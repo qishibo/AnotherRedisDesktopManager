@@ -1,7 +1,7 @@
 {
   "name": "another-desktop-manager",
   "productName": "Another Desktop Manager",
-  "version": "1.6.3",
+  "version": "1.6.4",
   "description": "A faster, better and more stable redis desktop manager.",
   "author": "Another",
   "private": true,
@@ -66,6 +66,7 @@
         "ElectronTeamID": "68JN8DV835",
         "ITSAppUsesNonExemptEncryption": "NO"
       }
-    }
+    },
+    "afterSign": "pack/scripts/notarize.js"
   }
 }

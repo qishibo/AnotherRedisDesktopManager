@@ -166,6 +166,7 @@ export default {
     const typeMap = {
       'cli_tip': 'cliTips',
       'last_db': 'lastSelectedDb',
+      'custom_db': 'customDbName',
     };
 
     return type ? typeMap[type] : typeMap;

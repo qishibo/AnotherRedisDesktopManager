@@ -167,6 +167,7 @@ const it = {
     close_other: 'Chiudi altre schede',
     slow_log: 'Interrogazione lenta',
     load_current_folder: 'Carica solo la cartella corrente',
+    custom_name: 'Nome personalizzato',
   },
 };
 

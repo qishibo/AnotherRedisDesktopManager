@@ -1,5 +1,5 @@
 // Modules to control application life and create native browser window
-const { app, BrowserWindow, Menu, ipcMain, dialog } = require('electron');
+const { app, BrowserWindow, Menu, ipcMain, dialog, nativeTheme } = require('electron');
 const fontManager = require('./font-manager');
 const winState = require('./win-state');
 
@@ -131,7 +131,8 @@ ipcMain.on('minimizeWindow',function() {
 // toggle maximize
 ipcMain.on('toggleMaximize',function() {
   if (mainWindow) {
-    mainWindow.isMaximized() ? mainWindow.restore() : mainWindow.maximize();
+    // restore failed on MacOS, use unmaximize instead
+    mainWindow.isMaximized() ? mainWindow.unmaximize() : mainWindow.maximize();
   }
 });
 
@@ -140,6 +141,11 @@ ipcMain.handle('getMainArgs', (event, arg) => {
     argv: process.argv,
     version: app.getVersion(),
   };
+});
+
+ipcMain.handle('changeTheme', (event, theme) => {
+  nativeTheme.themeSource = (theme === 'dark' ? 'dark' : 'light');
+  return nativeTheme.shouldUseDarkColors
 });
 
 // for mac copy paset shortcut

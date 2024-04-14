@@ -1,14 +1,14 @@
+# Another Redis Desktop Manager
+
 <img align="right" width="120" src="https://cdn.jsdelivr.net/gh/qishibo/img/ano-square-icon-128.png">
-
-# Another Redis Desktop Manager 
-
-<hr/>
 
 > 🚀🚀🚀 A faster, better and more stable redis desktop manager, compatible with Linux, windows, mac. What's more, it won't crash when loading massive keys.
 
-[![MIT](https://img.shields.io/badge/license-MIT-000000.svg)](LICENSE)
-[![Download](https://img.shields.io/github/release/qishibo/AnotherRedisDesktopManager.svg?label=Download)](https://github.com/qishibo/AnotherRedisDesktopManager/releases)
-[![Download Analysis](https://img.shields.io/badge/Download-Analysis-blue.svg)](https://qii404.me/github-release-statistics/?repo=/qishibo/AnotherRedisDesktopManager/)
+<br>
+
+[![LICENSE](https://img.shields.io/github/license/qishibo/AnotherRedisDesktopManager)](LICENSE)
+[![Release](https://img.shields.io/github/release/qishibo/AnotherRedisDesktopManager.svg)](https://github.com/qishibo/AnotherRedisDesktopManager/releases)
+[![Download](https://img.shields.io/github/downloads/qishibo/AnotherRedisDesktopManager/total)](https://github.com/qishibo/AnotherRedisDesktopManager/releases)
 [![Twitter](https://img.shields.io/badge/Twitter-@shibo-blue.svg)](https://twitter.com/qii404)
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fqishibo%2FAnotherRedisDesktopManager.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fqishibo%2FAnotherRedisDesktopManager?ref=badge_shield)
 <a href="https://www.producthunt.com/posts/another-redis-desktop-manager?utm_source=badge-featured"><img src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=340552&theme=dark" height="20" width="93" /></a>
@@ -63,6 +63,7 @@
 
 ## Feature Log
 
+- 2024-04-10: DB custom name support
 - 2024-02-21: Java/Pickle viewers support
 - 2024-02-15: Groups/Consumers in STREAM view
 - 2024-01-31: Hey, long time! Command line(CLI) args support
@@ -284,8 +285,8 @@ This project exists thanks to all the people who contribute.
 
 | Args | Description | Args | Description |
 | ------ | ------ | ------ | ------ |
-| --ssh-host | SSH host | --ssh-port | SSH port（default:22）|
-| --ssh-username | Username | --ssh-password | Password|
+| --ssh-host | SSH host* | --ssh-port | SSH port（default:22）|
+| --ssh-username | Username* | --ssh-password | Password|
 | --ssh-private-key | Path of private key | --ssh-passphrase | Password of private key|
 | --ssh-timeout | SSH timeout(s) | | &nbsp;|
 
@@ -295,11 +296,18 @@ This project exists thanks to all the people who contribute.
 | ------ | ------ |
 | --cluster | Enable CLUSTER mode |
 
+#### SSL
+
+| Args | Description | Args | Description |
+| ------ | ------ | ------ | ------ |
+| --ssl | Enable SSL* | --ssl-key | SSL Private Key Pem|
+| --ssl-ca | SSL Certificate Authority | --ssl-cert | SSL Public Key Pem|
+
 #### SENTINEL
 
 | Args | Description |
 | ------ | ------ |
-| --sentinel-master-name | Name of master group，like 'mymaster' |
+| --sentinel-master-name | Name of master group*，like 'mymaster' |
 | --sentinel-node-password | Password of Redis node |
 
 
