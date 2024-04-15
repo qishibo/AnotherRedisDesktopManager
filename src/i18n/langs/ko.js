@@ -167,6 +167,7 @@ const ko = {
     close_other: '다른 탭 닫기',
     slow_log: '저성능 쿼리',
     load_current_folder: '현재 폴더만 로드',
+    custom_name: '맞춤 이름',
   },
 };
 

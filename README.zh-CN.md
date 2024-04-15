@@ -1,18 +1,17 @@
-<img align="right" width="120" src="https://cdn.jsdelivr.net/gh/qishibo/img/ano-square-icon-128.png">
-
 # Another Redis Desktop Manager
 
-<hr/>
+<img align="right" width="120" src="https://cdn.jsdelivr.net/gh/qishibo/img/ano-square-icon-128.png">
 
-🚀🚀🚀 更快、更好、更稳定的Redis桌面(GUI)管理客户端，兼容Windows、Mac、Linux，性能出众，轻松加载海量键值
+> 🚀🚀🚀 更快、更好、更稳定的Redis桌面(GUI)管理客户端，兼容Windows、Mac、Linux，性能出众，轻松加载海量键值
 
-[![MIT](https://img.shields.io/badge/license-MIT-000000.svg)](LICENSE)
-[![Download](https://img.shields.io/github/release/qishibo/AnotherRedisDesktopManager.svg?label=Download)](https://github.com/qishibo/AnotherRedisDesktopManager/releases)
-[![Download Analysis](https://img.shields.io/badge/Download-Analysis-blue.svg)](https://qii404.me/github-release-statistics/?repo=/qishibo/AnotherRedisDesktopManager/)
-[![Weibo](https://img.shields.io/badge/Weibo-@shiboooo-blue.svg)](https://weibo.com/shiboooo?is_hot=1)
+<br>
+
+[![LICENSE](https://img.shields.io/github/license/qishibo/AnotherRedisDesktopManager)](LICENSE)
+[![Release](https://img.shields.io/github/release/qishibo/AnotherRedisDesktopManager.svg)](https://github.com/qishibo/AnotherRedisDesktopManager/releases)
+[![Download](https://img.shields.io/github/downloads/qishibo/AnotherRedisDesktopManager/total)](https://github.com/qishibo/AnotherRedisDesktopManager/releases)
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fqishibo%2FAnotherRedisDesktopManager.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fqishibo%2FAnotherRedisDesktopManager?ref=badge_shield)
 <a href="https://www.producthunt.com/posts/another-redis-desktop-manager?utm_source=badge-featured"><img src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=340552&theme=dark" height="20" width="93" /></a>
-
+[![STARS](https://img.shields.io/github/stars/qishibo/AnotherRedisDesktopManager)](https://github.com/qishibo/AnotherRedisDesktopManager/)
 
 ## Windows
 
@@ -60,6 +59,7 @@
 
 ## 里程碑
 
+- 2024-04-10: DB自定义名称支持
 - 2024-02-21: Java/Pickle解码视图支持
 - 2024-02-15: STEAM支持查看群组和消费者
 - 2024-01-31: 好久不见! 命令行参数启动支持
@@ -284,8 +284,8 @@ npm run pack:linux
 
 | 参数 | 说明 | 参数 | 说明 |
 | ------ | ------ | ------ | ------ |
-| --ssh-host | 地址 | --ssh-port | 端口（默认22）|
-| --ssh-username | 用户名 | --ssh-password | 密码|
+| --ssh-host | 地址* | --ssh-port | 端口（默认22）|
+| --ssh-username | 用户名* | --ssh-password | 密码|
 | --ssh-private-key | 私钥路径 | --ssh-passphrase | 私钥密码|
 | --ssh-timeout | 超时（秒） | | &nbsp;|
 
@@ -295,11 +295,18 @@ npm run pack:linux
 | ------ | ------ |
 | --cluster | 开启集群模式 |
 
+#### SSL
+
+| 参数 | 说明 | 参数 | 说明 |
+| ------ | ------ | ------ | ------ |
+| --ssl | 开启SSL模式* | --ssl-key | SSL私钥路径|
+| --ssl-ca | SSL证书机构 | --ssl-cert | SSL公钥路径|
+
 #### SENTINEL
 
 | 参数 | 说明 |
 | ------ | ------ |
-| --sentinel-master-name | Master组名称，如mymaster |
+| --sentinel-master-name | Master组名称*，如mymaster |
 | --sentinel-node-password | Redis节点密码 |
 
 

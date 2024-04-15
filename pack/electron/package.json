@@ -1,6 +1,6 @@
 {
   "name": "another-redis-desktop-manager",
-  "version": "1.6.3",
+  "version": "1.6.4",
   "description": "A faster, better and more stable redis desktop manager.",
   "author": "Another",
   "private": true,
@@ -64,6 +64,7 @@
       "extendInfo": {
         "ElectronTeamID": "68JN8DV835"
       }
-    }
+    },
+    "afterSign": "pack/scripts/notarize.js"
   }
 }

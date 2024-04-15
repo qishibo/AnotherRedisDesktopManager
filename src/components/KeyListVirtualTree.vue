@@ -6,13 +6,15 @@
         <el-checkbox v-model='checkAllSelect' @change='toggleCheckAll' class='select-cancel-all' :title='$t("message.toggle_check_all")'></el-checkbox>
       </div>
       <div class="flex-col">
-        <el-row :gutter="10">
-          <el-col :span="12">
-            <el-button v-if='rightClickItem == "export"' @click='clickItem("export")' type="primary" style="width: 100%" size="mini">{{ $t('message.export') }}</el-button>
-            <el-button v-else @click='deleteBatch' type="danger" style="width: 100%" size="mini">{{ $t('el.upload.delete') }}</el-button>
+        <el-row :gutter="6">
+          <el-col :span="8">
+            <el-button @click='deleteBatch' type="danger" size="mini">{{ $t('el.upload.delete') }}</el-button>
           </el-col>
-          <el-col :span="12">
-            <el-button @click="hideMultiSelect" type="primary" plain style="width: 100%" size="mini">{{ $t('el.messagebox.cancel') }}</el-button>
+          <el-col :span="8">
+            <el-button @click='clickItem("export")' type="primary" size="mini">{{ $t('message.export') }}</el-button>
+          </el-col>
+          <el-col :span="8">
+            <el-button @click="hideMultiSelect" type="primary" plain size="mini">{{ $t('el.messagebox.cancel') }}</el-button>
           </el-col>
         </el-row>
       </div>
@@ -559,6 +561,9 @@ export default {
 /*second col*/
 .key-list-vtree .batch-operate .flex-col {
   margin-left: 25px;
+}
+.key-list-vtree .batch-operate .flex-col button {
+  width: 100%;
 }
 /*checkbox*/
 .key-list-vtree .batch-operate .select-cancel-all {

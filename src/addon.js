@@ -93,6 +93,17 @@ export default {
         connection.sentinelOptions = sentinelOptions;
       }
 
+      // ssl args
+      if (mainArgs['ssl']) {
+        const sslOptions = {
+          key: mainArgs['ssl-key'],
+          ca: mainArgs['ssl-ca'],
+          cert: mainArgs['ssl-cert'],
+        };
+
+        connection.sslOptions = sslOptions;
+      }
+
       // add to storage
       storage.addConnection(connection);
       bus.$emit('refreshConnections');
