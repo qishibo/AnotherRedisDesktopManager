@@ -167,6 +167,7 @@ const tw = {
     close_other: '關閉其他標籤',
     slow_log: '慢查詢',
     load_current_folder: '僅載入目前資料夾',
+    custom_name: '自訂名稱',
   },
 };
 

@@ -167,6 +167,7 @@ const tr = {
     close_other: 'Diğer Sekmeleri Kapat',
     slow_log: 'Yavaş Sorgu',
     load_current_folder: 'Yalnızca Geçerli Klasörü Yükle',
+    custom_name: 'Özel Ad',
   },
 };
 

@@ -297,20 +297,19 @@ export default {
 
       for (const key of keys) {
         const promise = this.client.callBuffer('DUMP', key);
-        promiseQueue.push(promise);
+        const promise1 = this.client.callBuffer('PTTL', key);
+        promiseQueue.push(promise, promise1);
       }
 
       Promise.allSettled(promiseQueue).then(reply => {
-        for (const index in reply) {
-          const item = reply[index];
+        for (let i = 0; i < reply.length; i += 2) {
+          if (reply[i].status === "fulfilled") {
+            const key   = keys[i / 2].toString('hex');
+            const value = reply[i].value.toString('hex');
+            const ttl   = reply[i + 1].value;
 
-          if (item.status === "fulfilled") {
-            const line = `${keys[index].toString('hex')},${item.value.toString('hex')}`;
+            const line = `${key},${value},${ttl}`;
             lines.push(line);
-          }
-          // dump failed
-          else {
-            failed.push(keys[index]);
           }
         }
 
