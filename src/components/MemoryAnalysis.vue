@@ -3,15 +3,24 @@
   <el-card class="box-card">
     <!-- card title -->
     <div slot="header" class="clearfix">
-      <el-popover trigger="hover">
-        <i slot="reference" class="el-icon-question"></i>
-        If size is "0", your Redis may disabled <b>MEMORY</b> command.
+      <!-- setting dialog -->
+      <el-popover
+        placement="bottom"
+        width="40"
+        trigger="hover">
+        <div>
+          <p>If result is "0", the <b>MEMORY</b> command may be disabled on Redis.</p>
+          <p style="margin: 0;">Filter Min Size:</p>
+          <el-input v-model="minSizeKB" size="mini">
+            <i slot="suffix">KB</i>
+          </el-input>
+        </div>
+        <i slot="reference" class="el-icon-setting"></i>
       </el-popover>
       
       <span class="analysis-title">{{ $t('message.memory_analysis') }}</span>
       <i v-if="isScanning" class='el-icon-loading'></i>
       <el-tag size="mini">
-        <span v-if="isScanning">Scanning...</span>
         Total: {{keysList.length}} &nbsp;
         Size: {{$util.humanFileSize(totalSize)}}
       </el-tag>
@@ -77,10 +86,16 @@ export default {
       scanMax: 200000,
       scanPageSize: 2000,
       totalSize: 0,
+      minSizeKB: 0,
     };
   },
   props: ['client', 'hotKeyScope', 'pattern'],
   components: { RecycleScroller },
+  computed: {
+    minSizeB() {
+      return parseInt(this.minSizeKB) * 1024;
+    },
+  },
   methods: {
     initKeys() {
       this.keysList = [];
@@ -155,6 +170,10 @@ export default {
         // not logging
         this.client.withoutLogging = true;
         const promise = this.client.call('MEMORY', 'USAGE', key).then(reply => {
+          // filter min size
+          if (this.minSizeB && reply < this.minSizeB) {
+            return;
+          }
           keysWithMemory.push({
             key: key, str: this.$util.bufToString(key), size: reply, human: this.$util.humanFileSize(reply),
           });
