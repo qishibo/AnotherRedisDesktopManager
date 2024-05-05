@@ -27,7 +27,6 @@
     "sign": "cd pack/mas; bash sign.sh"
   },
   "dependencies": {
-    "@qii404/ioredis": "^4.28.501",
     "@qii404/json-bigint": "^1.0.0",
     "@qii404/redis-splitargs": "^1.0.1",
     "@qii404/vue-easy-tree": "^1.0.10",
@@ -35,6 +34,7 @@
     "element-ui": "^2.4.11",
     "font-awesome": "^4.7.0",
     "getopts": "^2.3.0",
+    "ioredis": "^5.3.2",
     "java-object-serialization": "^0.1.1",
     "keymaster": "^1.6.2",
     "monaco-editor": "^0.30.1",
