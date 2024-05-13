@@ -239,7 +239,9 @@ export default {
       });
     },
     customDbName(db) {
-      this.$prompt(this.$t('message.custom_name')).then(({ value }) => {
+      const name = this.dbNames[db];
+
+      this.$prompt(this.$t('message.custom_name'), {inputValue: name}).then(({ value }) => {
         this.$set(this.dbNames, db, value);
         const dbKey = this.$storage.getStorageKeyByName('custom_db', this.config.connectionName);
         localStorage.setItem(dbKey, JSON.stringify(this.dbNames));
