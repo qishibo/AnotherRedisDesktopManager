@@ -8,6 +8,7 @@
 import storage from '@/storage';
 import shell from 'child_process';
 import JsonEditor from '@/components/JsonEditor';
+import {ipcRenderer} from 'electron';
 
 export default {
   data() {
@@ -16,6 +17,7 @@ export default {
       fullCommand: '',
       previewCommand: '',
       previewContentMax: 100,
+      writeHexFileSize: 8000,
     };
   },
   components: { JsonEditor },
@@ -94,6 +96,34 @@ export default {
         this.$util.cutString(hexStr, this.previewContentMax),
       );
 
+      // if content is too long, write to file simultaneously
+      // hex str is about 2 times of real size
+      if (hexStr.length > this.writeHexFileSize) {
+        ipcRenderer.invoke('getTempPath').then(reply => {
+          // target file name
+          const fileName = `ardm_cv_${this.redisKey.toString('hex')}`;
+          const filePath = require('path').join(reply, fileName);
+
+          require('fs').writeFile(filePath, hexStr, err => {
+            if (err) {
+              return this.$message.error(err);
+            }
+
+            this.fullCommand = this.fullCommand.replace('{HEX_FILE}', filePath);
+            this.previewCommand = this.previewCommand.replace('{HEX_FILE}', filePath);
+
+            this.exec();
+          });
+        });
+      }
+      // common content just exec
+      else {
+        this.fullCommand = this.fullCommand.replace('{HEX_FILE}', '');
+        this.previewCommand = this.previewCommand.replace('{HEX_FILE}', '');
+        this.exec();
+      }
+    },
+    exec() {
       try {
         shell.exec(this.fullCommand, (e, stdout, stderr) => {
           if (e || stderr) {

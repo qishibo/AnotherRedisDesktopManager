@@ -148,6 +148,10 @@ ipcMain.handle('changeTheme', (event, theme) => {
   return nativeTheme.shouldUseDarkColors
 });
 
+ipcMain.handle('getTempPath', (event, arg) => {
+  return app.getPath('temp');
+});
+
 // for mac copy paset shortcut
 if (process.platform === 'darwin') {
   const template = [
