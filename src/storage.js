@@ -27,6 +27,9 @@ export default {
 
     return fontFamily.map(line => {return `"${line}"`}).join(',');
   },
+  getCustomCss() {
+    return this.getSetting('customCss') || '';
+  },
   getCustomFormatter(name = '') {
     let formatters = localStorage.getItem('customFormatters');
     formatters = formatters ? JSON.parse(formatters) : [];

@@ -1,6 +1,7 @@
 // Modules to control application life and create native browser window
 const { app, BrowserWindow, Menu, ipcMain, dialog, nativeTheme } = require('electron');
 const fontManager = require('./font-manager');
+require('./custom-css-loader');
 const winState = require('./win-state');
 
 const url = require('url');
@@ -24,10 +25,10 @@ process.on('uncaughtException', (err, origin) => {
 
   dialog.showMessageBoxSync(mainWindow, {
     type: 'error',
-    title: 'Whoops! Uncaught Exception', 
+    title: 'Whoops! Uncaught Exception',
     message: err.stack,
     detail: '\nDon\'t worry, I will fix it! 😎😎\n\n'
-            + 'Submit issue to: \nhttps://github.com/qishibo/AnotherRedisDesktopManager/'
+      + 'Submit issue to: \nhttps://github.com/qishibo/AnotherRedisDesktopManager/',
   });
 
   process.exit();
@@ -50,6 +51,7 @@ function createWindow() {
     height: lastWinStage.height,
     icon: `${__dirname}/icons/icon.png`,
     autoHideMenuBar: true,
+    frame: false,
     webPreferences: {
       nodeIntegration: true,
       // add this to keep 'remote' module avaiable. Tips: it will be removed in electron 14
@@ -71,7 +73,7 @@ function createWindow() {
       protocol: 'file',
       slashes: true,
       pathname: path.join(__dirname, 'index.html'),
-      query: {version: app.getVersion()},
+      query: { version: app.getVersion() },
     }));
   } else {
     mainWindow.loadURL(`http://localhost:9988/?version=${app.getVersion()}`);
@@ -121,18 +123,24 @@ app.on('activate', () => {
 });
 
 // hide window
-ipcMain.on('hideWindow',function() {
+ipcMain.on('hideWindow', () => {
   mainWindow && mainWindow.hide();
 });
 // minimize window
-ipcMain.on('minimizeWindow',function() {
+ipcMain.on('minimizeWindow', () => {
   mainWindow && mainWindow.minimize();
 });
 // toggle maximize
-ipcMain.on('toggleMaximize',function() {
+ipcMain.on('toggleMaximize', () => {
   if (mainWindow) {
     // restore failed on MacOS, use unmaximize instead
     mainWindow.isMaximized() ? mainWindow.unmaximize() : mainWindow.maximize();
+  }
+});
+// close window
+ipcMain.on('closeApp', () => {
+  if (mainWindow) {
+    mainWindow.close();
   }
 });
 
@@ -167,8 +175,8 @@ if (process.platform === 'darwin') {
         { role: 'hideothers' },
         { role: 'unhide' },
         { type: 'separator' },
-        { role: 'quit' }
-      ]
+        { role: 'quit' },
+      ],
     },
     { role: 'editMenu' },
     // { role: 'viewMenu' },
@@ -178,8 +186,8 @@ if (process.platform === 'darwin') {
         ...(
           (APP_ENV === 'production') ? [] : [{ role: 'toggledevtools' }]
         ),
-        { role: 'togglefullscreen' }
-      ]
+        { role: 'togglefullscreen' },
+      ],
     },
     // { role: 'windowMenu' },
     {
@@ -191,7 +199,7 @@ if (process.platform === 'darwin') {
         { role: 'front' },
         { type: 'separator' },
         // { role: 'window' }
-      ]
+      ],
     },
     {
       role: 'help',
@@ -199,12 +207,12 @@ if (process.platform === 'darwin') {
         {
           label: 'Learn More',
           click: async () => {
-            const { shell } = require('electron')
-            await shell.openExternal('https://github.com/qishibo/AnotherRedisDesktopManager')
-          }
-        }
-      ]
-    }
+            const { shell } = require('electron');
+            await shell.openExternal('https://github.com/qishibo/AnotherRedisDesktopManager');
+          },
+        },
+      ],
+    },
   ];
 
   menu = Menu.buildFromTemplate(template);

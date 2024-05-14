@@ -167,6 +167,8 @@ const pt = {
     close_other: 'Fechar outras guias',
     slow_log: 'Consulta lenta',
     load_current_folder: 'Carregar apenas a pasta atual',
+    custom_css: 'Estilo personalizado',
+    custom_css_placeholder: 'Por favor insira o caminho do arquivo',
     custom_name: 'Nome personalizado',
   },
 };
