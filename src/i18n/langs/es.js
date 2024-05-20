@@ -7,7 +7,7 @@ const es = {
     del_connection: 'Eliminar Conexión',
     close_connection: 'Cerrar Conexión',
     add_new_line: 'Añadir Nueva Linea',
-    dump_to_clipboard: "Copiar como comando",
+    dump_to_clipboard: 'Copiar como comando',
     redis_version: 'Versión Redis',
     process_id: 'ID Proceso',
     used_memory: 'Memoria Usada',

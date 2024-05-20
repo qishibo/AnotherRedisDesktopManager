@@ -4,14 +4,15 @@
 
 <script type="text/javascript">
 import JsonEditor from '@/components/JsonEditor';
+
 const zlib = require('zlib');
 
 export default {
-  components: {JsonEditor},
+  components: { JsonEditor },
   props: ['content'],
   computed: {
     newContent() {
-      let formatStr = this.formatStr;
+      const { formatStr } = this;
 
       if (typeof formatStr === 'string') {
         if (this.$util.isJson(formatStr)) {
@@ -34,7 +35,7 @@ export default {
     },
     copyContent() {
       return this.formatStr;
-    }
+    },
   },
-}
+};
 </script>

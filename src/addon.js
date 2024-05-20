@@ -1,7 +1,7 @@
+import getopts from 'getopts';
+import { ipcRenderer } from 'electron';
 import bus from './bus';
 import storage from './storage';
-import getopts from "getopts";
-import { ipcRenderer } from 'electron';
 
 export default {
   setup() {
@@ -24,15 +24,15 @@ export default {
   },
   initZoom() {
     let zoomFactor = storage.getSetting('zoomFactor');
-    zoomFactor = zoomFactor ? zoomFactor : 1.0;
+    zoomFactor = zoomFactor || 1.0;
 
-    const {webFrame} = require('electron');
+    const { webFrame } = require('electron');
     webFrame.setZoomFactor(zoomFactor);
   },
   openHrefInBrowser() {
-    const shell = require('electron').shell;
+    const { shell } = require('electron');
 
-    document.addEventListener('click', function (event) {
+    document.addEventListener('click', (event) => {
       const ele = event.target;
 
       if (ele && (ele.nodeName.toLowerCase() === 'a') && ele.href.startsWith('http')) {
@@ -42,7 +42,7 @@ export default {
     });
   },
   bindCliArgs() {
-    ipcRenderer.invoke('getMainArgs').then(result => {
+    ipcRenderer.invoke('getMainArgs').then((result) => {
       if (!result.argv) {
         return;
       }
@@ -64,7 +64,7 @@ export default {
       };
 
       // cluster args
-      if (mainArgs['cluster']) {
+      if (mainArgs.cluster) {
         connection.cluster = true;
       }
 
@@ -94,7 +94,7 @@ export default {
       }
 
       // ssl args
-      if (mainArgs['ssl']) {
+      if (mainArgs.ssl) {
         const sslOptions = {
           key: mainArgs['ssl-key'],
           ca: mainArgs['ssl-ca'],

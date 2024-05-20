@@ -119,12 +119,14 @@ export default {
       loadMoreDisable: false,
     };
   },
-  components: {PaginationTable, FormatViewer, InputBinary, ScrollToTop},
+  components: {
+    PaginationTable, FormatViewer, InputBinary, ScrollToTop,
+  },
   props: ['client', 'redisKey'],
   computed: {
     dialogTitle() {
-      return this.beforeEditItem.key ? this.$t('message.edit_line') :
-             this.$t('message.add_new_line');
+      return this.beforeEditItem.key ? this.$t('message.edit_line')
+        : this.$t('message.add_new_line');
     },
   },
   methods: {
@@ -134,9 +136,7 @@ export default {
 
       if (!this.scanStream) {
         this.initScanStream();
-      }
-
-      else {
+      } else {
         this.oneTimeListLength = 0;
         this.scanStream.resume();
       }
@@ -147,7 +147,7 @@ export default {
     initTotal() {
       this.client.hlen(this.redisKey).then((reply) => {
         this.total = reply;
-      }).catch(e => {});
+      }).catch((e) => {});
     },
     resetTable() {
       // stop scanning first, #815
@@ -158,16 +158,16 @@ export default {
       this.loadMoreDisable = false;
     },
     initScanStream() {
-      const scanOption = {match: this.getScanMatch(), count: this.pageSize};
+      const scanOption = { match: this.getScanMatch(), count: this.pageSize };
       scanOption.match != '*' && (scanOption.count = this.searchPageSize);
 
       this.scanStream = this.client.hscanBufferStream(
         this.redisKey,
-        scanOption
+        scanOption,
       );
 
-      this.scanStream.on('data', reply => {
-        let hashData = [];
+      this.scanStream.on('data', (reply) => {
+        const hashData = [];
 
         for (let i = 0; i < reply.length; i += 2) {
           hashData.push({
@@ -193,7 +193,7 @@ export default {
         this.loadMoreDisable = true;
       });
 
-      this.scanStream.on('error', e => {
+      this.scanStream.on('error', (e) => {
         this.loadingIcon = '';
         this.loadMoreDisable = true;
         this.$message.error(e.message);
@@ -216,18 +216,16 @@ export default {
     },
     dumpCommand(item) {
       const lines = item ? [item] : this.hashData;
-      const params = lines.map(line => {
-        return `${this.$util.bufToQuotation(line.key)} ` +
-               this.$util.bufToQuotation(line.value);
-      });
+      const params = lines.map(line => `${this.$util.bufToQuotation(line.key)} ${
+        this.$util.bufToQuotation(line.value)}`);
 
       const command = `HMSET ${this.$util.bufToQuotation(this.redisKey)} ${params.join(' ')}`;
       this.$util.copyToClipboard(command);
-      this.$message.success({message: this.$t('message.copy_success'), duration: 800});
+      this.$message.success({ message: this.$t('message.copy_success'), duration: 800 });
     },
     editLine() {
       const key = this.redisKey;
-      const client = this.client;
+      const { client } = this;
       const before = this.beforeEditItem;
 
       const afterKey = this.editLineItem.key;
@@ -242,7 +240,7 @@ export default {
       client.hset(
         key,
         afterKey,
-        afterValue
+        afterValue,
       ).then((reply) => {
         // edit key && key changed
         if (before.key && !before.key.equals(afterKey)) {
@@ -250,7 +248,7 @@ export default {
         }
 
         // this.initShow(); // do not reinit, #786
-        const newLine = {key: afterKey, value: afterValue, uniq: Math.random()};
+        const newLine = { key: afterKey, value: afterValue, uniq: Math.random() };
         // edit line
         if (this.rowUniq) {
           this.$util.listSplice(this.hashData, this.rowUniq, newLine);
@@ -266,16 +264,16 @@ export default {
           message: reply == 1 ? this.$t('message.add_success') : this.$t('message.modify_success'),
           duration: 1000,
         });
-      }).catch(e => {this.$message.error(e.message);});
+      }).catch((e) => { this.$message.error(e.message); });
     },
     deleteLine(row) {
       this.$confirm(
         this.$t('message.confirm_to_delete_row_data'),
-        {type: 'warning'}
+        { type: 'warning' },
       ).then(() => {
         this.client.hdel(
           this.redisKey,
-          row.key
+          row.key,
         ).then((reply) => {
           if (reply == 1) {
             this.$message.success({
@@ -287,7 +285,7 @@ export default {
             this.$util.listSplice(this.hashData, row.uniq);
             this.total--;
           }
-        }).catch(e => {this.$message.error(e.message);});
+        }).catch((e) => { this.$message.error(e.message); });
       }).catch(() => {});
     },
   },

@@ -36,7 +36,7 @@ export default {
     };
   },
   props: ['client', 'config', 'keyList'],
-  components: {RightClickMenu},
+  components: { RightClickMenu },
   methods: {
     clickKey(key, event = null, newTab = false) {
       // highlight clicked key
@@ -46,7 +46,7 @@ export default {
     },
     hightKey(event) {
       for (const ele of document.querySelectorAll('.key-select')) {
-        ele.classList.remove("key-select");
+        ele.classList.remove('key-select');
       }
 
       if (event) {
@@ -54,7 +54,7 @@ export default {
       }
     },
   },
-}
+};
 </script>
 
 <style type="text/css">

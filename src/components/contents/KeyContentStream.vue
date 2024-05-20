@@ -173,12 +173,12 @@ export default {
       consumersDict: {},
     };
   },
-  components: {FormatViewer, InputBinary},
+  components: { FormatViewer, InputBinary },
   props: ['client', 'redisKey'],
   computed: {
     dialogTitle() {
-      return this.beforeEditItem.contentString ? this.$t('message.detail') :
-             this.$t('message.add_new_line');
+      return this.beforeEditItem.contentString ? this.$t('message.detail')
+        : this.$t('message.add_new_line');
     },
   },
   methods: {
@@ -192,20 +192,20 @@ export default {
       this.initTotal();
     },
     listScan() {
-      let maxId = this.lastId.equals(Buffer.from('')) ?
-                  (this.maxId ? this.maxId : '+') :
-                  this.lastId;
+      const maxId = this.lastId.equals(Buffer.from(''))
+        ? (this.maxId ? this.maxId : '+')
+        : this.lastId;
       // +1 for padding the repeat
-      const pageSize = this.filterValue ? 500 :
-                      (this.lineData.length ? this.pageSize + 1 : this.pageSize);
+      const pageSize = this.filterValue ? 500
+        : (this.lineData.length ? this.pageSize + 1 : this.pageSize);
 
       this.client.xrevrangeBuffer([
         this.redisKey,
         maxId,
         this.minId ? this.minId : '-',
         'COUNT',
-        pageSize
-      ]).then(reply => {
+        pageSize,
+      ]).then((reply) => {
         if (!reply.length) {
           return this.loadingIcon = '';
         }
@@ -220,9 +220,9 @@ export default {
           return;
         }
 
-        let lineData = [];
+        const lineData = [];
 
-        for (let stream of reply) {
+        for (const stream of reply) {
           const streamId = stream[0];
           const flatDict = stream[1];
 
@@ -231,12 +231,11 @@ export default {
             continue;
           }
 
-          let content = {};
-          let line = {id: streamId, content: content, uniq: Math.random()};
+          const content = {};
+          const line = { id: streamId, content, uniq: Math.random() };
           // add key value map
-          for (var i = 0; i < flatDict.length; i+=2) {
-            content[this.$util.bufToString(flatDict[i])] =
-              this.$util.bufToString(flatDict[i+1]);
+          for (let i = 0; i < flatDict.length; i += 2) {
+            content[this.$util.bufToString(flatDict[i])] = this.$util.bufToString(flatDict[i + 1]);
           }
 
           line.contentString = JSON.stringify(line.content);
@@ -265,7 +264,7 @@ export default {
         }
         // continue scanning until to pagesize
         this.listScan();
-      }).catch(e => {
+      }).catch((e) => {
         this.loadingIcon = '';
         this.$message.error(e.message);
       });
@@ -293,10 +292,10 @@ export default {
     },
     dumpCommand(item) {
       const lines = item ? [item] : this.lineData;
-      const params = lines.map(line => {
-        let command = `XADD ${this.$util.bufToQuotation(this.redisKey)} ${line.id} `;
-        
-        let dicts = [];
+      const params = lines.map((line) => {
+        const command = `XADD ${this.$util.bufToQuotation(this.redisKey)} ${line.id} `;
+
+        const dicts = [];
         for (const field in line.content) {
           dicts.push(this.$util.bufToQuotation(field), this.$util.bufToQuotation(line.content[field]));
         }
@@ -306,10 +305,10 @@ export default {
 
       // reverse: id asc order
       this.$util.copyToClipboard(params.reverse().join('\n'));
-      this.$message.success({message: this.$t('message.copy_success'), duration: 800});
+      this.$message.success({ message: this.$t('message.copy_success'), duration: 800 });
     },
     editLine() {
-      const afterId = this.editLineItem.id
+      const afterId = this.editLineItem.id;
       const afterValue = this.$refs.formatViewer.getContent();
 
       if (!afterId || !afterValue) {
@@ -320,17 +319,17 @@ export default {
         return this.$message.error(this.$t('message.json_format_failed'));
       }
 
-      let mapList = [];
-      let jsonObj = JSON.parse(afterValue);
+      const mapList = [];
+      const jsonObj = JSON.parse(afterValue);
 
-      for (let k in jsonObj) {
+      for (const k in jsonObj) {
         mapList.push(...[k, jsonObj[k]]);
       }
 
       this.client.xadd(
         this.redisKey,
         afterId,
-        mapList
+        mapList,
       ).then((reply) => {
         // reply is id
         if (reply) {
@@ -342,18 +341,18 @@ export default {
             duration: 1000,
           });
         }
-      }).catch(e => {
+      }).catch((e) => {
         this.$message.error(e.message);
       });
     },
     deleteLine(row) {
       this.$confirm(
         this.$t('message.confirm_to_delete_row_data'),
-        {type: 'warning'}
+        { type: 'warning' },
       ).then(() => {
         this.client.xdel(
           this.redisKey,
-          row.id
+          row.id,
         ).then((reply) => {
           if (reply == 1) {
             this.$message.success({
@@ -375,7 +374,7 @@ export default {
       // show dialog
       this.groupsVisible = true;
 
-      this.client.call('XINFO', 'GROUPS', this.redisKey).then(reply => {
+      this.client.call('XINFO', 'GROUPS', this.redisKey).then((reply) => {
         this.groups = this.formatInfo(reply);
       });
     },
@@ -385,7 +384,7 @@ export default {
         return;
       }
 
-      this.client.call('XINFO', 'CONSUMERS', this.redisKey, row.name).then(reply => {
+      this.client.call('XINFO', 'CONSUMERS', this.redisKey, row.name).then((reply) => {
         this.$set(this.consumersDict, row.name, this.formatInfo(reply));
       });
     },
@@ -393,9 +392,9 @@ export default {
       this.$refs.groupsTable.toggleRowExpansion(row);
     },
     formatInfo(lines) {
-      const formatted= [];
+      const formatted = [];
 
-      for (let line of lines) {
+      for (const line of lines) {
         const dict = {};
 
         for (let j = 0; j < line.length - 1; j += 2) {

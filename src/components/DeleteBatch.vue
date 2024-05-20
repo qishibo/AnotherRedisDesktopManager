@@ -40,7 +40,7 @@
 </template>
 
 <script type="text/javascript">
-import { RecycleScroller } from 'vue-virtual-scroller'
+import { RecycleScroller } from 'vue-virtual-scroller';
 
 export default {
   data() {
@@ -62,25 +62,25 @@ export default {
       if (this.rule.pattern && this.rule.pattern.length) {
         this.loadingScan = true;
 
-        for (let pattern of this.rule.pattern) {
+        for (const pattern of this.rule.pattern) {
           this.initScanStreamsAndScan(pattern);
         }
       }
     },
     initScanStreamsAndScan(pattern) {
-      let nodes = this.client.nodes ? this.client.nodes('master') : [this.client];
+      const nodes = this.client.nodes ? this.client.nodes('master') : [this.client];
       this.scanningCount = nodes.length;
 
-      nodes.map(node => {
-        let scanOption = {
-          match: pattern + '*',
+      nodes.map((node) => {
+        const scanOption = {
+          match: `${pattern}*`,
           count: 20000,
-        }
+        };
 
-        let stream = node.scanBufferStream(scanOption);
+        const stream = node.scanBufferStream(scanOption);
         this.scanStreams.push(stream);
 
-        stream.on('data', keys => {
+        stream.on('data', (keys) => {
           this.addToList(keys.sort());
 
           // pause for dom rendering
@@ -93,7 +93,7 @@ export default {
         stream.on('error', (e) => {
           this.loadingScan = false;
           this.$message.error({
-            message: 'Delete Batch Stream On Error: ' +  e.message,
+            message: `Delete Batch Stream On Error: ${e.message}`,
             duration: 1500,
           });
         });
@@ -108,9 +108,9 @@ export default {
       });
     },
     addToList(keys) {
-      let list = [];
+      const list = [];
       for (const key of keys) {
-        list.push({key: key, str: this.$util.bufToString(key)});
+        list.push({ key, str: this.$util.bufToString(key) });
       }
 
       this.allKeysList = this.allKeysList.concat(list);
@@ -119,14 +119,14 @@ export default {
       this.loadingScan = (forcePause === null ? !this.loadingScan : !forcePause);
 
       if (this.scanStreams.length) {
-        for (let stream of this.scanStreams) {
+        for (const stream of this.scanStreams) {
           this.loadingScan ? stream.resume() : stream.pause();
         }
       }
     },
     confirmDelete() {
-      let keys = this.allKeysList;
-      let total = keys.length;
+      const keys = this.allKeysList;
+      const total = keys.length;
 
       if (total <= 0) {
         return;
@@ -155,11 +155,10 @@ export default {
         delPromise.then((reply) => {
           if (reply > 0) {
             this.afterDelete();
-          }
-          else {
+          } else {
             this.deleteFailed(this.$t('message.delete_failed'));
           }
-        }).catch(e => {
+        }).catch((e) => {
           this.deleteFailed(e.message);
         });
       }
@@ -168,18 +167,17 @@ export default {
       else {
         for (let i = 0; i < total; i++) {
           delPromise = this.client.del(keys[i].key);
-          delPromise.catch(e => {});
+          delPromise.catch((e) => {});
         }
 
         // use final promise
         delPromise.then((reply) => {
           if (reply == 1) {
             this.afterDelete();
-          }
-          else {
+          } else {
             this.deleteFailed(this.$t('message.delete_failed'));
           }
-        }).catch(e => {
+        }).catch((e) => {
           this.deleteFailed(e.message);
         });
       }

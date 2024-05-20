@@ -1,10 +1,11 @@
 import Redis from 'ioredis';
-import {createTunnel} from 'tunnel-ssh';
+import { createTunnel } from 'tunnel-ssh';
 import vue from '@/main.js';
-import {remote} from 'electron';
-import {writeCMD} from '@/commands.js';
+import { remote } from 'electron';
+import { writeCMD } from '@/commands.js';
 
 const fs = require('fs');
+
 const { sendCommand } = Redis.prototype;
 
 // redis command log
@@ -13,7 +14,7 @@ Redis.prototype.sendCommand = function (...options) {
 
   // readonly mode
   if (this.options.connectionReadOnly && writeCMD[command.name.toUpperCase()]) {
-    command.reject(new Error("You are in readonly mode! Unable to execute write command!"));
+    command.reject(new Error('You are in readonly mode! Unable to execute write command!'));
     return command.promise;
   }
 
@@ -28,15 +29,17 @@ Redis.prototype.sendCommand = function (...options) {
   const response = sendCommand.apply(this, options);
   const cost = performance.now() - start;
 
-  const record = {time: new Date(), connectionName: this.options.connectionName, command: command, cost: cost};
+  const record = {
+    time: new Date(), connectionName: this.options.connectionName, command, cost,
+  };
   vue.$bus.$emit('commandLog', record);
 
   return response;
 };
 
 // fix ioredis hgetall key has been toString()
-Redis.Command.setReplyTransformer("hgetall", (result) => {
-  let arr = [];
+Redis.Command.setReplyTransformer('hgetall', (result) => {
+  const arr = [];
   for (let i = 0; i < result.length; i += 2) {
     arr.push([result[i], result[i + 1]]);
   }
@@ -47,7 +50,7 @@ Redis.Command.setReplyTransformer("hgetall", (result) => {
 
 export default {
   createConnection(host, port, auth, config, promise = true, forceStandalone = false, removeDb = false) {
-    let options = this.getRedisOptions(host, port, auth, config);
+    const options = this.getRedisOptions(host, port, auth, config);
     let client = null;
 
     if (removeDb) {
@@ -67,7 +70,7 @@ export default {
     // cluster redis
     else if (config.cluster) {
       const clusterOptions = this.getClusterOptions(options, config.natMap ? config.natMap : {});
-      client = new Redis.Cluster([{port, host}], clusterOptions)
+      client = new Redis.Cluster([{ port, host }], clusterOptions);
     }
 
     // standalone redis
@@ -97,35 +100,36 @@ export default {
         // sentinel mode
         if (configRaw.sentinelOptions) {
           // this is a sentinel connection, remove db
-          let client = this.createConnection(listenAddress.address, listenAddress.port, auth, configRaw, false, true, true);
+          const client = this.createConnection(listenAddress.address, listenAddress.port, auth, configRaw, false, true, true);
 
           client.on('ready', () => {
-            client.call('sentinel', 'get-master-addr-by-name', configRaw.sentinelOptions.masterName).then(reply => {
+            client.call('sentinel', 'get-master-addr-by-name', configRaw.sentinelOptions.masterName).then((reply) => {
               if (!reply) {
                 return reject(new Error(`Master name "${configRaw.sentinelOptions.masterName}" not exists!`));
               }
 
               // connect to the master node via ssh
-              this.createClusterSSHTunnels(sshConfigRaw, [{host: reply[0], port: reply[1]}]).then(tunnels => {
+              this.createClusterSSHTunnels(sshConfigRaw, [{ host: reply[0], port: reply[1] }]).then((tunnels) => {
                 const sentinelClient = this.createConnection(
-                  tunnels[0].localHost, tunnels[0].localPort, configRaw.sentinelOptions.nodePassword, configRaw, false, true);
+                  tunnels[0].localHost, tunnels[0].localPort, configRaw.sentinelOptions.nodePassword, configRaw, false, true,
+                );
 
                 return resolve(sentinelClient);
               });
-            }).catch(e => {reject(e);}); // sentinel exec failed
+            }).catch((e) => { reject(e); }); // sentinel exec failed
           });
 
-          client.on('error', e => {reject(e);});
+          client.on('error', (e) => { reject(e); });
         }
 
         // ssh cluster mode
         else if (configRaw.cluster) {
-          let client = this.createConnection(listenAddress.address, listenAddress.port, auth, configRaw, false, true);
+          const client = this.createConnection(listenAddress.address, listenAddress.port, auth, configRaw, false, true);
 
           client.on('ready', () => {
             // get all cluster nodes info
-            client.call('cluster', 'nodes').then(reply => {
-              let nodes = this.getClusterNodes(reply);
+            client.call('cluster', 'nodes').then((reply) => {
+              const nodes = this.getClusterNodes(reply);
 
               // create ssh tunnel for each node
               this.createClusterSSHTunnels(sshConfigRaw, nodes).then((tunnels) => {
@@ -136,21 +140,20 @@ export default {
 
                 resolve(clusterClient);
               });
-            }).catch(e => {reject(e);});
-
+            }).catch((e) => { reject(e); });
           });
 
-          client.on('error', e => {reject(e);});
+          client.on('error', (e) => { reject(e); });
         }
 
         // ssh standalone redis
         else {
-          let client = this.createConnection(listenAddress.address, listenAddress.port, auth, configRaw, false);
+          const client = this.createConnection(listenAddress.address, listenAddress.port, auth, configRaw, false);
           return resolve(client);
         }
 
       // create SSH tunnel failed
-      }).catch(e => {
+      }).catch((e) => {
         // vue.$message.error('SSH errror: ' + e.message);
         // vue.$bus.$emit('closeConnection');
         reject(e);
@@ -188,22 +191,24 @@ export default {
       // srcAddr: '127.0.0.1',
       // srcPort: 0,
       dstAddr: host,
-      dstPort: port
+      dstPort: port,
     };
 
     // Tips: small dict is ordered, should replace to Map if dict is large
-    return { tunnelOptions, serverOptions, sshOptions, forwardOptions };
+    return {
+      tunnelOptions, serverOptions, sshOptions, forwardOptions,
+    };
   },
 
   getRedisOptions(host, port, auth, config) {
     return {
       // add additional host+port to options for "::1"
-      host: host,
-      port: port,
+      host,
+      port,
       family: 0,
 
       connectTimeout: 30000,
-      retryStrategy: (times) => {return this.retryStragety(times, {host, port})},
+      retryStrategy: times => this.retryStragety(times, { host, port }),
       enableReadyCheck: false,
       connectionName: config.connectionName ? config.connectionName : null,
       password: auth,
@@ -219,12 +224,12 @@ export default {
 
   getSentinelOptions(host, port, auth, config) {
     return {
-      sentinels: [{host: host, port: port}],
+      sentinels: [{ host, port }],
       sentinelPassword: auth,
       password: config.sentinelOptions.nodePassword,
       name: config.sentinelOptions.masterName,
       connectTimeout: 30000,
-      retryStrategy: (times) => {return this.retryStragety(times, {host, port})},
+      retryStrategy: times => this.retryStragety(times, { host, port }),
       enableReadyCheck: false,
       connectionName: config.connectionName ? config.connectionName : null,
       db: config.db ? config.db : undefined,
@@ -239,14 +244,14 @@ export default {
       connectionName: redisOptions.connectionName,
       enableReadyCheck: false,
       slotsRefreshTimeout: 30000,
-      redisOptions: redisOptions,
-      natMap: natMap,
+      redisOptions,
+      natMap,
     };
   },
 
   getClusterNodes(nodes, type = 'master') {
-    let result = [];
-    nodes = nodes.split("\n");
+    const result = [];
+    nodes = nodes.split('\n');
 
     for (let node of nodes) {
       if (!node) {
@@ -256,13 +261,13 @@ export default {
       node = node.trim().split(' ');
 
       if (node[2].includes(type)) {
-        let dsn = node[1].split('@')[0];
-        let lastIndex = dsn.lastIndexOf(':');
+        const dsn = node[1].split('@')[0];
+        const lastIndex = dsn.lastIndexOf(':');
 
-        let host = dsn.substr(0, lastIndex);
-        let port = dsn.substr(lastIndex + 1);
+        const host = dsn.substr(0, lastIndex);
+        const port = dsn.substr(lastIndex + 1);
 
-        result.push({host: host, port: port})
+        result.push({ host, port });
       }
     }
 
@@ -270,31 +275,33 @@ export default {
   },
 
   createClusterSSHTunnels(sshConfig, nodes) {
-    let sshTunnelStack = [];
+    const sshTunnelStack = [];
 
-    for (let node of nodes) {
+    for (const node of nodes) {
       // tunnelssh will change 'config' param, so just copy it
-      let sshConfigCopy = JSON.parse(JSON.stringify(sshConfig));
+      const sshConfigCopy = JSON.parse(JSON.stringify(sshConfig));
 
       // revocery the buffer after json.parse
       if (sshConfigCopy.sshOptions.privateKey) {
-        sshConfigCopy.sshOptions.privateKey = Buffer.from(sshConfigCopy.sshOptions.privateKey)
+        sshConfigCopy.sshOptions.privateKey = Buffer.from(sshConfigCopy.sshOptions.privateKey);
       }
 
       sshConfigCopy.forwardOptions.dstHost = node.host;
       sshConfigCopy.forwardOptions.dstPort = node.port;
 
-      let promise = new Promise((resolve, reject) => {
+      const promise = new Promise((resolve, reject) => {
         const sshPromise = createTunnel(...Object.values(sshConfigCopy));
         sshPromise.then(([server, connection]) => {
-          let addr = server.address();
-          let line = {
-            localHost: addr.address, localPort: addr.port,
-            dstHost: node.host, dstPort: node.port
+          const addr = server.address();
+          const line = {
+            localHost: addr.address,
+            localPort: addr.port,
+            dstHost: node.host,
+            dstPort: node.port,
           };
 
           resolve(line);
-        }).catch(e => {
+        }).catch((e) => {
           reject(e);
         });
       });
@@ -306,10 +313,10 @@ export default {
   },
 
   initNatMap(tunnels) {
-    let natMap = {};
+    const natMap = {};
 
-    for (let line of tunnels) {
-      natMap[`${line.dstHost}:${line.dstPort}`] = {host: line.localHost, port: line.localPort};
+    for (const line of tunnels) {
+      natMap[`${line.dstHost}:${line.dstPort}`] = { host: line.localHost, port: line.localPort };
     }
 
     return natMap;
@@ -324,19 +331,18 @@ export default {
       key: this.getFileContent(options.key, options.keybookmark),
       cert: this.getFileContent(options.cert, options.certbookmark),
 
-      checkServerIdentity: (servername, cert) => {
+      checkServerIdentity: (servername, cert) =>
         // skip certificate hostname validation
-        return undefined;
-      },
+        undefined,
       rejectUnauthorized: false,
-    }
+    };
   },
 
   retryStragety(times, connection) {
     const maxRetryTimes = 3;
 
     if (times >= maxRetryTimes) {
-      vue.$message.error("Too Many Attempts To Reconnect. Please Check The Server Status!");
+      vue.$message.error('Too Many Attempts To Reconnect. Please Check The Server Status!');
       vue.$bus.$emit('closeConnection');
       return false;
     }
@@ -357,17 +363,15 @@ export default {
       }
 
       const content = fs.readFileSync(file);
-      (typeof bookmarkClose == 'function') && bookmarkClose();
+      (typeof bookmarkClose === 'function') && bookmarkClose();
 
       return content;
-    }
-    catch (e) {
+    } catch (e) {
       // force alert
-      alert(vue.$t('message.key_no_permission') + `\n[${e.message}]`);
+      alert(`${vue.$t('message.key_no_permission')}\n[${e.message}]`);
       vue.$bus.$emit('closeConnection');
 
       return undefined;
     }
   },
 };
-

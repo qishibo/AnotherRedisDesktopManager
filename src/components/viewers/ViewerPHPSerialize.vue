@@ -4,12 +4,12 @@
 
 <script type="text/javascript">
 import JsonEditor from '@/components/JsonEditor';
-import {unserialize, serialize} from 'php-serialize';
+import { unserialize, serialize } from 'php-serialize';
 
 
 export default {
   props: ['content'],
-  components: {JsonEditor},
+  components: { JsonEditor },
   computed: {
     newContent() {
       try {
@@ -27,20 +27,19 @@ export default {
       if (typeof this.newContent !== 'string') {
         try {
           content = JSON.parse(content);
-        }
-        catch (e) {
+        } catch (e) {
           // object parse failed
           this.$message.error({
-            message: 'Raw content is an object, but now parse object failed: ' + e.message,
+            message: `Raw content is an object, but now parse object failed: ${e.message}`,
             duration: 6000,
           });
 
-          return false
+          return false;
         }
       }
 
       return serialize(content);
     },
   },
-}
+};
 </script>

@@ -150,7 +150,7 @@
 
 <script type="text/javascript">
 import storage from '@/storage.js';
-import {ipcRenderer} from 'electron';
+import { ipcRenderer } from 'electron';
 import LanguageSelector from '@/components/LanguageSelector';
 
 export default {
@@ -172,14 +172,14 @@ export default {
       darkMode: localStorage.theme == 'dark',
     };
   },
-  components: {LanguageSelector},
+  components: { LanguageSelector },
   methods: {
     show() {
       this.visible = true;
     },
     restoreSettings() {
-      let settings = storage.getSetting();
-      this.form = {...this.form, ...settings};
+      const settings = storage.getSetting();
+      this.form = { ...this.form, ...settings };
     },
     saveSettings() {
       storage.saveSettings(this.form);
@@ -192,10 +192,10 @@ export default {
       globalChangeTheme(themeName);
     },
     changeZoom() {
-      const {webFrame} = require('electron');
-      let zoomFactor = this.form.zoomFactor;
+      const { webFrame } = require('electron');
+      let { zoomFactor } = this.form;
 
-      zoomFactor = zoomFactor ? zoomFactor : 1.0;
+      zoomFactor = zoomFactor || 1.0;
       webFrame.setZoomFactor(zoomFactor);
     },
     showImportDialog() {
@@ -269,7 +269,7 @@ export default {
         localStorage.clear();
         this.$message.success(this.$t('message.delete_success'));
         window.location.reload();
-      }).catch(e => {
+      }).catch((e) => {
       });
     },
     showHotkeys() {

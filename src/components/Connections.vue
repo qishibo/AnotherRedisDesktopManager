@@ -26,12 +26,12 @@ export default {
       globalSettings: this.$storage.getSetting(),
     };
   },
-  components: {ConnectionWrapper, ScrollToTop},
+  components: { ConnectionWrapper, ScrollToTop },
   created() {
     this.$bus.$on('refreshConnections', () => {
       this.initConnections();
     });
-    this.$bus.$on('reloadSettings', settings => {
+    this.$bus.$on('reloadSettings', (settings) => {
       this.globalSettings = settings;
     });
   },
@@ -51,27 +51,26 @@ export default {
       this.connections = slovedConnections;
     },
     sortOrder() {
-      const dragWrapper = document.querySelector(".connections-list ");
+      const dragWrapper = document.querySelector('.connections-list ');
       Sortable.create(dragWrapper, {
         handle: '.el-submenu__title',
         animation: 400,
         direction: 'vertical',
-        onEnd: e => {
-          const newIndex = e.newIndex;
-          const oldIndex = e.oldIndex;
+        onEnd: (e) => {
+          const { newIndex } = e;
+          const { oldIndex } = e;
           // change in connections
           const currentRow = this.connections.splice(oldIndex, 1)[0];
           this.connections.splice(newIndex, 0, currentRow);
           // store
           this.$storage.reOrderAndStore(this.connections);
-        }
+        },
       });
     },
   },
   mounted() {
     this.initConnections();
     this.sortOrder();
-
   },
 };
 </script>

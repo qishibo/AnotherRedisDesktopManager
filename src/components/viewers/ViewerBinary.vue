@@ -9,14 +9,14 @@
 export default {
   data() {
     return {
-      contentDisplay: ""
-    }
+      contentDisplay: '',
+    };
   },
   props: ['content', 'contentVisible', 'disabled'],
   watch: {
     content(val) {
       // refresh
-      this.contentDisplay = this.$util.bufToBinary(val)
+      this.contentDisplay = this.$util.bufToBinary(val);
     },
   },
   methods: {
@@ -25,7 +25,7 @@ export default {
     },
   },
   mounted() {
-    this.contentDisplay = this.$util.bufToBinary(this.content)
+    this.contentDisplay = this.$util.bufToBinary(this.content);
   },
-}
+};
 </script>

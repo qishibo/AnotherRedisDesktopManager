@@ -25,7 +25,6 @@
       <el-dropdown-menu class='connection-menu-more-ul' slot="dropdown">
 
 
-
         <el-dropdown-item @click.native='closeConnection'>
           <span><i class='more-operate-ico fa fa-power-off'></i>&nbsp;{{ $t('message.close_connection') }}</span>
         </el-dropdown-item>
@@ -83,7 +82,7 @@
 
 <script type="text/javascript">
 import storage from '@/storage.js';
-import {remote} from 'electron';
+import { remote } from 'electron';
 import NewConnectionDialog from '@/components/NewConnectionDialog';
 
 export default {
@@ -93,9 +92,9 @@ export default {
     };
   },
   props: ['config', 'client'],
-  components: {NewConnectionDialog},
+  components: { NewConnectionDialog },
   created() {
-    this.$bus.$on('duplicateConnection', newConfig => {
+    this.$bus.$on('duplicateConnection', (newConfig) => {
       // not self
       if (this.config.name !== newConfig.name) {
         return;
@@ -106,7 +105,7 @@ export default {
   },
   methods: {
     connectionTitle() {
-      const config = this.config;
+      const { config } = this;
       const sep = '-----------';
       const lines = [
         config.connectionName,
@@ -202,9 +201,7 @@ export default {
         this.$parent.$parent.$parent.$refs.connectionMenu.open(this.config.connectionName);
         // open connection
         this.$parent.$parent.$parent.openConnection();
-      }
-
-      else {
+      } else {
         this.$bus.$emit('openStatus', this.client, this.config.connectionName);
       }
     },
@@ -217,9 +214,7 @@ export default {
         this.$parent.$parent.$parent.openConnection(() => {
           this.$bus.$emit('openCli', this.client, this.config.connectionName);
         });
-      }
-
-      else {
+      } else {
         this.$bus.$emit('openCli', this.client, this.config.connectionName);
       }
     },
@@ -239,21 +234,21 @@ export default {
     },
     importKeys() {
       remote.dialog.showOpenDialog(remote.getCurrentWindow(), {
-        properties: ['openFile']
-      }).then(reply => {
+        properties: ['openFile'],
+      }).then((reply) => {
         if (reply.canceled) {
           return;
         }
 
-        let succ = [];
-        let fail = [];
+        const succ = [];
+        const fail = [];
         let count = 0;
 
         const rl = require('readline').createInterface({
-            input: require('fs').createReadStream(reply.filePaths[0]),
+          input: require('fs').createReadStream(reply.filePaths[0]),
         });
 
-        rl.on('line', line => {
+        rl.on('line', (line) => {
           let [key, content, ttl] = line.split(',');
 
           if (!key || !content) {
@@ -265,7 +260,7 @@ export default {
           // show notify in first time
           if (count === 1) {
             this.$notify.success({
-              message: this.$createElement('p', {ref: 'importKeysNotify'}, ''),
+              message: this.$createElement('p', { ref: 'importKeysNotify' }, ''),
               duration: 0,
             });
           }
@@ -274,19 +269,17 @@ export default {
           content = Buffer.from(content, 'hex');
           ttl = ttl > 0 ? ttl : 0;
 
-          this.client.callBuffer('RESTORE', key, ttl, content).then(reply => {
+          this.client.callBuffer('RESTORE', key, ttl, content).then((reply) => {
             // reply == 'OK'
             succ.push(key);
             this.$set(this.$refs.importKeysNotify,
               'innerHTML',
-              `Succ: ${succ.length}, Fail: ${fail.length}`
-            );
-          }).catch(e => {
+              `Succ: ${succ.length}, Fail: ${fail.length}`);
+          }).catch((e) => {
             fail.push(key);
             this.$set(this.$refs.importKeysNotify,
               'innerHTML',
-              `Succ: ${succ.length}, Fail: ${fail.length}`
-            );
+              `Succ: ${succ.length}, Fail: ${fail.length}`);
           });
         });
 
@@ -312,31 +305,31 @@ export default {
 
       const preDB = this.client.condition ? this.client.condition.select : 0;
       const inputTxt = 'y';
-      const placeholder = this.$t('message.flushdb_prompt', {txt: inputTxt});
+      const placeholder = this.$t('message.flushdb_prompt', { txt: inputTxt });
 
-      this.$prompt(this.$t('message.confirm_flush_db', {db: preDB}), {
-        inputValidator: value => {return (value == inputTxt) ? true : placeholder},
+      this.$prompt(this.$t('message.confirm_flush_db', { db: preDB }), {
+        inputValidator: value => ((value == inputTxt) ? true : placeholder),
         inputPlaceholder: placeholder,
       })
-      .then(value => {
-        this.client.flushdb().then((reply) => {
-          if (reply == 'OK') {
-            this.$message.success({
-              message: this.$t('message.delete_success'),
-              duration: 1000,
-            });
+        .then((value) => {
+          this.client.flushdb().then((reply) => {
+            if (reply == 'OK') {
+              this.$message.success({
+                message: this.$t('message.delete_success'),
+                duration: 1000,
+              });
 
-            this.refreshConnection();
-          }
-        }).catch(e => {this.$message.error(e.message);});
-      })
-      .catch(e => {});
+              this.refreshConnection();
+            }
+          }).catch((e) => { this.$message.error(e.message); });
+        })
+        .catch((e) => {});
     },
     changeColor(color) {
       this.$emit('changeColor', color);
     },
   },
-}
+};
 </script>
 
 <style type="text/css">

@@ -7,7 +7,7 @@ const pt = {
     duplicate_connection: 'Copiar Conexão',
     close_connection: 'Encerrar Conexão',
     add_new_line: 'Adicionar nova linha',
-    dump_to_clipboard: "Copiar como comando",
+    dump_to_clipboard: 'Copiar como comando',
     redis_version: 'Versão do Redis',
     process_id: 'ID do processo',
     used_memory: 'Memória utilizada',

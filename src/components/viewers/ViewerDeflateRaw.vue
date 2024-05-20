@@ -4,6 +4,7 @@
 
 <script type="text/javascript">
 import JsonEditor from '@/components/JsonEditor';
+
 const zlib = require('zlib');
 
 export default {

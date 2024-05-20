@@ -285,16 +285,15 @@ export default {
         this.connectionStatus = this.initStatus(reply);
       }).catch((e) => {
         // info command may be disabled
-        if (e.message.includes("unknown command")) {
+        if (e.message.includes('unknown command')) {
           this.$message.error({
             message: this.$t('message.info_disabled'),
             duration: 3000,
           });
         }
         // no auth not show
-        else if (e.message.includes('NOAUTH')) {}
-        else {
-          this.$message.error(e.message)
+        else if (e.message.includes('NOAUTH')) {} else {
+          this.$message.error(e.message);
         }
       });
 
@@ -354,7 +353,7 @@ export default {
             keys: array[0] ? array[0].split('=')[1] : NaN,
             expires: array[1] ? array[1].split('=')[1] : NaN,
             avg_ttl: array[2] ? array[2].split('=')[1] : NaN,
-            name: name,
+            name,
           });
         }
       }
@@ -362,16 +361,16 @@ export default {
       return dbs;
     },
     initClusterKeys() {
-      let nodes = this.client.nodes ? this.client.nodes('master') : [this.client];
+      const nodes = this.client.nodes ? this.client.nodes('master') : [this.client];
 
       // not in cluster mode
       if (nodes.length < 2) {
         return;
       }
 
-      nodes.map(node => {
-        node.call('INFO', 'KEYSPACE').then(reply => {
-          const options = node.options;
+      nodes.map((node) => {
+        node.call('INFO', 'KEYSPACE').then((reply) => {
+          const { options } = node;
           const name = `${options.host}:${options.port}`;
 
           const keys = this.initDbKeys(this.initStatus(reply), name);
@@ -383,8 +382,8 @@ export default {
 
           this.clusterKeysInfo = this.clusterKeysInfo.concat(keys);
           // sort by node name
-          this.clusterKeysInfo.sort((a, b) => a.name > b.name ? 1 : -1);
-        }).catch(e => {
+          this.clusterKeysInfo.sort((a, b) => (a.name > b.name ? 1 : -1));
+        }).catch((e) => {
           this.$message.error(e.message);
         });
       });

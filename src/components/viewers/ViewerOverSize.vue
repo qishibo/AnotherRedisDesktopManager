@@ -19,14 +19,14 @@ export default {
   props: ['content', 'contentVisible', 'disabled'],
   computed: {
     contentDisplay() {
-      return this.$util.bufToString(this.content.slice(0, this.firstChars), false) 
-              + `...Show only the first ${this.firstChars} characters, the rest has been hidden...`;
+      return `${this.$util.bufToString(this.content.slice(0, this.firstChars), false)
+      }...Show only the first ${this.firstChars} characters, the rest has been hidden...`;
     },
     alertTitle() {
       return `Size too large, show only the first ${this.firstChars} characters and you cannot edit it.`;
     },
   },
-}
+};
 </script>
 
 <style type="text/css">

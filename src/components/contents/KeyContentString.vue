@@ -50,36 +50,34 @@ export default {
 
       this.client.set(
         this.redisKey,
-        content
+        content,
       ).then((reply) => {
         if (reply === 'OK') {
           // for compatibility, use expire instead of setex
           this.setTTL();
-          this.initShow()
+          this.initShow();
 
           this.$message.success({
             message: this.$t('message.modify_success'),
             duration: 1000,
           });
-        }
-
-        else {
+        } else {
           this.$message.error({
             message: this.$t('message.modify_failed'),
             duration: 1000,
           });
         }
-      }).catch(e => {
+      }).catch((e) => {
         this.$message.error(e.message);
       });
     },
-    setTTL () {
+    setTTL() {
       const ttl = parseInt(this.$parent.$parent.$refs.keyHeader.keyTTL);
 
       if (ttl > 0) {
-        this.client.expire(this.redisKey, ttl).catch(e => {
-          this.$message.error('Expire Error: ' + e.message);
-        }).then(reply => {});
+        this.client.expire(this.redisKey, ttl).catch((e) => {
+          this.$message.error(`Expire Error: ${e.message}`);
+        }).then((reply) => {});
       }
     },
     initShortcut() {
@@ -92,10 +90,10 @@ export default {
       });
     },
     dumpCommand() {
-      const command = `SET ${this.$util.bufToQuotation(this.redisKey)} ` +
-                      this.$util.bufToQuotation(this.content);
+      const command = `SET ${this.$util.bufToQuotation(this.redisKey)} ${
+        this.$util.bufToQuotation(this.content)}`;
       this.$util.copyToClipboard(command);
-      this.$message.success({message: this.$t('message.copy_success'), duration: 800});
+      this.$message.success({ message: this.$t('message.copy_success'), duration: 800 });
     },
   },
   mounted() {

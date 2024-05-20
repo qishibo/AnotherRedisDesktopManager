@@ -17,7 +17,7 @@
         </div>
         <i slot="reference" class="el-icon-setting"></i>
       </el-popover>
-      
+
       <span class="analysis-title">{{ $t('message.memory_analysis') }}</span>
       <i v-if="isScanning" class='el-icon-loading'></i>
       <el-tag size="mini">
@@ -73,7 +73,7 @@
 </template>
 
 <script type="text/javascript">
-import { RecycleScroller } from 'vue-virtual-scroller'
+import { RecycleScroller } from 'vue-virtual-scroller';
 
 export default {
   data() {
@@ -108,27 +108,27 @@ export default {
       const nodes = this.client.nodes ? this.client.nodes('master') : [this.client];
       this.scanningCount = nodes.length;
 
-      nodes.map(node => {
+      nodes.map((node) => {
         const scanOption = {
-          match: pattern + '*',
+          match: `${pattern}*`,
           count: this.scanPageSize,
-        }
+        };
 
         const stream = node.scanBufferStream(scanOption);
         this.scanStreams.push(stream);
 
-        stream.on('data', keys => {
+        stream.on('data', (keys) => {
           // waiting for memory analysis
           stream.pause();
 
           // limit scanning max count
           if (this.keysList.length > this.scanMax) {
-            this.$message.warning(this.$t('message.max_scan', {num: this.scanMax}) + ', stopped.');
+            this.$message.warning(`${this.$t('message.max_scan', { num: this.scanMax })}, stopped.`);
             this.scanningEnd = true;
             return this.toggleScanning(true);
           }
 
-          let keysWithMemory = []
+          const keysWithMemory = [];
           const promise = this.initKeysMemory(keys, keysWithMemory);
 
           promise.then(() => {
@@ -144,9 +144,9 @@ export default {
           });
         });
 
-        stream.on('error', e => {
+        stream.on('error', (e) => {
           this.toggleScanning(true);
-          this.$message.error('Memory Analysis Stream On Error: ' +  e.messag);
+          this.$message.error(`Memory Analysis Stream On Error: ${e.messag}`);
         });
 
         stream.on('end', () => {
@@ -164,22 +164,22 @@ export default {
         return;
       }
 
-      let allPromise = [];
+      const allPromise = [];
 
-      for (let key of keys) {
+      for (const key of keys) {
         // not logging
         this.client.withoutLogging = true;
-        const promise = this.client.call('MEMORY', 'USAGE', key).then(reply => {
+        const promise = this.client.call('MEMORY', 'USAGE', key).then((reply) => {
           // filter min size
           if (this.minSizeB && reply < this.minSizeB) {
             return;
           }
           keysWithMemory.push({
-            key: key, str: this.$util.bufToString(key), size: reply, human: this.$util.humanFileSize(reply),
+            key, str: this.$util.bufToString(key), size: reply, human: this.$util.humanFileSize(reply),
           });
-        }).catch(e => {
+        }).catch((e) => {
           keysWithMemory.push({
-            key: key, str: this.$util.bufToString(key), size: 0, human: 0,
+            key, str: this.$util.bufToString(key), size: 0, human: 0,
           });
         });
 
@@ -196,7 +196,7 @@ export default {
       if (pause) {
         this.isScanning = false;
         if (this.scanStreams.length) {
-          for (let stream of this.scanStreams) {
+          for (const stream of this.scanStreams) {
             stream.pause && stream.pause();
           }
         }
@@ -211,7 +211,7 @@ export default {
       // resume scanning
       this.isScanning = true;
       if (this.scanStreams.length) {
-        for (let stream of this.scanStreams) {
+        for (const stream of this.scanStreams) {
           stream.pause && stream.resume();
         }
       }
@@ -229,14 +229,9 @@ export default {
 
       // sorting
       if (this.sortOrder == 'asc') {
-        this.keysList.sort((a, b) => {
-          return a.size - b.size;
-        });
-      }
-      else {
-        this.keysList.sort((a, b) => {
-          return b.size - a.size;
-        });
+        this.keysList.sort((a, b) => a.size - b.size);
+      } else {
+        this.keysList.sort((a, b) => b.size - a.size);
       }
     },
     initShortcut() {

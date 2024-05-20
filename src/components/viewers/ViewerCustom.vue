@@ -8,7 +8,7 @@
 import storage from '@/storage';
 import shell from 'child_process';
 import JsonEditor from '@/components/JsonEditor';
-import {ipcRenderer} from 'electron';
+import { ipcRenderer } from 'electron';
 
 export default {
   data() {
@@ -73,7 +73,7 @@ export default {
       }
 
       const command = this.getCommand();
-      const hexStr  = this.content.toString('hex');
+      const hexStr = this.content.toString('hex');
 
       if (!command) {
         return this.execResult = 'Command Error, Check Config!';
@@ -99,12 +99,12 @@ export default {
       // if content is too long, write to file simultaneously
       // hex str is about 2 times of real size
       if (hexStr.length > this.writeHexFileSize) {
-        ipcRenderer.invoke('getTempPath').then(reply => {
+        ipcRenderer.invoke('getTempPath').then((reply) => {
           // target file name
           const fileName = `ardm_cv_${this.redisKey.toString('hex')}`;
           const filePath = require('path').join(reply, fileName);
 
-          require('fs').writeFile(filePath, hexStr, err => {
+          require('fs').writeFile(filePath, hexStr, (err) => {
             if (err) {
               return this.$message.error(err);
             }

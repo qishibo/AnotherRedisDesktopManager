@@ -98,21 +98,19 @@ export default {
   },
   isJavaSerialize(buf) {
     try {
-      const ObjectInputStream = require("java-object-serialization").ObjectInputStream;
+      const { ObjectInputStream } = require('java-object-serialization');
       const result = (new ObjectInputStream(buf)).readObject();
-      return typeof result == 'object';
-    }
-    catch (e) {
+      return typeof result === 'object';
+    } catch (e) {
       return false;
     }
   },
   isPickle(buf) {
     try {
-      const Parser = require('pickleparser').Parser;
+      const { Parser } = require('pickleparser');
       const result = (new Parser()).parse(buf);
       return !!result;
-    }
-    catch (e) {
+    } catch (e) {
       return false;
     }
   },
@@ -396,8 +394,6 @@ export default {
     URL.revokeObjectURL(blob);
   },
   arrayChunk(arr, size) {
-    return Array.from({ length: Math.ceil(arr.length / size) }, (v, i) =>
-      arr.splice(0, size)
-    );
+    return Array.from({ length: Math.ceil(arr.length / size) }, (v, i) => arr.splice(0, size));
   },
 };

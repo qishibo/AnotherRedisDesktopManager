@@ -46,14 +46,13 @@ export default {
     // restore side bar width
     this.restoreSideBarWidth();
   },
-  components: {Aside, Tabs, UpdateCheck},
+  components: { Aside, Tabs, UpdateCheck },
   methods: {
     bindSideBarDrag() {
       const that = this;
       const dragPointer = document.getElementById('drag-resize-pointer');
 
-      function mousemove(e)
-      {
+      function mousemove(e) {
         const mouseX = e.x;
         const dragSideWidth = mouseX - 17;
 
@@ -62,8 +61,7 @@ export default {
         }
       }
 
-      function mouseup(e)
-      {
+      function mouseup(e) {
         document.documentElement.removeEventListener('mousemove', mousemove);
         document.documentElement.removeEventListener('mouseup', mouseup);
 
@@ -79,7 +77,7 @@ export default {
       });
     },
     restoreSideBarWidth() {
-      let sideWidth = localStorage.sideWidth;
+      const { sideWidth } = localStorage;
       sideWidth && (this.sideWidth = sideWidth);
     },
   },
