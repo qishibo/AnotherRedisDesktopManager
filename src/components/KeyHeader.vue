@@ -30,7 +30,7 @@
         <i class="el-icon-close el-input__icon cursor-pointer"
           slot="suffix"
           :title="$t('message.persist')"
-          @click="persistKet">
+          @click="persistKey">
         </i>
         <!-- save ttl -->
         <i class="el-icon-check el-input__icon cursor-pointer"
@@ -180,6 +180,11 @@ export default {
       }).catch(() => {});
     },
     ttlKey() {
+      // -1 persist key
+      if (this.keyTTL == -1) {
+        return this.persistKey();
+      }
+
       // ttl <= 0
       if (this.keyTTL <= 0) {
         this.$confirm(
@@ -211,7 +216,7 @@ export default {
         this.$message.error(`Expire Error: ${e.message}`);
       });
     },
-    persistKet() {
+    persistKey() {
       this.client.persist(this.redisKey).then(() => {
         this.initShow();
         this.$message.success(this.$t('message.modify_success'));
