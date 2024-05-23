@@ -1,5 +1,5 @@
 <template>
-  <JsonEditor ref='editor' :content='newContent' :readOnly='false'></JsonEditor>
+  <JsonEditor ref='editor' :content='newContent' :readOnly='isPHPClass'></JsonEditor>
 </template>
 
 <script type="text/javascript">
@@ -9,11 +9,23 @@ import { unserialize, serialize } from 'php-serialize';
 
 export default {
   props: ['content'],
+  data() {
+    return {
+      isPHPClass: false,
+    };
+  },
   components: { JsonEditor },
   computed: {
     newContent() {
       try {
-        return unserialize(this.content,{},{strict:false});
+        const content = unserialize(this.content, {}, { strict: false });
+
+        // include php native class, into readonly mode
+        if (content['__PHP_Incomplete_Class_Name']) {
+          this.isPHPClass = true;
+        }
+
+        return content;
       } catch (e) {
         return this.$t('message.php_unserialize_format_failed');
       }

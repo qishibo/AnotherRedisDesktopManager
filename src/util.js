@@ -90,8 +90,8 @@ export default {
     const phpSerialize = require('php-serialize');
 
     try {
-      phpSerialize.unserialize(str);
-      return true;
+      // phpSerialize.unserialize(str);
+      return phpSerialize.isSerialized(str.toString());
     } catch (e) {}
 
     return false;
