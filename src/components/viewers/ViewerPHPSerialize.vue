@@ -13,7 +13,7 @@ export default {
   computed: {
     newContent() {
       try {
-        return unserialize(this.content);
+        return unserialize(this.content,{},{strict:false});
       } catch (e) {
         return this.$t('message.php_unserialize_format_failed');
       }
