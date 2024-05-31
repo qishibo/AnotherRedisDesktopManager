@@ -77,6 +77,7 @@ const ua = {
     manual_update: 'Сторінка для зкачування',
     retry_too_many_times: 'Занадто багато спроб з`єднатись. Будь ласка, перевірте стан сервера',
     key_to_search: 'Пошук за ключовими словами',
+    search_connection: 'Пошук підключення',
     begin_update: 'Оновити',
     ignore_this_version: 'Ігнорувати цю версію',
     check_update: 'Перевірити оновлення',

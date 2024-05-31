@@ -77,6 +77,7 @@ const tw = {
     manual_update: '手動下載',
     retry_too_many_times: '嘗試重連次數過多，請檢查伺服器狀態',
     key_to_search: '輸入關鍵字搜尋',
+    search_connection: '搜尋連接',
     begin_update: '更新',
     ignore_this_version: '忽略此版本',
     check_update: '檢查更新',

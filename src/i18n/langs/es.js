@@ -77,6 +77,7 @@ const es = {
     manual_update: 'Descarga Manual',
     retry_too_many_times: 'Demasiados intentos de reconexión. Verifique el estado del servidor',
     key_to_search: 'Búsqueda por palabra clave',
+    search_connection: 'Conexión de búsqueda',
     begin_update: 'Actualizar',
     ignore_this_version: 'Ignorar esta versión',
     check_update: 'Comprobar actualizaciones',

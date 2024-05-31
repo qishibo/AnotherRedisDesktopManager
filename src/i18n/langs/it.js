@@ -77,6 +77,7 @@ const it = {
     manual_update: 'Scaricare Manuale',
     retry_too_many_times: 'Troppi tentativi di riconnessione. Si prega di controllare lo stato del server',
     key_to_search: 'Ricerca per parole chiave',
+    search_connection: 'Cerca connessione',
     begin_update: 'Aggiornare',
     ignore_this_version: 'Ignora questa versione',
     check_update: 'Ricerca aggiornamenti',

@@ -77,6 +77,7 @@ const tr = {
     manual_update: 'Manuel İndirme',
     retry_too_many_times: 'Yeniden Bağlanmak İçin Çok Fazla Deneme Yapıldı. Lütfen Sunucu Durumunu Kontrol Edin',
     key_to_search: 'Anahtar Kelime Araması',
+    search_connection: 'Bağlantıyı Ara',
     begin_update: 'Güncelle',
     ignore_this_version: 'Bu sürümü yok sayın',
     check_update: 'Güncellemeleri Denetle',

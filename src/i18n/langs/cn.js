@@ -77,6 +77,7 @@ const cn = {
     manual_update: '手动下载',
     retry_too_many_times: '尝试重连次数过多，请检查Server状态',
     key_to_search: '输入关键字搜索',
+    search_connection: '搜索链接',
     begin_update: '更新',
     ignore_this_version: '忽略该版本',
     check_update: '检查更新',

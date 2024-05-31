@@ -77,6 +77,7 @@ const de = {
     manual_update: 'Handbuch-Download',
     retry_too_many_times: 'Zu viele Versuche, die Verbindung wieder herzustellen. Bitte überprüfen Sie den Server-Status',
     key_to_search: 'Schlüsselwort-Suche',
+    search_connection: 'Verbindung suchen',
     begin_update: 'Aktualisierung',
     ignore_this_version: 'Ignoriere diese Version',
     check_update: 'Aktualisierung prüfen',
