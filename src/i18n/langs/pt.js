@@ -77,6 +77,7 @@ const pt = {
     manual_update: 'Download manual',
     retry_too_many_times: 'Muitas tentativas de reconexões. Verifique o status do servidor',
     key_to_search: 'Pesquisa por palavra-chave',
+    search_connection: 'Conexão de pesquisa',
     begin_update: 'Atualizar',
     ignore_this_version: 'Ignore esta versão',
     check_update: 'Checar atualização',

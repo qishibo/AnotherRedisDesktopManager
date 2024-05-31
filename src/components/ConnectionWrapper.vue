@@ -221,8 +221,11 @@ export default {
             scrollTop += (menu.clientHeight + 8);
           }
 
+          // if connections filter input exists, scroll more
+          // 32 = height('.filter-input')+margin
+          const offset = document.querySelector('.connections-list .filter-input') ? 32 : 0;
           document.querySelector('.connections-list').scrollTo({
-            top: scrollTop,
+            top: scrollTop + offset,
             behavior: 'smooth',
           });
         }, 320);

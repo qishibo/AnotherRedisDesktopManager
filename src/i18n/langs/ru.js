@@ -77,6 +77,7 @@ const ru = {
     manual_update: 'Страница для скачивания',
     retry_too_many_times: 'Слишком много попыток переподключения. Пожалуйста, проверьте состояние сервера',
     key_to_search: 'Поиск по ключевым словам',
+    search_connection: 'Поиск соединения',
     begin_update: 'Обновить',
     ignore_this_version: 'Игнорировать эту версию',
     check_update: 'Проверить обновление',

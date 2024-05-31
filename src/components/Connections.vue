@@ -1,7 +1,17 @@
 <template>
   <div class="connections-list">
+    <div class="filter-input">
+      <el-input
+        v-if="connections.length>=filterEnableNum"
+        v-model="filterMode"
+        suffix-icon="el-icon-search"
+        :placeholder="$t('message.search_connection')"
+        clearable
+        size="mini">
+      </el-input>
+    </div>
     <ConnectionWrapper
-      v-for="item, index of connections"
+      v-for="item, index of filteredConnections"
       :key="item.key ? item.key : item.connectionName"
       :index="index"
       :globalSettings="globalSettings"
@@ -24,6 +34,8 @@ export default {
     return {
       connections: [],
       globalSettings: this.$storage.getSetting(),
+      filterEnableNum: 4,
+      filterMode: '',
     };
   },
   components: { ConnectionWrapper, ScrollToTop },
@@ -34,6 +46,17 @@ export default {
     this.$bus.$on('reloadSettings', (settings) => {
       this.globalSettings = settings;
     });
+  },
+  computed: {
+    filteredConnections() {
+      if (!this.filterMode) {
+        return this.connections;
+      }
+
+      return this.connections.filter(item => {
+        return item.name.toLowerCase().includes(this.filterMode.toLowerCase());
+      });
+    },
   },
   methods: {
     initConnections() {
@@ -80,5 +103,9 @@ export default {
     height: calc(100vh - 59px);
     overflow-y: auto;
     margin-top: 11px;
+  }
+  .connections-list .filter-input {
+    padding-right: 13px;
+    margin-bottom: 4px;
   }
 </style>

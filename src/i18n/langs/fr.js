@@ -77,6 +77,7 @@ const fr = {
     manual_update: 'Téléchargement de la notice',
     retry_too_many_times: 'Trop de tentatives pour se reconnecter. Veuillez vérifier l\'état du serveur',
     key_to_search: 'Mot-clé de recherche',
+    search_connection: 'Rechercher une connexion',
     begin_update: 'Mise à jour',
     ignore_this_version: 'Ignorer cette version',
     check_update: 'Vérifier la mise à jour',
