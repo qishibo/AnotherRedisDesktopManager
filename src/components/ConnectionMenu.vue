@@ -4,6 +4,7 @@
     <!-- right menu operate icons -->
     <i :title="$t('message.redis_status')"
       class="connection-right-icon fa fa-home"
+      :style="{ color: client ? '#7cad7c' : ''}"
       @click.stop.prevent="openStatus">
     </i>
     <i :title="$t('message.redis_console')"
@@ -68,7 +69,9 @@
       </el-dropdown-menu>
     </el-dropdown>
   </div>
-  <div :title="connectionTitle()" class="connection-name">{{config.connectionName}}</div>
+  <div :title="connectionTitle()" class="connection-name">{{config.connectionName}}
+    <!-- <i v-if="client" style="position: absolute; left: 2px; bottom: 5px; width: 8px; height: 8px; border-radius: 4px; background-color: green;"></i> -->
+  </div>
 
   <!-- edit connection dialog -->
   <NewConnectionDialog
@@ -269,7 +272,8 @@ export default {
           content = Buffer.from(content, 'hex');
           ttl = ttl > 0 ? ttl : 0;
 
-          this.client.callBuffer('RESTORE', key, ttl, content).then((reply) => {
+          // fix #1213, REPLACE can be used in Redis>=3.0
+          this.client.callBuffer('RESTORE', key, ttl, content, 'REPLACE').then((reply) => {
             // reply == 'OK'
             succ.push(key);
             this.$set(this.$refs.importKeysNotify,
