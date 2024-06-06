@@ -122,6 +122,8 @@ export default {
         scrollBeyondLastLine: false,
         // hide scroll sign of current line
         hideCursorInOverviewRuler: true,
+        // fix #1097 additional vertical cursor
+        accessibilitySupport: 'off',
         minimap: {
           enabled: false,
         },

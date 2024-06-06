@@ -63,6 +63,7 @@
 
 ## Feature Log
 
+- 2024-06-06: Search connections support(>=4)
 - 2024-04-10: DB custom name support
 - 2024-02-21: Java/Pickle viewers support
 - 2024-02-15: Groups/Consumers in STREAM view
