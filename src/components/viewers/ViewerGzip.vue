@@ -4,18 +4,20 @@
 
 <script type="text/javascript">
 import JsonEditor from '@/components/JsonEditor';
+const JSONbig = require('@qii404/json-bigint')({ useNativeBigInt: false });
+
 const zlib = require('zlib');
 
 export default {
-  components: {JsonEditor},
+  components: { JsonEditor },
   props: ['content'],
   computed: {
     newContent() {
-      let formatStr = this.formatStr;
+      const { formatStr } = this;
 
       if (typeof formatStr === 'string') {
         if (this.$util.isJson(formatStr)) {
-          return JSON.parse(formatStr);
+          return JSONbig.parse(formatStr);
         }
 
         return formatStr;
@@ -34,7 +36,7 @@ export default {
     },
     copyContent() {
       return this.formatStr;
-    }
+    },
   },
-}
+};
 </script>

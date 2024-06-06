@@ -4,13 +4,14 @@
 
 <script type="text/javascript">
 import JsonEditor from '@/components/JsonEditor';
-import {decode, encode} from "algo-msgpack-with-bigint"
-const JSONbig = require('@qii404/json-bigint')({useNativeBigInt: true});
+import { decode, encode } from 'algo-msgpack-with-bigint';
+
+const JSONbig = require('@qii404/json-bigint')({ useNativeBigInt: true });
 
 
 export default {
   props: ['content'],
-  components: {JsonEditor},
+  components: { JsonEditor },
   computed: {
     newContent() {
       try {
@@ -27,16 +28,15 @@ export default {
       // raw content is an object
       if (typeof this.newContent !== 'string') {
         try {
-          content = JSONbig.parse(content); 
-        }
-        catch (e) {
+          content = JSONbig.parse(content);
+        } catch (e) {
           // object parse failed
           this.$message.error({
-            message: 'Raw content is an object, but now parse object failed: ' + e.message,
+            message: `Raw content is an object, but now parse object failed: ${e.message}`,
             duration: 6000,
           });
 
-          return false
+          return false;
         }
       }
 
@@ -46,7 +46,7 @@ export default {
     copyContent() {
       const content = decode(this.content);
       return (typeof content === 'object') ? JSONbig.stringify(content) : content;
-    }
-  }
-}
+    },
+  },
+};
 </script>

@@ -224,12 +224,12 @@ export default {
       sshOptionsShow: false,
       sslOptionsShow: false,
       sentinelOptionsShow: false,
-    }
+    };
   },
-  components: {FileInput, InputPassword},
+  components: { FileInput, InputPassword },
   props: {
     config: {
-      default: _ => new Array,
+      default: _ => new Array(),
     },
     editMode: {
       default: false,
@@ -237,8 +237,8 @@ export default {
   },
   computed: {
     dialogTitle() {
-      return this.editMode ? this.$t('message.edit_connection') :
-                              this.$t('message.new_connection')
+      return this.editMode ? this.$t('message.edit_connection')
+        : this.$t('message.new_connection');
     },
   },
   methods: {
@@ -249,11 +249,11 @@ export default {
     resetFields() {
       // edit connection mode
       if (this.editMode) {
-        this.sshOptionsShow = !!this.config.sshOptions
-        this.sslOptionsShow = !!this.config.sslOptions
-        this.sentinelOptionsShow = !!this.config.sentinelOptions
+        this.sshOptionsShow = !!this.config.sshOptions;
+        this.sslOptionsShow = !!this.config.sslOptions;
+        this.sentinelOptionsShow = !!this.config.sentinelOptions;
         // recovery connection before edit
-        let connection = Object.assign({}, this.connectionEmpty, this.config);
+        const connection = Object.assign({}, this.connectionEmpty, this.config);
         this.connection = JSON.parse(JSON.stringify(connection));
       }
       // new connection mode
@@ -308,7 +308,7 @@ export default {
 
     delete this.connection.connectionName;
   },
-}
+};
 </script>
 
 <style type="text/css">
@@ -334,4 +334,3 @@ export default {
     border-color: #7b95ad;
   }
 </style>
-

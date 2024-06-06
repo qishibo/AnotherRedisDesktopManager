@@ -10,7 +10,7 @@ export default {
     return {
       inputType: 'password',
       hideTextTime: 6000,
-    }
+    };
   },
   props: ['value', 'placeholder'],
   methods: {
@@ -45,7 +45,7 @@ export default {
   destroyed() {
     clearTimeout(this.recoverTimer);
   },
-}
+};
 </script>
 
 <style type="text/css" scoped>

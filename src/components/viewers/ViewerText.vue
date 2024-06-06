@@ -11,8 +11,8 @@ export default {
   data() {
     return {
       confirmChange: false,
-      contentDisplay: "",
-      oldContentDisplay: "",
+      contentDisplay: '',
+      oldContentDisplay: '',
     };
   },
   props: ['content', 'contentVisible', 'disabled'],
@@ -43,9 +43,7 @@ export default {
         return;
       }
 
-      this.$confirm(this.$t('message.confirm_modify_unvisible_content')).then(_ => {
-        return this.confirmChange = true;
-      }).catch(_ => {
+      this.$confirm(this.$t('message.confirm_modify_unvisible_content')).then(_ => this.confirmChange = true).catch((_) => {
         // recovery the input value
         this.contentDisplay = this.oldContentDisplay;
       });
@@ -55,5 +53,5 @@ export default {
     this.contentDisplay = this.content.toString();
     this.oldContentDisplay = this.contentDisplay;
   },
-}
+};
 </script>

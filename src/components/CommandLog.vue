@@ -23,7 +23,7 @@
 </template>
 
 <script type="text/javascript">
-import {writeCMD} from '@/commands.js';
+import { writeCMD } from '@/commands.js';
 
 export default {
   data() {
@@ -36,7 +36,7 @@ export default {
     };
   },
   created() {
-    this.$bus.$on('commandLog', record => {
+    this.$bus.$on('commandLog', (record) => {
       // hide ping
       if (record.command.name === 'ping') {
         return;
@@ -44,9 +44,7 @@ export default {
 
       this.logs.push({
         name: record.command.name,
-        args: (record.command.name === 'auth') ? '***' : record.command.args.map(item => {
-          return item.length > 100 ? (item.slice(0, 100) + '...') : item.toString();
-        }).join(' '),
+        args: (record.command.name === 'auth') ? '***' : record.command.args.map(item => (item.length > 100 ? (`${item.slice(0, 100)}...`) : item.toString())).join(' '),
         cost: record.cost.toFixed(2),
         time: record.time.toTimeString().substr(0, 8),
         connectionName: record.connectionName,
@@ -58,18 +56,14 @@ export default {
   },
   computed: {
     logsShow() {
-      let logs = this.logs;
+      let { logs } = this;
 
       if (this.showOnlyWrite) {
-        logs = logs.filter(item => {
-          return writeCMD[item.name.toUpperCase()];
-        });
+        logs = logs.filter(item => writeCMD[item.name.toUpperCase()]);
       }
 
       if (this.filter) {
-        logs = logs.filter(item => {
-          return item.name.includes(this.filter) || item.args.includes(this.filter);
-        });
+        logs = logs.filter(item => item.name.includes(this.filter) || item.args.includes(this.filter));
       }
 
       return logs;
@@ -97,7 +91,7 @@ export default {
     margin-top: 10vh !important;
   }
   .command-log-ul {
-    padding: 10px; 
+    padding: 10px;
     overflow: auto;
     min-height: 150px;
     height: calc(90vh - 307px);
