@@ -1,8 +1,7 @@
 <template>
   <div class="connections-list">
-    <div class="filter-input">
+    <div v-if="connections.length>=filterEnableNum" class="filter-input">
       <el-input
-        v-if="connections.length>=filterEnableNum"
         v-model="filterMode"
         suffix-icon="el-icon-search"
         :placeholder="$t('message.search_connection')"
