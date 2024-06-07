@@ -37,13 +37,6 @@
 - 或者通过App Store**赞助**, 然后让App Store帮你自动更新版本
 <br/>[![app store](https://cdn.jsdelivr.net/gh/qishibo/img/avail_app_store180.svg)](https://apps.apple.com/app/id1516451072)
 
-<!--
-> If **Mac** warning `Another Desktop Manager can't be opened because it is from an unidentified developer`. Open `Settings->Security` and click **`Open Anyway`**
-
-![can't be opened because it is from an unidentified developer](https://cdn.jsdelivr.net/gh/qishibo/img/1630655841115-mac-warning.png)
-
-![Settings->Security Open Anyway](https://cdn.jsdelivr.net/gh/qishibo/img/1630655842331-5d11c4feeaf6f.jpg)
--->
 
 
 ## 起飞!
@@ -116,7 +109,7 @@ cd AnotherRedisDesktopManager
 npm install
 
 # if download electron failed during installing, use this command
-# ELECTRON_MIRROR="https://npm.taobao.org/mirrors/electron/" npm install
+# ELECTRON_MIRROR="https://npmmirror.com/mirrors/electron/" npm install
 
 # serve with hot reload at localhost:9988
 npm start
@@ -151,7 +144,7 @@ cd AnotherRedisDesktopManager
 npm install --platform=win32
 
 # if download electron failed during installing, use this command
-# npm config set ELECTRON_MIRROR http://npm.taobao.org/mirrors/electron/
+# npm config set ELECTRON_MIRROR https://npmmirror.com/mirrors/electron/
 # npm install --platform=win32
 
 # serve with hot reload at localhost:9988
@@ -188,7 +181,7 @@ npm run pack:linux
 - 通过 [OpenCollective](https://opencollective.com/AnotherRedisDesktopManager)
 - 如果你是Mac用户, 也可以通过从[App Store](https://apps.apple.com/app/id1516451072)购买来赞助, 然后应用商店会为你自动更新
 <br>[![app store](https://cdn.jsdelivr.net/gh/qishibo/img/avail_app_store180.svg)](https://apps.apple.com/app/id1516451072)
-- 如果你是Windows用户，还可以通过从[Windows Store](https://www.microsoft.com/store/apps/9MTD84X0JFHZ)购买来赞助，商店就会帮你自动更新
+- 如果你是Windows用户，还可以通过从[Win Store](https://www.microsoft.com/store/apps/9MTD84X0JFHZ)购买来赞助，商店就会帮你自动更新
 <br>[![windows store](https://cdn.jsdelivr.net/gh/qishibo/img/windows-store-icon182-56.png)](https://www.microsoft.com/store/apps/9MTD84X0JFHZ)
 - 微信赞助码 [觉得好用，赞助一些大白兔🐇奶糖!]
 
@@ -213,10 +206,10 @@ npm run pack:linux
 | ------ | ------ |
 | `Name` | 自定义名称 |
 | `Command` | 可执行命令，如`xxx.py` `xxx.js` `xxx.class`等，该文件需要具有可执行的`x`权限，可以通过形如`./xxx.py`方式执行；也可以直接用系统命令`/bin/node` `/bin/bash`等，此时需要把脚本路径放到Params里 |
-| `Params` | 拼接在`Command`后的参数，如"--key `{KEY}` --value `{VALUE}`"，其中`{KEY}`和`{VALUE}`在执行时会被替换成对应的Redis key和value。注意如果内容为二进制等不可见字符时，可以使用`{HEX}`代替`{VALUE}`，`{HEX}`会被替换成对应value的16进制即hex编码 |
+| `Params` | 拼接在`Command`后的参数，如"--key `{KEY}` --value `{VALUE}`"，其中`{KEY}`和`{VALUE}`在执行时会被替换成对应的Redis key和value。注意如果内容为二进制等不可见字符时，可以使用`{HEX}`，`{HEX}`会被替换成对应value的16进制即hex编码。如果HEX过长(>8000字符)时会被写入到临时文件，可以用`{HEX_FILE}`获取文件路径，脚本中自行读取即可 |
 
 ### 配置样例：
-> 脚本文件首行要增加env说明，最终执行的命令如: `./home/qii/pickle_decoder.py {HEX}`, 脚本中可以使用`argv[1]`接收参数，参考 [#978](https://github.com/qishibo/AnotherRedisDesktopManager/issues/987#issuecomment-1294844707)
+> 脚本文件首行一般要增加env说明，最终执行的命令如: `./home/qii/pickle_decoder.py {HEX}`, 脚本中可以使用`argv[1]`接收参数，参考 [#978](https://github.com/qishibo/AnotherRedisDesktopManager/issues/987#issuecomment-1294844707)
 
 | Command | Params |
 | ------ | ------ |
@@ -332,6 +325,6 @@ npm run pack:linux
 
 ## Support
 
-[goanother.com](https://goanother.com/) &nbsp; [Producthunt](https://www.producthunt.com/posts/another-redis-desktop-manager) &nbsp; [Weibo@shiboooo](https://weibo.com/shiboooo?is_hot=1) &nbsp; [Download Analysis](https://qii404.me/github-release-statistics/?repo=/qishibo/AnotherRedisDesktopManager/)
+[goanother.com](https://goanother.com/) &nbsp; [Producthunt](https://www.producthunt.com/posts/another-redis-desktop-manager) &nbsp; [Download Analysis](https://qii404.me/github-release-statistics/?repo=/qishibo/AnotherRedisDesktopManager/)
 
 
