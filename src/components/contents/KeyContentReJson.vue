@@ -35,9 +35,9 @@ export default {
   components: { FormatViewer, ScrollToTop },
   methods: {
     initShow() {
-      this.client.callBuffer('JSON.GET', [this.redisKey, 'NOESCAPE']).then(reply => {
+      this.client.callBuffer('JSON.GET', [this.redisKey, 'NOESCAPE']).then((reply) => {
         this.content = reply;
-      })
+      });
     },
     execSave() {
       const content = this.$refs.formatViewer.getContent();
@@ -51,34 +51,32 @@ export default {
         return this.$message.error(this.$t('message.json_format_failed'));
       }
 
-      this.client.call('JSON.SET', [this.redisKey, '.', content]).then(reply => {
+      this.client.call('JSON.SET', [this.redisKey, '.', content]).then((reply) => {
         if (reply === 'OK') {
           this.setTTL();
-          this.initShow()
+          this.initShow();
 
           this.$message.success({
             message: this.$t('message.modify_success'),
             duration: 1000,
           });
-        }
-
-        else {
+        } else {
           this.$message.error({
             message: this.$t('message.modify_failed'),
             duration: 1000,
           });
         }
-      }).catch(e => {
+      }).catch((e) => {
         this.$message.error(e.message);
       });
     },
-    setTTL () {
+    setTTL() {
       const ttl = parseInt(this.$parent.$parent.$refs.keyHeader.keyTTL);
 
       if (ttl > 0) {
-        this.client.expire(this.redisKey, ttl).catch(e => {
-          this.$message.error('Expire Error: ' + e.message);
-        }).then(reply => {});
+        this.client.expire(this.redisKey, ttl).catch((e) => {
+          this.$message.error(`Expire Error: ${e.message}`);
+        }).then((reply) => {});
       }
     },
     initShortcut() {
@@ -91,10 +89,10 @@ export default {
       });
     },
     dumpCommand() {
-      const command = `JSON.SET ${this.$util.bufToQuotation(this.redisKey)} . ` +
-                      this.$util.bufToQuotation(this.content);
+      const command = `JSON.SET ${this.$util.bufToQuotation(this.redisKey)} . ${
+        this.$util.bufToQuotation(this.content)}`;
       this.$util.copyToClipboard(command);
-      this.$message.success({message: this.$t('message.copy_success'), duration: 800});
+      this.$message.success({ message: this.$t('message.copy_success'), duration: 800 });
     },
   },
   mounted() {

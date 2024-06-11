@@ -8,7 +8,7 @@
         Via <b><code>SLOWLOG GET</code></b>, the time threshold is: <b><pre>CONFIG GET slowlog-log-slower-than</pre></b>, and the total number is: <b><pre>CONFIG GET slowlog-max-len</pre></b>
         Unit: <b>μs, 1000μs = 1ms</b>
       </el-popover>
-      
+
       <span class="card-title">{{ $t('message.slow_log') }}</span>
       <i v-if="isScanning" class='el-icon-loading'></i>
     </div>
@@ -53,7 +53,7 @@
 </template>
 
 <script type="text/javascript">
-import { RecycleScroller } from 'vue-virtual-scroller'
+import { RecycleScroller } from 'vue-virtual-scroller';
 
 export default {
   data() {
@@ -78,11 +78,11 @@ export default {
     initCmdList() {
       const nodes = this.client.nodes ? this.client.nodes('master') : [this.client];
 
-      nodes.map(node => {
-        let lines = [];
-        node.callBuffer('SLOWLOG', 'GET', this.scanMax).then(reply => {
-          for (let item of reply) {
-            let line = {
+      nodes.map((node) => {
+        const lines = [];
+        node.callBuffer('SLOWLOG', 'GET', this.scanMax).then((reply) => {
+          for (const item of reply) {
+            const line = {
               id: item[0],
               timestring: this.toLocalTime(item[1] * 1000),
               cost: parseInt(item[2]),
@@ -96,19 +96,19 @@ export default {
 
           this.cmdList = lines;
           this.isScanning = false;
-        }).catch(e => {
+        }).catch((e) => {
           this.isScanning = false;
           this.$message.error(e.message);
         });
       });
     },
     initConfig() {
-      this.client.call('CONFIG', 'GET', 'slowlog-log-slower-than').then(reply => {
+      this.client.call('CONFIG', 'GET', 'slowlog-log-slower-than').then((reply) => {
         this.slowerThan = reply[1];
-      }).catch(e => {});
-      this.client.call('CONFIG', 'GET', 'slowlog-max-len').then(reply => {
+      }).catch((e) => {});
+      this.client.call('CONFIG', 'GET', 'slowlog-max-len').then((reply) => {
         this.maxLen = reply[1];
-      }).catch(e => {});
+      }).catch((e) => {});
     },
     toLocalTime(timestamp) {
       const d = new Date(timestamp);
@@ -128,14 +128,9 @@ export default {
     },
     reOrder(order = null) {
       if (this.sortOrder == 'asc') {
-        this.cmdList.sort((a, b) => {
-          return a.cost - b.cost;
-        });
-      }
-      else {
-        this.cmdList.sort((a, b) => {
-          return b.cost - a.cost;
-        });
+        this.cmdList.sort((a, b) => a.cost - b.cost);
+      } else {
+        this.cmdList.sort((a, b) => b.cost - a.cost);
       }
     },
     initShortcut() {

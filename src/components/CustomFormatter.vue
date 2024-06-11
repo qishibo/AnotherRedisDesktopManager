@@ -88,6 +88,9 @@
                 <hr>
                 If your value is unvisible, you can pass <el-tag>{HEX}</el-tag> instead of <el-tag>{VALUE}</el-tag><br>
                 then hex such as <i>68656c6c6f20776f726c64</i> will be passed
+                <hr>
+                If your value is too long(>8000), it will be writen to a file,<br> you can use <el-tag>{HEX_FILE}</el-tag> to get the path and read in your script,<br>
+                the content in this file is same with <el-tag>{HEX}</el-tag>
               </p>
             </el-popover>
           </span>

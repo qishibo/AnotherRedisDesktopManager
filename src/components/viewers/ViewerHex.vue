@@ -9,8 +9,8 @@
 export default {
   data() {
     return {
-      contentDisplay: ""
-    }
+      contentDisplay: '',
+    };
   },
   props: ['content', 'contentVisible', 'disabled'],
   watch: {
@@ -27,5 +27,5 @@ export default {
   mounted() {
     this.contentDisplay = this.$util.bufToString(this.content);
   },
-}
+};
 </script>

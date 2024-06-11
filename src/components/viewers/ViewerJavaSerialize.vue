@@ -4,11 +4,11 @@
 
 <script type="text/javascript">
 import JsonEditor from '@/components/JsonEditor';
-import { ObjectInputStream } from "java-object-serialization";
+import { ObjectInputStream } from 'java-object-serialization';
 
 export default {
   props: ['content'],
-  components: {JsonEditor},
+  components: { JsonEditor },
   computed: {
     newContent() {
       try {
@@ -33,7 +33,7 @@ export default {
     },
     copyContent() {
       return this.$refs.editor.getRawContent();
-    }
-  }
-}
+    },
+  },
+};
 </script>

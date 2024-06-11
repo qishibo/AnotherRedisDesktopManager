@@ -1,3 +1,5 @@
 {
-  "esversion": 6
+  "esversion": 6,
+  "bitwise": false,
+  "freeze": true
 }

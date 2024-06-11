@@ -120,8 +120,13 @@ export default {
       newKeyName: '',
       selectedNewKeyType: 'string',
       newKeyTypes: {
-        String: 'string', Hash: 'hash', List: 'list', Set: 'set', Zset: 'zset',
-        Stream: 'stream', ReJSON: 'rejson',
+        String: 'string',
+        Hash: 'hash',
+        List: 'list',
+        Set: 'set',
+        Zset: 'zset',
+        Stream: 'stream',
+        ReJSON: 'rejson',
       },
       dbKeysCount: {},
       dbNames: {},
@@ -165,7 +170,7 @@ export default {
         this.getDatabasesFromInfo();
       }).catch((e) => {
         // config command may be renamed
-        this.dbs =  [...Array(16).keys()];
+        this.dbs = [...Array(16).keys()];
         // read dbs from info
         this.getDatabasesFromInfo(true);
       });
@@ -185,9 +190,9 @@ export default {
 
       this.dbKeysCount = {};
       this.client.info().then((info) => {
-        let keyspace = info.split('# Keyspace')[1].trim().split("\n");
+        const keyspace = info.split('# Keyspace')[1].trim().split('\n');
         let keyCount = [];
-        
+
         for (const line of keyspace) {
           keyCount = line.match(/db(\d+)\:keys=(\d+)/);
           keyCount && this.$set(this.dbKeysCount, keyCount[1], keyCount[2]);
@@ -205,7 +210,7 @@ export default {
       }).catch(() => {});
     },
     resetStatus() {
-      this.dbs =[0];
+      this.dbs = [0];
       // this.selectedDbIndex = 0;
       this.searchMatch = '';
       this.searchExact = false;
@@ -216,30 +221,32 @@ export default {
       }
 
       this.client.select(this.selectedDbIndex)
-      .then(() => {
+        .then(() => {
         // clear the search input
-        this.searchMatch = '';
-        this.$parent.$parent.$parent.$refs.keyList.refreshKeyList();
-        const dbKey = this.$storage.getStorageKeyByName('last_db', this.config.connectionName);
-        // store the last selected db
-        localStorage.setItem(dbKey, this.selectedDbIndex);
-        // tell cli to change db
-        this.client.options.db = this.selectedDbIndex;
-        this.$bus.$emit('changeDb', this.client, this.selectedDbIndex);
-      })
+          this.searchMatch = '';
+          this.$parent.$parent.$parent.$refs.keyList.refreshKeyList();
+          const dbKey = this.$storage.getStorageKeyByName('last_db', this.config.connectionName);
+          // store the last selected db
+          localStorage.setItem(dbKey, this.selectedDbIndex);
+          // tell cli to change db
+          this.client.options.db = this.selectedDbIndex;
+          this.$bus.$emit('changeDb', this.client, this.selectedDbIndex);
+        })
       // select is not allowed in cluster mode
-      .catch(e => {
-        this.$message.error({
-          message: e.message,
-          duration: 3000,
-        });
+        .catch((e) => {
+          this.$message.error({
+            message: e.message,
+            duration: 3000,
+          });
 
-        // reset to db0
-        this.selectedDbIndex = 0;
-      });
+          // reset to db0
+          this.selectedDbIndex = 0;
+        });
     },
     customDbName(db) {
-      this.$prompt(this.$t('message.custom_name')).then(({ value }) => {
+      const name = this.dbNames[db];
+
+      this.$prompt(this.$t('message.custom_name'), { inputValue: name }).then(({ value }) => {
         this.$set(this.dbNames, db, value);
         const dbKey = this.$storage.getStorageKeyByName('custom_db', this.config.connectionName);
         localStorage.setItem(dbKey, JSON.stringify(this.dbNames));
@@ -253,12 +260,12 @@ export default {
       // key to buffer
       const key = Buffer.from(this.newKeyName);
 
-      let promise = this.setDefaultValue(key, this.selectedNewKeyType);
+      const promise = this.setDefaultValue(key, this.selectedNewKeyType);
 
       promise.then(() => {
         this.$bus.$emit('refreshKeyList', this.client, key, 'add');
         this.$bus.$emit('clickedKey', this.client, key, true);
-      }).catch(e => {
+      }).catch((e) => {
         this.$message.error(e.message);
       });
 
@@ -319,9 +326,9 @@ export default {
         return cb([]);
       }
 
-      this.searchHistory.forEach(value => {
+      this.searchHistory.forEach((value) => {
         if (value.toLowerCase().indexOf(input.toLowerCase()) !== -1) {
-          items.push({value: value});
+          items.push({ value });
         }
       });
 
@@ -334,7 +341,7 @@ export default {
       this.$parent.$parent.$parent.$refs.keyList.resetSearchStatus();
     },
   },
-}
+};
 </script>
 
 <style type="text/css">

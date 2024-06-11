@@ -3,15 +3,24 @@
   <el-card class="box-card">
     <!-- card title -->
     <div slot="header" class="clearfix">
-      <el-popover trigger="hover">
-        <i slot="reference" class="el-icon-question"></i>
-        If size is "0", your Redis may disabled <b>MEMORY</b> command.
+      <!-- setting dialog -->
+      <el-popover
+        placement="bottom"
+        width="40"
+        trigger="hover">
+        <div>
+          <p>If result is "0", the <b>MEMORY</b> command may be disabled on Redis.</p>
+          <p style="margin: 0;">Filter Min Size:</p>
+          <el-input v-model="minSizeKB" size="mini">
+            <i slot="suffix">KB</i>
+          </el-input>
+        </div>
+        <i slot="reference" class="el-icon-setting"></i>
       </el-popover>
-      
+
       <span class="analysis-title">{{ $t('message.memory_analysis') }}</span>
       <i v-if="isScanning" class='el-icon-loading'></i>
       <el-tag size="mini">
-        <span v-if="isScanning">Scanning...</span>
         Total: {{keysList.length}} &nbsp;
         Size: {{$util.humanFileSize(totalSize)}}
       </el-tag>
@@ -64,7 +73,7 @@
 </template>
 
 <script type="text/javascript">
-import { RecycleScroller } from 'vue-virtual-scroller'
+import { RecycleScroller } from 'vue-virtual-scroller';
 
 export default {
   data() {
@@ -77,10 +86,16 @@ export default {
       scanMax: 200000,
       scanPageSize: 2000,
       totalSize: 0,
+      minSizeKB: 0,
     };
   },
   props: ['client', 'hotKeyScope', 'pattern'],
   components: { RecycleScroller },
+  computed: {
+    minSizeB() {
+      return parseInt(this.minSizeKB) * 1024;
+    },
+  },
   methods: {
     initKeys() {
       this.keysList = [];
@@ -93,27 +108,27 @@ export default {
       const nodes = this.client.nodes ? this.client.nodes('master') : [this.client];
       this.scanningCount = nodes.length;
 
-      nodes.map(node => {
+      nodes.map((node) => {
         const scanOption = {
-          match: pattern + '*',
+          match: `${pattern}*`,
           count: this.scanPageSize,
-        }
+        };
 
         const stream = node.scanBufferStream(scanOption);
         this.scanStreams.push(stream);
 
-        stream.on('data', keys => {
+        stream.on('data', (keys) => {
           // waiting for memory analysis
           stream.pause();
 
           // limit scanning max count
           if (this.keysList.length > this.scanMax) {
-            this.$message.warning(this.$t('message.max_scan', {num: this.scanMax}) + ', stopped.');
+            this.$message.warning(`${this.$t('message.max_scan', { num: this.scanMax })}, stopped.`);
             this.scanningEnd = true;
             return this.toggleScanning(true);
           }
 
-          let keysWithMemory = []
+          const keysWithMemory = [];
           const promise = this.initKeysMemory(keys, keysWithMemory);
 
           promise.then(() => {
@@ -129,9 +144,9 @@ export default {
           });
         });
 
-        stream.on('error', e => {
+        stream.on('error', (e) => {
           this.toggleScanning(true);
-          this.$message.error('Memory Analysis Stream On Error: ' +  e.messag);
+          this.$message.error(`Memory Analysis Stream On Error: ${e.messag}`);
         });
 
         stream.on('end', () => {
@@ -149,18 +164,22 @@ export default {
         return;
       }
 
-      let allPromise = [];
+      const allPromise = [];
 
-      for (let key of keys) {
+      for (const key of keys) {
         // not logging
         this.client.withoutLogging = true;
-        const promise = this.client.call('MEMORY', 'USAGE', key).then(reply => {
+        const promise = this.client.call('MEMORY', 'USAGE', key).then((reply) => {
+          // filter min size
+          if (this.minSizeB && reply < this.minSizeB) {
+            return;
+          }
           keysWithMemory.push({
-            key: key, str: this.$util.bufToString(key), size: reply, human: this.$util.humanFileSize(reply),
+            key, str: this.$util.bufToString(key), size: reply, human: this.$util.humanFileSize(reply),
           });
-        }).catch(e => {
+        }).catch((e) => {
           keysWithMemory.push({
-            key: key, str: this.$util.bufToString(key), size: 0, human: 0,
+            key, str: this.$util.bufToString(key), size: 0, human: 0,
           });
         });
 
@@ -177,7 +196,7 @@ export default {
       if (pause) {
         this.isScanning = false;
         if (this.scanStreams.length) {
-          for (let stream of this.scanStreams) {
+          for (const stream of this.scanStreams) {
             stream.pause && stream.pause();
           }
         }
@@ -192,7 +211,7 @@ export default {
       // resume scanning
       this.isScanning = true;
       if (this.scanStreams.length) {
-        for (let stream of this.scanStreams) {
+        for (const stream of this.scanStreams) {
           stream.pause && stream.resume();
         }
       }
@@ -210,14 +229,9 @@ export default {
 
       // sorting
       if (this.sortOrder == 'asc') {
-        this.keysList.sort((a, b) => {
-          return a.size - b.size;
-        });
-      }
-      else {
-        this.keysList.sort((a, b) => {
-          return b.size - a.size;
-        });
+        this.keysList.sort((a, b) => a.size - b.size);
+      } else {
+        this.keysList.sort((a, b) => b.size - a.size);
       }
     },
     initShortcut() {
@@ -292,6 +306,7 @@ export default {
     flex: 1;
     overflow: hidden;
     text-overflow: ellipsis;
+    white-space: nowrap;
   }
 
   /*key size*/

@@ -1,5 +1,5 @@
 const { session, ipcMain, net } = require('electron');
-const { autoUpdater } = require("electron-updater");
+const { autoUpdater } = require('electron-updater');
 
 // disable auto download
 autoUpdater.autoDownload = false;
@@ -13,7 +13,7 @@ const update = () => {
     mainEvent = event;
     autoUpdater.checkForUpdates()
       .then(() => {})
-      .catch(err => {
+      .catch((err) => {
         // mainEvent.sender.send('update-error', err);
       });
   });
@@ -21,7 +21,7 @@ const update = () => {
   ipcMain.on('continue-update', (event, arg) => {
     autoUpdater.downloadUpdate()
       .then(() => {})
-      .catch(err => {
+      .catch((err) => {
         // mainEvent.sender.send('update-error', err);
       });
   });
@@ -49,6 +49,6 @@ function bindMainListener() {
   autoUpdater.on('update-downloaded', (info) => {
     mainEvent.sender.send('update-downloaded', info);
   });
-};
+}
 
 module.exports = update;

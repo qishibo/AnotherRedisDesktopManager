@@ -45,7 +45,9 @@ export default {
   data() {
     return {};
   },
-  components: { Connections, NewConnectionDialog, Setting, CommandLog, HotKeys, CustomFormatter },
+  components: {
+    Connections, NewConnectionDialog, Setting, CommandLog, HotKeys, CustomFormatter,
+  },
   methods: {
     editConnectionFinished() {
       this.$refs.connections.initConnections();
