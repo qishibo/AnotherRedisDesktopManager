@@ -7,7 +7,7 @@ const cn = {
     del_connection: '删除连接',
     close_connection: '关闭连接',
     add_new_line: '添加新行',
-    dump_to_clipboard: "复制为命令",
+    dump_to_clipboard: '复制为命令',
     redis_version: 'Redis版本',
     process_id: '进程ID',
     used_memory: '已用内存',
@@ -77,6 +77,7 @@ const cn = {
     manual_update: '手动下载',
     retry_too_many_times: '尝试重连次数过多，请检查Server状态',
     key_to_search: '输入关键字搜索',
+    search_connection: '搜索链接',
     begin_update: '更新',
     ignore_this_version: '忽略该版本',
     check_update: '检查更新',
@@ -86,8 +87,8 @@ const cn = {
     update_error: '更新失败',
     update_downloading: '下载中...',
     update_download_progress: '下载进度',
-    update_downloaded: "更新下载完成，重启客户端生效.\
-    [Tips]: 如果您使用的是Windows，关闭软件后，请等待桌面图标刷新到正常状态(约10秒)，然后再重新打开即可",
+    update_downloaded: '更新下载完成，重启客户端生效.\
+    [Tips]: 如果您使用的是Windows，关闭软件后，请等待桌面图标刷新到正常状态(约10秒)，然后再重新打开即可',
     mac_not_support_auto_update: 'Mac暂时不支持自动更新，请手动<a href="https://github.com/qishibo/AnotherRedisDesktopManager/releases">下载</a>后重新安装，\
     或者执行<br><code>brew reinstall --cask another-redis-desktop-manager </code>\
     <br><hr><br>❤️如果您觉得好用，可以通过<a href="https://apps.apple.com/app/id1516451072">AppStore</a>赞助，并由AppStore帮您自动更新',

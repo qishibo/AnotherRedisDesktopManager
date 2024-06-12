@@ -103,11 +103,11 @@ export default {
     };
   },
   props: ['client', 'redisKey'],
-  components: {PaginationTable, FormatViewer, ScrollToTop},
+  components: { PaginationTable, FormatViewer, ScrollToTop },
   computed: {
     dialogTitle() {
-      return this.beforeEditItem.value ? this.$t('message.edit_line') :
-             this.$t('message.add_new_line');
+      return this.beforeEditItem.value ? this.$t('message.edit_line')
+        : this.$t('message.add_new_line');
     },
   },
   methods: {
@@ -121,11 +121,11 @@ export default {
       this.initTotal();
     },
     listScan() {
-      const filterValue = this.filterValue;
+      const { filterValue } = this;
       const pageSize = filterValue ? 500 : this.pageSize;
 
-      let start = pageSize * this.pageIndex;
-      let end = start + pageSize - 1;
+      const start = pageSize * this.pageIndex;
+      const end = start + pageSize - 1;
 
       this.client.lrangeBuffer([this.redisKey, start, end]).then((reply) => {
         // scanning end
@@ -163,7 +163,7 @@ export default {
         }
         // continue scanning until to pagesize
         this.loadMore();
-      }).catch(e => {
+      }).catch((e) => {
         this.loadingIcon = '';
         this.loadMoreDisable = true;
         this.$message.error(e.message);
@@ -172,7 +172,7 @@ export default {
     initTotal() {
       this.client.llen(this.redisKey).then((reply) => {
         this.total = reply;
-      }).catch(e => {});
+      }).catch((e) => {});
     },
     resetTable() {
       this.listData = [];
@@ -198,17 +198,15 @@ export default {
     },
     dumpCommand(item) {
       const lines = item ? [item] : this.listData;
-      const params = lines.map(line => {
-        return this.$util.bufToQuotation(line.value);
-      });
+      const params = lines.map(line => this.$util.bufToQuotation(line.value));
 
       const command = `RPUSH ${this.$util.bufToQuotation(this.redisKey)} ${params.join(' ')}`;
       this.$util.copyToClipboard(command);
-      this.$message.success({message: this.$t('message.copy_success'), duration: 800});
+      this.$message.success({ message: this.$t('message.copy_success'), duration: 800 });
     },
     editLine() {
       const key = this.redisKey;
-      const client = this.client;
+      const { client } = this;
       const before = this.beforeEditItem;
       const afterValue = this.$refs.formatViewer.getContent();
 
@@ -222,12 +220,12 @@ export default {
       }
 
       this.editDialog = false;
-      const newLine = {value: afterValue, uniq: Math.random()};
+      const newLine = { value: afterValue, uniq: Math.random() };
 
       // edit line
       if (this.rowUniq) {
         // fix #1082, keep list order
-        client.linsert(key, 'AFTER', before.value, afterValue).then(reply => {
+        client.linsert(key, 'AFTER', before.value, afterValue).then((reply) => {
           if (reply > 0) {
             client.lrem(key, 1, before.value);
             // this.initShow(); // do not reinit, #786
@@ -245,11 +243,11 @@ export default {
               duration: 2000,
             });
           }
-        }).catch(e => {this.$message.error(e.message);});
+        }).catch((e) => { this.$message.error(e.message); });
       }
       // new line
       else {
-        client.rpush(key, afterValue).then(reply => {
+        client.rpush(key, afterValue).then((reply) => {
           if (reply > 0) {
             // this.initShow(); // do not reinit, #786
             this.listData.push(newLine);
@@ -260,18 +258,18 @@ export default {
               duration: 1000,
             });
           }
-        }).catch(e => {this.$message.error(e.message);});
+        }).catch((e) => { this.$message.error(e.message); });
       }
     },
     deleteLine(row) {
       this.$confirm(
         this.$t('message.confirm_to_delete_row_data'),
-        { type: 'warning' }
+        { type: 'warning' },
       ).then(() => {
         this.client.lrem(
           this.redisKey,
           1,
-          row.value
+          row.value,
         ).then((reply) => {
           if (reply > 0) {
             this.$message.success({
@@ -282,14 +280,13 @@ export default {
             // this.initShow(); // do not reinit, #786
             this.$util.listSplice(this.listData, row.uniq);
             this.total--;
-          }
-          else {
+          } else {
             this.$message.error({
               message: this.$t('message.delete_failed'),
               duration: 1000,
             });
           }
-        }).catch(e => {this.$message.error(e.message);});
+        }).catch((e) => { this.$message.error(e.message); });
       }).catch(() => {});
     },
   },

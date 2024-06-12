@@ -115,11 +115,11 @@ export default {
     };
   },
   props: ['client', 'redisKey'],
-  components: {PaginationTable, FormatViewer, ScrollToTop},
+  components: { PaginationTable, FormatViewer, ScrollToTop },
   computed: {
     dialogTitle() {
-      return this.beforeEditItem.member ? this.$t('message.edit_line') :
-             this.$t('message.add_new_line');
+      return this.beforeEditItem.member ? this.$t('message.edit_line')
+        : this.$t('message.add_new_line');
     },
   },
   methods: {
@@ -144,7 +144,7 @@ export default {
     initTotal() {
       this.client.zcard(this.redisKey).then((reply) => {
         this.total = reply;
-      }).catch(e => {});
+      }).catch((e) => {});
     },
     resetTable() {
       // stop scanning first, #815
@@ -156,16 +156,16 @@ export default {
       this.loadMoreDisable = false;
     },
     getListRange(resetTable) {
-      let start = this.pageSize * this.pageIndex;
-      let end = start + this.pageSize - 1;
+      const start = this.pageSize * this.pageIndex;
+      const end = start + this.pageSize - 1;
 
       this.client.zrevrangeBuffer([this.redisKey, start, end, 'WITHSCORES']).then((reply) => {
-        let zsetData = this.solveList(reply);
+        const zsetData = this.solveList(reply);
 
         this.zsetData = resetTable ? zsetData : this.zsetData.concat(zsetData);
         (zsetData.length < this.pageSize) && (this.loadMoreDisable = true);
         this.loadingIcon = '';
-      }).catch(e => {
+      }).catch((e) => {
         this.loadingIcon = '';
         this.loadMoreDisable = true;
         this.$message.error(e.message);
@@ -174,24 +174,22 @@ export default {
     getListScan() {
       if (!this.scanStream) {
         this.initScanStream();
-      }
-
-      else {
+      } else {
         this.oneTimeListLength = 0;
         this.scanStream.resume();
       }
     },
     initScanStream() {
-      const scanOption = {match: this.getScanMatch(), count: this.pageSize};
+      const scanOption = { match: this.getScanMatch(), count: this.pageSize };
       scanOption.match != '*' && (scanOption.count = this.searchPageSize);
 
       this.scanStream = this.client.zscanBufferStream(
         this.redisKey,
-        scanOption
+        scanOption,
       );
 
-      this.scanStream.on('data', reply => {
-        let zsetData = this.solveList(reply);
+      this.scanStream.on('data', (reply) => {
+        const zsetData = this.solveList(reply);
 
         this.oneTimeListLength += zsetData.length;
         this.zsetData = this.zsetData.concat(zsetData);
@@ -207,7 +205,7 @@ export default {
         this.loadMoreDisable = true;
       });
 
-      this.scanStream.on('error', e => {
+      this.scanStream.on('error', (e) => {
         this.loadingIcon = '';
         this.loadMoreDisable = true;
         this.$message.error(e.message);
@@ -218,9 +216,9 @@ export default {
         return [];
       }
 
-      let zsetData = [];
+      const zsetData = [];
 
-      for (var i = 0; i < list.length; i += 2) {
+      for (let i = 0; i < list.length; i += 2) {
         zsetData.push({
           score: Number(list[i + 1]),
           member: list[i],
@@ -248,18 +246,16 @@ export default {
     },
     dumpCommand(item) {
       const lines = item ? [item] : this.zsetData;
-      const params = lines.map(line => {
-        return `${String(line.score)} ` +
-                this.$util.bufToQuotation(line.member);
-      });
+      const params = lines.map(line => `${String(line.score)} ${
+        this.$util.bufToQuotation(line.member)}`);
 
       const command = `ZADD ${this.$util.bufToQuotation(this.redisKey)} ${params.join(' ')}`;
       this.$util.copyToClipboard(command);
-      this.$message.success({message: this.$t('message.copy_success'), duration: 800});
+      this.$message.success({ message: this.$t('message.copy_success'), duration: 800 });
     },
     editLine() {
       const key = this.redisKey;
-      const client = this.client;
+      const { client } = this;
       const before = this.beforeEditItem;
 
       const afterScore = this.editLineItem.score;
@@ -274,7 +270,7 @@ export default {
       client.zadd(
         key,
         afterScore,
-        afterMember
+        afterMember,
       ).then((reply) => {
         // edit key member changed
         if (before.member && !before.member.equals(afterMember)) {
@@ -282,7 +278,7 @@ export default {
         }
 
         // this.initShow(); // do not reinit, #786
-        const newLine = {score: afterScore, member: afterMember, uniq: Math.random()};
+        const newLine = { score: afterScore, member: afterMember, uniq: Math.random() };
         // edit line
         if (this.rowUniq) {
           this.$util.listSplice(this.zsetData, this.rowUniq, newLine);
@@ -297,16 +293,16 @@ export default {
           message: reply == 1 ? this.$t('message.add_success') : this.$t('message.modify_success'),
           duration: 1000,
         });
-      }).catch(e => {this.$message.error(e.message);});
+      }).catch((e) => { this.$message.error(e.message); });
     },
     deleteLine(row) {
       this.$confirm(
         this.$t('message.confirm_to_delete_row_data'),
-        { type: 'warning' }
+        { type: 'warning' },
       ).then(() => {
         this.client.zrem(
           this.redisKey,
-          row.member
+          row.member,
         ).then((reply) => {
           if (reply == 1) {
             this.$message.success({
@@ -318,7 +314,7 @@ export default {
             this.$util.listSplice(this.zsetData, row.uniq);
             this.total--;
           }
-        }).catch(e => {this.$message.error(e.message);});
+        }).catch((e) => { this.$message.error(e.message); });
       }).catch(() => {});
     },
   },

@@ -104,11 +104,11 @@ export default {
     };
   },
   props: ['client', 'redisKey'],
-  components: {PaginationTable, FormatViewer, ScrollToTop},
+  components: { PaginationTable, FormatViewer, ScrollToTop },
   computed: {
     dialogTitle() {
-      return this.beforeEditItem.value ? this.$t('message.edit_line') :
-             this.$t('message.add_new_line');
+      return this.beforeEditItem.value ? this.$t('message.edit_line')
+        : this.$t('message.add_new_line');
     },
   },
   methods: {
@@ -118,9 +118,7 @@ export default {
 
       if (!this.scanStream) {
         this.initScanStream();
-      }
-
-      else {
+      } else {
         this.oneTimeListLength = 0;
         this.scanStream.resume();
       }
@@ -131,7 +129,7 @@ export default {
     initTotal() {
       this.client.scard(this.redisKey).then((reply) => {
         this.total = reply;
-      }).catch(e => {});
+      }).catch((e) => {});
     },
     resetTable() {
       // stop scanning first, #815
@@ -142,16 +140,16 @@ export default {
       this.loadMoreDisable = false;
     },
     initScanStream() {
-      const scanOption = {match: this.getScanMatch(), count: this.pageSize};
+      const scanOption = { match: this.getScanMatch(), count: this.pageSize };
       scanOption.match != '*' && (scanOption.count = this.searchPageSize);
 
       this.scanStream = this.client.sscanBufferStream(
         this.redisKey,
-        scanOption
+        scanOption,
       );
 
-      this.scanStream.on('data', reply => {
-        let setData = [];
+      this.scanStream.on('data', (reply) => {
+        const setData = [];
 
         for (const i of reply) {
           setData.push({
@@ -175,7 +173,7 @@ export default {
         this.loadMoreDisable = true;
       });
 
-      this.scanStream.on('error', e => {
+      this.scanStream.on('error', (e) => {
         this.loadingIcon = '';
         this.loadMoreDisable = true;
         this.$message.error(e.message);
@@ -198,17 +196,15 @@ export default {
     },
     dumpCommand(item) {
       const lines = item ? [item] : this.setData;
-      const params = lines.map(line => {
-        return this.$util.bufToQuotation(line.value);
-      });
+      const params = lines.map(line => this.$util.bufToQuotation(line.value));
 
       const command = `SADD ${this.$util.bufToQuotation(this.redisKey)} ${params.join(' ')}`;
       this.$util.copyToClipboard(command);
-      this.$message.success({message: this.$t('message.copy_success'), duration: 800});
+      this.$message.success({ message: this.$t('message.copy_success'), duration: 800 });
     },
     editLine() {
       const key = this.redisKey;
-      const client = this.client;
+      const { client } = this;
       const before = this.beforeEditItem;
       const afterValue = this.$refs.formatViewer.getContent();
 
@@ -225,7 +221,7 @@ export default {
 
       client.sadd(
         key,
-        afterValue
+        afterValue,
       ).then((reply) => {
         // add success
         if (reply == 1) {
@@ -235,7 +231,7 @@ export default {
           }
 
           // this.initShow(); // do not reinit, #786
-          const newLine = {value: afterValue, uniq: Math.random()};
+          const newLine = { value: afterValue, uniq: Math.random() };
           // edit line
           if (this.rowUniq) {
             this.$util.listSplice(this.setData, this.rowUniq, newLine);
@@ -259,16 +255,16 @@ export default {
             duration: 1000,
           });
         }
-      }).catch(e => {this.$message.error(e.message);});
+      }).catch((e) => { this.$message.error(e.message); });
     },
     deleteLine(row) {
       this.$confirm(
         this.$t('message.confirm_to_delete_row_data'),
-        { type: 'warning' }
+        { type: 'warning' },
       ).then(() => {
         this.client.srem(
           this.redisKey,
-          row.value
+          row.value,
         ).then((reply) => {
           if (reply == 1) {
             this.$message.success({
@@ -280,7 +276,7 @@ export default {
             this.$util.listSplice(this.setData, row.uniq);
             this.total--;
           }
-        }).catch(e => {this.$message.error(e.message);});
+        }).catch((e) => { this.$message.error(e.message); });
       }).catch(() => {});
     },
   },

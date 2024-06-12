@@ -4,6 +4,8 @@
 
 <script type="text/javascript">
 import JsonEditor from '@/components/JsonEditor';
+const JSONbig = require('@qii404/json-bigint')({ useNativeBigInt: false });
+
 const zlib = require('zlib');
 
 export default {
@@ -15,7 +17,7 @@ export default {
 
       if (typeof formatStr === 'string') {
         if (this.$util.isJson(formatStr)) {
-          return JSON.parse(formatStr);
+          return JSONbig.parse(formatStr);
         }
 
         return formatStr;

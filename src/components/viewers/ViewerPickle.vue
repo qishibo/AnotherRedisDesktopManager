@@ -8,7 +8,7 @@ import { Parser } from 'pickleparser';
 
 export default {
   props: ['content'],
-  components: {JsonEditor},
+  components: { JsonEditor },
   computed: {
     newContent() {
       try {
@@ -25,7 +25,7 @@ export default {
     },
     copyContent() {
       return this.$refs.editor.getRawContent();
-    }
-  }
-}
+    },
+  },
+};
 </script>

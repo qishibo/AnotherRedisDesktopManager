@@ -7,86 +7,82 @@
 </template>
 
 <script type="text/javascript">
-  export default {
-    data() {
-      return {
-        toTopShow: false,
-        scrollTop: 0,
-        realDom: null,
-        minShowHeight: 500,
-      };
-    },
-    computed: {
-      style() {
-        let style = {right: '50px'};
+export default {
+  data() {
+    return {
+      toTopShow: false,
+      scrollTop: 0,
+      realDom: null,
+      minShowHeight: 500,
+    };
+  },
+  computed: {
+    style() {
+      const style = { right: '50px' };
 
-        if (!this.posRight) {
-          style.right = 'inherit';
-        }
-
-        return style;
-      },
-    },
-    props: {
-      parentNum: {default: 3},
-      posRight: {default: true},
-    },
-    methods: {
-      handleScroll() {
-        this.scrollTop = this.realDom.scrollTop;
-        this.toTopShow = (this.scrollTop > this.minShowHeight) ? true : false;
-      },
-      scrollToTop() {
-        let timer = null;
-        let that = this;
-
-        cancelAnimationFrame(timer);
-
-        timer = requestAnimationFrame(function fn() {
-          const nowTop = that.realDom.scrollTop;
-
-          // to top already
-          if (nowTop <= 0) {
-            cancelAnimationFrame(timer);
-            that.toTopShow = false;
-          }
-
-          else if (nowTop < 50) {
-            that.realDom.scrollTop -= 5;
-            timer = requestAnimationFrame(fn);
-          }
-
-          else {
-            that.realDom.scrollTop -= nowTop * 0.2;
-            timer = requestAnimationFrame(fn);
-          }
-        });
+      if (!this.posRight) {
+        style.right = 'inherit';
       }
+
+      return style;
     },
-    mounted() {
-      this.$nextTick(() => {
-        let vueCom = this.$parent;
+  },
+  props: {
+    parentNum: { default: 3 },
+    posRight: { default: true },
+  },
+  methods: {
+    handleScroll() {
+      this.scrollTop = this.realDom.scrollTop;
+      this.toTopShow = (this.scrollTop > this.minShowHeight);
+    },
+    scrollToTop() {
+      let timer = null;
+      const that = this;
 
-        for (let i = 0; i < this.parentNum - 1; i++) {
-          if (!vueCom.$parent) {
-            return;
-          }
+      cancelAnimationFrame(timer);
 
-          vueCom = vueCom.$parent;
+      timer = requestAnimationFrame(function fn() {
+        const nowTop = that.realDom.scrollTop;
+
+        // to top already
+        if (nowTop <= 0) {
+          cancelAnimationFrame(timer);
+          that.toTopShow = false;
+        } else if (nowTop < 50) {
+          that.realDom.scrollTop -= 5;
+          timer = requestAnimationFrame(fn);
+        } else {
+          that.realDom.scrollTop -= nowTop * 0.2;
+          timer = requestAnimationFrame(fn);
         }
-
-        this.realDom = vueCom.$el;
-
-        if (!this.realDom) {
-          return;
-        }
-        this.realDom.addEventListener('scroll', this.handleScroll, true);
       });
     },
-    destroyed() {
-      this.realDom.removeEventListener('scroll', this.handleScroll, true);
-    }
-  };
+  },
+  mounted() {
+    this.$nextTick(() => {
+      let vueCom = this.$parent;
+
+      for (let i = 0; i < this.parentNum - 1; i++) {
+        if (!vueCom.$parent) {
+          return;
+        }
+
+        vueCom = vueCom.$parent;
+      }
+
+      this.realDom = vueCom.$el;
+
+      if (!this.realDom) {
+        return;
+      }
+      this.realDom.addEventListener('scroll', this.handleScroll, true);
+    });
+  },
+  destroyed() {
+    this.realDom.removeEventListener('scroll', this.handleScroll, true);
+  },
+};
 </script>
 
 <style type="text/css">

@@ -77,6 +77,7 @@ const en = {
     manual_update: 'Manual Download',
     retry_too_many_times: 'Too Many Attempts To Reconnect. Please Check The Server Status',
     key_to_search: 'Keyword Search',
+    search_connection: 'Search Connection',
     begin_update: 'Update',
     ignore_this_version: 'Ignore this version',
     check_update: 'Check Update',

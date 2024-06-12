@@ -77,6 +77,7 @@ const ko = {
     manual_update: '직접 다운로드',
     retry_too_many_times: '너무 많이 재연결을 시도하였습니다. 서버 상태를 확인해주세요.',
     key_to_search: '키워드 검색',
+    search_connection: '검색 연결',
     begin_update: '업데이트',
     ignore_this_version: '이 버전 무시',
     check_update: '업데이트 확인',

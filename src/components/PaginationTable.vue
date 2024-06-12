@@ -38,8 +38,8 @@ export default {
       return this.dataAfterFilter.slice(start, start + this.pageSize);
     },
     dataAfterFilter() {
-      const filterKey = this.filterKey;
-      const filterValue = this.filterValue;
+      const { filterKey } = this;
+      const { filterValue } = this;
 
       this.$nextTick(() => {
         this.pageIndex = 1;

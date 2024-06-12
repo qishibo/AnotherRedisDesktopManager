@@ -69,13 +69,12 @@ export default {
     paramsArr() {
       try {
         // buf array
-        let paramsArr = splitargs(this.paramsTrim, true);
+        const paramsArr = splitargs(this.paramsTrim, true);
         // command to string
         paramsArr[0] = paramsArr[0].toString().toLowerCase();
 
         return paramsArr;
-      }
-      catch(e) {
+      } catch (e) {
         return [this.paramsTrim];
       }
     },
@@ -85,7 +84,7 @@ export default {
         this.content.splice(0, this.content.length - this.maxHistory);
       }
 
-      return this.content.join("\n") + "\n";
+      return `${this.content.join('\n')}\n`;
     },
   },
   created() {
@@ -139,21 +138,17 @@ export default {
         return;
       }
 
-      let items = this.inputSuggestionItems.filter(function (item) {
-        return item.toLowerCase().indexOf(input.toLowerCase()) !== -1;
-      });
+      let items = this.inputSuggestionItems.filter(item => item.toLowerCase().indexOf(input.toLowerCase()) !== -1);
 
       // add cmd tips
       items = this.addCMDTips(items);
 
-      const suggestions = [...new Set(items)].map(function (item) {
-        return {value: item};
-      });
+      const suggestions = [...new Set(items)].map(item => ({ value: item }));
 
       cb(suggestions);
     },
     addCMDTips(items = []) {
-      const paramsArr = this.paramsArr;
+      const { paramsArr } = this;
       const paramsLen = paramsArr.length;
       const cmd = paramsArr[0].toUpperCase();
 
@@ -206,7 +201,7 @@ export default {
     },
     consoleExec() {
       const params = this.paramsTrim;
-      const paramsArr = this.paramsArr;
+      const { paramsArr } = this;
 
       this.params = '';
       this.content.push(`> ${params}`);
@@ -233,7 +228,7 @@ export default {
         return this.scrollToBottom('OK');
       }
 
-      //multi-discard-mode
+      // multi-discard-mode
       if (paramsArr[0] == 'discard') {
       // discard when not multi condition
         if (!Array.isArray(this.multiQueue)) {
@@ -253,8 +248,7 @@ export default {
         this.anoClient.multi(this.multiQueue).execBuffer((err, reply) => {
           if (err) {
             this.content.push(`${err}`);
-          }
-          else {
+          } else {
             this.content.push(this.resolveResult(reply).trim());
           }
 
@@ -277,11 +271,11 @@ export default {
 
       // monitor command
       if (paramsArr[0] == 'monitor') {
-        this.anoClient.monitor().then(monitor => {
+        this.anoClient.monitor().then((monitor) => {
           this.monitorMode = true;
           this.scrollToBottom('OK');
           this.monitorInstance = monitor;
-          this.monitorInstance.on("monitor", (time, args, source, database) => {
+          this.monitorInstance.on('monitor', (time, args, source, database) => {
             this.scrollToBottom(`${time} [${database} ${source}] ${args.join(' ')}`);
           });
         });
@@ -290,7 +284,7 @@ export default {
       }
 
       // normal command
-      let promise = this.anoClient.callBuffer(paramsArr[0], paramsArr.slice(1));
+      const promise = this.anoClient.callBuffer(paramsArr[0], paramsArr.slice(1));
 
       // normal command promise
       promise.then((reply) => {
@@ -324,7 +318,7 @@ export default {
         if (this.$refs.editor) {
           return this.$refs.editor.scrollToBottom();
         }
-        
+
         if (!this.$refs.cliContent) {
           return;
         }
@@ -360,21 +354,20 @@ export default {
             // null is the result, and v1 is the value
             if (result[i][0] === null) {
               append += this.resolveResult(result[i][1]);
-            }
-            else {
+            } else {
               append += this.resolveResult(result[i]);
             }
           }
           // string buffer null
           else {
-            append += (isArray ? '' : (this.$util.bufToString(i) + "\n")) +
-                      this.$util.bufToString(result[i]) + "\n";
+            append += `${(isArray ? '' : (`${this.$util.bufToString(i)}\n`))
+                      + this.$util.bufToString(result[i])}\n`;
           }
         }
       }
       // string buffer null
       else {
-        append = this.$util.bufToString(result) + "\n";
+        append = `${this.$util.bufToString(result)}\n`;
       }
 
       return append;

@@ -42,13 +42,7 @@
 - Or **sponsor** by app store, It's not free, and I will be very grateful to you.
 <br/>[![get from app store](https://cdn.jsdelivr.net/gh/qishibo/img/avail_app_store180.svg)](https://apps.apple.com/app/id1516451072)
 
-<!--
-> If **Mac** warning `Another Desktop Manager can't be opened because it is from an unidentified developer`. Open `Settings->Security` and click **`Open Anyway`**
 
-![can't be opened because it is from an unidentified developer](https://cdn.jsdelivr.net/gh/qishibo/img/1630655841115-mac-warning.png)
-
-![Settings->Security Open Anyway](https://cdn.jsdelivr.net/gh/qishibo/img/1630655842331-5d11c4feeaf6f.jpg)
--->
 
 ## Enjoy!
 
@@ -63,6 +57,7 @@
 
 ## Feature Log
 
+- 2024-06-06: Search connections support(>=4)
 - 2024-04-10: DB custom name support
 - 2024-02-21: Java/Pickle viewers support
 - 2024-02-15: Groups/Consumers in STREAM view
@@ -118,7 +113,7 @@ cd AnotherRedisDesktopManager
 npm install
 
 # if download electron failed during installing, use this command
-# ELECTRON_MIRROR="https://npm.taobao.org/mirrors/electron/" npm install
+# ELECTRON_MIRROR="https://npmmirror.com/mirrors/electron/" npm install
 
 # serve with hot reload at localhost:9988
 npm start
@@ -153,7 +148,7 @@ cd AnotherRedisDesktopManager
 npm install --platform=win32
 
 # if download electron failed during installing, use this command
-# npm config set ELECTRON_MIRROR http://npm.taobao.org/mirrors/electron/
+# npm config set ELECTRON_MIRROR https://npmmirror.com/mirrors/electron/
 # npm install --platform=win32
 
 # serve with hot reload at localhost:9988
@@ -213,7 +208,7 @@ This project exists thanks to all the people who contribute.
 | ------ | ------ |
 | `Name` | Custom name |
 | `Command` | Executable commands, such as `xxx.py` `xxx.js` `xxx.class` etc. The file needs `x` permission, which can be executed in the form of `./xxx.py`; It can also be set to `/bin/node` `/bin/bash` or other system commands, and the script path needs to be placed in Params |
-| `Params` | Parameters spliced after `Command`, such as "--key `{KEY}` --value `{VALUE}`", where `{KEY}` and `{VALUE}` will be replaced with the corresponding Redis key and value. Note that if the content is invisible such as binary, you can use `{HEX}` instead of `{VALUE}`, and `{HEX}` will be replaced with the hexadecimal string |
+| `Params` | Parameters spliced after `Command`, such as "--key `{KEY}` --value `{VALUE}`", where `{KEY}` and `{VALUE}` will be replaced with the corresponding Redis key and value. Note that if the content is invisible such as binary, you can use `{HEX}` instead of `{VALUE}`, and `{HEX}` will be replaced with the hexadecimal string. If HEX is too long (>8000 chars), it will be written to a temporary file. You can use `{HEX_FILE}` to obtain the file path, and read by yourself in the script |
 
 ### Configuration example：
 > Add env to the first line of the script, the final executed command is: `./home/qii/pickle_decoder.py {HEX}`, the script can receive parameters via `argv[1]`, ref [#978](https://github.com/qishibo/AnotherRedisDesktopManager/issues/987#issuecomment-1294844707)
