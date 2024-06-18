@@ -368,10 +368,23 @@ export default {
         return;
       }
 
+      // get real node name in ssh+cluster, instead of local port
+      const natMap = this.client.options.natMap;
+      const clusterNodeNames = {};
+
+      if (natMap && Object.keys(natMap).length) {
+        for (const real in natMap) {
+          clusterNodeNames[`${natMap[real].host}:${natMap[real].port}`] = real;
+        }
+      }
+
       nodes.map((node) => {
         node.call('INFO', 'KEYSPACE').then((reply) => {
           const { options } = node;
-          const name = `${options.host}:${options.port}`;
+
+          // fix #1221 node name in ssh+cluster
+          let name = `${options.host}:${options.port}`;
+          name = clusterNodeNames[name] || name;
 
           const keys = this.initDbKeys(this.initStatus(reply), name);
 
