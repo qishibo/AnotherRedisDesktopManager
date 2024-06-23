@@ -211,7 +211,7 @@ export default {
         // 300ms after menu expand animination
         setTimeout(() => {
           let scrollTop = 0;
-          const menus = document.querySelectorAll('.connections-list>ul');
+          const menus = document.querySelectorAll('.connections-wrap .connections-list>ul');
 
           // calc height sum of all above menus
           for (const menu of menus) {
@@ -223,8 +223,8 @@ export default {
 
           // if connections filter input exists, scroll more
           // 32 = height('.filter-input')+margin
-          const offset = document.querySelector('.connections-list .filter-input') ? 32 : 0;
-          document.querySelector('.connections-list').scrollTo({
+          const offset = document.querySelector('.connections-wrap .filter-input') ? 32 : 0;
+          document.querySelector('.connections-wrap').scrollTo({
             top: scrollTop + offset,
             behavior: 'smooth',
           });
