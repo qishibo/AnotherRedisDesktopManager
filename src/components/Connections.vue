@@ -112,4 +112,8 @@ export default {
     padding-right: 13px;
     margin-bottom: 4px;
   }
+  /* set drag area min height, target to the end will be correct */
+  .connections-wrap .connections-list {
+    min-height: calc(100vh - 110px);
+  }
 </style>
