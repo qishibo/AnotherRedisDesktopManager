@@ -16,7 +16,7 @@
       <CliContent ref="editor" :content="contentStr"></CliContent>
 
       <!-- input params -->
-      <el-autocomplete
+      <el-autocomplete-delete
         class="input-suggestion"
         autocomplete="off"
         v-model="params"
@@ -32,7 +32,16 @@
         @keyup.enter.native="consoleExec"
         @keyup.up.native="searchUp"
         @keyup.down.native="searchDown">
-      </el-autocomplete>
+        <el-button
+          v-if="suggestionItem.isCanDelete"
+          slot="suggestionSuffix"
+          slot-scope="{ suggestionItem }"
+          icon="el-icon-delete"
+          size="mini"
+          circle
+          @click.stop="deleteSuggestion(suggestionItem)"
+        ></el-button>
+      </el-autocomplete-delete>
     </el-form-item>
   </el-form>
 
@@ -46,6 +55,7 @@ import { allCMD } from '@/commands';
 import splitargs from '@qii404/redis-splitargs';
 import { ipcRenderer } from 'electron';
 import CliContent from '@/components/CliContent';
+import ElAutocompleteDelete from '@/components/ElAutocompleteDelete'
 
 export default {
   data() {
@@ -54,6 +64,7 @@ export default {
       content: [],
       historyIndex: 0,
       inputSuggestionItems: [],
+      suggestions: [],
       multiQueue: null,
       subscribeMode: false,
       monitorMode: false,
@@ -61,7 +72,7 @@ export default {
     };
   },
   props: ['client', 'hotKeyScope'],
-  components: { CliContent },
+  components: { CliContent, ElAutocompleteDelete },
   computed: {
     paramsTrim() {
       return this.params.replace(/^\s+|\s+$/g, '');
@@ -101,6 +112,17 @@ export default {
     });
   },
   methods: {
+    deleteSuggestion(suggestionItem) {
+      const index = this.suggestions.indexOf(suggestionItem);
+      if (index !== -1) {
+        this.suggestions.splice(index, 1);
+        this.cb(this.suggestions);
+      }
+      const inputSuggestionItemsIndex = this.inputSuggestionItems.indexOf(suggestionItem.value);
+      if (inputSuggestionItemsIndex !== -1) {
+        this.inputSuggestionItems.splice(inputSuggestionItemsIndex, 1);
+      }
+    },
     initShow() {
       if (!this.client) {
         return;
@@ -140,12 +162,23 @@ export default {
 
       let items = this.inputSuggestionItems.filter(item => item.toLowerCase().indexOf(input.toLowerCase()) !== -1);
 
-      // add cmd tips
-      items = this.addCMDTips(items);
+      items = [...new Set(items)].map(function (item) {
+        return {
+          value: item,
+          isCanDelete: true
+        }
+      })
+      const tipsArr = this.addCMDTips().map(function (item) {
+        return {
+          value: item,
+          isCanDelete: false
+        }
+      })
 
-      const suggestions = [...new Set(items)].map(item => ({ value: item }));
+      this.suggestions = [...items, ...tipsArr];
 
-      cb(suggestions);
+
+      cb(this.suggestions);
     },
     addCMDTips(items = []) {
       const { paramsArr } = this;
