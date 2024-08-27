@@ -104,11 +104,11 @@ export default {
             }
 
             this.fullCommand = this.fullCommand
-              .replace('{HEX}', '')
-              .replace('{HEX_FILE}', filePath);
+              .replace('{HEX_FILE}', filePath)
+              .replace('{HEX}', '<Content Too Long, Use {HEX_FILE} Instead!>');
             this.previewCommand = this.previewCommand
-              .replace('{HEX}', '')
-              .replace('{HEX_FILE}', filePath);
+              .replace('{HEX_FILE}', filePath)
+              .replace('{HEX}', '<Content Too Long, Use {HEX_FILE} Instead!>');
 
             this.exec();
           });
@@ -117,17 +117,16 @@ export default {
       // common content just exec
       else {
         this.fullCommand = this.fullCommand
-          .replace('{HEX_FILE}', '')
+          .replace('{HEX}', hexStr)
+          .replace('{HEX_FILE}', '<Use {HEX} Instead!>');
+
+        this.previewCommand = this.previewCommand
           .replace(
             '{HEX}',
-            hexStr,
-          );
-        this.previewCommand = this.previewCommand
-          .replace('{HEX_FILE}', '')
-          .replace(
-          '{HEX}',
-          this.$util.cutString(hexStr, this.previewContentMax),
-          );
+            this.$util.cutString(hexStr, this.previewContentMax),
+          )
+          .replace('{HEX_FILE}', '<Use {HEX} Instead!>');
+
         this.exec();
       }
     },
