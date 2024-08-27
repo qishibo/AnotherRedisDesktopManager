@@ -1,6 +1,6 @@
 {
   "name": "another-redis-desktop-manager",
-  "version": "1.6.6",
+  "version": "1.6.7",
   "description": "A faster, better and more stable redis desktop manager.",
   "author": "Another",
   "private": true,
