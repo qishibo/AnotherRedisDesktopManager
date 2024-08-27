@@ -103,8 +103,12 @@ export default {
               return this.$message.error(err);
             }
 
-            this.fullCommand = this.fullCommand.replace('{HEX_FILE}', filePath);
-            this.previewCommand = this.previewCommand.replace('{HEX_FILE}', filePath);
+            this.fullCommand = this.fullCommand
+              .replace('{HEX}', '')
+              .replace('{HEX_FILE}', filePath);
+            this.previewCommand = this.previewCommand
+              .replace('{HEX}', '')
+              .replace('{HEX_FILE}', filePath);
 
             this.exec();
           });
