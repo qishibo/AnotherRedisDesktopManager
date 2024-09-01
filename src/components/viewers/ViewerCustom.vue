@@ -82,18 +82,12 @@ export default {
       this.fullCommand = command.replace(
         '{VALUE}',
         this.content,
-      ).replace(
-        '{HEX}',
-        hexStr,
       );
 
       // in case of long content in template
       this.previewCommand = command.replace(
         '{VALUE}',
         this.$util.cutString(this.content.toString(), this.previewContentMax),
-      ).replace(
-        '{HEX}',
-        this.$util.cutString(hexStr, this.previewContentMax),
       );
 
       // if content is too long, write to file simultaneously
@@ -109,8 +103,12 @@ export default {
               return this.$message.error(err);
             }
 
-            this.fullCommand = this.fullCommand.replace('{HEX_FILE}', filePath);
-            this.previewCommand = this.previewCommand.replace('{HEX_FILE}', filePath);
+            this.fullCommand = this.fullCommand
+              .replace('{HEX_FILE}', filePath)
+              .replace('{HEX}', '<Content Too Long, Use {HEX_FILE} Instead!>');
+            this.previewCommand = this.previewCommand
+              .replace('{HEX_FILE}', filePath)
+              .replace('{HEX}', '<Content Too Long, Use {HEX_FILE} Instead!>');
 
             this.exec();
           });
@@ -118,8 +116,17 @@ export default {
       }
       // common content just exec
       else {
-        this.fullCommand = this.fullCommand.replace('{HEX_FILE}', '');
-        this.previewCommand = this.previewCommand.replace('{HEX_FILE}', '');
+        this.fullCommand = this.fullCommand
+          .replace('{HEX}', hexStr)
+          .replace('{HEX_FILE}', '<Use {HEX} Instead!>');
+
+        this.previewCommand = this.previewCommand
+          .replace(
+            '{HEX}',
+            this.$util.cutString(hexStr, this.previewContentMax),
+          )
+          .replace('{HEX_FILE}', '<Use {HEX} Instead!>');
+
         this.exec();
       }
     },

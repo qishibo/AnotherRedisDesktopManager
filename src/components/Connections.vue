@@ -1,8 +1,8 @@
 <template>
-  <div class="connections-list">
-    <div class="filter-input">
+  <div class="connections-wrap">
+    <!-- search connections input -->
+    <div v-if="connections.length>=filterEnableNum" class="filter-input">
       <el-input
-        v-if="connections.length>=filterEnableNum"
         v-model="filterMode"
         suffix-icon="el-icon-search"
         :placeholder="$t('message.search_connection')"
@@ -10,13 +10,17 @@
         size="mini">
       </el-input>
     </div>
-    <ConnectionWrapper
-      v-for="item, index of filteredConnections"
-      :key="item.key ? item.key : item.connectionName"
-      :index="index"
-      :globalSettings="globalSettings"
-      :config='item'>
-    </ConnectionWrapper>
+
+    <!-- connections list -->
+    <div class="connections-list">
+      <ConnectionWrapper
+        v-for="item, index of filteredConnections"
+        :key="item.key ? item.key : item.connectionName"
+        :index="index"
+        :globalSettings="globalSettings"
+        :config='item'>
+      </ConnectionWrapper>
+    </div>
 
     <ScrollToTop parentNum='1' :posRight='false'></ScrollToTop>
   </div>
@@ -74,7 +78,7 @@ export default {
       this.connections = slovedConnections;
     },
     sortOrder() {
-      const dragWrapper = document.querySelector('.connections-list ');
+      const dragWrapper = document.querySelector('.connections-list');
       Sortable.create(dragWrapper, {
         handle: '.el-submenu__title',
         animation: 400,
@@ -99,13 +103,17 @@ export default {
 </script>
 
 <style type="text/css">
-  .connections-list {
+  .connections-wrap {
     height: calc(100vh - 59px);
     overflow-y: auto;
     margin-top: 11px;
   }
-  .connections-list .filter-input {
+  .connections-wrap .filter-input {
     padding-right: 13px;
     margin-bottom: 4px;
+  }
+  /* set drag area min height, target to the end will be correct */
+  .connections-wrap .connections-list {
+    min-height: calc(100vh - 110px);
   }
 </style>
