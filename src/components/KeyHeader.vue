@@ -273,13 +273,13 @@ export default {
 
   .key-header-item.key-name-input {
     width: calc(100% - 402px);
-    min-width: 220px;
+    min-width: 218px;
     max-width: 800px;
     margin-right: 15px;
     margin-bottom: 10px;
   }
   .key-header-item.key-ttl-input {
-    width: 220px;
+    width: 218px;
     margin-right: 15px;
     margin-bottom: 10px;
   }
