@@ -132,9 +132,9 @@ export default {
     },
     exec() {
       try {
-        shell.exec(this.fullCommand, (e, stdout, stderr) => {
-          if (e || stderr) {
-            this.execResult = `${e.message.trim()}\n${stdout.trim()}\n${stderr.trim()}`;
+        shell.exec(this.fullCommand, (error, stdout, stderr) => {
+          if (error || stderr) {
+            this.execResult = error ? error.message : stderr;
           } else {
             this.execResult = stdout.trim();
           }
