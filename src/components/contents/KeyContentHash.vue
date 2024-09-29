@@ -1,12 +1,10 @@
 <template>
   <div>
+    <!-- table toolbar -->
     <div>
       <!-- add button -->
-      <el-form :inline="true">
-        <el-form-item>
-          <el-button type="primary" @click='showEditDialog({})'>{{ $t('message.add_new_line') }}</el-button>
-        </el-form-item>
-      </el-form>
+      <el-button type="primary" @click='showEditDialog({})'>{{ $t('message.add_new_line') }}</el-button>
+      <!-- <el-tag size="small">Total: {{total}}</el-tag> -->
 
       <!-- edit & add dialog -->
       <el-dialog :title='dialogTitle' :visible.sync="editDialog" @open='openDialog' :close-on-click-modal='false'>
@@ -27,58 +25,37 @@
       </el-dialog>
     </div>
 
-    <!-- content table -->
-    <el-table
-      stripe
-      border
-      size='mini'
-      min-height=300
-      :data="hashData">
-      <el-table-column
-        type="index"
-        :label="'ID (Total: ' + total + ')'"
-        sortable
-        width="150">
-      </el-table-column>
-      <el-table-column
-        prop="key"
-        sortable
-        resizable
-        label="Key"
-        show-overflow-tooltip
-        width="150">
-        <template slot-scope="scope">
-          {{ $util.bufToString(scope.row.key) }}
-        </template>
-      </el-table-column>
-      <el-table-column
-        prop="value"
-        resizable
-        sortable
-        show-overflow-tooltip
-        label="Value">
-        <template slot-scope="scope">
-          {{ $util.cutString($util.bufToString(scope.row.value), 1000) }}
-        </template>
-      </el-table-column>
-
-      <el-table-column label="Operation">
-        <template slot="header" slot-scope="scope">
-          <input
-            class="el-input__inner key-detail-filter-value"
-            v-model="filterValue"
-            @keyup.enter='initShow()'
-            :placeholder="$t('message.key_to_search')"/>
-          <i :class='loadingIcon'></i>
-        </template>
-        <template slot-scope="scope">
-          <el-button type="text" @click="$util.copyToClipboard(scope.row.value)" icon="el-icon-document" :title="$t('message.copy')"></el-button>
-          <el-button type="text" @click="showEditDialog(scope.row)" icon="el-icon-edit" :title="$t('message.edit_line')"></el-button>
-          <el-button type="text" @click="deleteLine(scope.row)" icon="el-icon-delete" :title="$t('el.upload.delete')"></el-button>
-          <el-button type="text" @click="dumpCommand(scope.row)" icon="fa fa-code" :title="$t('message.dump_to_clipboard')"></el-button>
-        </template>
-      </el-table-column>
-    </el-table>
+    <!-- vxe table must get a container with a fixed height -->
+    <div class="content-table-container">
+      <vxe-table
+        size="mini" max-height="100%" min-height="72px"
+        border="default" stripe show-overflow="title"
+        :scroll-y="{enabled: true}"
+        :row-config="{isHover: true, height: 34}"
+        :column-config="{resizable: true}"
+        :empty-text="$t('el.table.emptyText')"
+        :data="hashData">
+        <vxe-column type="seq" :title="'ID (Total: ' + total + ')'" width="150"></vxe-column>
+        <vxe-column field="key" title="Key" sortable></vxe-column>
+        <vxe-column field="value" title="Value" sortable></vxe-column>
+        <vxe-column title="Operate" width="166">
+          <template slot-scope="scope" slot="header">
+            <el-input size="mini"
+              :placeholder="$t('message.key_to_search')"
+              :suffix-icon="loadingIcon"
+              @keyup.native.enter='initShow()'
+              v-model="filterValue">
+            </el-input>
+          </template>
+          <template slot-scope="scope">
+            <el-button type="text" @click="$util.copyToClipboard(scope.row.value)" icon="el-icon-document" :title="$t('message.copy')"></el-button>
+            <el-button type="text" @click="showEditDialog(scope.row)" icon="el-icon-edit" :title="$t('message.edit_line')"></el-button>
+            <el-button type="text" @click="deleteLine(scope.row)" icon="el-icon-delete" :title="$t('el.upload.delete')"></el-button>
+            <el-button type="text" @click="dumpCommand(scope.row)" icon="fa fa-code" :title="$t('message.dump_to_clipboard')"></el-button>
+          </template>
+        </vxe-column>
+      </vxe-table>
+    </div>
 
     <!-- load more content -->
     <div class='content-more-container'>
@@ -91,16 +68,13 @@
         {{ $t('message.load_more_keys') }}
       </el-button>
     </div>
-
-    <ScrollToTop></ScrollToTop>
   </div>
 </template>
 
 <script>
-import PaginationTable from '@/components/PaginationTable';
 import FormatViewer from '@/components/FormatViewer';
 import InputBinary from '@/components/InputBinary';
-import ScrollToTop from '@/components/ScrollToTop';
+import {VxeTable, VxeColumn} from 'vxe-table';
 
 export default {
   data() {
@@ -112,15 +86,15 @@ export default {
       beforeEditItem: {},
       editLineItem: {},
       loadingIcon: '',
-      pageSize: 100,
-      searchPageSize: 1000,
+      pageSize: 200,
+      searchPageSize: 2000,
       oneTimeListLength: 0,
       scanStream: null,
       loadMoreDisable: false,
     };
   },
   components: {
-    PaginationTable, FormatViewer, InputBinary, ScrollToTop,
+    FormatViewer, InputBinary, VxeTable, VxeColumn,
   },
   props: ['client', 'redisKey'],
   computed: {
