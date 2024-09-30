@@ -1,21 +1,18 @@
 <template>
   <div>
+    <!-- table toolbar -->
     <div>
       <!-- add button -->
-      <el-form :inline="true">
-        <el-form-item>
-          <el-button type="primary" @click="showEditDialog({})">{{ $t('message.add_new_line') }}</el-button>
-        </el-form-item>
-      </el-form>
+      <el-button type="primary" @click="showEditDialog({})">{{ $t('message.add_new_line') }}</el-button>
 
       <!-- edit & add dialog -->
-      <el-dialog :title="dialogTitle" :visible.sync="editDialog"  @open='openDialog' :close-on-click-modal='false'>
+      <el-dialog :title="dialogTitle" :visible.sync="editDialog" @open="openDialog" :close-on-click-modal="false">
         <el-form>
           <el-form-item label="Score">
             <el-input v-model="editLineItem.score" autocomplete="off"></el-input>
           </el-form-item>
           <el-form-item label="Member">
-            <FormatViewer ref='formatViewer' :redisKey="redisKey" :dataMap="editLineItem" :content='editLineItem.member'></FormatViewer>
+            <FormatViewer ref="formatViewer" :redisKey="redisKey" :dataMap="editLineItem" :content="editLineItem.member"></FormatViewer>
           </el-form-item>
         </el-form>
 
@@ -26,54 +23,38 @@
       </el-dialog>
     </div>
 
-    <!-- content table -->
-    <el-table
-      stripe
-      border
-      size='mini'
-      min-height=300
-      :data="zsetData">
-      <el-table-column
-        type="index"
-        :label="'ID (Total: ' + total + ')'"
-        sortable
-        width="150">
-      </el-table-column>
-      <el-table-column
-        prop="score"
-        sortable
-        resizable
-        label="Score"
-        width=150>
-      </el-table-column>
-      <el-table-column
-        prop="member"
-        resizable
-        sortable
-        show-overflow-tooltip
-        label="Member">
-        <template slot-scope="scope">
-          {{ $util.cutString($util.bufToString(scope.row.member), 1000) }}
-        </template>
-      </el-table-column>
-
-      <el-table-column label="Operation">
-        <template slot="header" slot-scope="scope">
-          <input
-            class="el-input__inner key-detail-filter-value"
-            v-model="filterValue"
-            @keyup.enter='initShow()'
-            :placeholder="$t('message.key_to_search')"/>
-          <i :class='loadingIcon'></i>
-        </template>
-        <template slot-scope="scope">
-          <el-button type="text" @click="$util.copyToClipboard(scope.row.member)" icon="el-icon-document" :title="$t('message.copy')"></el-button>
-          <el-button type="text" @click="showEditDialog(scope.row)" icon="el-icon-edit" :title="$t('message.edit_line')"></el-button>
-          <el-button type="text" @click="deleteLine(scope.row)" icon="el-icon-delete" :title="$t('el.upload.delete')"></el-button>
-          <el-button type="text" @click="dumpCommand(scope.row)" icon="fa fa-code" :title="$t('message.dump_to_clipboard')"></el-button>
-        </template>
-      </el-table-column>
-    </el-table>
+    <!-- vxe table must get a container with a fixed height -->
+    <div class="content-table-container">
+      <vxe-table
+        ref="contentTable"
+        size="mini" max-height="100%" min-height="72px"
+        border="default" stripe show-overflow="title"
+        :scroll-y="{enabled: true}"
+        :row-config="{isHover: true, height: 34}"
+        :column-config="{resizable: true}"
+        :empty-text="$t('el.table.emptyText')"
+        :data="zsetData">
+        <vxe-column type="seq" :title="'ID (Total: ' + total + ')'" width="150"></vxe-column>
+        <vxe-column field="score" title="Score" sortable width="150"></vxe-column>
+        <vxe-column field="member" title="Member" sortable></vxe-column>
+        <vxe-column title="Operate" width="166">
+          <template slot-scope="scope" slot="header">
+            <el-input size="mini"
+              :placeholder="$t('message.key_to_search')"
+              :suffix-icon="loadingIcon"
+              @keyup.native.enter='initShow()'
+              v-model="filterValue">
+            </el-input>
+          </template>
+          <template slot-scope="scope">
+            <el-button type="text" @click="$util.copyToClipboard(scope.row.member)" icon="el-icon-document" :title="$t('message.copy')"></el-button>
+            <el-button type="text" @click="showEditDialog(scope.row)" icon="el-icon-edit" :title="$t('message.edit_line')"></el-button>
+            <el-button type="text" @click="deleteLine(scope.row)" icon="el-icon-delete" :title="$t('el.upload.delete')"></el-button>
+            <el-button type="text" @click="dumpCommand(scope.row)" icon="fa fa-code" :title="$t('message.dump_to_clipboard')"></el-button>
+          </template>
+        </vxe-column>
+      </vxe-table>
+    </div>
 
     <!-- load more content -->
     <div class='content-more-container'>
@@ -86,15 +67,12 @@
         {{ $t('message.load_more_keys') }}
       </el-button>
     </div>
-
-    <ScrollToTop></ScrollToTop>
   </div>
 </template>
 
 <script>
-import PaginationTable from '@/components/PaginationTable';
 import FormatViewer from '@/components/FormatViewer';
-import ScrollToTop from '@/components/ScrollToTop';
+import { VxeTable, VxeColumn } from 'vxe-table';
 
 export default {
   data() {
@@ -106,21 +84,32 @@ export default {
       beforeEditItem: {},
       editLineItem: {},
       loadingIcon: '',
-      pageSize: 100,
+      pageSize: 200,
       pageIndex: 0,
-      searchPageSize: 1000,
+      searchPageSize: 2000,
       oneTimeListLength: 0,
       scanStream: null,
       loadMoreDisable: false,
     };
   },
   props: ['client', 'redisKey'],
-  components: { PaginationTable, FormatViewer, ScrollToTop },
+  components: { FormatViewer, VxeTable, VxeColumn },
   computed: {
     dialogTitle() {
       return this.beforeEditItem.member ? this.$t('message.edit_line')
         : this.$t('message.add_new_line');
     },
+  },
+  watch: {
+    zsetData(newValue, oldValue) {
+      // this.$refs.contentTable.refreshScroll()
+      // scroll to bottom while loading more
+      if (oldValue.length && (newValue.length > oldValue.length)) {
+        setTimeout(() => {
+          this.$refs.contentTable && this.$refs.contentTable.scrollTo(0, 99999999);
+        }, 0);
+      }
+    }
   },
   methods: {
     initShow(resetTable = true) {

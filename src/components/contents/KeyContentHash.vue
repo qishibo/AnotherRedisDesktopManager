@@ -3,18 +3,17 @@
     <!-- table toolbar -->
     <div>
       <!-- add button -->
-      <el-button type="primary" @click='showEditDialog({})'>{{ $t('message.add_new_line') }}</el-button>
-      <!-- <el-tag size="small">Total: {{total}}</el-tag> -->
+      <el-button type="primary" @click="showEditDialog({})">{{ $t('message.add_new_line') }}</el-button>
 
       <!-- edit & add dialog -->
-      <el-dialog :title='dialogTitle' :visible.sync="editDialog" @open='openDialog' :close-on-click-modal='false'>
+      <el-dialog :title="dialogTitle" :visible.sync="editDialog" @open="openDialog" :close-on-click-modal="false">
         <el-form>
           <el-form-item label="Field">
             <InputBinary :content.sync="editLineItem.key"></InputBinary>
           </el-form-item>
 
           <el-form-item label="Value">
-            <FormatViewer ref='formatViewer' :redisKey="redisKey" :dataMap="editLineItem" :content='editLineItem.value'></FormatViewer>
+            <FormatViewer ref="formatViewer" :redisKey="redisKey" :dataMap="editLineItem" :content='editLineItem.value'></FormatViewer>
           </el-form-item>
         </el-form>
 
@@ -28,6 +27,7 @@
     <!-- vxe table must get a container with a fixed height -->
     <div class="content-table-container">
       <vxe-table
+        ref="contentTable"
         size="mini" max-height="100%" min-height="72px"
         border="default" stripe show-overflow="title"
         :scroll-y="{enabled: true}"
@@ -74,7 +74,7 @@
 <script>
 import FormatViewer from '@/components/FormatViewer';
 import InputBinary from '@/components/InputBinary';
-import {VxeTable, VxeColumn} from 'vxe-table';
+import { VxeTable, VxeColumn } from 'vxe-table';
 
 export default {
   data() {
@@ -102,6 +102,17 @@ export default {
       return this.beforeEditItem.key ? this.$t('message.edit_line')
         : this.$t('message.add_new_line');
     },
+  },
+  watch: {
+    hashData(newValue, oldValue) {
+      // this.$refs.contentTable.refreshScroll()
+      // scroll to bottom while loading more
+      if (oldValue.length && (newValue.length > oldValue.length)) {
+        setTimeout(() => {
+          this.$refs.contentTable && this.$refs.contentTable.scrollTo(0, 99999999);
+        }, 0);
+      }
+    }
   },
   methods: {
     initShow(resetTable = true) {
