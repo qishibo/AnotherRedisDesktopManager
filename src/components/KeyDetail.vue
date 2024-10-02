@@ -135,4 +135,20 @@ export default {
   .key-content-container .content-table-container .vxe-table--border-line {
     border-radius: 3px;
   }
+
+  /*key-content-string such as String,ReJSON*/
+  /*text viewer box*/
+  .key-content-string .el-textarea textarea {
+    font-size: 14px;
+    height: calc(100vh - 231px);
+  }
+  /*json in monaco editor*/
+  .key-content-string .text-formated-container .monaco-editor-con {
+    height: calc(100vh - 275px);
+  }
+  .key-content-string .content-string-save-btn {
+    width: 100px;
+    float: right;
+  }
+  /*end of key-content-string*/
 </style>

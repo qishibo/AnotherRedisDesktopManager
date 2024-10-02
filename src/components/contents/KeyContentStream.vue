@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="key-content-stream">
     <!-- table toolbar -->
     <div>
       <el-form :inline="true">
@@ -413,3 +413,12 @@ export default {
   },
 };
 </script>
+
+<style type="text/css">
+  /*key content table wrapper*/
+  /*less height due to stream top tools*/
+  .key-content-stream.key-content-container .content-table-container {
+    height: calc(100vh - 232px);
+    margin-top: 0px;
+  }
+</style>
