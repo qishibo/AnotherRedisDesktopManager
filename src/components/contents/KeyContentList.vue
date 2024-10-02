@@ -32,7 +32,11 @@
         :empty-text="$t('el.table.emptyText')"
         :data="listData">
         <vxe-column type="seq" :title="'ID (Total: ' + total + ')'" width="150"></vxe-column>
-        <vxe-column field="value" title="Value" sortable></vxe-column>
+        <vxe-column field="value" title="Value" sortable>
+          <template v-slot="scope">
+            {{ $util.cutString($util.bufToString(scope.row.value), 100) }}
+          </template>
+        </vxe-column>
         <vxe-column title="Operate" width="166">
           <template slot-scope="scope" slot="header">
             <el-input size="mini"

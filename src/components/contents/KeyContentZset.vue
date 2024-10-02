@@ -36,7 +36,11 @@
         :data="zsetData">
         <vxe-column type="seq" :title="'ID (Total: ' + total + ')'" width="150"></vxe-column>
         <vxe-column field="score" title="Score" sortable width="150"></vxe-column>
-        <vxe-column field="member" title="Member" sortable></vxe-column>
+        <vxe-column field="member" title="Member" sortable>
+          <template v-slot="scope">
+            {{ $util.cutString($util.bufToString(scope.row.member), 100) }}
+          </template>
+        </vxe-column>
         <vxe-column title="Operate" width="166">
           <template slot-scope="scope" slot="header">
             <el-input size="mini"
