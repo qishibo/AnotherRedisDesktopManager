@@ -292,7 +292,7 @@ export default {
           return this.client.xadd(key, '*', 'New key', 'New value');
         }
         case 'rejson': {
-          return this.client.call('JSON.SET', [key, '.', '{"New key":"New value"}']);
+          return this.client.call('JSON.SET', [key, '$', '{"New key":"New value"}']);
         }
       }
     },

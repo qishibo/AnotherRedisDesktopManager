@@ -8,6 +8,10 @@ import util from './util';
 import storage from './storage';
 import shortcut from './shortcut';
 
+// vxe-table
+// import VxeUITable from 'vxe-table';
+import 'vxe-table/lib/style.css';
+// Vue.use(VxeUITable);
 
 Vue.prototype.$bus = bus;
 Vue.prototype.$util = util;
