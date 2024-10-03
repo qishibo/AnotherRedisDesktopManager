@@ -66,6 +66,7 @@ export default {
         list: 'KeyContentList',
         stream: 'KeyContentStream',
         'ReJSON-RL': 'KeyContentReJson',
+        json: 'KeyContentReJson', // upstash
       };
 
       if (map[keyType]) {

@@ -33,7 +33,7 @@ export default {
   components: { FormatViewer },
   methods: {
     initShow() {
-      this.client.callBuffer('JSON.GET', [this.redisKey, 'NOESCAPE']).then((reply) => {
+      this.client.callBuffer('JSON.GET', [this.redisKey]).then((reply) => {
         this.content = reply;
       });
     },
@@ -49,7 +49,7 @@ export default {
         return this.$message.error(this.$t('message.json_format_failed'));
       }
 
-      this.client.call('JSON.SET', [this.redisKey, '.', content]).then((reply) => {
+      this.client.call('JSON.SET', [this.redisKey, '$', content]).then((reply) => {
         if (reply === 'OK') {
           this.setTTL();
           this.initShow();
