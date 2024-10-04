@@ -7,9 +7,23 @@
 
       <!-- edit & add dialog -->
       <el-dialog :title="dialogTitle" :visible.sync="editDialog" @open="openDialog" :close-on-click-modal="false">
-        <el-form>
-          <el-form-item label="Field">
-            <InputBinary :content.sync="editLineItem.key"></InputBinary>
+        <el-form label-position="top">
+
+          <!-- if ttl support -->
+          <el-form-item v-if="ttlSupport" label="Field">
+            <el-row :gutter="10">
+              <el-col :span="18">
+                <InputBinary :content.sync="editLineItem.key" placeholder="Field"></InputBinary>
+              </el-col>
+              <el-col :span="6">
+                <el-input v-model="editLineItem.ttl" placeholder="TTL (-1)" type="number"></el-input>
+              </el-col>
+            </el-row>
+          </el-form-item>
+
+          <!-- common field -->
+          <el-form-item v-else label="Field">
+            <InputBinary :content.sync="editLineItem.key" placeholder="Field"></InputBinary>
           </el-form-item>
 
           <el-form-item label="Value">
@@ -96,7 +110,7 @@ export default {
       beforeEditItem: {},
       editLineItem: {},
       loadingIcon: '',
-      pageSize: 20,
+      pageSize: 200,
       searchPageSize: 2000,
       oneTimeListLength: 0,
       scanStream: null,
@@ -243,6 +257,7 @@ export default {
 
       const afterKey = this.editLineItem.key;
       const afterValue = this.$refs.formatViewer.getContent();
+      const afterTTL = parseInt(this.editLineItem.ttl);
 
       if (!afterKey || !afterValue) {
         return;
@@ -260,8 +275,16 @@ export default {
           client.hdel(key, before.key);
         }
 
+        // set ttl if supportted
+        if (this.ttlSupport && afterTTL > 0) {
+          this.client.call('HEXPIRE', key, afterTTL, "FIELDS", 1, afterKey);
+        }
+
         // this.initShow(); // do not reinit, #786
-        const newLine = Object.assign({}, before, { key: afterKey, value: afterValue});
+        const newLine = Object.assign(
+          {}, before,
+          { key: afterKey, value: afterValue, ttl: afterTTL > 0 ? afterTTL : -1}
+        );
 
         // edit line
         if (before.key) {
