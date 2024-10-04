@@ -46,6 +46,7 @@
             {{ $util.cutString($util.bufToString(scope.row.value), 100) }}
           </template>
         </vxe-column>
+        <vxe-column v-if="ttlSupport" field="ttl" title="TTL" width="100" sortable></vxe-column>
         <vxe-column title="Operate" width="166">
           <template slot-scope="scope" slot="header">
             <el-input size="mini"
@@ -83,6 +84,7 @@
 import FormatViewer from '@/components/FormatViewer';
 import InputBinary from '@/components/InputBinary';
 import { VxeTable, VxeColumn } from 'vxe-table';
+import versionCompare from 'node-version-compare';
 
 export default {
   data() {
@@ -94,7 +96,7 @@ export default {
       beforeEditItem: {},
       editLineItem: {},
       loadingIcon: '',
-      pageSize: 200,
+      pageSize: 20,
       searchPageSize: 2000,
       oneTimeListLength: 0,
       scanStream: null,
@@ -109,6 +111,10 @@ export default {
     dialogTitle() {
       return this.beforeEditItem.key ? this.$t('message.edit_line')
         : this.$t('message.add_new_line');
+    },
+    ttlSupport() {
+      // avaiable since redis >= 7.4
+      return versionCompare(this.client.ardmRedisVersion, '7.4') >= 0;
     },
   },
   watch: {
@@ -150,6 +156,18 @@ export default {
       this.oneTimeListLength = 0;
       this.loadMoreDisable = false;
     },
+    initTTL(hashData, startIndex = 0) {
+      if (!this.ttlSupport || !hashData.length) {
+        return;
+      }
+
+      const keys = hashData.map(line => line.key);
+      this.client.call('HTTL', this.redisKey, 'FIELDS', keys.length, ...keys).then(reply => {
+        reply.forEach((ttl, index) => {
+          this.hashData[startIndex + index].ttl = parseInt(ttl);
+        });
+      });
+    },
     initScanStream() {
       const scanOption = { match: this.getScanMatch(), count: this.pageSize };
       scanOption.match != '*' && (scanOption.count = this.searchPageSize);
@@ -168,12 +186,16 @@ export default {
             // keyDisplay: this.$util.bufToString(reply[i]),
             value: reply[i + 1],
             // valueDisplay: this.$util.bufToString(reply[i + 1]),
-            uniq: Math.random(),
+            ttl: -1
           });
         }
 
+        const listLength = this.hashData.length;
         this.oneTimeListLength += hashData.length;
         this.hashData = this.hashData.concat(hashData);
+
+        // init hash field ttls
+        this.initTTL(hashData, listLength);
 
         if (this.oneTimeListLength >= this.pageSize) {
           this.scanStream.pause();
@@ -201,11 +223,9 @@ export default {
       });
     },
     showEditDialog(row) {
-      this.editLineItem = row;
-      this.beforeEditItem = this.$util.cloneObjWithBuff(row);
+      this.editLineItem = this.$util.cloneObjWithBuff(row);
+      this.beforeEditItem = row;
       this.editDialog = true;
-
-      this.rowUniq = row.uniq;
     },
     dumpCommand(item) {
       const lines = item ? [item] : this.hashData;
@@ -241,10 +261,11 @@ export default {
         }
 
         // this.initShow(); // do not reinit, #786
-        const newLine = { key: afterKey, value: afterValue, uniq: Math.random() };
+        const newLine = Object.assign({}, before, { key: afterKey, value: afterValue});
+
         // edit line
-        if (this.rowUniq) {
-          this.$util.listSplice(this.hashData, this.rowUniq, newLine);
+        if (before.key) {
+          this.$set(this.hashData, this.hashData.indexOf(before), newLine);
         }
         // new line
         else {
@@ -275,7 +296,7 @@ export default {
             });
 
             // this.initShow(); // do not reinit, #786
-            this.$util.listSplice(this.hashData, row.uniq);
+            this.hashData.splice(this.hashData.indexOf(row), 1);
             this.total--;
           }
         }).catch((e) => { this.$message.error(e.message); });
