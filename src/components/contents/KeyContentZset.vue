@@ -216,7 +216,6 @@ export default {
           score: Number(list[i + 1]),
           member: list[i],
           // memberDisplay: this.$util.bufToString(list[i]),
-          uniq: Math.random(),
         });
       }
 
@@ -231,11 +230,9 @@ export default {
       });
     },
     showEditDialog(row) {
-      this.editLineItem = row;
-      this.beforeEditItem = this.$util.cloneObjWithBuff(row);
+      this.editLineItem = this.$util.cloneObjWithBuff(row);
+      this.beforeEditItem = row;
       this.editDialog = true;
-
-      this.rowUniq = row.uniq;
     },
     dumpCommand(item) {
       const lines = item ? [item] : this.zsetData;
@@ -271,10 +268,10 @@ export default {
         }
 
         // this.initShow(); // do not reinit, #786
-        const newLine = { score: afterScore, member: afterMember, uniq: Math.random() };
+        const newLine = { score: afterScore, member: afterMember };
         // edit line
-        if (this.rowUniq) {
-          this.$util.listSplice(this.zsetData, this.rowUniq, newLine);
+        if (before.member) {
+          this.$set(this.zsetData, this.zsetData.indexOf(before), newLine);
         }
         // new line
         else {
@@ -304,7 +301,7 @@ export default {
             });
 
             // this.initShow(); // do not reinit, #786
-            this.$util.listSplice(this.zsetData, row.uniq);
+            this.zsetData.splice(this.zsetData.indexOf(row), 1);
             this.total--;
           }
         }).catch((e) => { this.$message.error(e.message); });
