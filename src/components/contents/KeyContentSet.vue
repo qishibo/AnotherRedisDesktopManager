@@ -154,7 +154,6 @@ export default {
           setData.push({
             value: i,
             // valueDisplay: this.$util.bufToString(i),
-            uniq: Math.random(),
           });
         }
 
@@ -187,11 +186,9 @@ export default {
       });
     },
     showEditDialog(row) {
-      this.editLineItem = row;
-      this.beforeEditItem = this.$util.cloneObjWithBuff(row);
+      this.editLineItem = this.$util.cloneObjWithBuff(row);
+      this.beforeEditItem = row;
       this.editDialog = true;
-
-      this.rowUniq = row.uniq;
     },
     dumpCommand(item) {
       const lines = item ? [item] : this.setData;
@@ -230,10 +227,10 @@ export default {
           }
 
           // this.initShow(); // do not reinit, #786
-          const newLine = { value: afterValue, uniq: Math.random() };
+          const newLine = { value: afterValue };
           // edit line
-          if (this.rowUniq) {
-            this.$util.listSplice(this.setData, this.rowUniq, newLine);
+          if (before.value) {
+            this.$set(this.setData, this.setData.indexOf(before), newLine);
           }
           // new line
           else {
@@ -272,7 +269,7 @@ export default {
             });
 
             // this.initShow(); // do not reinit, #786
-            this.$util.listSplice(this.setData, row.uniq);
+            this.setData.splice(this.setData.indexOf(row), 1);
             this.total--;
           }
         }).catch((e) => { this.$message.error(e.message); });

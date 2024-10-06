@@ -230,7 +230,7 @@ export default {
           }
 
           const content = {};
-          const line = { id: streamId, content, uniq: Math.random() };
+          const line = { id: streamId, content };
           // add key value map
           for (let i = 0; i < flatDict.length; i += 2) {
             content[this.$util.bufToString(flatDict[i])] = this.$util.bufToString(flatDict[i + 1]);
@@ -284,8 +284,8 @@ export default {
       });
     },
     showEditDialog(row) {
-      this.editLineItem = row;
-      this.beforeEditItem = this.$util.cloneObjWithBuff(row);
+      this.editLineItem = this.$util.cloneObjWithBuff(row);
+      this.beforeEditItem = row;
       this.editDialog = true;
     },
     dumpCommand(item) {
@@ -331,7 +331,10 @@ export default {
       ).then((reply) => {
         // reply is id
         if (reply) {
-          this.initShow();
+          // this.initShow(); // do not reinit, #786
+          const newLine = { id: reply, content: jsonObj, contentString: afterValue };
+          this.lineData.unshift(newLine);
+          this.total++;
           this.editDialog = false;
 
           this.$message.success({
@@ -359,7 +362,7 @@ export default {
             });
 
             // this.initShow(); // do not reinit, #786
-            this.$util.listSplice(this.lineData, row.uniq);
+            this.lineData.splice(this.lineData.indexOf(row), 1);
             this.total--;
           }
         });

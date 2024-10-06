@@ -143,10 +143,7 @@ export default {
             }
           }
 
-          listData.push({
-            value: i,
-            uniq: Math.random(),
-          });
+          listData.push({ value: i });
         }
 
         this.oneTimeListLength += listData.length;
@@ -190,11 +187,9 @@ export default {
       });
     },
     showEditDialog(row) {
-      this.editLineItem = row;
-      this.beforeEditItem = this.$util.cloneObjWithBuff(row);
+      this.editLineItem = this.$util.cloneObjWithBuff(row);
+      this.beforeEditItem = row;
       this.editDialog = true;
-
-      this.rowUniq = row.uniq;
     },
     dumpCommand(item) {
       const lines = item ? [item] : this.listData;
@@ -220,16 +215,16 @@ export default {
       }
 
       this.editDialog = false;
-      const newLine = { value: afterValue, uniq: Math.random() };
+      const newLine = { value: afterValue };
 
       // edit line
-      if (this.rowUniq) {
+      if (before.value) {
         // fix #1082, keep list order
         client.linsert(key, 'AFTER', before.value, afterValue).then((reply) => {
           if (reply > 0) {
             client.lrem(key, 1, before.value);
             // this.initShow(); // do not reinit, #786
-            this.$util.listSplice(this.listData, this.rowUniq, newLine);
+            this.$set(this.listData, this.listData.indexOf(before), newLine);
 
             this.$message.success({
               message: this.$t('message.modify_success'),
@@ -278,7 +273,7 @@ export default {
             });
 
             // this.initShow(); // do not reinit, #786
-            this.$util.listSplice(this.listData, row.uniq);
+            this.listData.splice(this.listData.indexOf(row), 1);
             this.total--;
           } else {
             this.$message.error({

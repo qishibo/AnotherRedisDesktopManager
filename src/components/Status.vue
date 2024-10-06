@@ -283,6 +283,7 @@ export default {
     initShow() {
       this.client.info().then((reply) => {
         this.connectionStatus = this.initStatus(reply);
+        this.client.ardmRedisVersion = this.connectionStatus['redis_version'];
       }).catch((e) => {
         // info command may be disabled
         if (e.message.includes('unknown command')) {

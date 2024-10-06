@@ -38,6 +38,7 @@
     "java-object-serialization": "^0.1.1",
     "keymaster": "^1.6.2",
     "monaco-editor": "^0.30.1",
+    "node-version-compare": "^1.0.3",
     "php-serialize": "^4.0.2",
     "pickleparser": "^0.2.1",
     "protobufjs": "^6.11.2",
