@@ -125,6 +125,8 @@ export default {
   .key-content-container .content-table-container {
     height: calc(100vh - 223px);
     margin-top: 10px;
+    /*fix vex-table height*/
+    overflow-y: hidden;
   }
 
   /* vxe table cell */
