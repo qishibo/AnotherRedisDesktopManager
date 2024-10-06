@@ -348,9 +348,10 @@ export default {
           const item = status[i];
           const array = item.split(',');
 
+          const keyCount = array[0] ? array[0].split('=')[1]: NaN;
           dbs.push({
             db: i,
-            keys: array[0] ? array[0].split('=')[1] : NaN,
+            keys: isNaN(keyCount)? NaN: parseInt(keyCount).toLocaleString(),
             expires: array[1] ? array[1].split('=')[1] : NaN,
             avg_ttl: array[2] ? array[2].split('=')[1] : NaN,
             name,
