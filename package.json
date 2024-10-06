@@ -47,7 +47,7 @@
     "tunnel-ssh": "^5.1.2",
     "vue": "^2.6.11",
     "vue-i18n": "^8.7.0",
-    "vxe-table": "^3.9.0-rc.15"
+    "vxe-table": "^3.9.0-rc.23"
   },
   "devDependencies": {
     "@babel/core": "^7.0.0",
