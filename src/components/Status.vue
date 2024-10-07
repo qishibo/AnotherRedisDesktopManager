@@ -114,54 +114,7 @@
   </el-row>
 
   <!-- cluster key statistics -->
-  <el-row v-if='connectionStatus.cluster_enabled=="1"' class="status-card">
-    <el-col>
-      <el-card class="box-card">
-        <div slot="header">
-          <i class="fa fa-bar-chart"></i>
-          <span>{{ $t('message.key_statistics') }}</span>
-        </div>
-
-        <el-table
-          :data="clusterKeysInfo"
-          stripe>
-          <el-table-column
-            prop="name"
-            sortable
-            label="Node">
-          </el-table-column>
-          <el-table-column
-            prop="db"
-            sortable
-            label="DB">
-          </el-table-column>
-          <el-table-column
-            sortable
-            prop="keys"
-            label="Keys"
-            :sort-method="sortByKeys">
-          </el-table-column>
-          <el-table-column
-            sortable
-            prop="expires"
-            label="Expires"
-            :sort-method="sortByExpires">
-          </el-table-column>
-          <!-- avg_ttl: tooltip can't be removed!, or the table's height will change -->
-          <el-table-column
-            sortable
-            prop="avg_ttl"
-            :show-overflow-tooltip='true'
-            label="Avg TTL"
-            :sort-method="sortByTTL">
-          </el-table-column>
-        </el-table>
-      </el-card>
-    </el-col>
-  </el-row>
-
-  <!-- key statistics -->
-  <el-row v-else class="status-card">
+  <el-row class="status-card">
     <el-col>
       <el-card class="box-card">
         <div slot="header">
@@ -173,26 +126,32 @@
           :data="DBKeys"
           stripe>
           <el-table-column
+            v-if="isCluster"
+            prop="name"
+            sortable
+            label="Node">
+          </el-table-column>
+          <el-table-column
             prop="db"
             sortable
             label="DB">
           </el-table-column>
           <el-table-column
             sortable
-            prop="keys"
+            prop="keys_show"
             label="Keys"
             :sort-method="sortByKeys">
           </el-table-column>
           <el-table-column
             sortable
-            prop="expires"
+            prop="expires_show"
             label="Expires"
             :sort-method="sortByExpires">
           </el-table-column>
           <!-- avg_ttl: tooltip can't be removed!, or the table's height will change -->
           <el-table-column
             sortable
-            prop="avg_ttl"
+            prop="avg_ttl_show"
             :show-overflow-tooltip='true'
             label="Avg TTL"
             :sort-method="sortByTTL">
@@ -246,17 +205,13 @@ export default {
       refreshTimer: null,
       refreshInterval: 2000,
       connectionStatus: {},
-      statusConnection: null,
       allInfoFilter: '',
-      clusterKeysInfo: [],
+      DBKeys: [],
     };
   },
   props: ['client', 'hotKeyScope'],
   components: { ScrollToTop },
   computed: {
-    DBKeys() {
-      return this.initDbKeys(this.connectionStatus);
-    },
     AllRedisInfo() {
       const infos = [];
       const filter = this.allInfoFilter.toLowerCase();
@@ -278,12 +233,24 @@ export default {
 
       return infos;
     },
+    isCluster() {
+      return this.connectionStatus['cluster_enabled'] == '1';
+    },
   },
   methods: {
     initShow() {
       this.client.info().then((reply) => {
         this.connectionStatus = this.initStatus(reply);
+        // set global param
         this.client.ardmRedisVersion = this.connectionStatus['redis_version'];
+
+        // init db keys info
+        if (this.isCluster) {
+          this.initClusterKeys();
+        }
+        else {
+          this.DBKeys = this.initDbKeys(this.connectionStatus);
+        }
       }).catch((e) => {
         // info command may be disabled
         if (e.message.includes('unknown command')) {
@@ -297,9 +264,6 @@ export default {
           this.$message.error(e.message);
         }
       });
-
-      // if cluster, init keys count in master nodes
-      this.initClusterKeys();
     },
     refreshInit() {
       this.refreshTimer && clearInterval(this.refreshTimer);
@@ -346,15 +310,21 @@ export default {
         // fix #1101 unexpected db prefix
         // if (i.startsWith('db')) {
         if (/^db\d+/.test(i)) {
-          const item = status[i];
-          const array = item.split(',');
+          const array = status[i].split(',');
 
-          const keyCount = array[0] ? array[0].split('=')[1]: NaN;
+          const keys = parseInt(array[0] ? array[0].split('=')[1]: NaN);
+          const expires = parseInt(array[1] ? array[1].split('=')[1] : NaN);
+          const avg_ttl = parseInt(array[2] ? array[2].split('=')[1] : NaN);
+
+          // #1261 locale to the key count
           dbs.push({
             db: i,
-            keys: isNaN(keyCount)? NaN: parseInt(keyCount).toLocaleString(),
-            expires: array[1] ? array[1].split('=')[1] : NaN,
-            avg_ttl: array[2] ? array[2].split('=')[1] : NaN,
+            keys,
+            expires,
+            avg_ttl,
+            keys_show: keys.toLocaleString(),
+            expires_show: expires.toLocaleString(),
+            avg_ttl_show: avg_ttl.toLocaleString(),
             name,
           });
         }
@@ -363,10 +333,10 @@ export default {
       return dbs;
     },
     initClusterKeys() {
+      // const nodes = this.client.nodes('master');
       const nodes = this.client.nodes ? this.client.nodes('master') : [this.client];
 
-      // not in cluster mode
-      if (nodes.length < 2) {
+      if (!nodes || !nodes.length) {
         return;
       }
 
@@ -391,13 +361,13 @@ export default {
           const keys = this.initDbKeys(this.initStatus(reply), name);
 
           // clear only when first reply, avoid jitter
-          if (this.clusterKeysInfo.length === nodes.length) {
-            this.clusterKeysInfo = [];
+          if (this.DBKeys.length === nodes.length) {
+            this.DBKeys = [];
           }
 
-          this.clusterKeysInfo = this.clusterKeysInfo.concat(keys);
+          this.DBKeys = this.DBKeys.concat(keys);
           // sort by node name
-          this.clusterKeysInfo.sort((a, b) => (a.name > b.name ? 1 : -1));
+          this.DBKeys.sort((a, b) => (a.name > b.name ? 1 : -1));
         }).catch((e) => {
           this.$message.error(e.message);
         });
