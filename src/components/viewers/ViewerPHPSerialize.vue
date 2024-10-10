@@ -20,8 +20,7 @@ export default {
       try {
         const content = unserialize(this.content, {}, { strict: false });
 
-        // include php native class, into readonly mode
-        if (content['__PHP_Incomplete_Class_Name']) {
+        if (content && content['__PHP_Incomplete_Class_Name']) {
           this.isPHPClass = true;
         }
 

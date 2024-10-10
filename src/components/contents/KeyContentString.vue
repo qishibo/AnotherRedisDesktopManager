@@ -12,17 +12,15 @@
   </el-form-item>
 
   <!-- save btn -->
-  <el-form-item>
-    <el-button ref='saveBtn' type="primary" @click="execSave" title='Ctrl+s'>{{ $t('message.save') }}</el-button>
-  </el-form-item>
-
-  <ScrollToTop parentNum='4'></ScrollToTop>
+  <el-button ref='saveBtn' type="primary"
+    @click="execSave" title='Ctrl+s' class="content-string-save-btn">
+    {{ $t('message.save') }}
+  </el-button>
 </el-form>
 </template>
 
 <script>
 import FormatViewer from '@/components/FormatViewer';
-import ScrollToTop from '@/components/ScrollToTop';
 
 export default {
   data() {
@@ -32,7 +30,7 @@ export default {
     };
   },
   props: ['client', 'redisKey', 'hotKeyScope'],
-  components: { FormatViewer, ScrollToTop },
+  components: { FormatViewer },
   methods: {
     initShow() {
       this.client.getBuffer(this.redisKey).then((reply) => {
@@ -103,18 +101,3 @@ export default {
 };
 </script>
 
-<style type="text/css">
-  .key-content-string .format-viewer-container {
-    min-height: calc(100vh - 253px);
-  }
-
-  /*text viewer box*/
-  .key-content-string .el-textarea textarea {
-    font-size: 14px;
-    height: calc(100vh - 286px);
-  }
-  /*json in monaco editor*/
-  .key-content-string .text-formated-container .monaco-editor-con {
-    height: calc(100vh - 330px);
-  }
-</style>

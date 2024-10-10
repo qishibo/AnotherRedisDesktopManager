@@ -234,4 +234,18 @@ li .list-index {
 @keyframes rotate {
   to{ transform: rotate(360deg); }
 }
+
+/*vxe-table dark-mode color*/
+html .dark-mode {
+  --vxe-ui-table-header-background-color: #273239 !important;
+  --vxe-ui-layout-background-color: #273239 !important;
+  --vxe-ui-table-row-striped-background-color: #3b4b54 !important;
+  --vxe-ui-table-row-hover-background-color: #3b4b54 !important;
+  --vxe-ui-table-row-hover-striped-background-color: #50646f !important;
+  /*border color*/
+  --vxe-ui-table-border-color: #7f8ea5 !important;
+  /*font color*/
+  --vxe-ui-font-color: #f3f3f4 !important;
+  --vxe-ui-table-header-font-color: #f3f3f4 !important;
+}
 </style>

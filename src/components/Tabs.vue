@@ -395,12 +395,11 @@ export default {
   /*height end*/
 
   .tab-content-wrappe {
-    height: calc(100vh - 100px);
+    height: calc(100vh - 67px);
     overflow-x: hidden;
     overflow-y: auto;
     /*padding-left: 5px;*/
     padding-right: 8px;
-    padding-bottom: 20px;
   }
 
   /*tabs context menu*/
