@@ -1,7 +1,9 @@
 <template>
   <div>
-    <el-tag v-if="!buffVisible" class='input-binary-tag' size="mini">[Hex]</el-tag>
-    <el-input :disabled='disabled' :value='contentDisplay' @change="updateContent($event)"></el-input>
+    <!-- <el-tag v-if="!buffVisible" class='input-binary-tag' size="mini">[Hex]</el-tag> -->
+    <el-input :disabled='disabled' :value='contentDisplay' @change="updateContent($event)" :placeholder="placeholder">
+      <template v-if="!buffVisible" slot="prefix">Hex</template>
+    </el-input>
   </div>
 </template>
 
@@ -10,6 +12,7 @@ export default {
   props: {
     content: { default: () => Buffer.from('') },
     disabled: { type: Boolean, default: false },
+    placeholder: { type: String, default: '' },
   },
   computed: {
     contentDisplay() {
