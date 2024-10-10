@@ -1,18 +1,15 @@
 <template>
   <div>
+    <!-- table toolbar -->
     <div>
       <!-- add button -->
-      <el-form :inline="true">
-        <el-form-item>
-          <el-button type="primary" @click='showEditDialog({})'>{{ $t('message.add_new_line') }}</el-button>
-        </el-form-item>
-      </el-form>
+      <el-button type="primary" @click="showEditDialog({})">{{ $t('message.add_new_line') }}</el-button>
 
       <!-- edit & add dialog -->
-      <el-dialog :title="dialogTitle" :visible.sync="editDialog" @open='openDialog' :close-on-click-modal='false'>
+      <el-dialog :title="dialogTitle" :visible.sync="editDialog" @open="openDialog" :close-on-click-modal="false">
         <el-form>
           <el-form-item label="Value">
-            <FormatViewer ref='formatViewer' :redisKey="redisKey" :dataMap="editLineItem" :content='editLineItem.value'></FormatViewer>
+            <FormatViewer ref="formatViewer" :redisKey="redisKey" :dataMap="editLineItem" :content="editLineItem.value"></FormatViewer>
           </el-form-item>
         </el-form>
 
@@ -23,47 +20,41 @@
       </el-dialog>
     </div>
 
-    <!-- content table -->
-    <el-table
-      stripe
-      border
-      size='mini'
-      min-height=300
-      :data="listData">
-      <el-table-column
-        type="index"
-        :label="'ID (Total: ' + total + ')'"
-        sortable
-        width="150">
-      </el-table-column>
-      <el-table-column
-        prop="value"
-        resizable
-        sortable
-        show-overflow-tooltip
-        label="Value">
-        <template slot-scope="scope">
-          {{ $util.cutString($util.bufToString(scope.row.value), 1000) }}
-        </template>
-      </el-table-column>
-
-      <el-table-column label="Operation">
-        <template slot="header" slot-scope="scope">
-          <input
-            class="el-input__inner key-detail-filter-value"
-            v-model="filterValue"
-            @keyup.enter='initShow()'
-            :placeholder="$t('message.key_to_search')"/>
-          <i :class='loadingIcon'></i>
-        </template>
-        <template slot-scope="scope">
-          <el-button type="text" @click="$util.copyToClipboard(scope.row.value)" icon="el-icon-document" :title="$t('message.copy')"></el-button>
-          <el-button type="text" @click="showEditDialog(scope.row)" icon="el-icon-edit" :title="$t('message.edit_line')"></el-button>
-          <el-button type="text" @click="deleteLine(scope.row)" icon="el-icon-delete" :title="$t('el.upload.delete')"></el-button>
-          <el-button type="text" @click="dumpCommand(scope.row)" icon="fa fa-code" :title="$t('message.dump_to_clipboard')"></el-button>
-        </template>
-      </el-table-column>
-    </el-table>
+    <!-- vxe table must get a container with a fixed height -->
+    <div class="content-table-container">
+      <vxe-table
+        ref="contentTable"
+        size="mini" max-height="100%" min-height="72px"
+        border="default" stripe show-overflow="title"
+        :scroll-y="{enabled: true}"
+        :row-config="{isHover: true, height: 34}"
+        :column-config="{resizable: true}"
+        :empty-text="$t('el.table.emptyText')"
+        :data="listData">
+        <vxe-column type="seq" :title="'ID (Total: ' + total + ')'" width="150"></vxe-column>
+        <vxe-column field="value" title="Value" sortable>
+          <template v-slot="scope">
+            {{ $util.cutString($util.bufToString(scope.row.value), 100) }}
+          </template>
+        </vxe-column>
+        <vxe-column title="Operate" width="166">
+          <template slot-scope="scope" slot="header">
+            <el-input size="mini"
+              :placeholder="$t('message.key_to_search')"
+              :suffix-icon="loadingIcon"
+              @keyup.native.enter='initShow()'
+              v-model="filterValue">
+            </el-input>
+          </template>
+          <template slot-scope="scope">
+            <el-button type="text" @click="$util.copyToClipboard(scope.row.value)" icon="el-icon-document" :title="$t('message.copy')"></el-button>
+            <el-button type="text" @click="showEditDialog(scope.row)" icon="el-icon-edit" :title="$t('message.edit_line')"></el-button>
+            <el-button type="text" @click="deleteLine(scope.row)" icon="el-icon-delete" :title="$t('el.upload.delete')"></el-button>
+            <el-button type="text" @click="dumpCommand(scope.row)" icon="fa fa-code" :title="$t('message.dump_to_clipboard')"></el-button>
+          </template>
+        </vxe-column>
+      </vxe-table>
+    </div>
 
     <!-- load more content -->
     <div class='content-more-container'>
@@ -76,15 +67,12 @@
         {{ $t('message.load_more_keys') }}
       </el-button>
     </div>
-
-    <ScrollToTop></ScrollToTop>
   </div>
 </template>
 
 <script>
-import PaginationTable from '@/components/PaginationTable';
 import FormatViewer from '@/components/FormatViewer';
-import ScrollToTop from '@/components/ScrollToTop';
+import { VxeTable, VxeColumn } from 'vxe-table';
 
 export default {
   data() {
@@ -96,19 +84,31 @@ export default {
       beforeEditItem: {},
       editLineItem: {},
       loadingIcon: '',
-      pageSize: 100,
+      pageSize: 200,
+      searchPageSize: 2000,
       pageIndex: 0,
       oneTimeListLength: 0,
       loadMoreDisable: false,
     };
   },
   props: ['client', 'redisKey'],
-  components: { PaginationTable, FormatViewer, ScrollToTop },
+  components: { FormatViewer, VxeTable, VxeColumn },
   computed: {
     dialogTitle() {
       return this.beforeEditItem.value ? this.$t('message.edit_line')
         : this.$t('message.add_new_line');
     },
+  },
+  watch: {
+    listData(newValue, oldValue) {
+      // this.$refs.contentTable.refreshScroll()
+      // scroll to bottom while loading more
+      if (oldValue.length && (newValue.length > oldValue.length)) {
+        setTimeout(() => {
+          this.$refs.contentTable && this.$refs.contentTable.scrollTo(0, 99999999);
+        }, 0);
+      }
+    }
   },
   methods: {
     initShow(resetTable = true) {
@@ -122,7 +122,7 @@ export default {
     },
     listScan() {
       const { filterValue } = this;
-      const pageSize = filterValue ? 500 : this.pageSize;
+      const pageSize = filterValue ? this.searchPageSize : this.pageSize;
 
       const start = pageSize * this.pageIndex;
       const end = start + pageSize - 1;
@@ -143,10 +143,7 @@ export default {
             }
           }
 
-          listData.push({
-            value: i,
-            uniq: Math.random(),
-          });
+          listData.push({ value: i });
         }
 
         this.oneTimeListLength += listData.length;
@@ -190,11 +187,9 @@ export default {
       });
     },
     showEditDialog(row) {
-      this.editLineItem = row;
-      this.beforeEditItem = this.$util.cloneObjWithBuff(row);
+      this.editLineItem = this.$util.cloneObjWithBuff(row);
+      this.beforeEditItem = row;
       this.editDialog = true;
-
-      this.rowUniq = row.uniq;
     },
     dumpCommand(item) {
       const lines = item ? [item] : this.listData;
@@ -220,16 +215,16 @@ export default {
       }
 
       this.editDialog = false;
-      const newLine = { value: afterValue, uniq: Math.random() };
+      const newLine = { value: afterValue };
 
       // edit line
-      if (this.rowUniq) {
+      if (before.value) {
         // fix #1082, keep list order
         client.linsert(key, 'AFTER', before.value, afterValue).then((reply) => {
           if (reply > 0) {
             client.lrem(key, 1, before.value);
             // this.initShow(); // do not reinit, #786
-            this.$util.listSplice(this.listData, this.rowUniq, newLine);
+            this.$set(this.listData, this.listData.indexOf(before), newLine);
 
             this.$message.success({
               message: this.$t('message.modify_success'),
@@ -278,7 +273,7 @@ export default {
             });
 
             // this.initShow(); // do not reinit, #786
-            this.$util.listSplice(this.listData, row.uniq);
+            this.listData.splice(this.listData.indexOf(row), 1);
             this.total--;
           } else {
             this.$message.error({

@@ -1,6 +1,12 @@
 <template>
   <JsonEditor ref='editor' :content='newContent' class='viewer-custom-editor'>
-    <p :title="fullCommand" class="command-preview">{{ previewCommand }}</p>
+    <p :title="fullCommand" class="command-preview">
+      <el-button size="mini" class="viewer-custom-copy-raw"
+        :title='$t("message.copy")' icon="el-icon-document" type="text"
+        @click="$util.copyToClipboard(fullCommand)">
+      </el-button>
+      {{ previewCommand }}
+    </p>
   </JsonEditor>
 </template>
 
@@ -16,7 +22,7 @@ export default {
       execResult: '',
       fullCommand: '',
       previewCommand: '',
-      previewContentMax: 100,
+      previewContentMax: 50,
       writeHexFileSize: 8000,
     };
   },
@@ -132,9 +138,9 @@ export default {
     },
     exec() {
       try {
-        shell.exec(this.fullCommand, (e, stdout, stderr) => {
-          if (e || stderr) {
-            this.execResult = `${e.message.trim()}\n${stdout.trim()}\n${stderr.trim()}`;
+        shell.exec(this.fullCommand, (error, stdout, stderr) => {
+          if (error || stderr) {
+            this.execResult = error ? error.message : stderr;
           } else {
             this.execResult = stdout.trim();
           }
@@ -153,10 +159,20 @@ export default {
 <style type="text/css">
 .text-formated-container .command-preview {
   color: #9798a7;
-  word-break: break-word;
+  word-break: break-all;
+  height: 40px;
+  overflow-y: auto;
+  line-height: 20px;
+  margin-bottom: 2px;
+}
+/*copy raw command btn*/
+.text-formated-container .command-preview .viewer-custom-copy-raw {
+  padding: 0;
 }
 
-.key-content-string .text-formated-container.viewer-custom-editor #monaco-editor-con {
-  height: calc(100vh - 379px);
+/*make monaco less height in custom viewer*/
+.key-content-string .text-formated-container.viewer-custom-editor .monaco-editor-con {
+  height: calc(100vh - 331px);
+/*  min-height: 50px;*/
 }
 </style>

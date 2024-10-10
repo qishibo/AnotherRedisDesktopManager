@@ -285,6 +285,7 @@ export default {
         }
       }
 
+      this.hideMultiSelect();
       this.$bus.$emit('openDelBatch', this.client, this.config.connectionName, rule);
     },
     exportBatch() {
@@ -303,6 +304,7 @@ export default {
         }
       }
 
+      this.hideMultiSelect();
       this.$emit('exportBatch', keys);
     },
     clickKey(key, newTab = false) {

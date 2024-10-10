@@ -11,7 +11,7 @@
         <div>
           <p>If result is "0", the <b>MEMORY</b> command may be disabled on Redis.</p>
           <p style="margin: 0;">Filter Min Size:</p>
-          <el-input v-model="minSizeKB" size="mini">
+          <el-input v-model="minSizeKB" @keyup.native.enter="initKeys()" size="mini">
             <i slot="suffix">KB</i>
           </el-input>
         </div>
@@ -53,14 +53,17 @@
     <RecycleScroller
       class="keys-body"
       :items="keysList"
-      :item-size="20"
+      :item-size="24"
       key-field="str"
       v-slot="{ item, index }"
     >
       <li @click="clickJump(item)">
         <span class="list-index">{{ index + 1 }}.</span>
         <span class="key-name" :title="item.str">{{ item.str }}</span>
-        <span class="size">{{ item.human }}</span>
+        <!-- <span class="size">{{ item.human }}</span> -->
+        <span class="size">
+          <el-tag size="mini">{{ item.human }}</el-tag>
+        </span>
       </li>
     </RecycleScroller>
 
@@ -281,25 +284,28 @@ export default {
 
   /*keys body list*/
   .memory-analysis-container .keys-body {
-    height: calc(100vh - 290px);
+    height: calc(100vh - 268px);
   }
   /*keys body li*/
   .memory-analysis-container .keys-body li {
-    border-bottom: 1px solid #d0d0d0;
+    border-bottom: 1px solid #e6e6e6;
     cursor:  pointer;
-    padding: 0 2px;
+    padding: 0 0 0 4px;
+    margin-right: 2px;
     font-size: 92%;
     list-style: none;
     display: flex;
+    /*same with item-size*/
+    line-height: 24px;
   }
   .dark-mode .memory-analysis-container .keys-body li {
-    border-bottom: 1px solid #444444;
+    border-bottom: 1px solid #3b4d57;
   }
   .memory-analysis-container .keys-body li:hover {
-    background: #c6c6c6;
+    background: #e6e6e6;
   }
   .dark-mode .memory-analysis-container .keys-body li:hover {
-    background: #3b4e57;
+    background: #3b4d57;
   }
   /*key name*/
   .memory-analysis-container .keys-body li .key-name {
@@ -311,7 +317,7 @@ export default {
 
   /*key size*/
   .memory-analysis-container .keys-body .size {
-    font-size: 90%;
+    /*font-size: 90%;*/
     margin-left: 20px;
     margin-right: 4px;
   }
@@ -319,5 +325,6 @@ export default {
   /*keys footer*/
   .memory-analysis-container .keys-footer {
     text-align: center;
+    line-height: 40px;
   }
 </style>
