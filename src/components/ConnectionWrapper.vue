@@ -50,10 +50,17 @@ export default {
     };
   },
   props: ['config', 'globalSettings', 'index'],
-  components: {ConnectionMenu, OperateItem, KeyList},
+  components: { ConnectionMenu, OperateItem, KeyList },
   created() {
     this.$bus.$on('closeConnection', (connectionName = false) => {
       this.closeConnection(connectionName);
+    });
+    // open connection
+    this.$bus.$on('openConnection', (connectionName) => {
+      if (connectionName && (connectionName == this.config.connectionName)) {
+        this.openConnection();
+        this.$refs.connectionMenu.open(this.config.connectionName);
+      }
     });
   },
   computed: {
@@ -67,7 +74,7 @@ export default {
       this.$refs.keyList.initShow();
     },
     initLastSelectedDb() {
-      let db = parseInt(localStorage.getItem('lastSelectedDb_' + this.config.connectionName));
+      const db = parseInt(localStorage.getItem(`lastSelectedDb_${this.config.connectionName}`));
 
       if (db > 0 && this.lastSelectedDb != db) {
         this.lastSelectedDb = db;
@@ -93,7 +100,7 @@ export default {
 
       clientPromise.then((realClient) => {
         this.afterOpenConnection(realClient, callback);
-      }).catch(e => {});
+      }).catch((e) => {});
     },
     afterOpenConnection(client, callback = false) {
       // new connection, not ready
@@ -125,8 +132,8 @@ export default {
         return;
       }
 
-      this.$refs.connectionMenu &&
-      this.$refs.connectionMenu.close(this.config.connectionName);
+      this.$refs.connectionMenu
+      && this.$refs.connectionMenu.close(this.config.connectionName);
       this.$bus.$emit('removeAllTab', connectionName);
 
       // clear ping interval
@@ -139,11 +146,10 @@ export default {
 
       this.client && this.client.quit && this.client.quit();
       this.client = null;
-
     },
     startPingInterval() {
       this.pingTimer = setInterval(() => {
-        this.client && this.client.ping().then(reply => {}).catch(e => {
+        this.client && this.client.ping().then((reply) => {}).catch((e) => {
           // this.$message.error('Ping Error: ' + e.message);
         });
       }, this.pingInterval);
@@ -157,12 +163,14 @@ export default {
       // ssh client
       if (configCopy.sshOptions) {
         var clientPromise = redisClient.createSSHConnection(
-          configCopy.sshOptions, configCopy.host, configCopy.port, configCopy.auth, configCopy);
+          configCopy.sshOptions, configCopy.host, configCopy.port, configCopy.auth, configCopy,
+        );
       }
       // normal client
       else {
         var clientPromise = redisClient.createConnection(
-          configCopy.host, configCopy.port, configCopy.auth, configCopy);
+          configCopy.host, configCopy.port, configCopy.auth, configCopy,
+        );
       }
 
       clientPromise.then((client) => {
@@ -170,14 +178,14 @@ export default {
 
         client.on('error', (error) => {
           this.$message.error({
-            message: 'Redis Client On Error: ' + error + ' Config right?',
+            message: `Client On Error: ${error} Config right?`,
             duration: 3000,
-            customClass: 'redis-on-error-message'
+            customClass: 'redis-on-error-message',
           });
 
           this.$bus.$emit('closeConnection');
         });
-      }).catch(error => {
+      }).catch((error) => {
         this.$message.error(error.message);
         this.$bus.$emit('closeConnection');
       });
@@ -189,14 +197,13 @@ export default {
       const className = 'menu-with-custom-color';
 
       // save to setting
-      save && this.$storage.editConnectionItem(this.config, {color: color});
+      save && this.$storage.editConnectionItem(this.config, { color });
 
       if (!color) {
         ulDom.classList.remove(className);
-      }
-      else {
+      } else {
         ulDom.classList.add(className);
-        this.$el.style.setProperty("--menu-color", color);
+        this.$el.style.setProperty('--menu-color', color);
       }
     },
     scrollToConnection() {
@@ -204,7 +211,7 @@ export default {
         // 300ms after menu expand animination
         setTimeout(() => {
           let scrollTop = 0;
-          const menus = document.querySelectorAll('.connections-list>ul');
+          const menus = document.querySelectorAll('.connections-wrap .connections-list>ul');
 
           // calc height sum of all above menus
           for (const menu of menus) {
@@ -214,8 +221,11 @@ export default {
             scrollTop += (menu.clientHeight + 8);
           }
 
-          document.querySelector('.connections-list').scrollTo({
-            top: scrollTop, 
+          // if connections filter input exists, scroll more
+          // 32 = height('.filter-input')+margin
+          const offset = document.querySelector('.connections-wrap .filter-input') ? 32 : 0;
+          document.querySelector('.connections-wrap').scrollTo({
+            top: scrollTop + offset,
             behavior: 'smooth',
           });
         }, 320);
@@ -228,7 +238,7 @@ export default {
   beforeDestroy() {
     this.closeConnection(this.config.connectionName);
   },
-}
+};
 </script>
 
 <style type="text/css">

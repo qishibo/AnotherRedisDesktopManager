@@ -1,14 +1,14 @@
+# Another Redis Desktop Manager
+
 <img align="right" width="120" src="https://cdn.jsdelivr.net/gh/qishibo/img/ano-square-icon-128.png">
-
-# Another Redis Desktop Manager 
-
-<hr/>
 
 > 🚀🚀🚀 A faster, better and more stable redis desktop manager, compatible with Linux, windows, mac. What's more, it won't crash when loading massive keys.
 
-[![MIT](https://img.shields.io/badge/license-MIT-000000.svg)](LICENSE)
-[![Download](https://img.shields.io/github/release/qishibo/AnotherRedisDesktopManager.svg?label=Download)](https://github.com/qishibo/AnotherRedisDesktopManager/releases)
-[![Download Analysis](https://img.shields.io/badge/Download-Analysis-blue.svg)](https://qii404.me/github-release-statistics/?repo=/qishibo/AnotherRedisDesktopManager/)
+<br>
+
+[![LICENSE](https://img.shields.io/github/license/qishibo/AnotherRedisDesktopManager)](LICENSE)
+[![Release](https://img.shields.io/github/release/qishibo/AnotherRedisDesktopManager.svg)](https://github.com/qishibo/AnotherRedisDesktopManager/releases)
+[![Download](https://img.shields.io/github/downloads/qishibo/AnotherRedisDesktopManager/total)](https://github.com/qishibo/AnotherRedisDesktopManager/releases)
 [![Twitter](https://img.shields.io/badge/Twitter-@shibo-blue.svg)](https://twitter.com/qii404)
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fqishibo%2FAnotherRedisDesktopManager.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fqishibo%2FAnotherRedisDesktopManager?ref=badge_shield)
 <a href="https://www.producthunt.com/posts/another-redis-desktop-manager?utm_source=badge-featured"><img src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=340552&theme=dark" height="20" width="93" /></a>
@@ -23,7 +23,7 @@
 - Or by **chocolatey**: `choco install another-redis-desktop-manager`
 - Or by **winget**: `winget install qishibo.AnotherRedisDesktopManager`
 - Or **sponsor** by win store, It's not free, and I will be very grateful to you.
-<br/><a href="https://www.microsoft.com/store/apps/9MTD84X0JFHZ?cid=storebadge&ocid=badge"><img src="https://cdn.jsdelivr.net/gh/qishibo/img/microsoft-store.png" height="58" width="180" alt="get from microsoft store"></a>
+<br/><a href="https://apps.microsoft.com/store/detail/9MTD84X0JFHZ?launch=true&cid=github&mode=mini"><img src="https://cdn.jsdelivr.net/gh/qishibo/img/microsoft-store.png" height="58" width="180" alt="get from microsoft store"></a>
 
 ## Linux
 
@@ -42,13 +42,7 @@
 - Or **sponsor** by app store, It's not free, and I will be very grateful to you.
 <br/>[![get from app store](https://cdn.jsdelivr.net/gh/qishibo/img/avail_app_store180.svg)](https://apps.apple.com/app/id1516451072)
 
-<!--
-> If **Mac** warning `Another Desktop Manager can't be opened because it is from an unidentified developer`. Open `Settings->Security` and click **`Open Anyway`**
 
-![can't be opened because it is from an unidentified developer](https://cdn.jsdelivr.net/gh/qishibo/img/1630655841115-mac-warning.png)
-
-![Settings->Security Open Anyway](https://cdn.jsdelivr.net/gh/qishibo/img/1630655842331-5d11c4feeaf6f.jpg)
--->
 
 ## Enjoy!
 
@@ -63,6 +57,15 @@
 
 ## Feature Log
 
+- 2024-10-07: Hash field TTL support(Redis>=7.4)
+- 2024-06-06: Search connections support
+- 2024-04-10: DB custom name support
+- 2024-02-21: Java/Pickle viewers support
+- 2024-02-15: Groups/Consumers in STREAM view
+- 2024-01-31: Hey, long time! Command line(CLI) args support
+- 2023-06-22: Export\Import keys support
+- 2023-05-26: Search support in Stream && Slow log support
+- 2023-04-01: Search support in List && Deflate raw support
 - 2022-10-07: Arrow Keys support in key list && Memory Analysis in folder
 - 2022-08-05: Clone Connection && Tabs Contextmenu\Mousewheel Support
 - 2022-04-01: Protobuf Support && Memory Analysis
@@ -111,7 +114,7 @@ cd AnotherRedisDesktopManager
 npm install
 
 # if download electron failed during installing, use this command
-# ELECTRON_MIRROR="https://npm.taobao.org/mirrors/electron/" npm install
+# ELECTRON_MIRROR="https://npmmirror.com/mirrors/electron/" npm install
 
 # serve with hot reload at localhost:9988
 npm start
@@ -146,7 +149,7 @@ cd AnotherRedisDesktopManager
 npm install --platform=win32
 
 # if download electron failed during installing, use this command
-# npm config set ELECTRON_MIRROR http://npm.taobao.org/mirrors/electron/
+# npm config set ELECTRON_MIRROR https://npmmirror.com/mirrors/electron/
 # npm install --platform=win32
 
 # serve with hot reload at localhost:9988
@@ -195,6 +198,127 @@ This project exists thanks to all the people who contribute.
 [![contributors](https://opencollective.com/AnotherRedisDesktopManager/contributors.svg?width=890&button=false)](https://github.com/qishibo/AnotherRedisDesktopManager/graphs/contributors)
 [![backers](https://opencollective.com/AnotherRedisDesktopManager/backers.svg)](https://opencollective.com/AnotherRedisDesktopManager)
 
+
+## Custom Viewer
+
+> When the default viewer does not meet the needs, you can format your content via customize script.
+<br>Method: Pull down the viewer list to the bottom, click "Custom -> Add", and then refer to the instructions below
+<br>Note: The script needs to output formatted content through `print` `console.log` `echo` etc., which can be any string or JSON string
+
+| Config | Description |
+| ------ | ------ |
+| `Name` | Custom name |
+| `Command` | Executable commands, such as `xxx.py` `xxx.js` `xxx.class` etc. The file needs `x` permission, which can be executed in the form of `./xxx.py`; It can also be set to `/bin/node` `/bin/bash` or other system commands, and the script path needs to be placed in Params |
+| `Params` | Parameters spliced after `Command`, such as "--key `{KEY}` --value `{VALUE}`", where `{KEY}` and `{VALUE}` will be replaced with the corresponding Redis key and value. Note that if the content is invisible such as binary, you can use `{HEX}` instead of `{VALUE}`, and `{HEX}` will be replaced with the hexadecimal string. If HEX is too long (>8000 chars), it will be written to a temporary file. You can use `{HEX_FILE}` to obtain the file path, and read by yourself in the script |
+
+### Configuration example：
+> Add env to the first line of the script, the final executed command is: `./home/qii/pickle_decoder.py {HEX}`, the script can receive parameters via `argv[1]`, ref [#978](https://github.com/qishibo/AnotherRedisDesktopManager/issues/987#issuecomment-1294844707)
+
+| Command | Params |
+| ------ | ------ |
+| `/home/qii/pickle_decoder.py` | `{HEX}` |
+| `/home/qii/shell_decoder.sh` | `{VALUE}` |
+
+### Without execute permission `x`：
+> The final executed command is: `/bin/node /home/qii/node_decoder.js {HEX} --key={KEY}`, the script can receive parameters via `argv[1]`
+
+| Command | Params |
+| ------ | ------ |
+| `/bin/bash` | `/home/qii/shell_decoder.sh {VALUE}` |
+| `/bin/node` | `/home/qii/node_decoder.js {HEX} --key={KEY}` |
+
+
+
+## Start From Command Line(CLI)
+
+> If you want to start from command line(CLI), you can pass args to the App.
+
+### Examples
+
+```bash
+# Linux
+# ./Another Redis Desktop Manager.AppImage
+
+# Mac
+# open /Applications/Another\ Redis\ Desktop\ Manager.app --args
+
+# Windows
+"D:\xxxx\Another Redis Desktop Manager.exe"
+
+# COMMON
+--host 127.0.0.1 --port 6379 --auth 123
+--name tmp_connection
+
+# CLUSTER
+--cluster
+
+# SSH
+--ssh-host 192.168.0.110
+--ssh-username root --ssh-password 123
+
+# SENTINEL
+--sentinel-master-name mymaster
+--sentinel-node-password 123
+
+# save connection
+--save
+# readonly mode
+--readonly
+```
+
+### Parameter Description
+
+#### Common
+
+| Args | Description | Args | Description |
+| ------ | ------ | ------ | ------ |
+| --host | Redis host* | --port | Redis port|
+| --auth | Password | --name | Custom name|
+| --separator | Key separator | --readonly | Enable readonly mode|
+| --username | Username（Redis6 ACL）| --save| Enable saving, one-time link by default|
+
+#### SSH
+
+| Args | Description | Args | Description |
+| ------ | ------ | ------ | ------ |
+| --ssh-host | SSH host* | --ssh-port | SSH port（default:22）|
+| --ssh-username | Username* | --ssh-password | Password|
+| --ssh-private-key | Path of private key | --ssh-passphrase | Password of private key|
+| --ssh-timeout | SSH timeout(s) | | &nbsp;|
+
+#### CLUSTER
+
+| Args | Description |
+| ------ | ------ |
+| --cluster | Enable CLUSTER mode |
+
+#### SSL
+
+| Args | Description | Args | Description |
+| ------ | ------ | ------ | ------ |
+| --ssl | Enable SSL* | --ssl-key | SSL Private Key Pem|
+| --ssl-ca | SSL Certificate Authority | --ssl-cert | SSL Public Key Pem|
+
+#### SENTINEL
+
+| Args | Description |
+| ------ | ------ |
+| --sentinel-master-name | Name of master group*，like 'mymaster' |
+| --sentinel-node-password | Password of Redis node |
+
+
+
+## FAQ
+
+#### 1. How to connect to Redis Cluster in internal network (such as Docker, LAN, AWS)?
+   
+   Answer: Connect via `SSH+Cluster` (SSH to the internal network and then connecting to Cluster with internal IP such as `127.0.0.1`, `192.168.x.x`), you need to fill Redis Host with the internal IP.
+   
+   How to get Redis internal IP? Connect through SSH, uncheck Cluster option, and then open the console to execute `CLUSTER NODES`, select any IP in the result.
+
+#### 2. Do I need to fill in the 'Username' in the Redis configuration?
+   
+   Answer: The access control list (ACL) is only supported in `Redis>=6.0`, so do not fill it unless you need a special user.
 
 
 ## License

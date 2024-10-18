@@ -1,6 +1,6 @@
 {
   "name": "another-redis-desktop-manager",
-  "version": "1.5.9",
+  "version": "1.6.8",
   "description": "A faster, better and more stable redis desktop manager.",
   "author": "Another",
   "private": true,
@@ -14,7 +14,7 @@
     "appId": "me.qii404.another-redis-desktop-manager",
     "productName": "Another Redis Desktop Manager",
     "artifactName": "${productName}.${version}.${ext}",
-    "copyright": "Copyright © 2022 qii404.me",
+    "copyright": "Copyright © 2024 qii404",
     "asar": true,
     "directories": {
       "output": "build-apps",
@@ -64,6 +64,7 @@
       "extendInfo": {
         "ElectronTeamID": "68JN8DV835"
       }
-    }
+    },
+    "afterSign": "pack/scripts/notarize.js"
   }
 }

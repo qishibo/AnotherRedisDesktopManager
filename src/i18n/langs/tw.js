@@ -33,6 +33,7 @@ const tw = {
     add_success: '新增成功',
     add_failed: '新增失敗',
     value_exists: '值已存在',
+    value_not_exists: '該值不存在',
     refresh_success: '重新整理成功',
     click_enter_to_rename: '點擊或者按 Enter 鍵來重新命名',
     click_enter_to_ttl: '點擊或者按 Enter 鍵來修改過期時間',
@@ -76,6 +77,7 @@ const tw = {
     manual_update: '手動下載',
     retry_too_many_times: '嘗試重連次數過多，請檢查伺服器狀態',
     key_to_search: '輸入關鍵字搜尋',
+    search_connection: '搜尋連接',
     begin_update: '更新',
     ignore_this_version: '忽略此版本',
     check_update: '檢查更新',
@@ -90,8 +92,8 @@ const tw = {
     [Tips]: 如果您使用的是Windows，請在關閉應用程序後等待桌面圖標刷新到正常狀態（大約10秒），然後重新打開',
     mac_not_support_auto_update:
       'Mac 暫時不支援自動更新，請手動<a href="https://github.com/qishibo/AnotherRedisDesktopManager/releases">下載</a>後重新安裝，\
-    或者執行brew reinstall --cask another-redis-desktop-manager\
-    <br><br>🧡如果對您有用，您可以通過<a href="https://apps.apple.com/app/id1516451072">AppStore</a>贊助，AppStore會自動為您更新。',
+    或者執行<br><code>brew reinstall --cask another-redis-desktop-manager </code>\
+    <br><hr><br>❤️如果對您有用，您可以通過<a href="https://apps.apple.com/app/id1516451072">AppStore</a>贊助，AppStore會自動為您更新。',
     font_family: '字體選擇',
     font_faq_title: '字體設定說明',
     font_faq:
@@ -171,6 +173,9 @@ const tw = {
     close_left: '關閉左側標籤',
     close_right: '關閉右側標籤',
     close_other: '關閉其他標籤',
+    slow_log: '慢查詢',
+    load_current_folder: '僅載入目前資料夾',
+    custom_name: '自訂名稱',
   },
 };
 

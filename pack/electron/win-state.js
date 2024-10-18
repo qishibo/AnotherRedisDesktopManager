@@ -9,8 +9,7 @@ const winState = {
 
     try {
       data = fs.readFileSync(this.getStateFile());
-    }
-    catch (err) {}
+    } catch (err) {}
 
     const lastWinStage = this.parseJson(data);
     const lastX = lastWinStage.x;
@@ -21,8 +20,8 @@ const winState = {
     // recovery position only when app in primary screen
     // if in external screens, reset position for uncaught display issues
     if (
-      lastX < 0 || lastY < 0 ||
-      lastX > primary.workAreaSize.width || lastY > primary.workAreaSize.height
+      lastX < 0 || lastY < 0
+      || lastX > primary.workAreaSize.width || lastY > primary.workAreaSize.height
     ) {
       lastWinStage.x = null;
       lastWinStage.y = null;
@@ -77,17 +76,16 @@ const winState = {
     try {
       const winBounds = win.getBounds();
 
-      let state = {
+      const state = {
         x: winBounds.x,
         y: winBounds.y,
         width: winBounds.width,
         height: winBounds.height,
         maximized: win.isMaximized(),
-      }
+      };
 
       return state;
-    }
-    catch (err) {
+    } catch (err) {
       return false;
     }
   },
@@ -108,8 +106,7 @@ const winState = {
 
     try {
       json = JSON.parse(str);
-    }
-    catch(err) {}
+    } catch (err) {}
 
     return json;
   },

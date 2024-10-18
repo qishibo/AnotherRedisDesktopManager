@@ -1,19 +1,30 @@
 <template>
-  <JsonEditor ref='editor' :content='newContent' :readOnly='false'></JsonEditor>
+  <JsonEditor ref='editor' :content='newContent' :readOnly='isPHPClass'></JsonEditor>
 </template>
 
 <script type="text/javascript">
 import JsonEditor from '@/components/JsonEditor';
-import {unserialize, serialize} from 'php-serialize';
+import { unserialize, serialize } from 'php-serialize';
 
 
 export default {
   props: ['content'],
-  components: {JsonEditor},
+  data() {
+    return {
+      isPHPClass: false,
+    };
+  },
+  components: { JsonEditor },
   computed: {
     newContent() {
       try {
-        return unserialize(this.content);
+        const content = unserialize(this.content, {}, { strict: false });
+
+        if (content && content['__PHP_Incomplete_Class_Name']) {
+          this.isPHPClass = true;
+        }
+
+        return content;
       } catch (e) {
         return this.$t('message.php_unserialize_format_failed');
       }
@@ -27,20 +38,19 @@ export default {
       if (typeof this.newContent !== 'string') {
         try {
           content = JSON.parse(content);
-        }
-        catch (e) {
+        } catch (e) {
           // object parse failed
           this.$message.error({
-            message: 'Raw content is an object, but now parse object failed: ' + e.message,
+            message: `Raw content is an object, but now parse object failed: ${e.message}`,
             duration: 6000,
           });
 
-          return false
+          return false;
         }
       }
 
       return serialize(content);
     },
   },
-}
+};
 </script>

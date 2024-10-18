@@ -8,6 +8,10 @@ import util from './util';
 import storage from './storage';
 import shortcut from './shortcut';
 
+// vxe-table
+// import VxeUITable from 'vxe-table';
+import 'vxe-table/lib/style.css';
+// Vue.use(VxeUITable);
 
 Vue.prototype.$bus = bus;
 Vue.prototype.$util = util;
@@ -18,7 +22,7 @@ Vue.use(ElementUI, { size: 'small' });
 Vue.config.productionTip = false;
 
 /* eslint-disable no-new */
-var vue = new Vue({
+const vue = new Vue({
   el: '#app',
   i18n,
   components: { App },
@@ -32,7 +36,7 @@ process.on('uncaughtException', (err, origin) => {
   }
 
   vue.$message.error({
-    message: 'Uncaught Exception: ' + err,
+    message: `Uncaught Exception: ${err}`,
     duration: 5000,
   });
 

@@ -23,7 +23,7 @@
 import JsonEditor from '@/components/JsonEditor';
 import { getData } from 'rawproto';
 // import * as protobuf from 'protobufjs';
-const protobuf = require("protobufjs/minimal");
+const protobuf = require('protobufjs/minimal');
 const { dialog } = require('electron').remote;
 
 export default {
@@ -57,7 +57,7 @@ export default {
         this.types.push(current.fullName);
       }
       if (current.nestedArray) {
-        current.nestedArray.forEach(nested => {
+        current.nestedArray.forEach((nested) => {
           this.traverseTypes(nested);
         });
       }
@@ -71,26 +71,26 @@ export default {
             extensions: ['proto'],
           },
         ],
-      }).then(result => {
-          if (result.canceled) return;
-          this.proto = result.filePaths;
-          this.types = ['Rawproto'];
-          this.selectedType = 'Rawproto';
+      }).then((result) => {
+        if (result.canceled) return;
+        this.proto = result.filePaths;
+        this.types = ['Rawproto'];
+        this.selectedType = 'Rawproto';
 
-          protobuf.load(this.proto).then(root => {
-            this.protoRoot = root;
-            // init types
-            this.traverseTypes(root);
-            // first type as default
-            if (this.types.length > 0) {
-              this.selectedType = this.types[1];
-            }
-          }).catch(e => {
-            this.$message.error(e.message);
-          });
-        }).catch(e => {
+        protobuf.load(this.proto).then((root) => {
+          this.protoRoot = root;
+          // init types
+          this.traverseTypes(root);
+          // first type as default
+          if (this.types.length > 0) {
+            this.selectedType = this.types[1];
+          }
+        }).catch((e) => {
           this.$message.error(e.message);
         });
+      }).catch((e) => {
+        this.$message.error(e.message);
+      });
     },
     getContent() {
       if (!this.protoRoot) {
@@ -111,14 +111,13 @@ export default {
         const err = type.verify(content);
 
         if (err) {
-          this.$message.error('Proto Verify Failed: ' + err);
+          this.$message.error(`Proto Verify Failed: ${err}`);
           return false;
         }
 
         const message = type.create(content);
         return type.encode(message).finish();
-      }
-      catch(e) {
+      } catch (e) {
         this.$message.error(this.$t('message.json_format_failed'));
         return false;
       }
@@ -149,6 +148,6 @@ export default {
 
   /*text viewer box*/
   .key-content-string .text-formated-container.protobuf-viewer .monaco-editor-con {
-    height: calc(100vh - 385px);
+    height: calc(100vh - 331px);
   }
 </style>

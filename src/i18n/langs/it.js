@@ -33,6 +33,7 @@ const it = {
     add_success: 'Aggiunto con successo',
     add_failed: 'Aggiunzione non riuscita',
     value_exists: 'Valore esistente',
+    value_not_exists: 'Il valore non esiste',
     refresh_success: 'Ricaricato con successo',
     click_enter_to_rename: 'Fare clic o premere Invio per rinominare',
     click_enter_to_ttl: 'Fare clic o premere Invio per modificare TTL',
@@ -76,6 +77,7 @@ const it = {
     manual_update: 'Scaricare Manuale',
     retry_too_many_times: 'Troppi tentativi di riconnessione. Si prega di controllare lo stato del server',
     key_to_search: 'Ricerca per parole chiave',
+    search_connection: 'Cerca connessione',
     begin_update: 'Aggiornare',
     ignore_this_version: 'Ignora questa versione',
     check_update: 'Ricerca aggiornamenti',
@@ -90,8 +92,8 @@ const it = {
     [Tips]: Se stai utilizzando Windows, dopo aver chiuso l'app, attendi che l'icona del desktop si aggiorni a uno stato normale (circa 10 secondi), quindi puoi riaprirla",
     mac_not_support_auto_update:
       'Il Mac non supporta l\'aggiornamento automatico, Si prega di <a href="https://github.com/qishibo/AnotherRedisDesktopManager/releases">scaricare</a> e reinstallare manualmente,\
-    o eseguire "brew reinstall --cask another-redis-desktop-manager"\
-    <br><br>🧡se ti è utile, puoi sponsorizzare <a href="https://apps.apple.com/app/id1516451072">AppStore</a>, e AppStore lo aggiornerà automaticamente per te.',
+    o eseguire <br><code>brew reinstall --cask another-redis-desktop-manager </code>\
+    <br><hr><br>❤️se ti è utile, puoi sponsorizzare <a href="https://apps.apple.com/app/id1516451072">AppStore</a>, e AppStore lo aggiornerà automaticamente per te.',
     font_family: 'Famiglia di font',
     font_faq_title: "Istruzioni per l'impostazione dei fonti",
     font_faq:
@@ -177,6 +179,9 @@ const it = {
     close_left: 'Chiudi le schede a sinistra',
     close_right: 'Chiudi le schede a destra',
     close_other: 'Chiudi altre schede',
+    slow_log: 'Interrogazione lenta',
+    load_current_folder: 'Carica solo la cartella corrente',
+    custom_name: 'Nome personalizzato',
   },
 };
 

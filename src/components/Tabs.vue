@@ -14,6 +14,7 @@
         <CliTab v-else-if="item.component === 'cli'" :client='item.client' class='tab-content-wrappe' :hotKeyScope='item.name'></CliTab>
         <DeleteBatch v-else-if="item.component === 'delbatch'" :client='item.client' :rule="item.rule" class='tab-content-wrappe' :hotKeyScope='item.name'></DeleteBatch>
         <MemoryAnalysis v-else-if="item.component === 'memory'" :client='item.client' :pattern="item.pattern" class='tab-content-wrappe' :hotKeyScope='item.name'></MemoryAnalysis>
+        <SlowLog v-else-if="item.component === 'slowlog'" :client='item.client' class='tab-content-wrappe' :hotKeyScope='item.name'></SlowLog>
         <KeyDetail v-else :client='item.client' :redisKey="item.redisKey" :keyType="item.keyType" class='tab-content-wrappe' :hotKeyScope='item.name'></KeyDetail>
       </el-tab-pane>
     </el-tabs>
@@ -35,6 +36,7 @@ import CliTab from '@/components/CliTab';
 import KeyDetail from '@/components/KeyDetail';
 import DeleteBatch from '@/components/DeleteBatch';
 import MemoryAnalysis from '@/components/MemoryAnalysis';
+import SlowLog from '@/components/SlowLog';
 
 export default {
   data() {
@@ -43,7 +45,9 @@ export default {
       tabs: [],
     };
   },
-  components: { Status, KeyDetail, CliTab, DeleteBatch, MemoryAnalysis },
+  components: {
+    Status, KeyDetail, CliTab, DeleteBatch, MemoryAnalysis, SlowLog,
+  },
   watch: {
     selectedTabName(value) {
       // for mousewheel toggle tabs
@@ -76,6 +80,11 @@ export default {
       this.addMemoryTab(client, tabName, pattern);
     });
 
+    // open slowlog tab
+    this.$bus.$on('slowLog', (client, tabName) => {
+      this.addSlowLogTab(client, tabName);
+    });
+
     // remove pre tab
     this.$bus.$on('removePreTab', () => {
       this.removeTab(this.selectedTabName);
@@ -88,14 +97,12 @@ export default {
         return this.tabs = [];
       }
 
-      this.tabs = this.tabs.filter((tab) => {
-        return tab.client.options.connectionName != connectionName;
-      });
+      this.tabs = this.tabs.filter(tab => tab.client.options.connectionName != connectionName);
 
       // still tabs left, solve selecting which tab
       if (this.tabs.length) {
         // previous selected left, do not change
-        let filteredTab = this.tabs.filter(tab => tab.name == this.selectedTabName);
+        const filteredTab = this.tabs.filter(tab => tab.name == this.selectedTabName);
         !filteredTab.length && (this.selectedTabName = this.tabs[0].name);
       }
     });
@@ -126,18 +133,18 @@ export default {
     tabClick(tab, event) {
       this.$shortcut.setScope(this.selectedTabName);
 
-      if (tab.$children && tab.$children[0] && (typeof tab.$children[0].tabClick == 'function')) {
+      if (tab.$children && tab.$children[0] && (typeof tab.$children[0].tabClick === 'function')) {
         tab.$children[0].tabClick();
-      };
+      }
     },
     addStatusTab(client, tabName, newTab = true) {
       const newTabItem = {
         name: `status_${tabName}`,
         label: this.$util.cutString(tabName),
         title: tabName,
-        client: client,
+        client,
         component: 'status',
-      }
+      };
 
       this.addTab(newTabItem, newTab);
     },
@@ -146,9 +153,9 @@ export default {
         name: `cli_${tabName}_${Math.random()}`,
         label: this.$util.cutString(tabName),
         title: tabName,
-        client: client,
+        client,
         component: 'cli',
-      }
+      };
 
       this.addTab(newTabItem, newTab);
     },
@@ -157,10 +164,10 @@ export default {
         name: `del_batch_${tabName}_${Math.random()}`,
         label: this.$util.cutString(tabName),
         title: tabName,
-        client: client,
+        client,
         component: 'delbatch',
-        rule: rule,
-      }
+        rule,
+      };
 
       this.addTab(newTabItem, true);
     },
@@ -169,10 +176,21 @@ export default {
         name: `memory_analysis_${tabName}_${Math.random()}`,
         label: this.$util.cutString(tabName),
         title: tabName,
-        client: client,
+        client,
         component: 'memory',
-        pattern: pattern,
-      }
+        pattern,
+      };
+
+      this.addTab(newTabItem, true);
+    },
+    addSlowLogTab(client, tabName) {
+      const newTabItem = {
+        name: `slowlog_${tabName}_${Math.random()}`,
+        label: this.$util.cutString(tabName),
+        title: tabName,
+        client,
+        component: 'slowlog',
+      };
 
       this.addTab(newTabItem, true);
     },
@@ -189,22 +207,27 @@ export default {
         }
 
         this.addTab(this.initKeyTabItem(client, key, type), newTab);
-      }).catch(e => {
-        this.$message.error('Type Error: ' + e.message);
+      }).catch((e) => {
+        this.$message.error(`Type Error: ${e.message}`);
       });
     },
     initKeyTabItem(client, key, type) {
-      const cutString = this.$util.cutString;
+      const { cutString } = this.$util;
       const dbIndex = client.condition ? client.condition.select : 0;
-      const connectionName = client.options.connectionName;
+      const { connectionName } = client.options;
       const keyStr = this.$util.bufToString(key);
 
       const label = `${cutString(keyStr)} | ${cutString(connectionName)} | DB${dbIndex}`;
-      const name  = `${keyStr} | ${connectionName} | DB${dbIndex}`;
+      const name = `${keyStr} | ${connectionName} | DB${dbIndex}`;
 
       return {
-        name: name, label: label, title: name, client: client, component: 'key',
-        redisKey: key, keyType: type,
+        name,
+        label,
+        title: name,
+        client,
+        component: 'key',
+        redisKey: key,
+        keyType: type,
       };
     },
     addTab(newTabItem, newTab = false) {
@@ -254,11 +277,12 @@ export default {
         status: 'el-icon-info',
         delbatch: 'el-icon-delete',
         memory: 'fa fa-table',
+        slowlog: 'fa fa-hourglass-start',
       };
 
       const icon = map[component];
 
-      return icon ? icon : 'fa fa-key';
+      return icon || 'fa fa-key';
     },
     initShortcut() {
       this.$shortcut.bind('ctrl+w, ⌘+w', () => {
@@ -311,17 +335,17 @@ export default {
       menu.style.top = `${event.clientY}px`;
       menu.style.display = 'block';
 
-      document.addEventListener("click", this.hideAllMenus, {once: true});
+      document.addEventListener('click', this.hideAllMenus, { once: true });
     },
     hideAllMenus() {
-      let menus = document.querySelectorAll('.tabs-context-menu');
+      const menus = document.querySelectorAll('.tabs-context-menu');
 
       if (menus.length === 0) {
         return;
       }
 
       for (const menu of menus) {
-        menu.style.display='none';
+        menu.style.display = 'none';
       }
     },
     removeOtherTabs(type = 'right') {
@@ -371,12 +395,11 @@ export default {
   /*height end*/
 
   .tab-content-wrappe {
-    height: calc(100vh - 100px);
+    height: calc(100vh - 67px);
     overflow-x: hidden;
     overflow-y: auto;
     /*padding-left: 5px;*/
     padding-right: 8px;
-    padding-bottom: 20px;
   }
 
   /*tabs context menu*/

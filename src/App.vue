@@ -29,6 +29,7 @@
 import Aside from '@/Aside';
 import Tabs from '@/components/Tabs';
 import UpdateCheck from '@/components/UpdateCheck';
+import addon from './addon';
 
 export default {
   name: 'App',
@@ -39,20 +40,19 @@ export default {
   },
   created() {
     this.$bus.$on('reloadSettings', () => {
-      this.reloadSettings();
+      addon.reloadSettings();
     });
 
     // restore side bar width
     this.restoreSideBarWidth();
   },
-  components: {Aside, Tabs, UpdateCheck},
+  components: { Aside, Tabs, UpdateCheck },
   methods: {
     bindSideBarDrag() {
       const that = this;
       const dragPointer = document.getElementById('drag-resize-pointer');
 
-      function mousemove(e)
-      {
+      function mousemove(e) {
         const mouseX = e.x;
         const dragSideWidth = mouseX - 17;
 
@@ -61,8 +61,7 @@ export default {
         }
       }
 
-      function mouseup(e)
-      {
+      function mouseup(e) {
         document.documentElement.removeEventListener('mousemove', mousemove);
         document.documentElement.removeEventListener('mouseup', mouseup);
 
@@ -78,37 +77,8 @@ export default {
       });
     },
     restoreSideBarWidth() {
-      let sideWidth = localStorage.sideWidth;
+      const { sideWidth } = localStorage;
       sideWidth && (this.sideWidth = sideWidth);
-    },
-    openHrefInBrowser() {
-      const shell = require('electron').shell;
-
-      document.addEventListener('click', function (event) {
-        const ele = event.target;
-
-        if (ele && (ele.nodeName.toLowerCase() === 'a') && ele.href.startsWith('http')) {
-          event.preventDefault();
-          shell.openExternal(ele.href);
-        }
-      });
-    },
-    reloadSettings() {
-      this.initFont();
-      this.initZoom();
-    },
-    initFont() {
-      const fontFamily = this.$storage.getFontFamily();
-      document.body.style.fontFamily = fontFamily;
-      // tell monaco editor
-      this.$bus.$emit('fontInited', fontFamily);
-    },
-    initZoom() {
-      let zoomFactor = this.$storage.getSetting('zoomFactor');
-      zoomFactor = zoomFactor ? zoomFactor : 1.0;
-
-      const {webFrame} = require('electron');
-      webFrame.setZoomFactor(zoomFactor);
     },
   },
   mounted() {
@@ -116,9 +86,9 @@ export default {
       this.$bus.$emit('update-check');
     }, 2000);
 
-    this.reloadSettings();
     this.bindSideBarDrag();
-    this.openHrefInBrowser();
+    // addon init setup
+    addon.setup();
   },
 };
 </script>
@@ -140,6 +110,9 @@ body {
 
 button, input, textarea, .vjs__tree {
   font-family: inherit !important;
+}
+a {
+  color: #8e8d8d;
 }
 
 
@@ -187,8 +160,10 @@ button, input, textarea, .vjs__tree {
 /*list index*/
 li .list-index {
   color: #828282;
-  font-size: 80%;
+  /*font-size: 80%;*/
   user-select: none;
+  margin-right: 10px;
+  min-width: 28px;
 }
 .dark-mode li .list-index {
   color: #adacac;
@@ -258,5 +233,19 @@ li .list-index {
 
 @keyframes rotate {
   to{ transform: rotate(360deg); }
+}
+
+/*vxe-table dark-mode color*/
+html .dark-mode {
+  --vxe-ui-table-header-background-color: #273239 !important;
+  --vxe-ui-layout-background-color: #273239 !important;
+  --vxe-ui-table-row-striped-background-color: #3b4b54 !important;
+  --vxe-ui-table-row-hover-background-color: #3b4b54 !important;
+  --vxe-ui-table-row-hover-striped-background-color: #50646f !important;
+  /*border color*/
+  --vxe-ui-table-border-color: #7f8ea5 !important;
+  /*font color*/
+  --vxe-ui-font-color: #f3f3f4 !important;
+  --vxe-ui-table-header-font-color: #f3f3f4 !important;
 }
 </style>

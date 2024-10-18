@@ -33,6 +33,7 @@ const es = {
     add_success: 'Añadido Correctamente',
     add_failed: 'Añadido Fallido',
     value_exists: 'Valor ya existente',
+    value_not_exists: 'El valor no existe',
     refresh_success: 'Refresco Correcto',
     click_enter_to_rename: 'Click o Presiona Enter para Renombrar',
     click_enter_to_ttl: 'lick o Presiona Enter para Modificar el TTL',
@@ -76,6 +77,7 @@ const es = {
     manual_update: 'Descarga Manual',
     retry_too_many_times: 'Demasiados intentos de reconexión. Verifique el estado del servidor',
     key_to_search: 'Búsqueda por palabra clave',
+    search_connection: 'Conexión de búsqueda',
     begin_update: 'Actualizar',
     ignore_this_version: 'Ignorar esta versión',
     check_update: 'Comprobar actualizaciones',
@@ -90,8 +92,8 @@ const es = {
     [Consejo]: Si está utilizando Windows, después de cerrar la aplicación, espere que el ícono del escritorio se actualice a un estado normal (alrededor de 10 segundos) y luego puede volver a abrirlo',
     mac_not_support_auto_update:
       'Mac no soporte actualizaciones automáticas. Manualmente puede <a href="https://github.com/qishibo/AnotherRedisDesktopManager/releases">Descargarla</a> y reinstalarla,\
-    o ejecute "brew reinstall --cask another-redis-desktop-manager"\
-    <br><br>🧡si es útil para ti, puedes patronizarnos a través de <a href="https://apps.apple.com/app/id1516451072">AppStore</a>, y AppStore lo actualizará automáticamente por usted.',
+    o ejecute <br><code>brew reinstall --cask another-redis-desktop-manager </code>\
+    <br><hr><br>❤️si es útil para ti, puedes patronizarnos a través de <a href="https://apps.apple.com/app/id1516451072">AppStore</a>, y AppStore lo actualizará automáticamente por usted.',
     font_family: 'Familia de la Fuente',
     font_faq_title: 'Instrucciones Ajuste Fuente',
     font_faq:
@@ -175,6 +177,9 @@ const es = {
     close_left: 'Cerrar pestañas izquierdas',
     close_right: 'Cerrar pestañas derechas',
     close_other: 'Cerrar otras pestañas',
+    slow_log: 'Consulta lenta',
+    load_current_folder: 'Cargar solo la carpeta actual',
+    custom_name: 'Nombre personalizado',
   },
 };
 

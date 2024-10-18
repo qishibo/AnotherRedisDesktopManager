@@ -9,23 +9,23 @@
 export default {
   data() {
     return {
-      contentDisplay: ""
-    }
+      contentDisplay: '',
+    };
   },
   props: ['content', 'contentVisible', 'disabled'],
   watch: {
     content(val) {
       // refresh
-      this.contentDisplay = this.$util.bufToString(val);
+      this.contentDisplay = this.$util.bufToBinary(val);
     },
   },
   methods: {
     getContent() {
-      return this.$util.xToBuffer(this.contentDisplay);
+      return this.$util.binaryStringToBuffer(this.contentDisplay);
     },
   },
   mounted() {
-    this.contentDisplay = this.$util.bufToString(this.content);
+    this.contentDisplay = this.$util.bufToBinary(this.content);
   },
-}
+};
 </script>

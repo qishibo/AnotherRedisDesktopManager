@@ -7,7 +7,7 @@ export default {
     this.data[name] = value;
   },
   bufVisible(buf) {
-    if (typeof buf == 'string') {
+    if (typeof buf === 'string') {
       return true;
     }
 
@@ -33,11 +33,11 @@ export default {
     return `"${str}"`;
   },
   bufToHex(buf) {
-    let result = buf.toJSON().data.map(item => {
+    const result = buf.toJSON().data.map((item) => {
       if (item >= 32 && item <= 126) {
         return String.fromCharCode(item);
       }
-      return "\\x" + item.toString(16).padStart(2, 0);
+      return `\\x${item.toString(16).padStart(2, 0)}`;
     });
 
     return result.join('');
@@ -45,13 +45,12 @@ export default {
   xToBuffer(str) {
     let result = '';
 
-    for(var i = 0; i < str.length;) {
-      if (str.substr(i, 2) == "\\x") {
+    for (let i = 0; i < str.length;) {
+      if (str.substr(i, 2) == '\\x') {
         result += str.substr(i + 2, 2);
-        i+=4;
-      }
-      else {
-        result += Buffer.from(str[i++]).toString('hex')
+        i += 4;
+      } else {
+        result += Buffer.from(str[i++]).toString('hex');
       }
     }
 
@@ -60,15 +59,15 @@ export default {
   bufToBinary(buf) {
     let binary = '';
 
-    for (let item of buf) {
-        binary += item.toString(2).padStart(8, 0);
+    for (const item of buf) {
+      binary += item.toString(2).padStart(8, 0);
     }
 
     return binary;
   },
   binaryStringToBuffer(str) {
     const groups = str.match(/[01]{8}/g);
-    const numbers = groups.map(binary => parseInt(binary, 2))
+    const numbers = groups.map(binary => parseInt(binary, 2));
 
     return Buffer.from(new Uint8Array(numbers));
   },
@@ -77,11 +76,11 @@ export default {
       return string;
     }
 
-    return string.substr(0, maxLength) + '...';
+    return `${string.substr(0, maxLength)}...`;
   },
   isJson(string) {
     try {
-      let obj = JSON.parse(string);
+      const obj = JSON.parse(string);
       return !!obj && typeof obj === 'object';
     } catch (e) {}
 
@@ -91,27 +90,44 @@ export default {
     const phpSerialize = require('php-serialize');
 
     try {
-      phpSerialize.unserialize(str);
-      return true;
-    }catch (e) {}
+      // phpSerialize.unserialize(str);
+      return phpSerialize.isSerialized(str.toString());
+    } catch (e) {}
 
     return false;
   },
+  isJavaSerialize(buf) {
+    try {
+      const { ObjectInputStream } = require('java-object-serialization');
+      const result = (new ObjectInputStream(buf)).readObject();
+      return typeof result === 'object';
+    } catch (e) {
+      return false;
+    }
+  },
+  isPickle(buf) {
+    try {
+      const { Parser } = require('pickleparser');
+      const result = (new Parser()).parse(buf);
+      return !!result;
+    } catch (e) {
+      return false;
+    }
+  },
   isMsgpack(buf) {
-    const decode = require('algo-msgpack-with-bigint').decode;
+    const { decode } = require('algo-msgpack-with-bigint');
 
     try {
       const result = decode(buf);
       if (['object', 'string'].includes(typeof result)) {
         return true;
       }
-    }
-    catch (e) {}
+    } catch (e) {}
 
     return false;
   },
   isBrotli(buf) {
-    return typeof this.zippedToString(buf, 'brotli') === 'string'
+    return typeof this.zippedToString(buf, 'brotli') === 'string';
   },
   isGzip(buf) {
     return typeof this.zippedToString(buf, 'gzip') === 'string';
@@ -119,48 +135,49 @@ export default {
   isDeflate(buf) {
     return typeof this.zippedToString(buf, 'deflate') === 'string';
   },
+  isDeflateRaw(buf) {
+    return typeof this.zippedToString(buf, 'deflateRaw') === 'string';
+  },
   isProtobuf(buf) {
     // fix #859, #880, exclude number type
     if (!isNaN(buf)) {
       return false;
     }
 
-    const getData = require('rawproto').getData;
+    const { getData } = require('rawproto');
 
     try {
       const result = getData(buf);
 
       // fix #922 some str mismatch
       if (result[0]) {
-        let firstEle = Object.values(result[0])[0];
+        const firstEle = Object.values(result[0])[0];
         if (firstEle < 1e-14 || firstEle.low) {
           return false;
         }
       }
       return true;
-    }
-    catch (e) {}
+    } catch (e) {}
 
     return false;
   },
   zippedToString(buf, type = 'unzip') {
-    const zlib   = require('zlib');
+    const zlib = require('zlib');
     const funMap = {
       // unzip will automatically detect Gzip or Deflate header
-      'unzip': 'unzipSync',
-      'gzip': 'gunzipSync',
-      'deflate': 'inflateSync',
-      'brotli': 'brotliDecompressSync',
+      unzip: 'unzipSync',
+      gzip: 'gunzipSync',
+      deflate: 'inflateSync',
+      brotli: 'brotliDecompressSync',
+      deflateRaw: 'inflateRawSync',
     };
 
     try {
       const decompressed = zlib[funMap[type]](buf);
-
       if (Buffer.isBuffer(decompressed) && decompressed.length) {
         return decompressed.toString();
       }
-    }
-    catch (e) {}
+    } catch (e) {}
 
     return false;
   },
@@ -174,13 +191,34 @@ export default {
     if (!size) {
       return 0;
     }
-    var i = Math.floor(Math.log(size) / Math.log(1024));
-    return (size / Math.pow(1024, i)).toFixed(2) * 1 + ['B', 'kB', 'MB', 'GB', 'TB'][i];
+    const i = Math.floor(Math.log(size) / Math.log(1024));
+    return (size / Math.pow(1024, i)).toFixed(2) * 1 + ['B', 'KB', 'MB', 'GB', 'TB'][i];
+  },
+  leftTime(seconds) {
+    if (seconds == 0 || seconds == -1) {
+      return '';
+    }
+
+    let str = '';
+
+    if (seconds >= 86400) {
+      str += `${parseInt(seconds / 60 / 60 / 24)} day, `;
+    }
+    if (seconds >= 3600) {
+      str += `${parseInt(seconds / 60 / 60 % 24)} hour, `;
+    }
+    if (seconds >= 60) {
+      str += `${parseInt(seconds / 60 % 60)} min, `;
+    }
+
+    str += `${parseInt(seconds % 60)} sec`;
+
+    return str;
   },
   cloneObjWithBuff(object) {
-    let clone = JSON.parse(JSON.stringify(object));
+    const clone = JSON.parse(JSON.stringify(object));
 
-    for (let i in clone) {
+    for (const i in clone) {
       if ((typeof clone[i] === 'object') && (clone[i].type === 'Buffer')) {
         clone[i] = Buffer.from(clone[i]);
       }
@@ -189,8 +227,8 @@ export default {
     return clone;
   },
   keysToList(keys) {
-    return keys.map(key => {
-      let item = {
+    return keys.map((key) => {
+      const item = {
         name: this.bufToString(key),
         nameBuffer: key.toJSON(),
       };
@@ -200,17 +238,17 @@ export default {
     });
   },
   keysToTree(keys, separator = ':', openStatus = {}, forceCut = 20000) {
-    let tree = {};
-    keys.forEach(key => {
+    const tree = {};
+    keys.forEach((key) => {
       let currentNode = tree;
-      let keyStr = this.bufToString(key);
-      let keySplited = keyStr.split(separator);
-      let lastIndex = keySplited.length - 1;
+      const keyStr = this.bufToString(key);
+      const keySplited = keyStr.split(separator);
+      const lastIndex = keySplited.length - 1;
 
       keySplited.forEach((value, index) => {
         // key node
         if (index === lastIndex) {
-          currentNode[keyStr + '`k`'] = {
+          currentNode[`${keyStr}\`k\``] = {
             keyNode: true,
             nameBuffer: key,
           };
@@ -228,18 +266,18 @@ export default {
     return this.formatTreeData(tree, '', openStatus, separator, forceCut);
   },
   formatTreeData(tree, previousKey = '', openStatus = {}, separator = ':', forceCut = 20000) {
-    return Object.keys(tree).map(key => {
-      let node = { name: key ? key : '[Empty]'};
+    return Object.keys(tree).map((key) => {
+      const node = { name: key || '[Empty]' };
 
       // folder node
       if (!tree[key].keyNode && Object.keys(tree[key]).length > 0) {
         // fullName
-        let tillNowKeyName = previousKey + key + separator;
+        const tillNowKeyName = previousKey + key + separator;
 
         // folder's fullName may same with key name, such as 'aa-'
         // for unique, add 'F' prefix
-        node.key      = `F${tillNowKeyName}`;
-        node.open     = openStatus.has(node.key);
+        node.key = `F${tillNowKeyName}`;
+        node.open = openStatus.has(node.key);
         node.children = this.formatTreeData(tree[key], tillNowKeyName, openStatus, separator, forceCut);
         node.keyCount = node.children.reduce((a, b) => a + (b.keyCount || 1), 0);
         // too many children, force cut, do not incluence keyCount display
@@ -264,60 +302,59 @@ export default {
   // keep keys in tail and sorted
   // sortByData
   sortKeysAndFolder(nodes) {
-    nodes.sort(function(a, b) {
+    nodes.sort((a, b) => {
       // a & b are all keys
       if (!a.children && !b.children) {
         return a.name > b.name ? 1 : -1;
       }
       // a & b are all folder
-      else if (a.children && b.children) {
+      if (a.children && b.children) {
         return a.name > b.name ? 1 : -1;
       }
 
       // a is folder, b is key
-      else if (a.children) {
+      if (a.children) {
         return -1;
       }
       // a is key, b is folder
-      else {
-        return 1;
-      }
+
+      return 1;
     });
   },
   // sortByTreeNode
   sortByTreeNodes(nodes) {
-    nodes.sort(function(a, b) {
+    nodes.sort((a, b) => {
       // a & b are all keys
       if (a.isLeaf && b.isLeaf) {
         return a.label > b.label ? 1 : -1;
       }
       // a & b are all folder
-      else if (!a.isLeaf && !b.isLeaf) {
+      if (!a.isLeaf && !b.isLeaf) {
         return a.label > b.label ? 1 : -1;
       }
 
       // a is folder, b is key
-      else if (!a.isLeaf) {
+      if (!a.isLeaf) {
         return -1;
       }
       // a is key, b is folder
-      else {
-        return 1;
-      }
+
+      return 1;
     });
   },
   copyToClipboard(text) {
-    const clipboard = require('electron').clipboard;
+    const { clipboard } = require('electron');
     clipboard.writeText(text ? text.toString() : '');
   },
   debounce(func, wait, immediate = false, context = null) {
-    let timeout, result;
+    let timeout; let
+      result;
 
-    const debounced = function() {
+    const debounced = function () {
       const args = arguments;
       timeout && clearTimeout(timeout);
 
-      const later = function() {
+      const later = function () {
         timeout = null;
         if (!immediate) result = func.apply(context, args);
       };
@@ -327,23 +364,28 @@ export default {
       if (callNow) result = func.apply(context, args);
 
       return result;
-    }
-    debounced.cancel = function() {
+    };
+    debounced.cancel = function () {
       clearTimeout(timeout);
       timeout = null;
     };
 
     return debounced;
   },
-  listSplice(lines, uniq, replacement = null) {
-    for (let i = 0; i < lines.length; i++) {
-      if (lines[i].uniq === uniq) {
-        replacement ? lines.splice(i, 1, replacement) : lines.splice(i, 1);
-        break;
-      }
-    }
-  },
   randomString(len = 5) {
     return Math.random().toString(36).substr(-len);
+  },
+  createAndDownloadFile(fileName, content) {
+    const aTag = document.createElement('a');
+    const blob = new Blob([content]);
+
+    aTag.download = fileName;
+    aTag.href = URL.createObjectURL(blob);
+
+    aTag.click();
+    URL.revokeObjectURL(blob);
+  },
+  arrayChunk(arr, size) {
+    return Array.from({ length: Math.ceil(arr.length / size) }, (v, i) => arr.splice(0, size));
   },
 };

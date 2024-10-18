@@ -37,18 +37,21 @@
 
 <script type="text/javascript">
 import storage from '@/storage';
-import ViewerText from '@/components/ViewerText';
-import ViewerHex from '@/components/ViewerHex';
-import ViewerJson from '@/components/ViewerJson';
-import ViewerBinary from '@/components/ViewerBinary';
-import ViewerUnserialize from '@/components/ViewerUnserialize';
-import ViewerBrotli from '@/components/ViewerBrotli';
-import ViewerGzip from '@/components/ViewerGzip';
-import ViewerDeflate from '@/components/ViewerDeflate';
-import ViewerMsgpack from '@/components/ViewerMsgpack';
-import ViewerOverSize from '@/components/ViewerOverSize';
-import ViewerCustom from '@/components/ViewerCustom';
-import ViewerProtobuf from '@/components/ViewerProtobuf';
+import ViewerText from '@/components/viewers/ViewerText';
+import ViewerHex from '@/components/viewers/ViewerHex';
+import ViewerJson from '@/components/viewers/ViewerJson';
+import ViewerBinary from '@/components/viewers/ViewerBinary';
+import ViewerPHPSerialize from '@/components/viewers/ViewerPHPSerialize';
+import ViewerBrotli from '@/components/viewers/ViewerBrotli';
+import ViewerGzip from '@/components/viewers/ViewerGzip';
+import ViewerDeflate from '@/components/viewers/ViewerDeflate';
+import ViewerMsgpack from '@/components/viewers/ViewerMsgpack';
+import ViewerOverSize from '@/components/viewers/ViewerOverSize';
+import ViewerCustom from '@/components/viewers/ViewerCustom';
+import ViewerProtobuf from '@/components/viewers/ViewerProtobuf';
+import ViewerDeflateRaw from '@/components/viewers/ViewerDeflateRaw';
+import ViewerJavaSerialize from '@/components/viewers/ViewerJavaSerialize';
+import ViewerPickle from '@/components/viewers/ViewerPickle';
 
 export default {
   data() {
@@ -61,10 +64,13 @@ export default {
         { value: 'ViewerJson', text: 'Json' },
         { value: 'ViewerBinary', text: 'Binary' },
         { value: 'ViewerMsgpack', text: 'Msgpack' },
-        { value: 'ViewerUnserialize', text: 'Unserialize' },
+        { value: 'ViewerPHPSerialize', text: 'PHPSerialize' },
+        { value: 'ViewerJavaSerialize', text: 'JavaSerialize' },
+        { value: 'ViewerPickle', text: 'Pickle' },
         { value: 'ViewerBrotli', text: 'Brotli' },
         { value: 'ViewerGzip', text: 'Gzip' },
         { value: 'ViewerDeflate', text: 'Deflate' },
+        { value: 'ViewerDeflateRaw', text: 'DeflateRaw' },
         { value: 'ViewerProtobuf', text: 'Protobuf' },
       ],
       selectStyle: {
@@ -74,14 +80,29 @@ export default {
       autoFormated: false,
     };
   },
-  components: {ViewerText, ViewerHex, ViewerJson, ViewerBinary, ViewerUnserialize, ViewerMsgpack,
-    ViewerOverSize, ViewerCustom, ViewerBrotli, ViewerGzip, ViewerDeflate, ViewerProtobuf},
+  components: {
+    ViewerText,
+    ViewerHex,
+    ViewerJson,
+    ViewerBinary,
+    ViewerPHPSerialize,
+    ViewerMsgpack,
+    ViewerOverSize,
+    ViewerCustom,
+    ViewerBrotli,
+    ViewerGzip,
+    ViewerDeflate,
+    ViewerProtobuf,
+    ViewerDeflateRaw,
+    ViewerJavaSerialize,
+    ViewerPickle,
+  },
   props: {
-    float: {default: 'right'},
-    content: {default: () => Buffer.from('')},
-    disabled: {type: Boolean, default: false},
-    redisKey:  {default: () => Buffer.from('')},
-    dataMap: {type: Object, default: () => {}},
+    float: { default: 'right' },
+    content: { default: () => Buffer.from('') },
+    disabled: { type: Boolean, default: false },
+    redisKey: { default: () => Buffer.from('') },
+    dataMap: { type: Object, default: () => {} },
   },
   computed: {
     contentVisible() {
@@ -99,9 +120,9 @@ export default {
     },
     viewersMap() {
       // add oversize tmp
-      let map = {OverSize: 'ViewerOverSize'};
+      const map = { OverSize: 'ViewerOverSize' };
 
-      this.viewers.forEach(item => {
+      this.viewers.forEach((item) => {
         map[item.text] = item.value;
       });
 
@@ -162,43 +183,53 @@ export default {
         return this.changeViewer('Json');
       }
       // php unserialize
-      else if (this.$util.isPHPSerialize(this.content)) {
-        return this.changeViewer('Unserialize');
+      if (this.$util.isPHPSerialize(this.content)) {
+        return this.changeViewer('PHPSerialize');
+      }
+      // java unserialize
+      if (this.$util.isJavaSerialize(this.content)) {
+        return this.changeViewer('JavaSerialize');
+      }
+      // pickle
+      if (this.$util.isPickle(this.content)) {
+        return this.changeViewer('Pickle');
       }
       // msgpack
-      else if (this.$util.isMsgpack(this.content)) {
+      if (this.$util.isMsgpack(this.content)) {
         return this.changeViewer('Msgpack');
       }
       // brotli unserialize
-      else if (this.$util.isBrotli(this.content)) {
+      if (this.$util.isBrotli(this.content)) {
         return this.changeViewer('Brotli');
       }
       // gzip
-      else if (this.$util.isGzip(this.content)) {
+      if (this.$util.isGzip(this.content)) {
         return this.changeViewer('Gzip');
       }
       // deflate
-      else if (this.$util.isDeflate(this.content)) {
+      if (this.$util.isDeflate(this.content)) {
         return this.changeViewer('Deflate');
       }
       // protobuf
-      else if (this.$util.isProtobuf(this.content)) {
+      if (this.$util.isProtobuf(this.content)) {
         return this.changeViewer('Protobuf');
       }
-
+      // deflateRaw
+      if (this.$util.isDeflateRaw(this.content)) {
+        return this.changeViewer('DeflateRaw');
+      }
 
       // hex
-      else if (!this.contentVisible) {
+      if (!this.contentVisible) {
         return this.changeViewer('Hex');
       }
-      else {
-        return this.changeViewer('Text');
-      }
+
+      return this.changeViewer('Text');
     },
     copyContent() {
-      let content = (typeof this.$refs.viewer.copyContent == 'function') ?
-                    this.$refs.viewer.copyContent() :
-                    this.content;
+      const content = (typeof this.$refs.viewer.copyContent === 'function')
+        ? this.$refs.viewer.copyContent()
+        : this.content;
 
       this.$util.copyToClipboard(content);
       this.$message.success(this.$t('message.copy_success'));
@@ -210,14 +241,12 @@ export default {
         return;
       }
 
-      formatters.forEach(formatter => {
-        this.viewers.push({value: 'ViewerCustom', text: formatter.name, type: 'custom'});
+      formatters.forEach((formatter) => {
+        this.viewers.push({ value: 'ViewerCustom', text: formatter.name, type: 'custom' });
       });
     },
     removeCustom() {
-      this.viewers = this.viewers.filter(item => {
-        return item.type !== 'custom';
-      });
+      this.viewers = this.viewers.filter(item => item.type !== 'custom');
     },
   },
   mounted() {
@@ -229,7 +258,7 @@ export default {
 
 <style type="text/css">
   .format-selector {
-    width: 122px;
+    width: 130px;
   }
   .format-selector .el-input__inner {
     height: 22px !important;

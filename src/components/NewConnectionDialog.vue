@@ -271,7 +271,7 @@ export default {
         this.sslOptionsShow = !!this.config.sslOptions;
         this.sentinelOptionsShow = !!this.config.sentinelOptions;
         // recovery connection before edit
-        let connection = Object.assign({}, this.connectionEmpty, this.config);
+        const connection = Object.assign({}, this.connectionEmpty, this.config);
         this.connection = JSON.parse(JSON.stringify(connection));
       }
       // new connection mode

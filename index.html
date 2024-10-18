@@ -9,6 +9,8 @@
   <body>
     <!-- this script must be placed here after body -->
     <script type="text/javascript">
+      const ipcRenderer = require('electron').ipcRenderer;
+
       function globalChangeTheme(theme) {
         theme  && (localStorage.theme = theme);
         !theme && (theme = localStorage.theme);
@@ -19,9 +21,12 @@
         document.getElementById('theme-link').href = themeHref;
         themeName == 'dark' ? document.body.classList.add('dark-mode') :
                               document.body.classList.remove('dark-mode');
+
+        // change native theme
+        ipcRenderer.invoke('changeTheme', themeName);
       }
 
-      // theme init
+      // theme init start
       globalChangeTheme();
     </script>
 

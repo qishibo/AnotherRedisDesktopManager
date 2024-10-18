@@ -33,6 +33,7 @@ const pt = {
     add_success: 'Sucesso ao adicionar',
     add_failed: 'Falha ao adicionar',
     value_exists: 'Valor existente',
+    value_not_exists: 'O valor não existe',
     refresh_success: 'Sucesso ao atualizar',
     click_enter_to_rename: 'Clique ou pressione Enter para renomear',
     click_enter_to_ttl: 'Clique ou pressione Enter para modificar TTL',
@@ -76,6 +77,7 @@ const pt = {
     manual_update: 'Download manual',
     retry_too_many_times: 'Muitas tentativas de reconexões. Verifique o status do servidor',
     key_to_search: 'Pesquisa por palavra-chave',
+    search_connection: 'Conexão de pesquisa',
     begin_update: 'Atualizar',
     ignore_this_version: 'Ignore esta versão',
     check_update: 'Checar atualização',
@@ -90,8 +92,8 @@ const pt = {
     [Tips]: Se você estiver usando o Windows, depois de fechar o aplicativo, aguarde o ícone da área de trabalho para atualizar para um estado normal (cerca de 10 segundos), e então você pode reabri-lo',
     mac_not_support_auto_update:
       'Mac não suporta atualização automática, faça o <a href="https://github.com/qishibo/AnotherRedisDesktopManager/releases">download</a> e reinstale manualmente, \
-    Ou execute "brew reinstall --cask another-redis-desktop-manager"\
-    <br><br>🧡se for útil para você, você pode patrocinar através da <a href="https://apps.apple.com/app/id1516451072">AppStore</a>, e a AppStore irá atualizá-lo automaticamente para você.',
+    Ou execute <br><code>brew reinstall --cask another-redis-desktop-manager </code>\
+    <br><hr><br>❤️se for útil para você, você pode patrocinar através da <a href="https://apps.apple.com/app/id1516451072">AppStore</a>, e a AppStore irá atualizá-lo automaticamente para você.',
     font_family: 'Font Family',
     font_faq_title: 'Instruções de configuração de fonte',
     font_faq:
@@ -174,6 +176,9 @@ const pt = {
     close_left: 'Fechar abas esquerdas',
     close_right: 'Fechar abas direitas',
     close_other: 'Fechar outras guias',
+    slow_log: 'Consulta lenta',
+    load_current_folder: 'Carregar apenas a pasta atual',
+    custom_name: 'Nome personalizado',
   },
 };
 

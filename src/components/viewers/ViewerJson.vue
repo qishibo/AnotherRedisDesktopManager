@@ -4,11 +4,12 @@
 
 <script type="text/javascript">
 import JsonEditor from '@/components/JsonEditor';
-const JSONbig = require('@qii404/json-bigint')({useNativeBigInt: false});
+
+const JSONbig = require('@qii404/json-bigint')({ useNativeBigInt: false });
 
 export default {
   props: ['content', 'disabled'],
-  components: {JsonEditor},
+  components: { JsonEditor },
   computed: {
     newContent() {
       try {
@@ -41,5 +42,5 @@ export default {
       return content;
     },
   },
-}
+};
 </script>

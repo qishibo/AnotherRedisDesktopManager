@@ -26,13 +26,14 @@ const en = {
     feature_settings: 'Function',
     common_settings: 'General',
     confirm_to_delete_row_data: 'Confirm To Delete The Row Data?',
-    delete_success: 'Delete Success',
-    delete_failed: 'Delete Failed',
-    modify_success: 'Modify Success',
-    modify_failed: 'Modify Failed',
-    add_success: 'Add Success',
-    add_failed: 'Add Failed',
-    value_exists: 'Value Exists',
+    delete_success: 'Deletion Successful',
+    delete_failed: 'Deletion Failed',
+    modify_success: 'Successfully Modified',
+    modify_failed: 'Modification Failed',
+    add_success: 'Added Successfully',
+    add_failed: 'Addition Failed',
+    value_exists: 'Value Already Exists',
+    value_not_exists: 'The Value Does not Exist',
     refresh_success: 'Refresh Success',
     click_enter_to_rename: 'Click Or Press Enter To Rename',
     click_enter_to_ttl: 'Click Or Press Enter To Modify TTL',
@@ -76,6 +77,7 @@ const en = {
     manual_update: 'Manual Download',
     retry_too_many_times: 'Too Many Attempts To Reconnect. Please Check The Server Status',
     key_to_search: 'Keyword Search',
+    search_connection: 'Search Connection',
     begin_update: 'Update',
     ignore_this_version: 'Ignore this version',
     check_update: 'Check Update',
@@ -90,8 +92,8 @@ const en = {
     [Tips]: If you are using Windows, after closing the app, waiting the desktop icon to refresh to a normal state(about 10 seconds), and then you can reopen it',
     mac_not_support_auto_update:
       'Mac Does Not Support Automatic Update, Please Manually <a href="https://github.com/qishibo/AnotherRedisDesktopManager/releases">Download</a> And Reinstall,\
-    Or Run "brew reinstall --cask another-redis-desktop-manager"\
-    <br><br>🧡if it\'s useful to you ,you can sponsor through <a href="https://apps.apple.com/app/id1516451072">AppStore</a>, and AppStore will automatically update it for you.',
+    Or Run <br><code>brew reinstall --cask another-redis-desktop-manager </code>\
+    <br><hr><br>❤️if it\'s useful to you ,you can sponsor through <a href="https://apps.apple.com/app/id1516451072">AppStore</a>, and AppStore will automatically update it for you.',
     font_family: 'Font Family',
     font_faq_title: 'Font Setting Instructions',
     font_faq:
@@ -172,8 +174,11 @@ const en = {
     before_connect: 'Before Connect (Command)',
     before_connect_error: 'Before Connect (Command) Error: {message}',
     close_left: 'Close Left Tabs',
-    close_right: 'Close Right Tabs',
+    close_right: 'Close Tabs To The Right',
     close_other: 'Close Other Tabs',
+    slow_log: 'Slow Query',
+    load_current_folder: 'Only Load Current Folder',
+    custom_name: 'Custom Name',
   },
 };
 
