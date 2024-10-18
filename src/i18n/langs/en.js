@@ -87,17 +87,21 @@ const en = {
     update_error: 'Update Failed',
     update_downloading: 'Downloading...',
     update_download_progress: 'Download Progress',
-    update_downloaded: 'Update Download Completed, Restart Your App Please.\
+    update_downloaded:
+      'Update Download Completed, Restart Your App Please.\
     [Tips]: If you are using Windows, after closing the app, waiting the desktop icon to refresh to a normal state(about 10 seconds), and then you can reopen it',
-    mac_not_support_auto_update: 'Mac Does Not Support Automatic Update, Please Manually <a href="https://github.com/qishibo/AnotherRedisDesktopManager/releases">Download</a> And Reinstall,\
+    mac_not_support_auto_update:
+      'Mac Does Not Support Automatic Update, Please Manually <a href="https://github.com/qishibo/AnotherRedisDesktopManager/releases">Download</a> And Reinstall,\
     Or Run <br><code>brew reinstall --cask another-redis-desktop-manager </code>\
     <br><hr><br>❤️if it\'s useful to you ,you can sponsor through <a href="https://apps.apple.com/app/id1516451072">AppStore</a>, and AppStore will automatically update it for you.',
     font_family: 'Font Family',
     font_faq_title: 'Font Setting Instructions',
-    font_faq: '1. Multiple fonts can be set<br>\
+    font_faq:
+      '1. Multiple fonts can be set<br>\
     2. Font selection is orderly. It is suggested to choose English font first and then font in your language<br>\
     3. When the system font list cannot be loaded in some exceptional cases, you can enter the installed font name manually.',
-    private_key_faq: 'RSA format private key is supported, which starts with <pre>-----BEGIN RSA PRIVATE KEY-----</pre>\
+    private_key_faq:
+      'RSA format private key is supported, which starts with <pre>-----BEGIN RSA PRIVATE KEY-----</pre>\
     as to starts with<pre>-----BEGIN OPENSSH PRIVATE KEY-----</pre>you need to convert format via <pre>ssh-keygen -p -m pem -f ~/.ssh/id_rsa</pre>This operation will not affect the previous private key login',
     dark_mode: 'Dark Mode',
     load_more_keys: 'load more',
@@ -123,10 +127,12 @@ const en = {
     key_no_permission: 'File read permission has expired, please reselect the key file manually',
     toggle_check_all: 'Select all | Unselect all',
     select_lang: 'Select Language',
-    clear_cache_tip: 'When there is a problem with the client, this operation will delete all the connections and configurations to recover the client',
+    clear_cache_tip:
+      'When there is a problem with the client, this operation will delete all the connections and configurations to recover the client',
     detail: 'Detail',
     separator_tip: 'The separator of the tree view, set to empty to disable tree and display keys as list',
-    confirm_modify_unvisible_content: 'The content contains invisible characters, you can edit safely in the "Hex View". If continuing to edit in the "Text View" may cause coding errors, sure to continue?',
+    confirm_modify_unvisible_content:
+      'The content contains invisible characters, you can edit safely in the "Hex View". If continuing to edit in the "Text View" may cause coding errors, sure to continue?',
     keys_per_loading: 'Load Number',
     keys_per_loading_tip: 'The number of keys loaded each time. Setting too large may affect performance',
     host: 'Host',
@@ -142,7 +148,8 @@ const en = {
     redis_node_password: 'Redis Node Password',
     master_group_name: 'Master Group Name',
     command_log: 'Log',
-    sentinel_faq: 'You can choose one of multiple sentinels. Please fill in the sentinel configuration for the address, port and password. The Redis node password is the password of the Master node monitored by the sentinel.',
+    sentinel_faq:
+      'You can choose one of multiple sentinels. Please fill in the sentinel configuration for the address, port and password. The Redis node password is the password of the Master node monitored by the sentinel.',
     hotkey: 'Hot Key',
     persist: 'Remove Expire Time',
     custom_formatter: 'Custom Formatter',
@@ -155,7 +162,8 @@ const en = {
     load_all_keys: 'load all',
     show_load_all_keys: 'Enable button to load all keys',
     load_all_keys_tip: 'Load all keys at one time. If the number of keys is too large, the client may get stuck. Please use it correctly',
-    tree_node_overflow: 'Too many keys or folders , keep only {num} for display. If your key is not here, fuzzy search is recommended, or set the separator to spread the keys into folders',
+    tree_node_overflow:
+      'Too many keys or folders , keep only {num} for display. If your key is not here, fuzzy search is recommended, or set the separator to spread the keys into folders',
     connection_readonly: 'Readonly mode. Adding, editing and deleting are prohibited',
     memory_analysis: 'Memory Analysis',
     begin: 'Begin',
@@ -163,6 +171,8 @@ const en = {
     restart: 'Restart',
     max_display: 'Maximum number of displays:  {num}',
     max_scan: 'Maximum number of scans:  {num}',
+    before_connect: 'Before Connect (Command)',
+    before_connect_error: 'Before Connect (Command) Error: {message}',
     close_left: 'Close Left Tabs',
     close_right: 'Close Tabs To The Right',
     close_other: 'Close Other Tabs',
