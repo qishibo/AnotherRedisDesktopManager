@@ -36,7 +36,7 @@
       "icon": "icons/icon.ico",
       "target": [
         {"target": "nsis", "arch": ["x64", "arm64"]},
-        {"target": "zip", "arch": ["x64", "arm64"]}
+        {"target": "zip", "arch": ["x64"]}
       ]
     },
     "nsis": {
@@ -60,7 +60,7 @@
       "type": "development",
       "category": "public.app-category.developer-tools",
       "target": [
-        "dmg"
+        {"target": "dmg", "arch": ["x64", "arm64"]}
       ],
       "extendInfo": {
         "ElectronTeamID": "68JN8DV835"
