@@ -13,35 +13,41 @@
       <i v-if="isScanning" class='el-icon-loading'></i>
     </div>
 
-    <div v-if="cmdList.length">
-      <!-- table header -->
-      <div class="table-header">
-        <span @click="toggleOrder" class="reorder-container" title="μs, 1000μs = 1ms">
-          <span>Cost</span>
-          <span class="el-icon-d-caret"></span>
-        </span>
-      </div>
-
-      <!-- content list -->
-      <RecycleScroller
-        class="list-body"
-        :items="cmdList"
-        :item-size="20"
-        key-field="id"
-        v-slot="{ item, index }"
-      >
-        <li>
-          <span class="list-index">{{ index + 1 }}.</span>
-          <span class="time" :title="item.timestring">{{ item.timestring }}</span>
-          <span class="cmd" :title="item.cmd">{{ item.cmd }}</span>
-          <span class="cost" :title="item.cost">{{ item.cost }}</span>
-        </li>
-      </RecycleScroller>
+    <!-- table header -->
+    <div class="table-header">
+      <span>
+        Command
+      </span>
+      <span @click="toggleOrder" class="reorder-container" title="Sort">
+        <span>Cost</span>
+        <span class="el-icon-d-caret"></span>
+      </span>
     </div>
 
-    <p v-else class="list-body" style="text-align: center;">
+    <!-- content list -->
+    <RecycleScroller
+      v-if="cmdList.length"
+      class="list-body"
+      :items="cmdList"
+      :item-size="24"
+      key-field="id"
+      v-slot="{ item, index }"
+    >
+      <li>
+        <span class="list-index">{{ index + 1 }}.</span>
+        <span class="time" :title="item.timestring">{{ item.timestring.substr(11) }}</span>
+        <span class="cmd" :title="item.cmd">{{ item.cmd }}</span>
+        <!-- <span class="cost" :title="item.cost">{{ item.cost }} ms</span> -->
+        <span class="cost">
+          <el-tag size="mini">{{ item.cost }} ms</el-tag>
+        </span>
+      </li>
+    </RecycleScroller>
+
+    <!-- empty list -->
+    <div v-else class="list-body empty-list-body">
       <b class="el-icon-star-on"> No Slow Log</b>
-    </p>
+    </div>
 
     <!-- table footer -->
     <div class="table-footer">
@@ -85,7 +91,7 @@ export default {
             const line = {
               id: item[0],
               timestring: this.toLocalTime(item[1] * 1000),
-              cost: parseInt(item[2]),
+              cost: (item[2] / 1000).toFixed(3),
               cmd: item[3].join(' '),
               source: item[4],
               name: item[5],
@@ -116,7 +122,11 @@ export default {
       const m = `${d.getMinutes()}`.padStart(2, 0);
       const s = `${d.getSeconds()}`.padStart(2, 0);
 
-      return `${h}:${m}:${s}`;
+      const Y = d.getFullYear();
+      const M = `${d.getMonth() + 1}`.padStart(2, 0);
+      const D = `${d.getDate()}`.padStart(2, 0);
+
+      return `${Y}-${M}-${D} ${h}:${m}:${s}`;
     },
     toggleOrder() {
       if (this.isScanning) {
@@ -174,15 +184,22 @@ export default {
 
   /* list body*/
   .slowlog-container .list-body {
-    height: calc(100vh - 290px);
+    height: calc(100vh - 268px);
+    min-height: 100px;
+    line-height: 100px;
+  }
+  .slowlog-container .empty-list-body {
+    text-align: center;
   }
   .slowlog-container .list-body li {
-    border-bottom: 1px solid #e4e2e2;
-    padding: 0 2px;
+    border-bottom: 1px solid #e6e6e6;
+    padding: 0 0 0 4px;
+    margin-right: 2px;
     font-size: 92%;
     list-style: none;
-    height: 20px;
     display: flex;
+    /*same with item-size*/
+    line-height: 24px;
   }
   .slowlog-container .list-body .time {
     width: 88px;
@@ -191,6 +208,7 @@ export default {
     flex: 1;
     overflow: hidden;
     text-overflow: ellipsis;
+    white-space: nowrap;
   }
   .slowlog-container .list-body .cost {
     font-size: 90%;
@@ -199,18 +217,18 @@ export default {
   }
 
   .dark-mode .slowlog-container .list-body li {
-    border-bottom: 1px solid #444444;
+    border-bottom: 1px solid #3b4d57;
   }
   .slowlog-container .list-body li:hover {
-    background: #c6c6c6;
+    background: #e6e6e6;
   }
   .dark-mode .slowlog-container .list-body li:hover {
-    background: #3b4e57;
+    background: #3b4d57;
   }
 
   /* table footer*/
   .slowlog-container .table-footer {
     text-align: center;
-    margin-top: 6px;
+    line-height: 40px;
   }
 </style>
