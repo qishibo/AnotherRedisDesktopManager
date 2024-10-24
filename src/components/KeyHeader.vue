@@ -7,6 +7,7 @@
         :value="$util.bufToString(keyName)"
         @change='changeKeyInput'
         @keyup.enter.native="renameKey"
+        :readonly="!canRename"
         :title="$t('message.click_enter_to_rename')"
         placeholder="KeyName">
         <span slot="prepend" class="key-detail-type">{{ keyType }}</span>
@@ -15,6 +16,7 @@
           :title="$t('message.click_enter_to_rename')"
           @click="renameKey">
         </i>
+        <el-switch slot="suffix" v-model='canRename' @change="refreshInit" :title="$t('message.switch_enable_rename')"></el-switch>>
       </el-input>
     </div>
 
@@ -80,6 +82,7 @@ export default {
       keyTTL: -1,
       binary: false,
       autoRefresh: false,
+      canRename: false,
       refreshInterval: 2000,
     };
   },
