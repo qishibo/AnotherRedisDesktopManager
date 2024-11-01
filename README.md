@@ -198,6 +198,8 @@ This project exists thanks to all the people who contribute.
 [![contributors](https://opencollective.com/AnotherRedisDesktopManager/contributors.svg?width=890&button=false)](https://github.com/qishibo/AnotherRedisDesktopManager/graphs/contributors)
 [![backers](https://opencollective.com/AnotherRedisDesktopManager/backers.svg)](https://opencollective.com/AnotherRedisDesktopManager)
 
+<!-- sponsors --><!-- sponsors -->
+
 
 ## Custom Viewer
 

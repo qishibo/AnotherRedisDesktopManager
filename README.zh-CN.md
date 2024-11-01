@@ -195,6 +195,8 @@ npm run pack:linux
 [![contributors](https://opencollective.com/AnotherRedisDesktopManager/contributors.svg?width=890&button=false)](https://github.com/qishibo/AnotherRedisDesktopManager/graphs/contributors)
 [![backers](https://opencollective.com/AnotherRedisDesktopManager/backers.svg)](https://opencollective.com/AnotherRedisDesktopManager)
 
+<!-- sponsors --><!-- sponsors -->
+
 
 ## 自定义格式化
 
