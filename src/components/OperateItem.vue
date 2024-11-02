@@ -334,12 +334,37 @@ export default {
 
       cb(items);
     },
+    initHistory() {
+      const key = this.$storage.getStorageKeyByName('search_tip', this.config.name);
+      const tips = localStorage.getItem(key);
+
+      const suggestions = tips ? JSON.parse(tips) : [];
+      this.searchHistory = new Set(suggestions);
+
+      // record raw tips count
+      this.searchHistoryCount = this.searchHistory.size;
+
+      ipcRenderer.on('closingWindow', (event, arg) => {
+        this.storeHistory();
+      });
+    },
+    storeHistory() {
+      // not changed
+      if (this.searchHistory.size === this.searchHistoryCount) {
+        return;
+      }
+      const key = this.$storage.getStorageKeyByName('search_tip', this.config.name);
+      localStorage.setItem(key, JSON.stringify(Array.from(this.searchHistory).slice(-200)));
+    },
     cancelSearch() {
       // stop scanning in keyList
       this.$parent.$parent.$parent.$refs.keyList.cancelScanning();
       // reset search status
       this.$parent.$parent.$parent.$refs.keyList.resetSearchStatus();
     },
+  },
+  mounted() {
+    this.initHistory();
   },
 };
 </script>

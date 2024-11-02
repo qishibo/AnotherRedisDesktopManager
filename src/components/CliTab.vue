@@ -423,7 +423,7 @@ export default {
       });
     },
     initHistoryTips() {
-      const key = `cliTips_${this.client.options.connectionName}`;
+      const key = this.$storage.getStorageKeyByName('cli_tip', this.client.options.connectionName);
       const tips = localStorage.getItem(key);
 
       this.inputSuggestionItems = tips ? JSON.parse(tips) : [];

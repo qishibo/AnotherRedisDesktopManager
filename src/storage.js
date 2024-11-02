@@ -167,6 +167,7 @@ export default {
       cli_tip: 'cliTips',
       last_db: 'lastSelectedDb',
       custom_db: 'customDbName',
+      search_tip: 'searchTips',
     };
 
     return type ? typeMap[type] : typeMap;
