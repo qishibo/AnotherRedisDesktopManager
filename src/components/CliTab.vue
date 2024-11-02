@@ -110,6 +110,7 @@ export default {
       this.anoClient = this.client.duplicate();
       // bind subscribe messages
       this.bindSubscribeMessage();
+      this.scrollToBottom('> connecting......');
 
       this.anoClient.on('ready', () => {
         !this.anoClient.cliInited && this.initCliContent();
@@ -121,8 +122,7 @@ export default {
       });
     },
     initCliContent() {
-      this.content.push(`\n> ${this.anoClient.options.connectionName} connected!`);
-      this.scrollToBottom();
+      this.scrollToBottom(`> ${this.anoClient.options.connectionName} connected!`);
     },
     tabClick() {
       this.$nextTick(() => {
