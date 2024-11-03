@@ -1,44 +1,31 @@
 <template>
-<div>
-  <el-form @submit.native.prevent>
-    <el-form-item>
-      <!-- content textarea -->
-      <!-- <el-input
-        ref="cliContent"
-        type="textarea"
-        :value="contentStr"
-        rows='22'
-        :disabled="true"
-        :readonly="true"
-        id='cli-content'>
-      </el-input> -->
+  <div class="tab-cli">
+    <!-- result container -->
+    <CliContent ref="editor" :content="contentStr"></CliContent>
 
-      <CliContent ref="editor" :content="contentStr"></CliContent>
+    <!-- input params -->
+    <el-autocomplete
+      class="input-suggestion"
+      autocomplete="off"
+      v-model="params"
+      :debounce='10'
+      :disabled='subscribeMode || monitorMode'
+      :fetch-suggestions="inputSuggestion"
+      :placeholder="$t('message.enter_to_exec')"
+      :select-when-unmatched="true"
+      :trigger-on-focus="false"
+      popper-class="cli-console-suggestion"
+      ref="cliParams"
+      @select='$refs.cliParams.focus()'
+      @keyup.enter.native="consoleExec"
+      @keyup.up.native="searchUp"
+      @keyup.down.native="searchDown">
+    </el-autocomplete>
 
-      <!-- input params -->
-      <el-autocomplete
-        class="input-suggestion"
-        autocomplete="off"
-        v-model="params"
-        :debounce='10'
-        :disabled='subscribeMode || monitorMode'
-        :fetch-suggestions="inputSuggestion"
-        :placeholder="$t('message.enter_to_exec')"
-        :select-when-unmatched="true"
-        :trigger-on-focus="false"
-        popper-class="cli-console-suggestion"
-        ref="cliParams"
-        @select='$refs.cliParams.focus()'
-        @keyup.enter.native="consoleExec"
-        @keyup.up.native="searchUp"
-        @keyup.down.native="searchDown">
-      </el-autocomplete>
-    </el-form-item>
-  </el-form>
-
-  <el-button v-if='subscribeMode' @click='stopSubscribe' type='danger' class='stop-subscribe'>Stop Subscribe</el-button>
-  <el-button v-else-if='monitorMode' @click='stopMonitor' type='danger' class='stop-subscribe'>Stop Monitor</el-button>
-</div>
+    <!-- stop sub\monitor btn -->
+    <el-button v-if='subscribeMode' @click='stopSubscribe' type='danger' class='stop-subscribe'>Stop Subscribe</el-button>
+    <el-button v-else-if='monitorMode' @click='stopMonitor' type='danger' class='stop-subscribe'>Stop Monitor</el-button>
+  </div>
 </template>
 
 <script type="text/javascript">
@@ -451,45 +438,29 @@ export default {
 </script>
 
 <style type="text/css">
-  .cli-dailog .el-dialog__body {
-    padding: 0 20px;
-  }
-  .input-suggestion {
+  .tab-cli .input-suggestion {
     width: 100%;
-    line-height: 34px !important;
+    margin-top: 2px;
   }
 
-  .input-suggestion input {
+  .tab-cli .input-suggestion input {
     color: #babdc1;
     background: #263238;
     border-top: 0px;
     border-radius: 0 0 4px 4px;
   }
-  .dark-mode .input-suggestion input  {
+  .dark-mode .tab-cli .input-suggestion input  {
     color: #f7f7f7;
     background: #324148;
   }
 
-  .input-suggestion input::-webkit-input-placeholder {
+  .tab-cli .input-suggestion input::-webkit-input-placeholder {
     color: #8a8b8e;
   }
 
-  #cli-content {
-    color: #babdc1;
-    background: #263238;
-    border-bottom: 0px;
-    border-radius: 4px 4px 0 0;
-    cursor: text;
-    height: calc(100vh - 160px);
-  }
-  .dark-mode #cli-content {
-    color: #f7f7f7;
-    background: #324148;
-  }
-
-  .stop-subscribe {
+  .tab-cli .stop-subscribe {
     position: fixed;
-    right: 30px;
-    bottom: 104px;
+    right: 34px;
+    bottom: 68px;
   }
 </style>

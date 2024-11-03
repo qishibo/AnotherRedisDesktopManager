@@ -57,6 +57,7 @@
 
 ## Feature Log
 
+- 2024-11-03: Import batch commands from files
 - 2024-10-07: Hash field TTL support(Redis>=7.4)
 - 2024-06-06: Search connections support
 - 2024-04-10: DB custom name support
