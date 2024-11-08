@@ -26,7 +26,7 @@
 - 可以在[github](https://github.com/qishibo/AnotherRedisDesktopManager/releases) 或者 [gitee](https://gitee.com/qishibo/AnotherRedisDesktopManager/releases)下载`AppImage`包，`chmod +x`, 双击运行
 - 或者通过**snap**: `sudo snap install another-redis-desktop-manager`
 **Tips**: 如果选择私钥时提示权限不足，执行`sudo snap connect another-redis-desktop-manager:ssh-keys`来获取对~/.ssh文件夹的权限
-<br/>[![Get it from the Snap Store](https://snapcraft.io/static/images/badges/en/snap-store-black.svg)](https://snapcraft.io/another-redis-desktop-manager)
+<br/>[![Get it from the Snap Store](https://cdn.jsdelivr.net/gh/qishibo/img/ardm/202411080845423.svg)](https://snapcraft.io/another-redis-desktop-manager)
 
 ## Mac
 
@@ -41,11 +41,11 @@
 
 ## 起飞!
 
-![redis status dark](https://cdn.jsdelivr.net/gh/qishibo/img/ardm/202411062201020.png)
+![redis status dark](https://cdn.jsdelivr.net/gh/qishibo/img/ardm/202411081318491.png)
 
-![redis key dark](https://cdn.jsdelivr.net/gh/qishibo/img/ardm/202411062201021.png)
+![redis key dark](https://cdn.jsdelivr.net/gh/qishibo/img/ardm/202411081318490.png)
 
-![redis exec log](https://cdn.jsdelivr.net/gh/qishibo/img/ardm/202411062201023.png)
+![redis exec log](https://cdn.jsdelivr.net/gh/qishibo/img/ardm/202411081318492.png)
 
 
 ## 里程碑

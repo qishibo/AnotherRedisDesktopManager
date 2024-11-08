@@ -9,9 +9,9 @@
 [![LICENSE](https://img.shields.io/github/license/qishibo/AnotherRedisDesktopManager)](LICENSE)
 [![Release](https://img.shields.io/github/release/qishibo/AnotherRedisDesktopManager.svg)](https://github.com/qishibo/AnotherRedisDesktopManager/releases)
 [![Download](https://img.shields.io/github/downloads/qishibo/AnotherRedisDesktopManager/total)](https://github.com/qishibo/AnotherRedisDesktopManager/releases)
-[![Twitter](https://img.shields.io/badge/Twitter-@shibo-blue.svg)](https://twitter.com/qii404)
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fqishibo%2FAnotherRedisDesktopManager.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fqishibo%2FAnotherRedisDesktopManager?ref=badge_shield)
 <a href="https://www.producthunt.com/posts/another-redis-desktop-manager?utm_source=badge-featured"><img src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=340552&theme=dark" height="20" width="93" /></a>
+[![STARS](https://img.shields.io/github/stars/qishibo/AnotherRedisDesktopManager)](https://github.com/qishibo/AnotherRedisDesktopManager/)
 
 
 [简体中文](README.zh-CN.md)
@@ -19,7 +19,7 @@
 
 ## Windows
 
-- Download latest [exe](https://github.com/qishibo/AnotherRedisDesktopManager/releases) package from release [or [gitee](https://gitee.com/qishibo/AnotherRedisDesktopManager/releases) in China], double click to install.
+- Download latest [exe](https://github.com/qishibo/AnotherRedisDesktopManager/releases) package from release \[or [gitee](https://gitee.com/qishibo/AnotherRedisDesktopManager/releases) in China\], double click to install.
 - Or by **chocolatey**: `choco install another-redis-desktop-manager`
 - Or by **winget**: `winget install qishibo.AnotherRedisDesktopManager`
 - Or **sponsor** by win store, It's not free, and I will be very grateful to you.
@@ -27,17 +27,17 @@
 
 ## Linux
 
-- Download latest [AppImage](https://github.com/qishibo/AnotherRedisDesktopManager/releases) package from release [or [gitee](https://gitee.com/qishibo/AnotherRedisDesktopManager/releases) in China], `chmod +x`, double click to run.
- - Or by **snap**: `sudo snap install another-redis-desktop-manager`
+- Download latest [AppImage](https://github.com/qishibo/AnotherRedisDesktopManager/releases) package from release \[or [gitee](https://gitee.com/qishibo/AnotherRedisDesktopManager/releases) in China\], `chmod +x`, double click to run.
+- Or by **snap**: `sudo snap install another-redis-desktop-manager`
  **Tips**: If permission denied when selecting private key, run `sudo snap connect another-redis-desktop-manager:ssh-keys` to give access to ~/.ssh folder.
-<br/>[![Get it from the Snap Store](https://snapcraft.io/static/images/badges/en/snap-store-black.svg)](https://snapcraft.io/another-redis-desktop-manager)
+<br/>[![Get it from the Snap Store](https://cdn.jsdelivr.net/gh/qishibo/img/ardm/202411080845423.svg)](https://snapcraft.io/another-redis-desktop-manager)
 
 
 ## Mac
 
 > If you can't open it after installation by brew or dmg, exec the following command then reopen:<br>`sudo xattr -rd com.apple.quarantine /Applications/Another\ Redis\ Desktop\ Manager.app`
 
-- Download latest [dmg](https://github.com/qishibo/AnotherRedisDesktopManager/releases) package from release [or [gitee](https://gitee.com/qishibo/AnotherRedisDesktopManager/releases) in China], double click to install.
+- Download latest [dmg](https://github.com/qishibo/AnotherRedisDesktopManager/releases) package from release \[or [gitee](https://gitee.com/qishibo/AnotherRedisDesktopManager/releases) in China\], double click to install.
 - Or by **brew**: `brew install --cask another-redis-desktop-manager`
 - Or **sponsor** by app store, It's not free, and I will be very grateful to you.
 <br/>[![get from app store](https://cdn.jsdelivr.net/gh/qishibo/img/avail_app_store180.svg)](https://apps.apple.com/app/id1516451072)
@@ -46,11 +46,11 @@
 
 ## Enjoy!
 
-![redis status dark](https://cdn.jsdelivr.net/gh/qishibo/img/ardm/202411062201020.png)
+![redis status dark](https://cdn.jsdelivr.net/gh/qishibo/img/ardm/202411081318491.png)
 
-![redis key dark](https://cdn.jsdelivr.net/gh/qishibo/img/ardm/202411062201021.png)
+![redis key dark](https://cdn.jsdelivr.net/gh/qishibo/img/ardm/202411081318490.png)
 
-![redis exec log](https://cdn.jsdelivr.net/gh/qishibo/img/ardm/202411062201023.png)
+![redis exec log](https://cdn.jsdelivr.net/gh/qishibo/img/ardm/202411081318492.png)
 
 
 ## Feature Log
