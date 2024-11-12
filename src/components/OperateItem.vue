@@ -5,7 +5,7 @@
       <el-row :gutter="6">
         <!-- db index select -->
         <el-col :span="12">
-          <el-select class="db-select" v-model="selectedDbIndex" placeholder="DB" @change="changeDb()" filterable default-first-option>
+          <el-select class="db-select" v-model="selectedDbIndex" placeholder="DB" @change="changeDb()" :filter-method="filterDbCustomName" filterable default-first-option>
             <el-option
               v-for="index in dbs"
               :key="index"
@@ -168,11 +168,13 @@ export default {
       this.client.config('get', 'databases').then((reply) => {
         this.dbs = [...Array(parseInt(reply[1])).keys()];
         this.getDatabasesFromInfo();
+        this.all_dbs = this.dbs.concat();
       }).catch((e) => {
         // config command may be renamed
         this.dbs = [...Array(16).keys()];
         // read dbs from info
         this.getDatabasesFromInfo(true);
+        this.all_dbs = this.dbs.concat();
       });
     },
     initCustomDbName() {
@@ -251,6 +253,22 @@ export default {
         const dbKey = this.$storage.getStorageKeyByName('custom_db', this.config.connectionName);
         localStorage.setItem(dbKey, JSON.stringify(this.dbNames));
       }).catch(() => {});
+    },
+    filterDbCustomName(q) {
+      if (!q) {
+        this.dbs = [...this.all_dbs];
+        return;
+      }
+      this.dbs = this.all_dbs.filter((dbIndex) => {
+        if (`DB${dbIndex}`.indexOf(q) > -1) {
+          return true;
+        }
+        const dbName = `${this.dbNames[dbIndex]}`;
+        if (dbName) {
+          return dbName.indexOf(q) > -1;
+        }
+        return false;
+      });
     },
     addNewKey() {
       if (!this.newKeyName) {
