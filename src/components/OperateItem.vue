@@ -5,9 +5,9 @@
       <el-row :gutter="6">
         <!-- db index select -->
         <el-col :span="12">
-          <el-select class="db-select" v-model="selectedDbIndex" placeholder="DB" @change="changeDb()" :filter-method="filterDbCustomName" filterable default-first-option>
+          <el-select class="db-select" v-model="selectedDbIndex" placeholder="DB" @change="changeDb()" :filter-method="filterDbCustomName" @visible-change="dbSelectVisibleChange" filterable default-first-option>
             <el-option
-              v-for="index in dbs"
+              v-for="index in dbsCopy"
               :key="index"
               :label="`DB${index}`"
               :value="index">
@@ -110,6 +110,7 @@ export default {
   data() {
     return {
       dbs: [0],
+      dbsCopy: [0],
       selectedDbIndex: 0,
       searchMatch: '',
       searchExact: false,
@@ -135,6 +136,14 @@ export default {
     };
   },
   props: ['client', 'config'],
+  watch: {
+    dbs: {
+      handler(newValue) {
+        this.dbsCopy = newValue;
+      },
+      deep: true,
+    },
+  },
   created() {
     this.$bus.$on('changeDb', (client, dbIndex) => {
       if (!this.client || client.options.connectionName != this.client.options.connectionName) {
@@ -168,13 +177,11 @@ export default {
       this.client.config('get', 'databases').then((reply) => {
         this.dbs = [...Array(parseInt(reply[1])).keys()];
         this.getDatabasesFromInfo();
-        this.all_dbs = this.dbs.concat();
       }).catch((e) => {
         // config command may be renamed
         this.dbs = [...Array(16).keys()];
         // read dbs from info
         this.getDatabasesFromInfo(true);
-        this.all_dbs = this.dbs.concat();
       });
     },
     initCustomDbName() {
@@ -255,17 +262,14 @@ export default {
       }).catch(() => {});
     },
     filterDbCustomName(q) {
-      if (!q) {
-        this.dbs = [...this.all_dbs];
-        return;
-      }
-      this.dbs = this.all_dbs.filter((dbIndex) => {
-        if (`DB${dbIndex}`.indexOf(q) > -1) {
+      const lowStr = q.toString().toLocaleLowerCase();
+      this.dbsCopy = this.dbs.filter((dbIndex) => {
+        if (`db${dbIndex}`.indexOf(lowStr) > -1) {
           return true;
         }
         const dbName = `${this.dbNames[dbIndex]}`;
         if (dbName) {
-          return dbName.indexOf(q) > -1;
+          return dbName.indexOf(lowStr) > -1;
         }
         return false;
       });
@@ -379,6 +383,11 @@ export default {
       this.$parent.$parent.$parent.$refs.keyList.cancelScanning();
       // reset search status
       this.$parent.$parent.$parent.$refs.keyList.resetSearchStatus();
+    },
+    dbSelectVisibleChange(visible) {
+      if (visible) {
+        this.dbsCopy = this.dbs;
+      }
     },
   },
   mounted() {
