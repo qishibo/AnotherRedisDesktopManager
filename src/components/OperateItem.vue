@@ -5,9 +5,9 @@
       <el-row :gutter="6">
         <!-- db index select -->
         <el-col :span="12">
-          <el-select class="db-select" v-model="selectedDbIndex" placeholder="DB" @change="changeDb()" filterable default-first-option>
+          <el-select class="db-select" v-model="selectedDbIndex" placeholder="DB" @change="changeDb()" :filter-method="filterDbCustomName" @visible-change="revertDbFilter" filterable default-first-option>
             <el-option
-              v-for="index in dbs"
+              v-for="index in dbsCopy"
               :key="index"
               :label="`DB${index}`"
               :value="index">
@@ -79,10 +79,10 @@
     </el-form-item>
 
     <!-- new key dialog -->
-    <el-dialog :title="$t('message.add_new_key')" :visible.sync="newKeyDialog" :close-on-click-modal='false' append-to-body>
+    <el-dialog :title="$t('message.add_new_key')" :visible.sync="newKeyDialog" :close-on-click-modal='false' @opened="openNewKeyDialog" append-to-body>
       <el-form label-position="top" size="mini">
         <el-form-item :label="$t('message.key_name')">
-          <el-input v-model='newKeyName'></el-input>
+          <el-input v-model='newKeyName' ref="newKeyNameInput"></el-input>
         </el-form-item>
 
         <el-form-item :label="$t('message.key_type')">
@@ -110,6 +110,7 @@ export default {
   data() {
     return {
       dbs: [0],
+      dbsCopy: [0],
       selectedDbIndex: 0,
       searchMatch: '',
       searchExact: false,
@@ -135,6 +136,11 @@ export default {
     };
   },
   props: ['client', 'config'],
+  watch: {
+    dbs(newValue, oldValue) {
+      this.dbsCopy = newValue.concat();
+    },
+  },
   created() {
     this.$bus.$on('changeDb', (client, dbIndex) => {
       if (!this.client || client.options.connectionName != this.client.options.connectionName) {
@@ -252,6 +258,26 @@ export default {
         localStorage.setItem(dbKey, JSON.stringify(this.dbNames));
       }).catch(() => {});
     },
+    filterDbCustomName(query) {
+      query = query.toLocaleLowerCase();
+
+      this.dbsCopy = this.dbs.filter(dbIndex => {
+        if (`db${dbIndex}`.includes(query)) {
+          return true;
+        }
+
+        const dbName = this.dbNames[dbIndex];
+        if (dbName && dbName.toLowerCase().includes(query)) {
+          return true;
+        }
+
+        return false;
+      });
+    },
+    openNewKeyDialog() {
+      this.$refs.newKeyNameInput.focus();
+      this.$refs.newKeyNameInput.select();
+    },
     addNewKey() {
       if (!this.newKeyName) {
         return;
@@ -361,6 +387,10 @@ export default {
       this.$parent.$parent.$parent.$refs.keyList.cancelScanning();
       // reset search status
       this.$parent.$parent.$parent.$refs.keyList.resetSearchStatus();
+    },
+    revertDbFilter(visible) {
+      // revert only when select shows
+      visible && (this.dbsCopy = this.dbs.concat());
     },
   },
   mounted() {
