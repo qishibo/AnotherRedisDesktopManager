@@ -60,7 +60,10 @@
           <span><i class='more-operate-ico fa fa-hourglass-start'></i>&nbsp;{{ $t('message.slow_log') }}</span>
         </el-dropdown-item>
         <el-dropdown-item @click.native='importKeys' divided>
-          <span><i class='more-operate-ico el-icon-download'></i>&nbsp;{{ $t('message.import') }}Key</span>
+          <span><i class='more-operate-ico el-icon-download'></i>&nbsp;{{ $t('message.import') }} Key</span>
+        </el-dropdown-item>
+        <el-dropdown-item @click.native='execFileCMDS'>
+          <span><i class='more-operate-ico fa fa-file-code-o'></i>&nbsp;{{ $t('message.import') }} CMD</span>
         </el-dropdown-item>
         <el-dropdown-item @click.native='flushDB'>
           <span><i class='more-operate-ico fa fa-exclamation-triangle'></i>&nbsp;{{ $t('message.flushdb') }}</span>
@@ -87,6 +90,7 @@
 import storage from '@/storage.js';
 import { remote } from 'electron';
 import NewConnectionDialog from '@/components/NewConnectionDialog';
+import splitargs from '@qii404/redis-splitargs';
 
 export default {
   data() {
@@ -276,11 +280,9 @@ export default {
           this.client.callBuffer('RESTORE', key, ttl, content, 'REPLACE').then((reply) => {
             // reply == 'OK'
             succ.push(key);
-            this.$set(this.$refs.importKeysNotify,
-              'innerHTML',
-              `Succ: ${succ.length}, Fail: ${fail.length}`);
           }).catch((e) => {
             fail.push(key);
+          }).finally(() => {
             this.$set(this.$refs.importKeysNotify,
               'innerHTML',
               `Succ: ${succ.length}, Fail: ${fail.length}`);
@@ -298,6 +300,66 @@ export default {
           });
 
           // refresh keu list
+          this.$bus.$emit('refreshKeyList', this.client);
+        });
+      });
+    },
+    execFileCMDS() {
+      remote.dialog.showOpenDialog(remote.getCurrentWindow(), {
+        properties: ['openFile'],
+      }).then((reply) => {
+        if (reply.canceled) {
+          return;
+        }
+
+        const succ = [];
+        const fail = [];
+        let count = 0;
+
+        const rl = require('readline').createInterface({
+          input: require('fs').createReadStream(reply.filePaths[0]),
+        });
+
+        rl.on('line', (line) => {
+          const paramsArr = splitargs(line, true);
+
+          if (!paramsArr || !paramsArr.length) {
+            return;
+          }
+
+          count++;
+
+          // show notify in first time
+          if (count === 1) {
+            this.$notify.success({
+              message: this.$createElement('p', { ref: 'importCMDNotify' }, ''),
+              duration: 0,
+            });
+          }
+
+          this.client.callBuffer(...paramsArr).then((reply) => {
+            succ.push(line);
+          }).catch((e) => {
+            fail.push(line);
+          }).finally(() => {
+            this.$set(this.$refs.importCMDNotify,
+              'innerHTML',
+              `Succ: ${succ.length}, Fail: ${fail.length}`
+            );
+          });
+        });
+
+        rl.on('close', () => {
+          if (count === 0) {
+            return this.$message.error('File parse failed.');
+          }
+
+          (count > 10000) && this.$message.success({
+            message: this.$t('message.import_success'),
+            duration: 800,
+          });
+
+          // refresh key list
           this.$bus.$emit('refreshKeyList', this.client);
         });
       });

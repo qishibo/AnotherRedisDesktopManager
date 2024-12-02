@@ -1,7 +1,7 @@
 {
   "name": "another-desktop-manager",
   "productName": "Another Desktop Manager",
-  "version": "1.6.8",
+  "version": "1.7.0",
   "description": "A faster, better and more stable redis desktop manager.",
   "author": "Another",
   "private": true,
@@ -14,7 +14,7 @@
   "build": {
     "appId": "me.qii404.another-redis-desktop-manager",
     "productName": "Another Desktop Manager",
-    "artifactName": "${productName}.${version}.${ext}",
+    "artifactName": "${productName}-${os}-${version}-${arch}.${ext}",
     "copyright": "Copyright © 2024 qii404",
     "asar": true,
     "directories": {
@@ -36,7 +36,8 @@
     "win": {
       "icon": "icons/icon.ico",
       "target": [
-        "nsis"
+        {"target": "nsis", "arch": ["x64", "arm64"]},
+        {"target": "zip", "arch": ["x64"]}
       ]
     },
     "nsis": {
@@ -49,7 +50,7 @@
       "icon": "icons/icon.png",
       "category": "Utility",
       "target": [
-        "AppImage"
+        {"target": "AppImage", "arch": ["x64", "arm64"]}
       ]
     },
     "snap": {
