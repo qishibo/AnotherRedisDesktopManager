@@ -1,6 +1,6 @@
 # Another Redis Desktop Manager
 
-<img align="right" width="120" src="https://cdn.jsdelivr.net/gh/qishibo/img/ano-square-icon-128.png">
+<img align="right" width="110" src="https://cdn.jsdelivr.net/gh/qishibo/img/ardm/202411081958294.png">
 
 > 🚀🚀🚀 A faster, better and more stable redis desktop manager, compatible with Linux, windows, mac. What's more, it won't crash when loading massive keys.
 
@@ -9,9 +9,9 @@
 [![LICENSE](https://img.shields.io/github/license/qishibo/AnotherRedisDesktopManager)](LICENSE)
 [![Release](https://img.shields.io/github/release/qishibo/AnotherRedisDesktopManager.svg)](https://github.com/qishibo/AnotherRedisDesktopManager/releases)
 [![Download](https://img.shields.io/github/downloads/qishibo/AnotherRedisDesktopManager/total)](https://github.com/qishibo/AnotherRedisDesktopManager/releases)
-[![Twitter](https://img.shields.io/badge/Twitter-@shibo-blue.svg)](https://twitter.com/qii404)
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fqishibo%2FAnotherRedisDesktopManager.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fqishibo%2FAnotherRedisDesktopManager?ref=badge_shield)
 <a href="https://www.producthunt.com/posts/another-redis-desktop-manager?utm_source=badge-featured"><img src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=340552&theme=dark" height="20" width="93" /></a>
+[![STARS](https://img.shields.io/github/stars/qishibo/AnotherRedisDesktopManager)](https://github.com/qishibo/AnotherRedisDesktopManager/)
 
 
 [简体中文](README.zh-CN.md)
@@ -19,7 +19,7 @@
 
 ## Windows
 
-- Download latest [exe](https://github.com/qishibo/AnotherRedisDesktopManager/releases) package from release [or [gitee](https://gitee.com/qishibo/AnotherRedisDesktopManager/releases) in China], double click to install.
+- Download latest [exe](https://github.com/qishibo/AnotherRedisDesktopManager/releases) package from release \[or [gitee](https://gitee.com/qishibo/AnotherRedisDesktopManager/releases) in China\], double click to install.
 - Or by **chocolatey**: `choco install another-redis-desktop-manager`
 - Or by **winget**: `winget install qishibo.AnotherRedisDesktopManager`
 - Or **sponsor** by win store, It's not free, and I will be very grateful to you.
@@ -27,36 +27,56 @@
 
 ## Linux
 
-- Download latest [AppImage](https://github.com/qishibo/AnotherRedisDesktopManager/releases) package from release [or [gitee](https://gitee.com/qishibo/AnotherRedisDesktopManager/releases) in China], `chmod +x`, double click to run.
- - Or by **snap**: `sudo snap install another-redis-desktop-manager`
+- Download latest [AppImage](https://github.com/qishibo/AnotherRedisDesktopManager/releases) package from release \[or [gitee](https://gitee.com/qishibo/AnotherRedisDesktopManager/releases) in China\], `chmod +x`, double click to run.
+- Or by **snap**: `sudo snap install another-redis-desktop-manager`
  **Tips**: If permission denied when selecting private key, run `sudo snap connect another-redis-desktop-manager:ssh-keys` to give access to ~/.ssh folder.
-<br/>[![Get it from the Snap Store](https://snapcraft.io/static/images/badges/en/snap-store-black.svg)](https://snapcraft.io/another-redis-desktop-manager)
+<br/>[![Get it from the Snap Store](https://cdn.jsdelivr.net/gh/qishibo/img/ardm/202411080845423.svg)](https://snapcraft.io/another-redis-desktop-manager)
 
 
 ## Mac
 
 > If you can't open it after installation by brew or dmg, exec the following command then reopen:<br>`sudo xattr -rd com.apple.quarantine /Applications/Another\ Redis\ Desktop\ Manager.app`
 
-- Download latest [dmg](https://github.com/qishibo/AnotherRedisDesktopManager/releases) package from release [or [gitee](https://gitee.com/qishibo/AnotherRedisDesktopManager/releases) in China], double click to install.
+- Download latest [dmg](https://github.com/qishibo/AnotherRedisDesktopManager/releases) package from release \[or [gitee](https://gitee.com/qishibo/AnotherRedisDesktopManager/releases) in China\], double click to install.
 - Or by **brew**: `brew install --cask another-redis-desktop-manager`
 - Or **sponsor** by app store, It's not free, and I will be very grateful to you.
 <br/>[![get from app store](https://cdn.jsdelivr.net/gh/qishibo/img/avail_app_store180.svg)](https://apps.apple.com/app/id1516451072)
 
 
-
 ## Enjoy!
 
-![redis status dark](https://cdn.jsdelivr.net/gh/qishibo/img/1630655843497-status.png)
+![redis status dark](https://cdn.jsdelivr.net/gh/qishibo/img/ardm/202411081318491.png)
 
-![redis key hash dark](https://cdn.jsdelivr.net/gh/qishibo/img/1630655844559-str.png)
+![redis key dark](https://cdn.jsdelivr.net/gh/qishibo/img/ardm/202411081318490.png)
 
-![redis console dark](https://cdn.jsdelivr.net/gh/qishibo/img/1630655846107-cli.png)
+![redis exec log](https://cdn.jsdelivr.net/gh/qishibo/img/ardm/202411081318492.png)
 
-![redis exec log](https://cdn.jsdelivr.net/gh/qishibo/img/1630655847740-log.png)
+
+## Contributors
+
+This project exists thanks to all the people who contribute.
+[![contributors](https://opencollective.com/AnotherRedisDesktopManager/contributors.svg?width=890&button=false)](https://github.com/qishibo/AnotherRedisDesktopManager/graphs/contributors)
+[![backers](https://opencollective.com/AnotherRedisDesktopManager/backers.svg)](https://opencollective.com/AnotherRedisDesktopManager)
+
+<!-- sponsors --><a href="https://github.com/brunoksato"><img src="https://images.weserv.nl/?h=120&w=120&mask=circle&url=https:&#x2F;&#x2F;avatars.githubusercontent.com&#x2F;u&#x2F;2257501?u&#x3D;62e7db432487ab19a9e11db051198d91fb42fe95&amp;v&#x3D;4" width="60px" alt="Bruno Sato" /></a><a href="https://github.com/overtrue"><img src="https://images.weserv.nl/?h=120&w=120&mask=circle&url=https:&#x2F;&#x2F;avatars.githubusercontent.com&#x2F;u&#x2F;1472352?u&#x3D;72f261973db954faf4a64987ee3f7e7baf423ded&amp;v&#x3D;4" width="60px" alt="安正超" /></a><a href="https://github.com/wehnertb"><img src="https://images.weserv.nl/?h=120&w=120&mask=circle&url=https:&#x2F;&#x2F;avatars.githubusercontent.com&#x2F;u&#x2F;6706492?u&#x3D;23b3c316d88684d8cbce4947d9a9564c05fa48e6&amp;v&#x3D;4" width="60px" alt="Bill" /></a><a href="https://github.com/RobinTao"><img src="https://images.weserv.nl/?h=120&w=120&mask=circle&url=https:&#x2F;&#x2F;avatars.githubusercontent.com&#x2F;u&#x2F;3703152?v&#x3D;4" width="60px" alt="" /></a><a href="https://github.com/hfoxy"><img src="https://images.weserv.nl/?h=120&w=120&mask=circle&url=https:&#x2F;&#x2F;avatars.githubusercontent.com&#x2F;u&#x2F;1254033?u&#x3D;630787b85016572cb1f9d87a7fbd77314b084bb9&amp;v&#x3D;4" width="60px" alt="Harry Fox" /></a><a href="https://github.com/maniappstudios"><img src="https://images.weserv.nl/?h=120&w=120&mask=circle&url=https:&#x2F;&#x2F;avatars.githubusercontent.com&#x2F;u&#x2F;91392014?v&#x3D;4" width="60px" alt="Mani App Studios" /></a><a href="https://github.com/BWICompanies"><img src="https://images.weserv.nl/?h=120&w=120&mask=circle&url=https:&#x2F;&#x2F;avatars.githubusercontent.com&#x2F;u&#x2F;28601356?v&#x3D;4" width="60px" alt="BWI Companies, Inc." /></a><a href="https://github.com/dragonflydb"><img src="https://images.weserv.nl/?h=120&w=120&mask=circle&url=https:&#x2F;&#x2F;avatars.githubusercontent.com&#x2F;u&#x2F;104819355?v&#x3D;4" width="60px" alt="DragonflyDB" /></a><a href="https://github.com/gauravn00b"><img src="https://images.weserv.nl/?h=120&w=120&mask=circle&url=https:&#x2F;&#x2F;avatars.githubusercontent.com&#x2F;u&#x2F;70876227?v&#x3D;4" width="60px" alt="" /></a><a href="https://github.com/roostinghawk"><img src="https://images.weserv.nl/?h=120&w=120&mask=circle&url=https:&#x2F;&#x2F;avatars.githubusercontent.com&#x2F;u&#x2F;5466611?u&#x3D;6c5bcb3a5e4cd3bc128052dcce3a58ba00e742f9&amp;v&#x3D;4" width="60px" alt="liuwei" /></a><a href="https://github.com/status2xx"><img src="https://images.weserv.nl/?h=120&w=120&mask=circle&url=https:&#x2F;&#x2F;avatars.githubusercontent.com&#x2F;u&#x2F;40201780?u&#x3D;ba9c0f10211ecf2af64ec335a5df13637e313060&amp;v&#x3D;4" width="60px" alt="小新" /></a><a href="https://github.com/mikeallisonJS"><img src="https://images.weserv.nl/?h=120&w=120&mask=circle&url=https:&#x2F;&#x2F;avatars.githubusercontent.com&#x2F;u&#x2F;838371?u&#x3D;6c8a7a989e12d67117976a5ec155e022a5d83499&amp;v&#x3D;4" width="60px" alt="Mike Allison" /></a><!-- sponsors -->
+
+
+## Sponsor
+
+- Give me a star ⭐ or upvote on [Producthunt](https://www.producthunt.com/posts/another-redis-desktop-manager)
+- Through [OpenCollective](https://opencollective.com/AnotherRedisDesktopManager) or [Github Sponsor](https://github.com/sponsors/qishibo)
+- If you are a Mac user, you can purchase this software from the [app store](https://apps.apple.com/app/id1516451072) to sponsor, and then let the app store automatically update it for you.
+<br>[![app store](https://cdn.jsdelivr.net/gh/qishibo/img/avail_app_store180.svg)](https://apps.apple.com/app/id1516451072)
+- If you are a Windows user, you can purchase this software from the [win store](https://www.microsoft.com/store/apps/9MTD84X0JFHZ) to sponsor.
+<br>[![windows store](https://cdn.jsdelivr.net/gh/qishibo/img/windows-store-icon182-56.png)](https://www.microsoft.com/store/apps/9MTD84X0JFHZ)
+- Wechat sponsor code [Sponsor me a cup of coffee ☕]
+
+  <img width="150px" src="https://cdn.jsdelivr.net/gh/qishibo/img/202109031655807.jpeg" />
 
 
 ## Feature Log
 
+- 2024-11-03: Import batch commands from files
 - 2024-10-07: Hash field TTL support(Redis>=7.4)
 - 2024-06-06: Search connections support
 - 2024-04-10: DB custom name support
@@ -138,9 +158,6 @@ sudo apt install libfontconfig1-dev
 ### Windows
 
 ``` bash
-# install build tools for the first time, just execute once
-npm install -g windows-build-tools
-
 # clone code
 git clone https://github.com/qishibo/AnotherRedisDesktopManager.git --depth=1
 cd AnotherRedisDesktopManager
@@ -178,25 +195,6 @@ npm run pack:mac
 # on linux
 npm run pack:linux
 ```
-
-## Sponsor
-
-- Give me a star ⭐ or upvote on [Producthunt](https://www.producthunt.com/posts/another-redis-desktop-manager)
-- Through [OpenCollective](https://opencollective.com/AnotherRedisDesktopManager)
-- If you are a Mac user, you can purchase this software from the [app store](https://apps.apple.com/app/id1516451072) to sponsor, and then let the app store automatically update it for you.
-<br>[![app store](https://cdn.jsdelivr.net/gh/qishibo/img/avail_app_store180.svg)](https://apps.apple.com/app/id1516451072)
-- If you are a Windows user, you can purchase this software from the [win store](https://www.microsoft.com/store/apps/9MTD84X0JFHZ) to sponsor.
-<br>[![windows store](https://cdn.jsdelivr.net/gh/qishibo/img/windows-store-icon182-56.png)](https://www.microsoft.com/store/apps/9MTD84X0JFHZ)
-- Wechat sponsor code [Sponsor me a cup of coffee ☕]
-
-  <img width="150px" src="https://cdn.jsdelivr.net/gh/qishibo/img/202109031655807.jpeg" />
-
-
-## Contributors
-
-This project exists thanks to all the people who contribute.
-[![contributors](https://opencollective.com/AnotherRedisDesktopManager/contributors.svg?width=890&button=false)](https://github.com/qishibo/AnotherRedisDesktopManager/graphs/contributors)
-[![backers](https://opencollective.com/AnotherRedisDesktopManager/backers.svg)](https://opencollective.com/AnotherRedisDesktopManager)
 
 
 ## Custom Viewer
