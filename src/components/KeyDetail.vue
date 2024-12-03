@@ -67,6 +67,7 @@ export default {
         stream: 'KeyContentStream',
         'ReJSON-RL': 'KeyContentReJson',
         json: 'KeyContentReJson', // upstash
+        'tair-json': 'KeyContentReJson', // tair
       };
 
       if (map[keyType]) {
