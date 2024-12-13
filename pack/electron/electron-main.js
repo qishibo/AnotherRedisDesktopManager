@@ -7,7 +7,6 @@ const path = require('path');
 const fontManager = require('./font-manager');
 const winState = require('./win-state');
 
-
 // disable GPU for some white screen issues
 // app.disableHardwareAcceleration();
 // app.commandLine.appendSwitch('disable-gpu');
@@ -144,8 +143,16 @@ ipcMain.handle('getMainArgs', (event, arg) => ({
 }));
 
 ipcMain.handle('changeTheme', (event, theme) => {
-  nativeTheme.themeSource = (theme === 'dark' ? 'dark' : 'light');
+  nativeTheme.themeSource = theme;
   return nativeTheme.shouldUseDarkColors;
+});
+
+// OS theme changed
+nativeTheme.on('updated', () => {
+  mainWindow.webContents.send('os-theme-updated', {
+    shouldUseDarkColors: nativeTheme.shouldUseDarkColors,
+    themeSource: nativeTheme.themeSource
+  });
 });
 
 ipcMain.handle('getTempPath', (event, arg) => app.getPath('temp'));

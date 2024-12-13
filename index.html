@@ -11,22 +11,48 @@
     <script type="text/javascript">
       const ipcRenderer = require('electron').ipcRenderer;
 
-      function globalChangeTheme(theme) {
-        theme  && (localStorage.theme = theme);
-        !theme && (theme = localStorage.theme);
-
-        const themeName =  (theme  == 'dark' ? 'dark' : 'chalk');
-        const themeHref = 'static/theme/' + themeName + '/index.css';
-
+      function changeCSS(theme = 'light') {
+        const themeHref = `static/theme/${theme}/index.css`;
         document.getElementById('theme-link').href = themeHref;
-        themeName == 'dark' ? document.body.classList.add('dark-mode') :
-                              document.body.classList.remove('dark-mode');
-
-        // change native theme
-        ipcRenderer.invoke('changeTheme', themeName);
+        theme == 'dark' ? document.body.classList.add('dark-mode') :
+                          document.body.classList.remove('dark-mode');
       }
 
-      // theme init start
+      function globalChangeTheme(theme) {
+        if (!theme) {
+          theme = localStorage.theme;
+          !['system', 'light', 'dark'].includes(theme) && (theme = 'system');
+        }
+
+        // ipcRenderer.invoke('changeTheme', theme).then(shouldUseDarkColors => {
+        //   changeCSS(shouldUseDarkColors ? 'dark' : 'light')
+        // });
+        // return;
+
+        // system
+        if (theme == 'system') {
+          ipcRenderer.invoke('changeTheme', theme).then(shouldUseDarkColors => {
+            changeCSS(shouldUseDarkColors ? 'dark' : 'light')
+          });
+        }
+        // light/dark change directly to reduce delay
+        else {
+          changeCSS(theme);
+          ipcRenderer.invoke('changeTheme', theme);
+        }
+      }
+
+      // triggered by OS theme changed
+      ipcRenderer.on('os-theme-updated', (event, arg) => {
+        // auto change only when theme set to 'system'
+        if (arg.themeSource != 'system') {
+          return;
+        }
+
+        changeCSS(arg.shouldUseDarkColors ? 'dark' : 'light');
+      })
+
+      // theme init at startup
       globalChangeTheme();
     </script>
 
