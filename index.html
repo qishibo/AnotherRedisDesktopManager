@@ -19,27 +19,12 @@
       }
 
       function globalChangeTheme(theme) {
-        if (!theme) {
-          theme = localStorage.theme;
-          !['system', 'light', 'dark'].includes(theme) && (theme = 'system');
-        }
-
-        // ipcRenderer.invoke('changeTheme', theme).then(shouldUseDarkColors => {
-        //   changeCSS(shouldUseDarkColors ? 'dark' : 'light')
-        // });
-        // return;
-
-        // system
-        if (theme == 'system') {
-          ipcRenderer.invoke('changeTheme', theme).then(shouldUseDarkColors => {
-            changeCSS(shouldUseDarkColors ? 'dark' : 'light')
-          });
-        }
-        // light/dark change directly to reduce delay
-        else {
-          changeCSS(theme);
-          ipcRenderer.invoke('changeTheme', theme);
-        }
+        ipcRenderer.invoke('changeTheme', theme).then(shouldUseDarkColors => {
+          // delay to avoid stuck
+          setTimeout(() => {
+            changeCSS(shouldUseDarkColors ? 'dark' : 'light');
+          }, 100);
+        });
       }
 
       // triggered by OS theme changed
@@ -49,11 +34,30 @@
           return;
         }
 
-        changeCSS(arg.shouldUseDarkColors ? 'dark' : 'light');
-      })
+        setTimeout(() => {
+          changeCSS(arg.shouldUseDarkColors ? 'dark' : 'light');
+        }, 100);
+      });
 
       // theme init at startup
-      globalChangeTheme();
+      (() => {
+        let theme = localStorage.theme;
+
+        if (!['system', 'light', 'dark'].includes(theme)) {
+          theme = 'system';
+        }
+
+        // follow system OS
+        if (theme == 'system') {
+          const dark = (new URL(window.location.href)).searchParams.get('dark');
+          changeCSS(dark === 'true' ? 'dark' : 'light');
+        }
+        // setted light or dark
+        else {
+          changeCSS(theme);
+          ipcRenderer.invoke('changeTheme', theme);
+        }
+      })();
     </script>
 
     <div id="app"></div>
