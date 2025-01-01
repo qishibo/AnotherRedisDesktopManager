@@ -10,7 +10,7 @@
           </el-form-item>
 
           <el-form-item :label="$t('message.password')">
-            <InputPassword v-model="connection.auth" placeholder="Auth"></InputPassword>
+            <InputPassword v-model="connection.auth" :hidepass="editMode" placeholder="Auth"></InputPassword>
           </el-form-item>
 
           <el-form-item :label="$t('message.connection_name')">

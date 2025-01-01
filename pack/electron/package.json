@@ -1,7 +1,7 @@
 {
   "name": "another-desktop-manager",
   "productName": "Another Desktop Manager",
-  "version": "1.7.0",
+  "version": "1.7.1",
   "description": "A faster, better and more stable redis desktop manager.",
   "author": "Another",
   "private": true,
