@@ -260,13 +260,14 @@ export default {
           break;
         }
         case 'export': {
-          this.$refs.veTree.setChecked(this.rightClickNode.key, true);
-
-          if (this.multiOperating) {
-            return this.exportBatch();
+          if (!this.multiOperating) {
+            this.$refs.veTree.setChecked(this.rightClickNode.key, true);
+            this.showMultiSelect();
+          }
+          else {
+            this.exportBatch();
           }
 
-          this.showMultiSelect();
           break;
         }
         case 'load_cur_folder': {
