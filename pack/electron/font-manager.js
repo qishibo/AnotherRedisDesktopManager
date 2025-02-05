@@ -10,6 +10,8 @@ ipcMain.on('get-all-fonts', (event, arg) => {
       fonts = fonts.map(font => font.replace('"', '').replace('"', ''));
 
       event.sender.send('send-all-fonts', fonts);
+    }).catch(e => {
+      event.sender.send('send-all-fonts', ['Default Initial']);
     });
   } catch (e) {
     event.sender.send('send-all-fonts', ['Default Initial']);
