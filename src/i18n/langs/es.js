@@ -87,17 +87,21 @@ const es = {
     update_error: 'Actualización Fallida',
     update_downloading: 'Descargando...',
     update_download_progress: 'Progreso de la descarga',
-    update_downloaded: 'Descarga de actualización completada, por favor, reinicia la aplicaicón.\
+    update_downloaded:
+      'Descarga de actualización completada, por favor, reinicia la aplicaicón.\
     [Consejo]: Si está utilizando Windows, después de cerrar la aplicación, espere que el ícono del escritorio se actualice a un estado normal (alrededor de 10 segundos) y luego puede volver a abrirlo',
-    mac_not_support_auto_update: 'Mac no soporte actualizaciones automáticas. Manualmente puede <a href="https://github.com/qishibo/AnotherRedisDesktopManager/releases">Descargarla</a> y reinstalarla,\
+    mac_not_support_auto_update:
+      'Mac no soporte actualizaciones automáticas. Manualmente puede <a href="https://github.com/qishibo/AnotherRedisDesktopManager/releases">Descargarla</a> y reinstalarla,\
     o ejecute <br><code>brew reinstall --cask another-redis-desktop-manager </code>\
     <br><hr><br>❤️si es útil para ti, puedes patronizarnos a través de <a href="https://apps.apple.com/app/id1516451072">AppStore</a>, y AppStore lo actualizará automáticamente por usted.',
     font_family: 'Familia de la Fuente',
     font_faq_title: 'Instrucciones Ajuste Fuente',
-    font_faq: '1. Se pueden configurar varias fuentes<br>\
+    font_faq:
+      '1. Se pueden configurar varias fuentes<br>\
     2. La selección de fuentes es ordenada. Se sugiere elegir primero la fuente en inglés y luego la fuente en su idioma<br>\
     3. Cuando la lista de fuentes del sistema no se puede cargar en algunos casos excepcionales, puede ingresar el nombre de la fuente instalada manualmente.',
-    private_key_faq: 'Se admite la clave privada en formato RSA, que comienza con <pre>-----BEGIN RSA PRIVATE KEY-----</pre>\
+    private_key_faq:
+      'Se admite la clave privada en formato RSA, que comienza con <pre>-----BEGIN RSA PRIVATE KEY-----</pre>\
     y comienza con<pre>-----BEGIN OPENSSH PRIVATE KEY-----</pre> necesita convertir el formato a través de <pre>ssh-keygen -p -m pem -f ~/.ssh/id_rsa</pre>Esta operación no afectará el inicio de sesión de clave privada anterior',
     dark_mode: 'Modo Oscuro',
     load_more_keys: 'cargar más',
@@ -123,10 +127,12 @@ const es = {
     key_no_permission: 'El permiso de lectura de archivos ha caducado, vuelva a seleccionar el archivo clave manualmente',
     toggle_check_all: 'Seleccionar todos | Deseleccionar todos',
     select_lang: 'Seleccione el idioma',
-    clear_cache_tip: 'Cuando hay un problema con el cliente, esta operación eliminará todas las conexiones y configuraciones para recuperar el cliente',
+    clear_cache_tip:
+      'Cuando hay un problema con el cliente, esta operación eliminará todas las conexiones y configuraciones para recuperar el cliente',
     detail: 'Detalle',
     separator_tip: 'El separador de la vista de árbol, establecido en vacío para deshabilitar el árbol y mostrar las teclas como una lista',
-    confirm_modify_unvisible_content: 'El contenido contiene caracteres invisibles, puede editar de forma segura en la "Vista hexadecimal". Si continuar editando en la "Vista de texto" puede causar errores de codificación, ¿desea continuar?',
+    confirm_modify_unvisible_content:
+      'El contenido contiene caracteres invisibles, puede editar de forma segura en la "Vista hexadecimal". Si continuar editando en la "Vista de texto" puede causar errores de codificación, ¿desea continuar?',
     keys_per_loading: 'Numeros por Carga',
     keys_per_loading_tip: 'El número de claves cargadas cada vez. Un ajuste demasiado grande puede afectar el rendimiento',
     host: 'Host',
@@ -142,7 +148,8 @@ const es = {
     redis_node_password: 'Redis Node Password',
     master_group_name: 'Nombre Grupo Maestro',
     command_log: 'Log',
-    sentinel_faq: 'Puede elegir uno de varios centinelas. Complete la configuración de Sentinel para la dirección, el puerto y la contraseña. La contraseña del nodo Redis es la contraseña del nodo maestro monitoreado por el centinela.',
+    sentinel_faq:
+      'Puede elegir uno de varios centinelas. Complete la configuración de Sentinel para la dirección, el puerto y la contraseña. La contraseña del nodo Redis es la contraseña del nodo maestro monitoreado por el centinela.',
     hotkey: 'Hot Key',
     persist: 'Eliminar tiempo expiración',
     custom_formatter: 'Formato Personalizado',
@@ -154,8 +161,10 @@ const es = {
     maximize_window: 'Maximizar Ventana',
     load_all_keys: 'Cargar todo',
     show_load_all_keys: 'Habilitar botón para cargar todas las claves',
-    load_all_keys_tip: 'Cargue todas las claves a la vez. Si el número de claves es demasiado grande, el cliente puede atascarse. Por favor úsalo correctamente',
-    tree_node_overflow: 'Demasiadas claves o carpetas, mantenga solo {num} para mostrar. Si su clave no está aquí, se recomienda una búsqueda aproximada o configure el separador para distribuir las claves en carpetas',
+    load_all_keys_tip:
+      'Cargue todas las claves a la vez. Si el número de claves es demasiado grande, el cliente puede atascarse. Por favor úsalo correctamente',
+    tree_node_overflow:
+      'Demasiadas claves o carpetas, mantenga solo {num} para mostrar. Si su clave no está aquí, se recomienda una búsqueda aproximada o configure el separador para distribuir las claves en carpetas',
     connection_readonly: 'Modo de solo lectura. Prohibido agregar, editar y borrar',
     memory_analysis: 'Análisis de memoria',
     begin: 'Iniciar',
@@ -163,6 +172,8 @@ const es = {
     restart: 'Reiniciar',
     max_display: 'Número máximo de visualizaciones:  {num}',
     max_scan: 'Número máximo de escaneos:  {num}',
+    before_connect: 'Antes de conectar (comando)',
+    before_connect_error: 'Antes de conectar (comando) Error: {message}',
     close_left: 'Cerrar pestañas izquierdas',
     close_right: 'Cerrar pestañas derechas',
     close_other: 'Cerrar otras pestañas',

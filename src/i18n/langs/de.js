@@ -87,17 +87,21 @@ const de = {
     update_error: 'Aktualisierung fehlgeschlagen',
     update_downloading: 'Herunterladen ...',
     update_download_progress: 'Download Fortschritt',
-    update_downloaded: 'Update Download abgeschlossen, bitte starten Sie Ihre App neu.\
+    update_downloaded:
+      'Update Download abgeschlossen, bitte starten Sie Ihre App neu.\
     [Tips]: Wenn Sie Windows verwenden, warten Sie nach dem Schließen der App darauf, dass das Desktopsymbol auf einen normalen Zustand (ca. 10 Sekunden) aktualisiert wird, und öffnen Sie es dann erneut',
-    mac_not_support_auto_update: 'Mac unterstützt keine automatische Aktualisierung, bitte manuell <a href="https://github.com/qishibo/AnotherRedisDesktopManager/releases">herunterladen</a> und neu installieren,\
+    mac_not_support_auto_update:
+      'Mac unterstützt keine automatische Aktualisierung, bitte manuell <a href="https://github.com/qishibo/AnotherRedisDesktopManager/releases">herunterladen</a> und neu installieren,\
     or ausführen <br><code>brew reinstall --cask another-redis-desktop-manager </code>\
     <br><hr><br>❤️Wenn es für Sie nützlich ist, können Sie über den <a href="https://apps.apple.com/app/id1516451072">AppStore</a> sponsern, und der AppStore aktualisiert es automatisch für Sie.',
     font_family: 'Schrift familie',
     font_faq_title: 'Anweisungen zum Einstellen der Schriftart',
-    font_faq: '1. Mehrere Schriftarten können eingestellt werden<br>\
+    font_faq:
+      '1. Mehrere Schriftarten können eingestellt werden<br>\
     2. Die Auswahl der Schriftart ist geordnet. Es wird empfohlen, zuerst die englische Schriftart und dann die Schriftart in Ihrer Sprache zu wählen.<br>\
     3. Wenn die Systemschriftenliste in einigen Ausnahmefällen nicht geladen werden kann, können Sie den Namen der installierten Schrift manuell eingeben.',
-    private_key_faq: 'RSA format private key is supported, which starts with <pre>-----BEGIN RSA PRIVATE KEY-----</pre>\
+    private_key_faq:
+      'RSA format private key is supported, which starts with <pre>-----BEGIN RSA PRIVATE KEY-----</pre>\
     beginnt mit <pre>-----BEGIN OPENSSH PRIVATE KEY-----</pre>Sie müssen das Format konvertieren mittels <pre>ssh-keygen -p -m pem -f ~/.ssh/id_rsa</pre>Dieser Vorgang hat keine Auswirkungen auf die vorherige Anmeldung mit privatem Schlüssel',
     dark_mode: 'Dunkel modus',
     load_more_keys: 'mehr laden',
@@ -123,10 +127,12 @@ const de = {
     key_no_permission: 'Die Berechtigung zum Lesen von Dateien ist abgelaufen. Wählen Sie die Schlüsseldatei erneut manuell aus',
     toggle_check_all: 'Alle auswählen | Alle abwählen',
     select_lang: 'Sprache auswählen',
-    clear_cache_tip: 'Wenn es ein Problem mit dem Client gibt, wird diese Operation alle Verbindungen und Konfigurationen löschen, um den Client wiederherzustellen',
+    clear_cache_tip:
+      'Wenn es ein Problem mit dem Client gibt, wird diese Operation alle Verbindungen und Konfigurationen löschen, um den Client wiederherzustellen',
     detail: 'Detail',
     separator_tip: 'Das Trennzeichen der Baumansicht wird auf leer gesetzt, um den Baum zu deaktivieren und Schlüssel als Liste anzuzeigen',
-    confirm_modify_unvisible_content: 'Der Inhalt enthält unsichtbare Zeichen, die Sie sicher in der "Hex View" bearbeiten können. Wenn die weitere Bearbeitung im "Text View" zu Codierungsfehlern führen kann, fahren Sie sicher fort?',
+    confirm_modify_unvisible_content:
+      'Der Inhalt enthält unsichtbare Zeichen, die Sie sicher in der "Hex View" bearbeiten können. Wenn die weitere Bearbeitung im "Text View" zu Codierungsfehlern führen kann, fahren Sie sicher fort?',
     keys_per_loading: 'Anzahl der Schlüssel',
     keys_per_loading_tip: 'Die Anzahl der Schlüssel, die jedes Mal geladen werden. Eine zu große Einstellung kann die Leistung beeinträchtigen',
     host: 'Adresse',
@@ -142,7 +148,8 @@ const de = {
     redis_node_password: 'Passwort des Redis-Knotens',
     master_group_name: 'Name der Gruppe Master',
     command_log: 'Log',
-    sentinel_faq: 'Sie können einen von mehreren Sentinels auswählen. Bitte geben Sie die Sentinel-Konfiguration für Adresse, Port und Passwort ein. Das Redis-Knoten-Passwort ist das Passwort des vom Sentinel überwachten Master-Knotens.',
+    sentinel_faq:
+      'Sie können einen von mehreren Sentinels auswählen. Bitte geben Sie die Sentinel-Konfiguration für Adresse, Port und Passwort ein. Das Redis-Knoten-Passwort ist das Passwort des vom Sentinel überwachten Master-Knotens.',
     hotkey: 'Hotkey',
     persist: 'Ablaufzeit entfernen',
     custom_formatter: 'Benutzerdefinierter Formatierer',
@@ -154,8 +161,10 @@ const de = {
     maximize_window: 'Fenster maximieren',
     load_all_keys: 'alle laden',
     show_load_all_keys: 'Schaltfläche aktivieren, um alle Schlüssel zu laden',
-    load_all_keys_tip: 'Alle Schlüssel auf einmal laden. Wenn die Anzahl der Schlüssel zu groß ist, kann der Client stecken bleiben. Bitte verwenden Sie es richtig',
-    tree_node_overflow: 'Zu viele Schlüssel oder Ordner, behalten Sie nur {num} für die Anzeige. Wenn Ihr Schlüssel nicht hier ist, wird eine unscharfe Suche empfohlen, oder den Trenner setzen, um die Schlüssel in Ordner zu verteilen',
+    load_all_keys_tip:
+      'Alle Schlüssel auf einmal laden. Wenn die Anzahl der Schlüssel zu groß ist, kann der Client stecken bleiben. Bitte verwenden Sie es richtig',
+    tree_node_overflow:
+      'Zu viele Schlüssel oder Ordner, behalten Sie nur {num} für die Anzeige. Wenn Ihr Schlüssel nicht hier ist, wird eine unscharfe Suche empfohlen, oder den Trenner setzen, um die Schlüssel in Ordner zu verteilen',
     connection_readonly: 'Readonly-Modus. Das Hinzufügen, Bearbeiten und Löschen ist untersagt',
     memory_analysis: 'Gedächtnisanalyse',
     begin: 'Start',
@@ -163,6 +172,8 @@ const de = {
     restart: 'Neu starten',
     max_display: 'Maximale Anzahl von Displays: {num}',
     max_scan: 'Maximale Anzahl an Scans: {num}',
+    before_connect: 'Vor dem Verbinden (Befehl)',
+    before_connect_error: 'Fehler vor dem Verbinden (Befehl): {message}',
     close_left: 'Schließen Sie die linken Registerkarten',
     close_right: 'Schließen Sie die rechten Registerkarten',
     close_other: 'Schließen Sie andere Registerkarten',
