@@ -12,13 +12,21 @@ export default {
   data() {
     return {
       isPHPClass: false,
+      isThinkphpSerialize: false,
     };
   },
   components: { JsonEditor },
   computed: {
     newContent() {
       try {
-        const content = unserialize(this.content, {}, { strict: false });
+        // 支持 thinkphp 序列化前缀处理
+        let rawContent = this.content.toString();
+        this.isThinkphpSerialize = rawContent.startsWith('think_serialize:');
+        if (this.isThinkphpSerialize) {
+          rawContent = rawContent.replace(/^think_serialize:/, '');
+        }
+
+        const content = unserialize(rawContent, {}, { strict: false });
 
         if (content && content['__PHP_Incomplete_Class_Name']) {
           this.isPHPClass = true;
@@ -48,8 +56,12 @@ export default {
           return false;
         }
       }
-
-      return serialize(content);
+      let serializedContent = serialize(content);
+      // 支持 thinkphp 序列化前缀处理
+      if (this.isThinkphpSerialize) {
+        serializedContent = `think_serialize:${serializedContent}`;
+      }
+      return serializedContent;
     },
   },
 };
