@@ -1,13 +1,15 @@
 <template>
   <!-- setting dialog -->
-  <el-dialog :title="$t('message.settings')" :visible.sync="visible" custom-class="setting-main-dialog">
+  <el-dialog
+    :title="$t('message.settings')"
+    :visible.sync="visible"
+    custom-class="setting-main-dialog">
     <el-form label-position="top" size="mini">
-
       <el-card :header="$t('message.ui_settings')" class="setting-card">
         <el-row :gutter="10" justify="space-between" type="flex" class="setting-row">
           <el-col :sm="12" :lg="5">
             <!-- theme select-->
-            <el-form-item :label="$t('message.dark_mode')">
+            <el-form-item :label="$t('message.theme_mode')">
               <el-select v-model='themeMode' @change="changeTheme">
                 <el-option
                   v-for="(label, theme) in themeList"
@@ -159,6 +161,7 @@
 import storage from '@/storage.js';
 import { ipcRenderer } from 'electron';
 import LanguageSelector from '@/components/LanguageSelector';
+import addon from '../addon';
 
 export default {
   data() {
@@ -177,7 +180,7 @@ export default {
       allFonts: [],
       loadingFonts: false,
       themeMode: 'system',
-      themeList: { system: 'System', light: 'Light', dark: 'Dark' },
+      themeList: { system: this.$t('message.system_mode'), light: this.$t('message.light_mode'), dark: this.$t('message.dark_mode') },
     };
   },
   components: { LanguageSelector },
@@ -263,7 +266,6 @@ export default {
         message: `${this.$t('message.update_checking')}`,
         duration: 1500,
       });
-
       this.$bus.$emit('update-check', true);
     },
     bindGetAllFonts() {
@@ -291,10 +293,18 @@ export default {
     showHotkeys() {
       this.$parent.$refs.hotKeysDialog.show();
     },
+    updateThemeList() {
+      this.themeList = { system: this.$t('message.system_mode'), light: this.$t('message.light_mode'), dark: this.$t('message.dark_mode') };
+    },
   },
   mounted() {
     this.restoreSettings();
     this.bindGetAllFonts();
+  },
+  created() {
+    this.$bus.$on('language-changed', () => {
+      this.updateThemeList();
+    });
   },
 };
 </script>

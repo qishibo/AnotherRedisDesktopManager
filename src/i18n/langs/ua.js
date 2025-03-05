@@ -100,6 +100,9 @@ const ua = {
     private_key_faq: 'В даний час підтримуються закриті RSA ключі, що починаються з <pre> ----- BEGIN RSA PRIVATE KEY ----- </ pre> \
     Якщо ключ починається з <pre> ----- BEGIN OPENSSH PRIVATE KEY ----- </ pre> Вам потрібно конвертувати його через <pre> ssh-keygen -p -m pem -f ~ / .ssh / id_rsa < / pre> Ця операція не вплине на попередній вхід в систему з закритим ключем',
     dark_mode: 'Темна тема',
+    system_mode: 'Системна тема',
+    light_mode: 'Світла тема',
+    theme_mode: 'Тема',
     load_more_keys: 'завантажити ще',
     key_name: 'Ім`я ключа',
     project_home: 'Сторінка додатка',

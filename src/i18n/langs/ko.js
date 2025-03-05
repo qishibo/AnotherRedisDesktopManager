@@ -100,6 +100,9 @@ const ko = {
     private_key_faq: '다음으로 시작하는 RSA 유형의 개인키를 지원합니다, <pre>-----BEGIN RSA PRIVATE KEY-----</pre>\
     또는 <pre>-----BEGIN OPENSSH PRIVATE KEY-----</pre>형식 변경이 필요하다면 <pre>ssh-keygen -p -m pem -f ~/.ssh/id_rsa</pre>이 명령은 이전 개인키 로그인에 영향을 미치지 않습니다.',
     dark_mode: '다크 모드',
+    system_mode: '시스템 모드',
+    light_mode: '라이트 모드',
+    theme_mode: '테마 모드',
     load_more_keys: '더 불러오기',
     key_name: '키 명',
     project_home: '프로젝트 홈',

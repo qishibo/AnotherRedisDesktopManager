@@ -36,6 +36,7 @@ export default {
     changeLang(lang) {
       localStorage.lang = this.selectedLang;
       this.$i18n.locale = this.selectedLang;
+      this.$bus.$emit('language-changed', true);
     },
   },
   mounted() {

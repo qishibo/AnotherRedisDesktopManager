@@ -100,6 +100,9 @@ const es = {
     private_key_faq: 'Se admite la clave privada en formato RSA, que comienza con <pre>-----BEGIN RSA PRIVATE KEY-----</pre>\
     y comienza con<pre>-----BEGIN OPENSSH PRIVATE KEY-----</pre> necesita convertir el formato a través de <pre>ssh-keygen -p -m pem -f ~/.ssh/id_rsa</pre>Esta operación no afectará el inicio de sesión de clave privada anterior',
     dark_mode: 'Modo Oscuro',
+    system_mode: 'Modo del Sistema',
+    light_mode: 'Modo Claro',
+    theme_mode: 'Modo Tema',
     load_more_keys: 'cargar más',
     key_name: 'Nombre Clave',
     project_home: 'Home Proyecto',

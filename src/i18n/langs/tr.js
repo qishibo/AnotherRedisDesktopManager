@@ -100,6 +100,9 @@ const tr = {
     private_key_faq: '<pre>-----BEGIN RSA PRIVATE KEY-----</pre> ile başlayan RSA formatlı özel anahtar desteklenir\
     <pre>-----BEGIN OPENSSH PRIVATE KEY-----</pre> ile başlayalım, <pre>ssh-keygen -p -m pem -f ~/.ssh/id_rsa</pre> ile formatı dönüştürmeniz gerekiyor. Bu işlem önceki özel anahtar girişini etkilemez',
     dark_mode: 'Siyah Tema',
+    system_mode: 'Sistem Teması',
+    light_mode: 'Beyaz Tema',
+    theme_mode: 'Tema Modu',
     load_more_keys: 'devamını yükle',
     key_name: 'Anahtar Adı',
     project_home: 'Proje Ana Sayfası',

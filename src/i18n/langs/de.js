@@ -100,6 +100,9 @@ const de = {
     private_key_faq: 'RSA format private key is supported, which starts with <pre>-----BEGIN RSA PRIVATE KEY-----</pre>\
     beginnt mit <pre>-----BEGIN OPENSSH PRIVATE KEY-----</pre>Sie müssen das Format konvertieren mittels <pre>ssh-keygen -p -m pem -f ~/.ssh/id_rsa</pre>Dieser Vorgang hat keine Auswirkungen auf die vorherige Anmeldung mit privatem Schlüssel',
     dark_mode: 'Dunkel modus',
+    system_mode: 'System modus',
+    light_mode: 'Licht modus',
+    theme_mode: 'Thema modus',
     load_more_keys: 'mehr laden',
     key_name: 'Schlüssel-Name',
     project_home: 'Projekt Home',

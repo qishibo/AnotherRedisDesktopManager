@@ -100,6 +100,9 @@ const fr = {
     private_key_faq: 'La clé privée au format RSA est prise en charge, commançant par <pre>-----BEGIN RSA PRIVATE KEY-----</pre>\
     pour commencer par <pre>-----BEGIN OPENSSH PRIVATE KEY-----</pre> vous devez convertir le format via <pre>ssh-keygen -p -m pem -f ~/.ssh/id_rsa</pre> Cette opéaration n\'affectera pas la précédente clé de connexion',
     dark_mode: 'Mode sombre',
+    system_mode: 'Mode système',
+    light_mode: 'Mode clair',
+    theme_mode: 'Mode thème',
     load_more_keys: 'charger plus',
     key_name: 'Nom de la clé',
     project_home: 'Accueil du projet',
