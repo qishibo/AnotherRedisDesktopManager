@@ -177,7 +177,7 @@ export default {
       allFonts: [],
       loadingFonts: false,
       themeMode: 'system',
-      themeList: {system: 'System', light: 'Light', dark: 'Dark'},
+      themeList: { system: 'System', light: 'Light', dark: 'Dark' },
     };
   },
   components: { LanguageSelector },
@@ -190,7 +190,7 @@ export default {
       this.form = { ...this.form, ...settings };
 
       // theme
-      let theme = localStorage.theme;
+      let { theme } = localStorage;
       if (!Object.keys(this.themeList).includes(theme)) {
         theme = 'system';
       }
