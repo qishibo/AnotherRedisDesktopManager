@@ -87,16 +87,20 @@ const tw = {
     update_error: '更新失敗',
     update_downloading: '下載中...',
     update_download_progress: '下載進度',
-    update_downloaded: '更新下載完成，重啟用戶端生效.\
+    update_downloaded:
+      '更新下載完成，重啟用戶端生效.\
     [Tips]: 如果您使用的是Windows，請在關閉應用程序後等待桌面圖標刷新到正常狀態（大約10秒），然後重新打開',
-    mac_not_support_auto_update: 'Mac 暫時不支援自動更新，請手動<a href="https://github.com/qishibo/AnotherRedisDesktopManager/releases">下載</a>後重新安裝，\
+    mac_not_support_auto_update:
+      'Mac 暫時不支援自動更新，請手動<a href="https://github.com/qishibo/AnotherRedisDesktopManager/releases">下載</a>後重新安裝，\
     或者執行<br><code>brew reinstall --cask another-redis-desktop-manager </code>\
     <br><hr><br>❤️如果對您有用，您可以通過<a href="https://apps.apple.com/app/id1516451072">AppStore</a>贊助，AppStore會自動為您更新。',
     font_family: '字體選擇',
     font_faq_title: '字體設定說明',
-    font_faq: '1. 可以設定多個字體<br>2. 字體選擇是有分先後順序的，建議首先選擇英文字體，然後再選擇中文字體<br>\
+    font_faq:
+      '1. 可以設定多個字體<br>2. 字體選擇是有分先後順序的，建議首先選擇英文字體，然後再選擇中文字體<br>\
     3. 某些異常情況無法載入系統字體列表時，可以手動輸入已安裝的字體名稱',
-    private_key_faq: '目前支持RSA格式私鑰，即以<pre>-----BEGIN RSA PRIVATE KEY-----</pre>開頭，\
+    private_key_faq:
+      '目前支持RSA格式私鑰，即以<pre>-----BEGIN RSA PRIVATE KEY-----</pre>開頭，\
     以<pre>-----BEGIN OPENSSH PRIVATE KEY-----</pre>開頭的，需要執行\
     <pre>ssh-keygen -p -m pem -f ~/.ssh/id_rsa</pre>進行格式轉換後再使用，該操作不會影響以前的私鑰登入',
     dark_mode: '深色模式',
@@ -126,7 +130,8 @@ const tw = {
     clear_cache_tip: '如果客戶端出現問題，此操作將刪除所有連接和配置以恢復客戶端',
     detail: '詳情',
     separator_tip: '樹視圖的分隔符，設置為空可禁用樹並將鍵顯示為列表',
-    confirm_modify_unvisible_content: '內容包含不可見的字符，您可以在Hex視圖中進行安全編輯。如果繼續在Text視圖中進行編輯可能會導致編碼錯誤，確定要繼續嗎？',
+    confirm_modify_unvisible_content:
+      '內容包含不可見的字符，您可以在Hex視圖中進行安全編輯。如果繼續在Text視圖中進行編輯可能會導致編碼錯誤，確定要繼續嗎？',
     keys_per_loading: '加載數量',
     keys_per_loading_tip: '每次加載的key數量, 設置太大的話可能會影響使用性能',
     host: '地址',
@@ -163,6 +168,8 @@ const tw = {
     restart: '重新開始',
     max_display: '最大顯示數量：{num}',
     max_scan: '最大掃描數量：{num}',
+    before_connect: '连接前（命令)',
+    before_connect_error: '连接前（命令）错误：{message}',
     close_left: '關閉左側標籤',
     close_right: '關閉右側標籤',
     close_other: '關閉其他標籤',

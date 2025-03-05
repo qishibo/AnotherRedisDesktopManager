@@ -87,17 +87,21 @@ const pt = {
     update_error: 'Falha na atualização',
     update_downloading: 'Downloading...',
     update_download_progress: 'Download em progresso',
-    update_downloaded: 'Download da atualização concluído, reinicie seu aplicativo por favor.\
+    update_downloaded:
+      'Download da atualização concluído, reinicie seu aplicativo por favor.\
     [Tips]: Se você estiver usando o Windows, depois de fechar o aplicativo, aguarde o ícone da área de trabalho para atualizar para um estado normal (cerca de 10 segundos), e então você pode reabri-lo',
-    mac_not_support_auto_update: 'Mac não suporta atualização automática, faça o <a href="https://github.com/qishibo/AnotherRedisDesktopManager/releases">download</a> e reinstale manualmente, \
+    mac_not_support_auto_update:
+      'Mac não suporta atualização automática, faça o <a href="https://github.com/qishibo/AnotherRedisDesktopManager/releases">download</a> e reinstale manualmente, \
     Ou execute <br><code>brew reinstall --cask another-redis-desktop-manager </code>\
     <br><hr><br>❤️se for útil para você, você pode patrocinar através da <a href="https://apps.apple.com/app/id1516451072">AppStore</a>, e a AppStore irá atualizá-lo automaticamente para você.',
     font_family: 'Font Family',
     font_faq_title: 'Instruções de configuração de fonte',
-    font_faq: '1. Múltiplas fontes podem ser definidas <br>\
+    font_faq:
+      '1. Múltiplas fontes podem ser definidas <br>\
     2. A seleção da fonte é ordenada. É sugerido escolher a fonte em inglês primeiro e depois a fonte em seu idioma<br>\
     3. Quando a lista de fontes do sistema não pode ser carregada em alguns casos excepcionais, você pode inserir o nome da fonte instalada manualmente.',
-    private_key_faq: 'A chave privada de formato RSA é compatível e começa com <pre>-----BEGIN RSA PRIVATE KEY-----</pre>\
+    private_key_faq:
+      'A chave privada de formato RSA é compatível e começa com <pre>-----BEGIN RSA PRIVATE KEY-----</pre>\
     mas se começar com<pre>-----BEGIN OPENSSH PRIVATE KEY-----</pre>você precisa converter o formato via <pre>ssh-keygen -p -m pem -f ~/.ssh/id_rsa</pre>Esta operação não afetará o login de chave privada anterior',
     dark_mode: 'Modo noturno',
     load_more_keys: 'carregar mais',
@@ -126,7 +130,8 @@ const pt = {
     clear_cache_tip: 'Quando há um problema com o cliente, esta operação irá deletar todas as conexões e configurações para restaurar o cliente',
     detail: 'Detalhe',
     separator_tip: 'O separador da visualização em árvore, definido como vazio para desativar a árvore e exibir as chaves como lista',
-    confirm_modify_unvisible_content: 'O conteúdo contém caracteres invisíveis, você pode editar com segurança no "Hex View". Se continuar a editar em "Text View" pode causar erros de codificação, deseja continuar?',
+    confirm_modify_unvisible_content:
+      'O conteúdo contém caracteres invisíveis, você pode editar com segurança no "Hex View". Se continuar a editar em "Text View" pode causar erros de codificação, deseja continuar?',
     keys_per_loading: 'Número de chaves',
     keys_per_loading_tip: 'O número de chaves carregadas a cada vez. A configuração muito grande pode afetar o desempenho',
     host: 'Morada',
@@ -142,7 +147,8 @@ const pt = {
     redis_node_password: 'Senha do nó Redis',
     master_group_name: 'Nome do Grupo Master',
     command_log: 'Registro',
-    sentinel_faq: 'Você pode escolher uma das várias sentinelas. Preencha a configuração da sentinela para o endereço, porta e senha. A senha do nó Redis é a senha do nó mestre monitorado pela sentinela.',
+    sentinel_faq:
+      'Você pode escolher uma das várias sentinelas. Preencha a configuração da sentinela para o endereço, porta e senha. A senha do nó Redis é a senha do nó mestre monitorado pela sentinela.',
     hotkey: 'Tecla de Atalho',
     persist: 'Remover o tempo de expiração',
     custom_formatter: 'Formatador Personalizado',
@@ -154,8 +160,10 @@ const pt = {
     maximize_window: 'Maximize a janela',
     load_all_keys: 'carregar tudo',
     show_load_all_keys: 'Habilite o botão para carregar todas as chaves',
-    load_all_keys_tip: 'Carregue todas as chaves de uma vez. Se o número de chaves for muito grande, o cliente pode ficar preso. Por favor, use-o corretamente',
-    tree_node_overflow: 'Muitas teclas ou pastas, manter apenas {num} para exibição. Se a sua chave não está aqui, é recomendada a pesquisa difusa, ou configurar o separador para espalhar as chaves em pastas',
+    load_all_keys_tip:
+      'Carregue todas as chaves de uma vez. Se o número de chaves for muito grande, o cliente pode ficar preso. Por favor, use-o corretamente',
+    tree_node_overflow:
+      'Muitas teclas ou pastas, manter apenas {num} para exibição. Se a sua chave não está aqui, é recomendada a pesquisa difusa, ou configurar o separador para espalhar as chaves em pastas',
     connection_readonly: 'Modo somente leitura. Adição, edição e exclusão são proibidas',
     memory_analysis: 'Análise de memória',
     begin: 'Começar',
@@ -163,6 +171,8 @@ const pt = {
     restart: 'Reiniciar',
     max_display: 'Número máximo de exibições: {num}',
     max_scan: 'Número máximo de verificações: {num}',
+    before_connect: 'Antes de conectar (comando)',
+    before_connect_error: 'Erro antes de conectar (comando): {message}',
     close_left: 'Fechar abas esquerdas',
     close_right: 'Fechar abas direitas',
     close_other: 'Fechar outras guias',
