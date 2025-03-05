@@ -87,18 +87,12 @@ const vi = {
     update_error: 'Cập nhật thất bại',
     update_downloading: 'Đang tải xuống...',
     update_download_progress: 'Tiến trình tải xuống',
-    update_downloaded: 'Tải xuống bản cập nhật hoàn tất, vui lòng khởi động lại ứng dụng của bạn.\
-    [Mẹo]: Nếu bạn đang sử dụng Windows, sau khi đóng ứng dụng, hãy đợi biểu tượng trên màn hình làm mới về trạng thái bình thường (khoảng 10 giây), sau đó bạn có thể mở lại',
-    mac_not_support_auto_update: 'Mac không hỗ trợ cập nhật tự động, vui lòng <a href="https://github.com/qishibo/AnotherRedisDesktopManager/releases">tải xuống</a> và cài đặt lại thủ công,\
-    hoặc chạy <br><code>brew reinstall --cask another-redis-desktop-manager </code>\
-    <br><hr><br>❤️nếu nó hữu ích cho bạn, bạn có thể tài trợ thông qua <a href="https://apps.apple.com/app/id1516451072">AppStore</a>, và AppStore sẽ tự động cập nhật cho bạn.',
+    update_downloaded: 'Tải xuống bản cập nhật hoàn tất, vui lòng khởi động lại ứng dụng của bạn.[Mẹo]: Nếu bạn đang sử dụng Windows, sau khi đóng ứng dụng, hãy đợi biểu tượng trên màn hình làm mới về trạng thái bình thường (khoảng 10 giây), sau đó bạn có thể mở lại',
+    mac_not_support_auto_update: 'Mac không hỗ trợ cập nhật tự động, vui lòng <a href="https://github.com/qishibo/AnotherRedisDesktopManager/releases">tải xuống</a> và cài đặt lại thủ công,hoặc chạy <br><code>brew reinstall --cask another-redis-desktop-manager </code>    <br><hr><br>❤️nếu nó hữu ích cho bạn, bạn có thể tài trợ thông qua <a href="https://apps.apple.com/app/id1516451072">AppStore</a>, và AppStore sẽ tự động cập nhật cho bạn.',
     font_family: 'Phông chữ',
     font_faq_title: 'Hướng dẫn cài đặt phông chữ',
-    font_faq: '1. Có thể đặt nhiều phông chữ<br>\
-    2. Việc chọn phông chữ là có thứ tự. Nên chọn phông chữ tiếng Anh trước, sau đó đến phông chữ ngôn ngữ của bạn<br>\
-    3. Khi danh sách phông chữ hệ thống không thể tải trong một số trường hợp ngoại lệ, bạn có thể nhập tên phông chữ đã cài đặt theo cách thủ công.',
-    private_key_faq: 'Hỗ trợ khóa riêng tư định dạng RSA, bắt đầu bằng <pre>-----BEGIN RSA PRIVATE KEY-----</pre>\
-    đối với bắt đầu bằng <pre>-----BEGIN OPENSSH PRIVATE KEY-----</pre> bạn cần chuyển đổi định dạng thông qua <pre>ssh-keygen -p -m pem -f ~/.ssh/id_rsa</pre> Thao tác này sẽ không ảnh hưởng đến đăng nhập khóa riêng tư trước đó',
+    font_faq: '1. Có thể đặt nhiều phông chữ<br>    2. Việc chọn phông chữ là có thứ tự. Nên chọn phông chữ tiếng Anh trước, sau đó đến phông chữ ngôn ngữ của bạn<br>    3. Khi danh sách phông chữ hệ thống không thể tải trong một số trường hợp ngoại lệ, bạn có thể nhập tên phông chữ đã cài đặt theo cách thủ công.',
+    private_key_faq: 'Hỗ trợ khóa riêng tư định dạng RSA, bắt đầu bằng <pre>-----BEGIN RSA PRIVATE KEY-----</pre>    đối với bắt đầu bằng <pre>-----BEGIN OPENSSH PRIVATE KEY-----</pre> bạn cần chuyển đổi định dạng thông qua <pre>ssh-keygen -p -m pem -f ~/.ssh/id_rsa</pre> Thao tác này sẽ không ảnh hưởng đến đăng nhập khóa riêng tư trước đó',
     dark_mode: 'Chế độ tối',
     load_more_keys: 'tải thêm',
     key_name: 'Tên khóa',
