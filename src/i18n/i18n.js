@@ -14,7 +14,7 @@ import uaLocale from 'element-ui/lib/locale/lang/ua';
 import itLocale from 'element-ui/lib/locale/lang/it';
 import esLocale from 'element-ui/lib/locale/lang/es';
 import koLocale from 'element-ui/lib/locale/lang/ko';
-
+import viLocale from 'element-ui/lib/locale/lang/vi';
 
 import en from './langs/en';
 import cn from './langs/cn';
@@ -28,6 +28,7 @@ import ua from './langs/ua';
 import it from './langs/it';
 import es from './langs/es';
 import ko from './langs/ko';
+import vi from './langs/vi';
 
 Vue.use(VueI18n);
 
@@ -79,6 +80,10 @@ const messages = {
   ko: {
     ...ko,
     ...koLocale,
+  },
+  vi: {
+    ...vi,
+    ...viLocale,
   },
 };
 
