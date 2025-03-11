@@ -169,6 +169,10 @@ const ko = {
     slow_log: '저성능 쿼리',
     load_current_folder: '현재 폴더만 로드',
     custom_name: '맞춤 이름',
+    theme_select: '색상 테마',
+    theme_system: '시스템',
+    theme_light: '밝은 색',
+    theme_dark: '어두운 색',
   },
 };
 

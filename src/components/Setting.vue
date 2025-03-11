@@ -7,7 +7,7 @@
         <el-row :gutter="10" justify="space-between" type="flex" class="setting-row">
           <el-col :sm="12" :lg="5">
             <!-- theme select-->
-            <el-form-item :label="$t('message.dark_mode')">
+            <el-form-item :label="$t('message.theme_select')">
               <el-select v-model='themeMode' @change="changeTheme">
                 <el-option
                   v-for="(label, theme) in themeList"
@@ -177,10 +177,19 @@ export default {
       allFonts: [],
       loadingFonts: false,
       themeMode: 'system',
-      themeList: {system: 'System', light: 'Light', dark: 'Dark'},
     };
   },
   components: { LanguageSelector },
+  computed: {
+    // themeList in computed to activate i18n
+    themeList() {
+      return {
+        system: this.$t('message.theme_system'),
+        light: this.$t('message.theme_light'),
+        dark: this.$t('message.theme_dark')
+      };
+    },
+  },
   methods: {
     show() {
       this.visible = true;

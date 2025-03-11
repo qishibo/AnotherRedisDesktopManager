@@ -169,6 +169,10 @@ const pt = {
     slow_log: 'Consulta lenta',
     load_current_folder: 'Carregar apenas a pasta atual',
     custom_name: 'Nome personalizado',
+    theme_select: 'Tema de Cores',
+    theme_system: 'Sistema',
+    theme_light: 'Luz',
+    theme_dark: 'Escuro',
   },
 };
 

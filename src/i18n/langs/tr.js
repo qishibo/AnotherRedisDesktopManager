@@ -169,6 +169,10 @@ const tr = {
     slow_log: 'Yavaş Sorgu',
     load_current_folder: 'Yalnızca Geçerli Klasörü Yükle',
     custom_name: 'Özel Ad',
+    theme_select: 'Renk Teması',
+    theme_system: 'Sistem',
+    theme_light: 'Işık',
+    theme_dark: 'Karanlık',
   },
 };
 

@@ -169,6 +169,10 @@ const es = {
     slow_log: 'Consulta lenta',
     load_current_folder: 'Cargar solo la carpeta actual',
     custom_name: 'Nombre personalizado',
+    theme_select: 'Tema de color',
+    theme_system: 'Sistema',
+    theme_light: 'Luz',
+    theme_dark: 'Oscuro',
   },
 };
 

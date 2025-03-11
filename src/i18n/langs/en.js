@@ -169,6 +169,10 @@ const en = {
     slow_log: 'Slow Query',
     load_current_folder: 'Only Load Current Folder',
     custom_name: 'Custom Name',
+    theme_select: 'Color Theme',
+    theme_system: 'System',
+    theme_light: 'Light',
+    theme_dark: 'Dark',
   },
 };
 

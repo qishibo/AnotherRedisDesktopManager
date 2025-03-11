@@ -169,6 +169,10 @@ const de = {
     slow_log: 'Langsame Abfrage',
     load_current_folder: 'Nur aktuellen Ordner laden',
     custom_name: 'Benutzerdefinierter Name',
+    theme_select: 'Farbdesign',
+    theme_system: 'System',
+    theme_light: 'Licht',
+    theme_dark: 'Dunkel',
   },
 };
 

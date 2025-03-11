@@ -169,6 +169,10 @@ const cn = {
     slow_log: '慢查询',
     load_current_folder: '只加载该文件夹',
     custom_name: '自定义名称',
+    theme_select: '主题模式',
+    theme_system: '跟随系统',
+    theme_light: '亮色模式',
+    theme_dark: '暗色模式',
   },
 };
 

@@ -169,6 +169,10 @@ const ru = {
     slow_log: 'Медленный запрос',
     load_current_folder: 'Загружать только текущую папку',
     custom_name: 'Пользовательское имя',
+    theme_select: 'Цветовая тема',
+    theme_system: 'Системы',
+    theme_light: 'Свет',
+    theme_dark: 'Тёмный',
   },
 };
 

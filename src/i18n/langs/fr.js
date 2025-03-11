@@ -169,6 +169,10 @@ const fr = {
     slow_log: 'Requête lente',
     load_current_folder: 'Charger uniquement le dossier actuel',
     custom_name: 'Nom d\'usage',
+    theme_select: 'Thème de couleur',
+    theme_system: 'Système',
+    theme_light: 'Lumière',
+    theme_dark: 'Sombre',
   },
 };
 

@@ -169,6 +169,10 @@ const ua = {
     slow_log: 'Повільний запит',
     load_current_folder: 'Завантажувати лише поточну папку',
     custom_name: 'Спеціальна назва',
+    theme_select: 'Тема кольорів',
+    theme_system: 'Система',
+    theme_light: 'Світло',
+    theme_dark: 'Темно',
   },
 };
 

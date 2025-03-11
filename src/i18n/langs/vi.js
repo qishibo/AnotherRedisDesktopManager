@@ -169,6 +169,10 @@ const vi = {
     slow_log: 'Truy vấn chậm',
     load_current_folder: 'Chỉ tải thư mục hiện tại',
     custom_name: 'Tên tùy chỉnh',
+    theme_select: 'Sắc thái màu',
+    theme_system: 'Hệ thống',
+    theme_light: 'Ánh sáng',
+    theme_dark: 'Bóng tối',
   },
 };
 
