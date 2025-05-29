@@ -12,7 +12,7 @@
     <!-- connections list -->
     <div class="connections-list" ref="groupsList">
       <!-- grouped connections -->
-      <div v-for="(group, groupId) in groupedConnections" :key="groupId" class="connection-group">
+      <div v-for="{ group, groupId } in groupedConnections" :key="groupId" class="connection-group">
         <div class="group-header" :data-group="groupId">
           <div class="group-header-left" @click="toggleGroupCollapse(groupId)">
             <i :class="['el-icon-arrow-down', 'collapse-icon', { 'is-collapsed': isGroupCollapsed(groupId) }]">
@@ -89,29 +89,30 @@ export default {
       });
     },
     groupedConnections() {
-      const groups = {};
       const defaultGroupId = 1;
-
-      // 首先添加默认分组
-      groups[defaultGroupId] = [];
-
+      const groups = [];
+      const groupMap = {};
       // 按照保存的顺序添加其他分组
       this.groupOrder.forEach(groupId => {
-        // 只添加存在的分组
-        if (groupId != defaultGroupId && this.groups.some(g => g.id == groupId)) {
-          groups[groupId] = [];
+        if (groupMap[groupId]) {
+          return;
         }
+        const group = { group: [], groupId: groupId };
+        groupMap[groupId] = group;
+        groups.push(group);
       });
+      if (!groupMap[defaultGroupId]) {
+        groups.unshift({ group: [], groupId: defaultGroupId });
+      }
 
       // 添加连接到对应的分组
       this.filteredConnections.forEach(conn => {
         const groupId = conn.groupId || defaultGroupId;
-        if (!groups[groupId]) {
-          groups[groupId] = [];
+        if (!groupMap[groupId]) {
+          groupId = defaultGroupId;
         }
-        groups[groupId].push(conn);
+        groupMap[groupId].group.push(conn);
       });
-
       return groups;
     }
   },
@@ -215,10 +216,10 @@ export default {
 
       this.editingGroup = groupId;
       this.editingGroupName = group.name;
-      
+
       // 禁用分组拖动
       this.setGroupSortableEnabled(false);
-      
+
       this.$nextTick(() => {
         if (this.$refs.groupNameInput) {
           this.$refs.groupNameInput[0].focus();
@@ -252,10 +253,10 @@ export default {
       // 刷新连接列表
       this.initConnections();
       this.editingGroup = null;
-      
+
       // 重新启用分组拖动
       this.setGroupSortableEnabled(true);
-      
+
       this.$message.success(this.$t('message.save_group_success'));
     },
     deleteGroup(groupId) {
@@ -297,7 +298,7 @@ export default {
         // 刷新连接列表
         this.initConnections();
         this.$message.success(this.$t('message.delete_group_success'));
-      }).catch(() => {});
+      }).catch(() => { });
     },
     onGroupDragStart(event) {
       const header = event.target.closest('.group-header');
