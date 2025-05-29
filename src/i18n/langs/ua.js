@@ -173,6 +173,15 @@ const ua = {
     theme_system: 'Система',
     theme_light: 'Світло',
     theme_dark: 'Темно',
+    new_group: 'Нова група',
+    default_group: 'Група за замовчуванням',
+    save_group_success: 'Групу успішно збережено',
+    delete_group_confirm: 'Підтвердити видалення цієї групи?',
+    delete_group_success: 'Групу успішно видалено',
+    warning: 'Попередження',
+    confirm: 'Підтвердити',
+    cancel: 'Скасувати',
+    filter_connections: 'Пошук підключень'
   },
 };
 

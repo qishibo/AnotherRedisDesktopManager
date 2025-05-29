@@ -173,6 +173,15 @@ const en = {
     theme_system: 'System',
     theme_light: 'Light',
     theme_dark: 'Dark',
+    new_group: 'New Group',
+    default_group: 'Default Group',
+    save_group_success: 'Group saved successfully',
+    delete_group_confirm: 'Confirm to delete this group?',
+    delete_group_success: 'Group deleted successfully',
+    warning: 'Warning',
+    confirm: 'Confirm',
+    cancel: 'Cancel',
+    filter_connections: 'Search connections'
   },
 };
 

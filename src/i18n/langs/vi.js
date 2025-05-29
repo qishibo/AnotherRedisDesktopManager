@@ -173,6 +173,15 @@ const vi = {
     theme_system: 'Hệ thống',
     theme_light: 'Sáng',
     theme_dark: 'Tối',
+    new_group: 'Nhóm mới',
+    default_group: 'Nhóm mặc định',
+    save_group_success: 'Lưu nhóm thành công',
+    delete_group_confirm: 'Xác nhận xóa nhóm này?',
+    delete_group_success: 'Xóa nhóm thành công',
+    warning: 'Cảnh báo',
+    confirm: 'Xác nhận',
+    cancel: 'Hủy',
+    filter_connections: 'Tìm kiếm kết nối'
   },
 };
 

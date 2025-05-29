@@ -173,6 +173,15 @@ const tw = {
     theme_system: '跟隨系統',
     theme_light: '亮色模式',
     theme_dark: '暗色模式',
+    new_group: '新分組',
+    default_group: '默認分組',
+    save_group_success: '保存分組成功',
+    delete_group_confirm: '確認刪除該分組？',
+    delete_group_success: '刪除分組成功',
+    warning: '警告',
+    confirm: '確認',
+    cancel: '取消',
+    filter_connections: '搜索連接'
   },
 };
 

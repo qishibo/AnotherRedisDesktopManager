@@ -173,6 +173,15 @@ const cn = {
     theme_system: '跟随系统',
     theme_light: '亮色模式',
     theme_dark: '暗色模式',
+    new_group: '新分组',
+    default_group: '默认分组',
+    save_group_success: '保存分组成功',
+    delete_group_confirm: '确认删除该分组？',
+    delete_group_success: '删除分组成功',
+    warning: '警告',
+    confirm: '确认',
+    cancel: '取消',
+    filter_connections: '搜索连接'
   },
 };
 

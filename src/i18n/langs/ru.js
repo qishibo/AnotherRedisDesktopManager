@@ -173,6 +173,15 @@ const ru = {
     theme_system: 'Системы',
     theme_light: 'Свет',
     theme_dark: 'Тёмный',
+    new_group: 'Новая группа',
+    default_group: 'Группа по умолчанию',
+    save_group_success: 'Группа успешно сохранена',
+    delete_group_confirm: 'Подтвердите удаление этой группы?',
+    delete_group_success: 'Группа успешно удалена',
+    warning: 'Предупреждение',
+    confirm: 'Подтвердить',
+    cancel: 'Отмена',
+    filter_connections: 'Поиск подключений'
   },
 };
 

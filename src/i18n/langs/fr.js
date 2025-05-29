@@ -173,6 +173,15 @@ const fr = {
     theme_system: 'Système',
     theme_light: 'Lumière',
     theme_dark: 'Sombre',
+    new_group: 'Nouveau groupe',
+    default_group: 'Groupe par défaut',
+    save_group_success: 'Groupe enregistré avec succès',
+    delete_group_confirm: 'Confirmer la suppression de ce groupe ?',
+    delete_group_success: 'Groupe supprimé avec succès',
+    warning: 'Avertissement',
+    confirm: 'Confirmer',
+    cancel: 'Annuler',
+    filter_connections: 'Rechercher des connexions'
   },
 };
 

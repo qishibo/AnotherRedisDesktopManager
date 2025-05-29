@@ -173,6 +173,15 @@ const pt = {
     theme_system: 'Sistema',
     theme_light: 'Luz',
     theme_dark: 'Escuro',
+    new_group: 'Novo grupo',
+    default_group: 'Grupo padrão',
+    save_group_success: 'Grupo salvo com sucesso',
+    delete_group_confirm: 'Confirmar exclusão deste grupo?',
+    delete_group_success: 'Grupo excluído com sucesso',
+    warning: 'Aviso',
+    confirm: 'Confirmar',
+    cancel: 'Cancelar',
+    filter_connections: 'Buscar conexões'
   },
 };
 

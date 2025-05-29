@@ -190,4 +190,59 @@ export default {
 
     willRemovedKeys.forEach(k => localStorage.removeItem(k));
   },
+  getGroups() {
+    let groups = localStorage.groups || '[]';
+    groups = JSON.parse(groups);
+
+    // 处理旧数据，为没有 id 的分组分配 id
+    let hasChanges = false;
+    let maxId = 1; // 默认分组 id 为 1
+
+    // 先找出最大 id
+    groups.forEach(group => {
+      if (group.id && group.id > maxId) {
+        maxId = group.id;
+      }
+    });
+
+    // 为没有 id 的分组分配 id
+    groups.forEach(group => {
+      if (!group.id) {
+        maxId++;
+        group.id = maxId;
+        hasChanges = true;
+      }
+    });
+
+    // 如果有变化，保存更新后的分组
+    if (hasChanges) {
+      this.setGroups(groups);
+    }
+
+    return groups;
+  },
+  setGroups(groups) {
+    localStorage.groups = JSON.stringify(groups);
+  },
+  addGroup(group) {
+    const groups = this.getGroups();
+    // 确保新分组有 id 和 name
+    if (!group.id || !group.name) {
+      return;
+    }
+    // 检查 id 是否已存在
+    if (groups.some(g => g.id == group.id)) {
+      return;
+    }
+    groups.push(group);
+    this.setGroups(groups);
+  },
+  deleteGroup(groupId) {
+    const groups = this.getGroups();
+    const index = groups.findIndex(g => g.id == groupId);
+    if (index > -1) {
+      groups.splice(index, 1);
+      this.setGroups(groups);
+    }
+  },
 };

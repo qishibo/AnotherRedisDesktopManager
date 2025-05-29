@@ -244,7 +244,7 @@ export default {
 <style type="text/css">
   /*menu ul*/
   .connection-menu {
-    margin-bottom: 8px;
+    margin-bottom: 4px;
     padding-right: 6px;
     border-right: 0;
   }
@@ -258,5 +258,34 @@ export default {
   /*this error shows first*/
   .redis-on-error-message {
     z-index:9999 !important;
+  }
+
+  /* Set connection item height */
+  .connection-menu .el-submenu__title {
+    height: 28px !important;
+    line-height: 28px !important;
+  }
+
+  .connection-menu .el-menu-item {
+    height: 28px !important;
+    line-height: 28px !important;
+  }
+
+  .connection-menu .el-submenu .el-menu-item {
+    height: 28px !important;
+    line-height: 28px !important;
+  }
+
+  /* Reduce spacing between items */
+  .connection-menu .el-menu-item {
+    margin: 0 !important;
+  }
+
+  .connection-menu .el-submenu {
+    margin: 0 !important;
+  }
+
+  .connection-menu .el-menu {
+    padding: 0 !important;
   }
 </style>

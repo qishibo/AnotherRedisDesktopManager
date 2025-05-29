@@ -173,6 +173,15 @@ const ko = {
     theme_system: '시스템',
     theme_light: '밝은 색',
     theme_dark: '어두운 색',
+    new_group: '새 그룹',
+    default_group: '기본 그룹',
+    save_group_success: '그룹이 성공적으로 저장되었습니다',
+    delete_group_confirm: '이 그룹을 삭제하시겠습니까?',
+    delete_group_success: '그룹이 성공적으로 삭제되었습니다',
+    warning: '경고',
+    confirm: '확인',
+    cancel: '취소',
+    filter_connections: '연결 검색'
   },
 };
 

@@ -173,6 +173,15 @@ const tr = {
     theme_system: 'Sistem',
     theme_light: 'Işık',
     theme_dark: 'Karanlık',
+    new_group: 'Yeni grup',
+    default_group: 'Varsayılan grup',
+    save_group_success: 'Grup başarıyla kaydedildi',
+    delete_group_confirm: 'Bu grubu silmek istediğinizden emin misiniz?',
+    delete_group_success: 'Grup başarıyla silindi',
+    warning: 'Uyarı',
+    confirm: 'Onayla',
+    cancel: 'İptal',
+    filter_connections: 'Bağlantıları ara'
   },
 };
 
