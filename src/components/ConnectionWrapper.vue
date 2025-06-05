@@ -13,7 +13,8 @@
         :config="config"
         :client='client'
         @changeColor='setColor'
-        @refreshConnection='openConnection(false, true)'>
+        @refreshConnection='openConnection(false, true)'
+        class="connection-header">
       </ConnectionMenu>
 
       <!-- db search operate -->

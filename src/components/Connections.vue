@@ -367,6 +367,7 @@ export default {
         groupContainers.forEach(container => {
           const sortable = new Sortable(container, {
             group: 'connections',
+            handle: '.connection-header',
             animation: 150,
             ghostClass: 'sortable-ghost',
             dragClass: 'sortable-drag',
@@ -378,8 +379,12 @@ export default {
             scrollSpeed: 10,
             direction: 'vertical',
             preventOnFilter: true,
+            filter: '.connection-opt-icons, .connection-opt-icons *',
             invertSwap: true,
             swapThreshold: 0.5,
+            delay: 50,
+            delayOnTouchOnly: false,
+            distance: 10,
             onStart: (evt) => {
               this.dragStartY = evt.clientY;
               this.dragStartX = evt.clientX;
@@ -658,7 +663,11 @@ export default {
 
 /* Drag and drop styles */
 .connection-wrapper {
-  cursor: move;
+  cursor: default;
+}
+
+.connection-header {
+  cursor: default;
 }
 
 .connection-wrapper.dragging {
