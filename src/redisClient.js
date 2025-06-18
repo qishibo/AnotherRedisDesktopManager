@@ -1,5 +1,5 @@
 import Redis from 'ioredis';
-import { createTunnel } from 'tunnel-ssh';
+import { createTunnel } from '@qii404/tunnel-ssh';
 import vue from '@/main.js';
 import { remote } from 'electron';
 import { writeCMD } from '@/commands.js';
