@@ -3,6 +3,13 @@ import utils from './util';
 const { randomString } = utils;
 
 export default {
+  getGroups() {
+    let groups = localStorage.getItem('connection_groups');
+    return groups ? JSON.parse(groups) : [];
+  },
+  setGroups(groups) {
+    localStorage.setItem('connection_groups', JSON.stringify(groups));
+  },
   getSetting(key) {
     let settings = localStorage.getItem('settings');
     settings = settings ? JSON.parse(settings) : {};

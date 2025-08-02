@@ -16,6 +16,17 @@
           <el-form-item :label="$t('message.connection_name')">
             <el-input v-model="connection.name" autocomplete="off"></el-input>
           </el-form-item>
+
+          <el-form-item label="分组">
+            <el-select v-model="connection.groupId" clearable placeholder="选择分组">
+              <el-option
+                v-for="group in groups"
+                :key="group.id"
+                :label="group.name"
+                :value="group.id">
+              </el-option>
+            </el-select>
+          </el-form-item>
         </el-col>
 
         <!-- right col -->
@@ -194,6 +205,7 @@ import InputPassword from '@/components/InputPassword';
 export default {
   data() {
     return {
+      groups: [],
       dialogVisible: false,
       labelPosition: 'top',
       oldKey: '',
@@ -206,6 +218,7 @@ export default {
         separator: ':',
         cluster: false,
         connectionReadOnly: false,
+        groupId: null,
         sshOptions: {
           host: '',
           port: 22,
@@ -248,6 +261,9 @@ export default {
     },
   },
   methods: {
+    loadGroups() {
+      this.groups = this.$storage.getGroups();
+    },
     show() {
       this.dialogVisible = true;
       this.resetFields();
@@ -303,6 +319,10 @@ export default {
     // back up the empty connection
     this.connectionEmpty = JSON.parse(JSON.stringify(this.connection));
 
+    // load groups
+    this.loadGroups();
+    this.$bus.$on('groups-updated', this.loadGroups);
+
     // edit mode
     if (this.editMode) {
       this.sslOptionsShow = !!this.config.sslOptions;
@@ -313,6 +333,11 @@ export default {
     }
 
     delete this.connection.connectionName;
+  },
+
+  beforeDestroy() {
+    this.dialogVisible = false;
+    this.$bus.$off('groups-updated', this.loadGroups);
   },
 };
 </script>
