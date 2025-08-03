@@ -19,56 +19,58 @@
 
     <!-- connections list -->
     <div class="connections-list">
-      <!-- ungrouped connections -->
-      <div class="connection-wrapper"
-        v-for="item, index of ungroupedConnections"
-        :key="item.key ? item.key : item.connectionName"
-        :index="item.connectionName">
-        <ConnectionWrapper
-          :index="index"
-          :globalSettings="globalSettings"
-          :config='item'>
-        </ConnectionWrapper>
+      <!-- grouped connections -->
+      <div class="group-list">
+        <div v-for="group in groups" :key="group.id" class="group-item">
+          <el-collapse @change="handleGroupChange">
+            <el-collapse-item 
+              :name="group.id"
+              :data-group-id="group.id">
+              <template slot="title">
+                <div class="group-title">
+                  <i class="fa fa-folder-o" v-if="!activeGroups[group.id]"></i>
+                  <i class="fa fa-folder-open-o" v-else></i>
+                  <span class="group-name">{{ group.name }}</span>
+                  <div class="group-actions">
+                    <el-button size="mini" type="text" @click.stop="handleGroupCommand('edit', group)">
+                      <i class="el-icon-edit"></i>
+                    </el-button>
+                    <el-button size="mini" type="text" @click.stop="handleGroupCommand('delete', group)">
+                      <i class="el-icon-delete"></i>
+                    </el-button>
+                  </div>
+                </div>
+              </template>
+              <div class="group-connections">
+                <div class="connection-wrapper"
+                  v-for="(item, index) in getGroupConnections(group.id)"
+                  :key="item.key ? item.key : item.connectionName"
+                  :index="item.connectionName">
+                  <ConnectionWrapper
+                    :index="index"
+                    :globalSettings="globalSettings"
+                    :config='item'>
+                  </ConnectionWrapper>
+                </div>
+              </div>
+            </el-collapse-item>
+          </el-collapse>
+        </div>
       </div>
 
-      <!-- grouped connections -->
-      <div class="group-list" v-if="hasGroups">
-        <el-collapse v-model="activeGroups">
-          <el-collapse-item 
-            v-for="group in groups" 
-            :key="group.id" 
-            :name="group.id"
-            :data-group-id="group.id">
-          <template slot="title">
-            <div class="group-title">
-              <i class="fa fa-folder-o" v-if="!activeGroups.includes(group.id)"></i>
-              <i class="fa fa-folder-open-o" v-else></i>
-              <span class="group-name">{{ group.name }}</span>
-              <div class="group-actions">
-                <el-button size="mini" type="text" @click.stop="handleGroupCommand('edit', group)">
-                  <i class="el-icon-edit"></i>
-                </el-button>
-                <el-button size="mini" type="text" @click.stop="handleGroupCommand('delete', group)">
-                  <i class="el-icon-delete"></i>
-                </el-button>
-              </div>
-            </div>
-          </template>
-          <div class="group-connections">
-            <div class="connection-wrapper"
-              v-for="(item, index) in getGroupConnections(group.id)"
-              :key="item.key ? item.key : item.connectionName"
-              :index="item.connectionName">
-              <ConnectionWrapper
-                :index="index"
-                :globalSettings="globalSettings"
-                :config='item'>
-              </ConnectionWrapper>
-            </div>
-          </div>
-          </el-collapse-item>
-        </el-collapse>
-      </div>
+      <!-- ungrouped connections -->
+      <div class="ungrouped-list">
+        <div class="connection-wrapper"
+          v-for="item, index of ungroupedConnections"
+          :key="item.key ? item.key : item.connectionName"
+          :index="item.connectionName">
+          <ConnectionWrapper
+            :index="index"
+            :globalSettings="globalSettings"
+            :config='item'>
+          </ConnectionWrapper>
+        </div>
+       </div>
     </div>
 
     <!-- group dialog -->
@@ -109,7 +111,7 @@ export default {
         name: ''
       },
       editingGroupId: null,
-      activeGroups: []
+      activeGroups: {}
     };
   },
   components: { ConnectionWrapper, ScrollToTop },
@@ -133,9 +135,7 @@ export default {
     ungroupedConnections() {
       return this.filteredConnections.filter(conn => !conn.groupId);
     },
-    hasGroups() {
-      return this.groups.length > 0;
-    },
+
     groupDialogTitle() {
       return this.editingGroupId ? '编辑分组' : '新建分组';
     }
@@ -188,6 +188,22 @@ export default {
       this.groupForm = { id: '', name: '' };
       this.editingGroupId = null;
       this.$bus.$emit('groups-updated');
+    },
+    handleGroupChange(expendIds) {
+      const groupId = expendIds[0];
+      // 如果分组被展开
+      if (groupId) {
+        this.$nextTick(() => {
+          const groupHeader = document.querySelector(`[data-group-id="${groupId}"]`);
+          if (groupHeader) {
+            const container = document.querySelector('.connections-wrap');
+            container.scrollTo({
+              top: groupHeader.offsetTop - 40,
+              behavior: 'smooth'
+            });
+          }
+        });
+      }
     },
     initConnections() {
       const connections = storage.getConnections(true);
@@ -328,6 +344,17 @@ export default {
   .el-collapse-item.is-active .el-collapse-item__header {
     background-color: #edf2fc;
   }
+  @media (prefers-color-scheme: dark) {
+    .el-collapse-item__header {
+      background-color: #263238;
+    }
+    .el-collapse-item__header:hover {
+      background-color: #35454e;
+    }
+    .el-collapse-item.is-active .el-collapse-item__header {
+      background-color: #324149;
+    }
+  }
   .el-collapse-item__content {
     padding: 0;
   }
@@ -370,14 +397,24 @@ export default {
   }
   .group-list {
     cursor: move;
-    /*padding: 5px;*/
+  }
+  .group-item {
+    margin-bottom: 10px;
+  }
+  .group-item .el-collapse {
     background: #fff;
     border-radius: 4px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12);
   }
+  /* .ungrouped-list {
+    background: #fff;
+    border-radius: 4px;
+    padding: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12);
+  } */
   .el-collapse {
-    border: none;
-    margin-bottom: 10px;
+    /* border: none;
+    margin-bottom: 10px; */
   }
   .el-collapse-item__header .group-actions {
     cursor: default;
