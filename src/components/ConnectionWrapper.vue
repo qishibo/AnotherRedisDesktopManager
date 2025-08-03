@@ -210,14 +210,16 @@ export default {
       this.$nextTick(() => {
         // 300ms after menu expand animination
         setTimeout(() => {
-          const container = document.querySelector('.connections-wrap');
+          // const container = document.querySelector('.connections-wrap');
           const menu = this.$refs.connectionMenu.$el;
-          if (menu) {
-            container.scrollTo({
-              top: menu.offsetTop - 40,
-              behavior: 'smooth'
-            });
-          }
+          menu.scrollIntoView({ behavior: 'smooth' })
+          // return;
+          // if (menu) {
+          //   container.scrollTo({
+          //     top: menu.offsetTop - 40,
+          //     behavior: 'smooth'
+          //   });
+          // }
         }, 320);
       });
     },
@@ -237,6 +239,9 @@ export default {
     margin-bottom: 8px;
     padding-right: 6px;
     border-right: 0;
+  }
+  .group-list .connection-menu {
+    padding-right: 0;
   }
 
   .connection-menu.menu-with-custom-color li.el-submenu {

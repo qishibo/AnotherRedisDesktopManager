@@ -194,14 +194,19 @@ export default {
       // 如果分组被展开
       if (groupId) {
         this.$nextTick(() => {
-          const groupHeader = document.querySelector(`[data-group-id="${groupId}"]`);
-          if (groupHeader) {
-            const container = document.querySelector('.connections-wrap');
-            container.scrollTo({
-              top: groupHeader.offsetTop - 40,
-              behavior: 'smooth'
-            });
-          }
+          setTimeout(() => {
+            const groupHeader = document.querySelector(`[data-group-id="${groupId}"]`);
+            if (groupHeader) {
+              // const container = document.querySelector('.connections-wrap');
+              // console.log(groupHeader)
+              groupHeader.scrollIntoView({ behavior: 'smooth' });
+              // return;
+              // container.scrollTo({
+              //   top: groupHeader.offsetTop - 40,
+              //   behavior: 'smooth'
+              // });
+            }
+          }, 220);
         });
       }
     },
@@ -224,7 +229,7 @@ export default {
     },
     sortOrder() {
       // 为未分组区域创建拖拽
-      const ungroupedArea = document.querySelector('.connections-list');
+      const ungroupedArea = document.querySelector('.connections-list .ungrouped-list');
       Sortable.create(ungroupedArea, {
         handle: '.el-submenu__title',
         animation: 150,
@@ -233,6 +238,7 @@ export default {
         draggable: '.connection-wrapper',
         filter: '.el-collapse',
         onEnd: (e) => {
+          console.log(e)
           const { newIndex, to, item } = e;
           const { oldIndex, from } = e;
           
@@ -287,7 +293,7 @@ export default {
           handle: '.el-collapse-item__header',
           animation: 150,
           direction: 'vertical',
-          draggable: '.el-collapse',
+          draggable: '.group-item',
           onEnd: (e) => {
             const { newIndex, oldIndex } = e;
             const group = this.groups.splice(oldIndex, 1)[0];
@@ -393,18 +399,21 @@ export default {
     border: 2px dashed #409eff;
   }
   .connection-wrapper {
-    cursor: move;
+    /* cursor: move; */
   }
   .group-list {
-    cursor: move;
+    /* cursor: move; */
   }
   .group-item {
     margin-bottom: 10px;
+    padding-right: 7px;
   }
   .group-item .el-collapse {
     background: #fff;
     border-radius: 4px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12);
+    overflow: hidden;
+    border: 0;
   }
   /* .ungrouped-list {
     background: #fff;
@@ -418,5 +427,13 @@ export default {
   }
   .el-collapse-item__header .group-actions {
     cursor: default;
+  }
+
+  .group-connections, .el-collapse-item__content, .el-collapse-item__wrap, .el-collapse-item, .el-collapse, .group-item {
+    /* border: 0 !important; */
+  }
+
+  .group-connections .el-menu.el-menu--inline {
+    padding: 0 4px 0 0;
   }
 </style>
