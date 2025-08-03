@@ -22,13 +22,13 @@
       <!-- grouped connections -->
       <div class="group-list">
         <div v-for="group in groups" :key="group.id" class="group-item">
-          <el-collapse @change="handleGroupChange">
+          <el-collapse @change="handleGroupChange" :accordion="true">
             <el-collapse-item 
               :name="group.id"
               :data-group-id="group.id">
               <template slot="title">
                 <div class="group-title">
-                  <i class="fa fa-folder-o" v-if="!activeGroups[group.id]"></i>
+                  <i class="fa fa-folder-o" v-if="!activeGroups.includes(group.id)"></i>
                   <i class="fa fa-folder-open-o" v-else></i>
                   <span class="group-name">{{ group.name }}</span>
                   <div class="group-actions">
@@ -111,7 +111,7 @@ export default {
         name: ''
       },
       editingGroupId: null,
-      activeGroups: {}
+      activeGroups: [],
     };
   },
   components: { ConnectionWrapper, ScrollToTop },
@@ -189,8 +189,11 @@ export default {
       this.editingGroupId = null;
       this.$bus.$emit('groups-updated');
     },
-    handleGroupChange(expendIds) {
+    handleGroupChange(expendIds,a, b) {
       const groupId = expendIds[0];
+      console.log(groupId, expendIds, a, b)
+      // this.$set(this.activeGroups, groupId, true);
+      this.activeGroups.push(groupId);
       // 如果分组被展开
       if (groupId) {
         this.$nextTick(() => {
@@ -308,7 +311,7 @@ export default {
     this.initConnections();
     this.groups = this.$storage.getGroups();
     this.sortOrder();
-    this.activeGroups = [];
+    // this.activeGroups = [];
   },
 };
 </script>
@@ -369,26 +372,30 @@ export default {
     /* padding-left: 8px; */
   }
   .group-title {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    width: 100%;
+      display: flex;
+      align-items: center;
+      width: 100%;
+      min-width: 0;
   }
+
   .group-name {
-    font-weight: bold;
-    color: #606266;
-    margin-left: 8px;
-  }
+      font-weight: bold;
+      color: #606266;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      margin-left: 10px;
+    margin-right: 10px;
+    }
   .el-icon-folder,
   .el-icon-folder-opened {
     font-size: 16px;
     color: #909399;
   }
   .group-actions {
+    margin-left: auto;
     margin-right: 10px;
-  }
-  .group-actions .el-button {
-    padding: 0 5px;
+    flex-shrink: 0;
   }
   .group-actions .el-button + .el-button {
     margin-left: 5px;
