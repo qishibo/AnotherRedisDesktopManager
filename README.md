@@ -76,6 +76,7 @@ This project exists thanks to all the people who contribute.
 
 ## Feature Log
 
+- 2025-10-01: Long time no see! New features will coming soon!
 - 2024-11-03: Import batch commands from files
 - 2024-10-07: Hash field TTL support(Redis>=7.4)
 - 2024-06-06: Search connections support
