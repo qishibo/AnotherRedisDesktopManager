@@ -3,12 +3,109 @@ import utils from './util';
 const { randomString } = utils;
 
 export default {
+  createGroupId() {
+    return `${Date.now()}_${randomString(5)}`;
+  },
+  normalizeGroups(groups = []) {
+    return groups.map((group) => {
+      if (typeof group === 'string') {
+        return { id: this.createGroupId(), name: group.trim() };
+      }
+
+      return {
+        id: group.id || this.createGroupId(),
+        name: (group.name || '').trim(),
+      };
+    }).filter(group => group.name);
+  },
   getGroups() {
-    let groups = localStorage.getItem('connection_groups');
-    return groups ? JSON.parse(groups) : [];
+    const raw = localStorage.getItem('connection_groups');
+
+    if (!raw) {
+      return [];
+    }
+
+    const parsed = JSON.parse(raw);
+    const groups = this.normalizeGroups(parsed);
+
+    // migrate legacy string / missing-id format
+    if (parsed.some(group => typeof group === 'string' || !group.id)) {
+      this.setGroups(groups);
+    }
+
+    return groups;
   },
   setGroups(groups) {
-    localStorage.setItem('connection_groups', JSON.stringify(groups));
+    localStorage.setItem('connection_groups', JSON.stringify(this.normalizeGroups(groups)));
+  },
+  addGroup(name) {
+    name = (name || '').trim();
+    const groups = this.getGroups();
+
+    if (!name || groups.some(group => group.name === name)) {
+      return false;
+    }
+
+    const group = { id: this.createGroupId(), name };
+    groups.push(group);
+    this.setGroups(groups);
+
+    return group;
+  },
+  renameGroup(id, name) {
+    name = (name || '').trim();
+    const groups = this.getGroups();
+    const target = groups.find(group => group.id === id);
+
+    if (!id || !name || !target) {
+      return false;
+    }
+
+    if (target.name === name) {
+      return true;
+    }
+
+    if (groups.some(group => group.name === name)) {
+      return false;
+    }
+
+    target.name = name;
+    this.setGroups(groups);
+
+    return true;
+  },
+  deleteGroup(id) {
+    if (!id) {
+      return false;
+    }
+
+    this.setGroups(this.getGroups().filter(group => group.id !== id));
+
+    const connections = this.getConnections();
+    let changed = false;
+
+    Object.keys(connections).forEach((key) => {
+      if (connections[key].groupId === id) {
+        connections[key].groupId = null;
+        changed = true;
+      }
+    });
+
+    if (changed) {
+      this.setConnections(connections);
+    }
+
+    return true;
+  },
+  sanitizeConnectionGroupId(connection) {
+    if (!connection.groupId) {
+      connection.groupId = null;
+      return;
+    }
+
+    if (!this.getGroups().some(group => group.id === connection.groupId)) {
+      connection.groupId = null;
+    }
   },
   getSetting(key) {
     let settings = localStorage.getItem('settings');
@@ -84,6 +181,7 @@ export default {
     }
 
     connections[newKey] = connection;
+    this.sanitizeConnectionGroupId(connection);
     this.setConnections(connections);
   },
   editConnectionItem(connection, items = {}) {

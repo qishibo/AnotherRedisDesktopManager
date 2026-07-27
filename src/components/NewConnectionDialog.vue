@@ -17,15 +17,27 @@
             <el-input v-model="connection.name" autocomplete="off"></el-input>
           </el-form-item>
 
-          <el-form-item label="分组">
-            <el-select v-model="connection.groupId" clearable placeholder="选择分组">
-              <el-option
-                v-for="group in groups"
-                :key="group.id"
-                :label="group.name"
-                :value="group.id">
-              </el-option>
-            </el-select>
+          <el-form-item :label="$t('message.group')">
+            <div class="group-select-wrap">
+              <el-select
+                v-model="connection.groupId"
+                clearable
+                filterable
+                class="group-select"
+                :placeholder="$t('message.select_group')">
+                <el-option
+                  v-for="group in groups"
+                  :key="group.id"
+                  :label="group.name"
+                  :value="group.id">
+                </el-option>
+              </el-select>
+              <i
+                class="el-icon-plus group-add-icon"
+                :title="$t('message.new_group')"
+                @click.stop="openNewGroupDialog">
+              </i>
+            </div>
           </el-form-item>
         </el-col>
 
@@ -194,6 +206,26 @@
       <el-button @click="dialogVisible = false">{{ $t('el.messagebox.cancel') }}</el-button>
       <el-button type="primary" @click="editConnection">{{ $t('el.messagebox.confirm') }}</el-button>
     </div>
+
+    <el-dialog
+      :title="$t('message.new_group')"
+      :visible.sync="showGroupDialog"
+      width="360px"
+      append-to-body>
+      <el-form label-width="80px" @submit.native.prevent="handleNewGroup">
+        <el-form-item :label="$t('message.group_name')">
+          <el-input
+            v-model="newGroupName"
+            :placeholder="$t('message.group_name')"
+            @keyup.enter.native="handleNewGroup">
+          </el-input>
+        </el-form-item>
+      </el-form>
+      <span slot="footer">
+        <el-button @click="showGroupDialog = false">{{ $t('message.close') }}</el-button>
+        <el-button type="primary" @click="handleNewGroup">{{ $t('message.save') }}</el-button>
+      </span>
+    </el-dialog>
   </el-dialog>
 </template>
 
@@ -243,6 +275,8 @@ export default {
       sshOptionsShow: false,
       sslOptionsShow: false,
       sentinelOptionsShow: false,
+      showGroupDialog: false,
+      newGroupName: '',
     };
   },
   components: { FileInput, InputPassword },
@@ -264,9 +298,34 @@ export default {
     loadGroups() {
       this.groups = this.$storage.getGroups();
     },
+    openNewGroupDialog() {
+      this.newGroupName = '';
+      this.showGroupDialog = true;
+    },
+    handleNewGroup() {
+      const name = this.newGroupName.trim();
+
+      if (!name) {
+        return this.$message.error(this.$t('message.group_name_required'));
+      }
+
+      const group = storage.addGroup(name);
+
+      if (!group) {
+        return this.$message.error(this.$t('message.group_exists'));
+      }
+
+      this.loadGroups();
+      this.connection.groupId = group.id;
+      this.showGroupDialog = false;
+      this.newGroupName = '';
+      this.$message.success(this.$t('message.add_success'));
+      this.$bus.$emit('groups-updated');
+    },
     show() {
       this.dialogVisible = true;
       this.resetFields();
+      this.loadGroups();
     },
     resetFields() {
       // edit connection mode
@@ -318,9 +377,6 @@ export default {
   mounted() {
     // back up the empty connection
     this.connectionEmpty = JSON.parse(JSON.stringify(this.connection));
-
-    // load groups
-    this.loadGroups();
     this.$bus.$on('groups-updated', this.loadGroups);
 
     // edit mode
@@ -336,7 +392,6 @@ export default {
   },
 
   beforeDestroy() {
-    this.dialogVisible = false;
     this.$bus.$off('groups-updated', this.loadGroups);
   },
 };
@@ -363,5 +418,27 @@ export default {
   .dark-mode .new-connection-dailog fieldset {
     color: #416586;
     border-color: #7b95ad;
+  }
+  .new-connection-dailog .group-select-wrap {
+    position: relative;
+  }
+  .new-connection-dailog .group-select {
+    width: 100%;
+  }
+  .new-connection-dailog .group-select .el-input__inner {
+    padding-right: 70px;
+  }
+  .new-connection-dailog .group-add-icon {
+    position: absolute;
+    right: 30px;
+    top: 50%;
+    transform: translateY(-50%);
+/*    z-index: 2;*/
+    font-size: 14px;
+    color: #c0c4cc;
+    cursor: pointer;
+  }
+  .new-connection-dailog .group-add-icon:hover {
+    color: #409eff;
   }
 </style>

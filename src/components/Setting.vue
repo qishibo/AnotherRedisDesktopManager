@@ -242,16 +242,10 @@ export default {
       }
 
       config = JSON.parse(config);
-      // remove all connections first
-      storage.setConnections({});
-      // close all connections
+      storage.importConnectionsBundle(config);
+
       this.$bus.$emit('closeConnection');
-      this.$bus.$emit('refreshConnections');
-
-      for (const line of config) {
-        storage.addConnection(line);
-      }
-
+      this.$bus.$emit('groups-updated');
       this.$nextTick(() => {
         this.$bus.$emit('refreshConnections');
       });
@@ -262,8 +256,8 @@ export default {
       });
     },
     exportConnection() {
-      let connections = storage.getConnections(true);
-      connections = this.$util.base64Encode(JSON.stringify(connections));
+      const payload = storage.exportConnectionsBundle();
+      const connections = this.$util.base64Encode(JSON.stringify(payload));
       this.$util.createAndDownloadFile('connections.ano', connections);
       this.visible = false;
     },
