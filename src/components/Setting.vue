@@ -245,7 +245,6 @@ export default {
       storage.importConnectionsBundle(config);
 
       this.$bus.$emit('closeConnection');
-      this.$bus.$emit('groups-updated');
       this.$nextTick(() => {
         this.$bus.$emit('refreshConnections');
       });

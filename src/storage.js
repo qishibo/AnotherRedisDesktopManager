@@ -3,66 +3,37 @@ import utils from './util';
 const { randomString } = utils;
 
 export default {
-  createGroupId() {
+  createUniqId() {
     return `${Date.now()}_${randomString(5)}`;
   },
-  normalizeGroups(groups = []) {
-    return groups.map((group) => {
-      if (typeof group === 'string') {
-        return { id: this.createGroupId(), name: group.trim() };
-      }
-
-      return {
-        id: group.id || this.createGroupId(),
-        name: (group.name || '').trim(),
-      };
-    }).filter(group => group.name);
-  },
   getGroups() {
-    const raw = localStorage.getItem('connection_groups');
+    const raw = localStorage.getItem(this.getStorageKeyMap('connection_groups'));
 
-    if (!raw) {
-      return [];
-    }
-
-    const parsed = JSON.parse(raw);
-    const groups = this.normalizeGroups(parsed);
-
-    // migrate legacy string / missing-id format
-    if (parsed.some(group => typeof group === 'string' || !group.id)) {
-      this.setGroups(groups);
-    }
-
-    return groups;
+    return raw ? JSON.parse(raw) : [];
   },
   setGroups(groups) {
-    localStorage.setItem('connection_groups', JSON.stringify(this.normalizeGroups(groups)));
+    localStorage.setItem(this.getStorageKeyMap('connection_groups'), JSON.stringify(groups));
   },
   addGroup(name) {
-    name = (name || '').trim();
     const groups = this.getGroups();
 
-    if (!name || groups.some(group => group.name === name)) {
+    // already exists
+    if (groups.some(group => group.name === name)) {
       return false;
     }
 
-    const group = { id: this.createGroupId(), name };
+    const group = { id: this.createUniqId(), name };
     groups.push(group);
     this.setGroups(groups);
 
     return group;
   },
   renameGroup(id, name) {
-    name = (name || '').trim();
     const groups = this.getGroups();
     const target = groups.find(group => group.id === id);
 
     if (!id || !name || !target) {
       return false;
-    }
-
-    if (target.name === name) {
-      return true;
     }
 
     if (groups.some(group => group.name === name)) {
@@ -82,30 +53,16 @@ export default {
     this.setGroups(this.getGroups().filter(group => group.id !== id));
 
     const connections = this.getConnections();
-    let changed = false;
 
+    // delete group info in connections
     Object.keys(connections).forEach((key) => {
       if (connections[key].groupId === id) {
         connections[key].groupId = null;
-        changed = true;
       }
     });
 
-    if (changed) {
-      this.setConnections(connections);
-    }
-
+    this.setConnections(connections);
     return true;
-  },
-  sanitizeConnectionGroupId(connection) {
-    if (!connection.groupId) {
-      connection.groupId = null;
-      return;
-    }
-
-    if (!this.getGroups().some(group => group.id === connection.groupId)) {
-      connection.groupId = null;
-    }
   },
   getSetting(key) {
     let settings = localStorage.getItem('settings');
@@ -181,7 +138,6 @@ export default {
     }
 
     connections[newKey] = connection;
-    this.sanitizeConnectionGroupId(connection);
     this.setConnections(connections);
   },
   editConnectionItem(connection, items = {}) {
@@ -267,12 +223,46 @@ export default {
 
     return newConnections;
   },
+  exportConnectionsBundle() {
+    return {
+      connections: this.getConnections(true),
+      groups: this.getGroups(),
+    };
+  },
+  importConnectionsBundle(config) {
+    let connections = [];
+    let groups = [];
+
+    // legacy: plain connection list
+    if (Array.isArray(config)) {
+      connections = config;
+    }
+    // new type, {connections: [], groups: []}
+    else if (config && typeof config === 'object') {
+      connections = Array.isArray(config.connections) ? config.connections : [];
+      groups = Array.isArray(config.groups) ? config.groups : [];
+    }
+
+    const groupIds = new Set(groups.map(group => group.id).filter(Boolean));
+
+    this.setGroups(groups.filter(group => group.id && group.name));
+    this.setConnections({});
+
+    connections.forEach((conn) => {
+      const item = { ...conn };
+      delete item.key;
+      delete item.db;
+      item.groupId = item.groupId && groupIds.has(item.groupId) ? item.groupId : null;
+      this.addConnection(item);
+    });
+  },
   getStorageKeyMap(type) {
     const typeMap = {
       cli_tip: 'cliTips',
       last_db: 'lastSelectedDb',
       custom_db: 'customDbName',
       search_tip: 'searchTips',
+      connection_groups: 'connectionGroups',
     };
 
     return type ? typeMap[type] : typeMap;

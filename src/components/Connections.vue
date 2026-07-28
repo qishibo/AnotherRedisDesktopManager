@@ -1,33 +1,38 @@
 <template>
   <div class="connections-wrap">
-    <div v-if="connections.length>=filterEnableNum" class="connections-toolbar">
-      <div class="filter-input">
-        <el-input
-          v-model="filterMode"
-          suffix-icon="el-icon-search"
-          :placeholder="$t('message.search_connection')"
-          clearable
-          size="mini">
-        </el-input>
-      </div>
+    <!-- search connections input -->
+    <div v-if="connections.length>=filterEnableNum" class="filter-input">
+      <el-input
+        v-model="filterMode"
+        suffix-icon="el-icon-search"
+        :placeholder="$t('message.search_connection')"
+        clearable
+        size="mini">
+      </el-input>
     </div>
 
+    <!-- connections list -->
     <div ref="connectionsList" class="connections-list">
-      <el-collapse v-if="visibleGroups.length" v-model="activeGroups">
+      <!-- grouped connection -->
+      <el-collapse class="group-outer-collapse">
+        <!-- map groups -->
         <el-collapse-item
-          v-for="group in visibleGroups"
+          v-for="group in groups"
+          v-if="!filterKeyword || connectionsByGroupId[group.id].length"
           :key="group.id"
           :name="group.id">
           <template slot="title">
             <span class="group-title">{{ group.name }}</span>
             <span class="group-count">({{ connectionsByGroupId[group.id].length }})</span>
             <span class="group-actions" @click.stop>
+              <!-- edit group -->
               <el-button
                 type="text"
                 icon="el-icon-edit"
                 :title="$t('message.edit_group')"
                 @click="openEditGroupDialog(group)">
               </el-button>
+              <!-- del group -->
               <el-button
                 type="text"
                 icon="el-icon-delete"
@@ -36,7 +41,8 @@
               </el-button>
             </span>
           </template>
-          <div class="drop-list group-list" :data-group-id="group.id">
+          <!-- group list container -->
+          <div class="group-connection-wrap grouped-list" :data-group-id="group.id">
             <div
               v-for="(item, index) in connectionsByGroupId[group.id]"
               :key="connKey(item)"
@@ -52,9 +58,11 @@
         </el-collapse-item>
       </el-collapse>
 
+      <!-- ungrouped connection -->
       <template v-if="showUngroupedArea">
+        <!-- if no groups, hidden label -->
         <div v-if="groups.length" class="ungrouped-label">{{ $t('message.ungrouped') }}</div>
-        <div class="drop-list ungrouped-list">
+        <div class="group-connection-wrap ungrouped-list">
           <div
             v-for="(item, index) in ungroupedConnections"
             :key="connKey(item)"
@@ -72,17 +80,17 @@
 
     <ScrollToTop parentNum='1' :posRight='false'></ScrollToTop>
 
+    <!-- edit group dialog -->
     <el-dialog
       :title="$t('message.edit_group')"
       :visible.sync="showGroupDialog"
-      width="360px"
+      width="400px"
       append-to-body>
-      <el-form label-width="80px" @submit.native.prevent="handleGroupSubmit">
+      <el-form @submit.native.prevent="handleGroupSubmit">
         <el-form-item :label="$t('message.group_name')">
           <el-input
             v-model="groupForm.name"
-            :placeholder="$t('message.group_name')"
-            @keyup.enter.native="handleGroupSubmit">
+            :placeholder="$t('message.group_name')">
           </el-input>
         </el-form-item>
       </el-form>
@@ -100,14 +108,6 @@ import ConnectionWrapper from '@/components/ConnectionWrapper';
 import ScrollToTop from '@/components/ScrollToTop';
 import Sortable from 'sortablejs';
 
-const CONN_SORTABLE_OPTIONS = {
-  group: 'connections',
-  handle: '.el-submenu__title',
-  animation: 400,
-  direction: 'vertical',
-  draggable: '.connection-item',
-};
-
 export default {
   data() {
     return {
@@ -116,7 +116,6 @@ export default {
       filterEnableNum: 4,
       filterMode: '',
       groups: [],
-      activeGroups: [],
       showGroupDialog: false,
       groupForm: { id: '', name: '' },
       sortables: [],
@@ -128,12 +127,7 @@ export default {
     this.$bus.$on('reloadSettings', (settings) => {
       this.globalSettings = settings;
     });
-    this.$bus.$on('groups-updated', this.reloadGroups);
-  },
-  beforeDestroy() {
-    this.$bus.$off('refreshConnections', this.initConnections);
-    this.$bus.$off('groups-updated', this.reloadGroups);
-    this.destroySortables();
+    this.$bus.$on('groups-updated', this.initGroups);
   },
   computed: {
     filterKeyword() {
@@ -144,29 +138,26 @@ export default {
         return this.connections;
       }
 
-      return this.connections.filter(item => item.connectionName.toLowerCase().includes(this.filterKeyword));
+      return this.connections.filter(item => item.name.toLowerCase().includes(this.filterKeyword));
     },
     connectionsByGroupId() {
-      const map = {};
-      this.groups.forEach(group => { map[group.id] = []; });
+      const grouped = {};
+      this.groups.forEach(group => { grouped[group.id] = []; });
 
       this.filteredConnections.forEach((conn) => {
-        if (conn.groupId && map[conn.groupId]) {
-          map[conn.groupId].push(conn);
+        if (conn.groupId && grouped[conn.groupId]) {
+          grouped[conn.groupId].push(conn);
         }
       });
 
-      return map;
-    },
-    visibleGroups() {
-      if (!this.filterKeyword) {
-        return this.groups;
-      }
-
-      return this.groups.filter(group => this.connectionsByGroupId[group.id].length > 0);
+      return grouped;
     },
     ungroupedConnections() {
-      return this.filteredConnections.filter(conn => !conn.groupId);
+      const groupedIds = new Set(this.groups.map(group => group.id));
+
+      return this.filteredConnections.filter(
+        conn => !conn.groupId || !groupedIds.has(conn.groupId),
+      );
     },
     showUngroupedArea() {
       return this.ungroupedConnections.length > 0 || (!this.filterKeyword && this.groups.length > 0);
@@ -174,8 +165,7 @@ export default {
   },
   watch: {
     filterMode() {
-      const visibleIds = new Set(this.visibleGroups.map(group => group.id));
-      this.activeGroups = this.activeGroups.filter(id => visibleIds.has(id));
+      // reinit sortable while changing
       this.initSortable();
     },
   },
@@ -194,23 +184,17 @@ export default {
       const ordered = [];
       const used = new Set();
 
-      const addFromList = (listEl) => {
-        if (!listEl) {
-          return;
+      // DOM tree order === group lists then ungrouped list
+      root.querySelectorAll('.connection-item').forEach((el) => {
+        const conn = byName.get(el.dataset.connectionName);
+
+        if (conn) {
+          ordered.push(conn);
+          used.add(this.connKey(conn));
         }
+      });
 
-        [...listEl.children].forEach((child) => {
-          const conn = byName.get(child.dataset.connectionName);
-
-          if (conn) {
-            ordered.push(conn);
-            used.add(this.connKey(conn));
-          }
-        });
-      };
-
-      this.groups.forEach(({ id }) => addFromList(root.querySelector(`.group-list[data-group-id="${id}"]`)));
-      addFromList(root.querySelector('.ungrouped-list'));
+      // keep connections not in DOM (e.g. filtered out)
       this.connections.forEach((conn) => {
         if (!used.has(this.connKey(conn))) {
           ordered.push(conn);
@@ -225,13 +209,17 @@ export default {
         return;
       }
 
-      const conn = this.connections.find(item => item.connectionName === evt.item.dataset.connectionName);
+      // current connection(drag start)
+      const conn = this.connections.find(
+        item => item.connectionName === evt.item.dataset.connectionName,
+      );
 
       if (!conn) {
         return;
       }
 
       conn.groupId = evt.to.dataset.groupId || null;
+      // resort connection's order
       this.syncConnectionsOrder();
       this.initSortable();
     },
@@ -261,33 +249,28 @@ export default {
       }
 
       this.showGroupDialog = false;
-      this.groupForm = { id: '', name: '' };
-      this.reloadGroups();
       this.$message.success(this.$t('message.modify_success'));
       this.$bus.$emit('groups-updated');
     },
     deleteGroup(groupId) {
       this.$confirm(this.$t('message.delete_group_confirm'), { type: 'warning' }).then(() => {
         storage.deleteGroup(groupId);
-        this.initConnections();
         this.$message.success(this.$t('message.delete_success'));
         this.$bus.$emit('groups-updated');
       }).catch(() => {});
     },
-    reloadGroups() {
+    initGroups() {
       this.groups = storage.getGroups();
       this.initSortable();
     },
     initConnections() {
-      const groupIds = new Set(storage.getGroups().map(group => group.id));
-
       this.connections = storage.getConnections(true).map((item) => {
         item.connectionName = storage.getConnectionName(item);
+        // fix history bug, prevent db into config
         delete item.db;
-        item.groupId = item.groupId && groupIds.has(item.groupId) ? item.groupId : null;
         return item;
       });
-      this.reloadGroups();
+      this.initGroups();
     },
     destroySortables() {
       this.sortables.forEach(sortable => sortable.destroy());
@@ -296,6 +279,7 @@ export default {
     initSortable() {
       this.destroySortables();
 
+      // disable sortable while filtering
       if (this.filterKeyword) {
         return;
       }
@@ -307,17 +291,24 @@ export default {
           return;
         }
 
-        root.querySelectorAll('.drop-list').forEach((listEl) => {
+        // create drag area for every connections in group,
+        // belongs to same group 'connections'
+        const connAreas = root.querySelectorAll('.group-connection-wrap');
+        connAreas.forEach((listEl) => {
           this.sortables.push(Sortable.create(listEl, {
-            ...CONN_SORTABLE_OPTIONS,
+            group: 'connections',
+            handle: '.el-submenu__title',
+            animation: 400,
+            direction: 'vertical',
+            draggable: '.connection-item',
             onEnd: this.onConnectionDragEnd,
           }));
         });
 
-        const collapseEl = root.querySelector('.el-collapse');
-
-        if (collapseEl) {
-          this.sortables.push(Sortable.create(collapseEl, {
+        // create drag area for every group
+        const groupArea = root.querySelector('.group-outer-collapse');
+        if (groupArea) {
+          this.sortables.push(Sortable.create(groupArea, {
             handle: '.group-title',
             animation: 400,
             direction: 'vertical',
@@ -340,19 +331,15 @@ export default {
     overflow-y: auto;
     margin-top: 11px;
   }
-  .connections-wrap .connections-toolbar {
-    display: flex;
-    align-items: center;
-    gap: 8px;
+  .connections-wrap .filter-input {
     padding-right: 13px;
     margin-bottom: 4px;
   }
-  .connections-wrap .filter-input {
-    flex: 1;
-  }
+  /* set drag area min height, target to the end will be correct */
   .connections-wrap .connections-list {
     min-height: calc(100vh - 110px);
   }
+  /*  group style*/
   .connections-wrap .el-collapse {
     border: 0;
     padding-right: 7px;
@@ -399,10 +386,12 @@ export default {
     font-size: 14px;
   }
   .connections-wrap .el-collapse-item__content {
-    padding-bottom: 0;
+    padding-bottom: 10px;
   }
-  .connections-wrap .drop-list {
-    min-height: 8px;
+
+  /*  grouped connection*/
+  .connections-wrap .group-connection-wrap {
+    min-height: 26px;
   }
   .connections-wrap .ungrouped-label {
     font-size: 13px;

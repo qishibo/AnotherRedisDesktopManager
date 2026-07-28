@@ -17,6 +17,7 @@
             <el-input v-model="connection.name" autocomplete="off"></el-input>
           </el-form-item>
 
+          <!-- connection group -->
           <el-form-item :label="$t('message.group')">
             <div class="group-select-wrap">
               <el-select
@@ -207,17 +208,17 @@
       <el-button type="primary" @click="editConnection">{{ $t('el.messagebox.confirm') }}</el-button>
     </div>
 
+    <!-- new group dialog -->
     <el-dialog
       :title="$t('message.new_group')"
       :visible.sync="showGroupDialog"
-      width="360px"
+      width="400px"
       append-to-body>
-      <el-form label-width="80px" @submit.native.prevent="handleNewGroup">
+      <el-form @submit.native.prevent="handleNewGroup">
         <el-form-item :label="$t('message.group_name')">
           <el-input
             v-model="newGroupName"
-            :placeholder="$t('message.group_name')"
-            @keyup.enter.native="handleNewGroup">
+            :placeholder="$t('message.group_name')">
           </el-input>
         </el-form-item>
       </el-form>
@@ -296,7 +297,7 @@ export default {
   },
   methods: {
     loadGroups() {
-      this.groups = this.$storage.getGroups();
+      this.groups = storage.getGroups();
     },
     openNewGroupDialog() {
       this.newGroupName = '';
@@ -317,8 +318,8 @@ export default {
 
       this.loadGroups();
       this.connection.groupId = group.id;
+
       this.showGroupDialog = false;
-      this.newGroupName = '';
       this.$message.success(this.$t('message.add_success'));
       this.$bus.$emit('groups-updated');
     },
@@ -377,7 +378,6 @@ export default {
   mounted() {
     // back up the empty connection
     this.connectionEmpty = JSON.parse(JSON.stringify(this.connection));
-    this.$bus.$on('groups-updated', this.loadGroups);
 
     // edit mode
     if (this.editMode) {
@@ -389,10 +389,6 @@ export default {
     }
 
     delete this.connection.connectionName;
-  },
-
-  beforeDestroy() {
-    this.$bus.$off('groups-updated', this.loadGroups);
   },
 };
 </script>
@@ -419,6 +415,8 @@ export default {
     color: #416586;
     border-color: #7b95ad;
   }
+
+  /*  group select*/
   .new-connection-dailog .group-select-wrap {
     position: relative;
   }
@@ -426,16 +424,14 @@ export default {
     width: 100%;
   }
   .new-connection-dailog .group-select .el-input__inner {
-    padding-right: 70px;
+    padding-right: 50px;
   }
   .new-connection-dailog .group-add-icon {
     position: absolute;
     right: 30px;
     top: 50%;
     transform: translateY(-50%);
-/*    z-index: 2;*/
     font-size: 14px;
-    color: #c0c4cc;
     cursor: pointer;
   }
   .new-connection-dailog .group-add-icon:hover {

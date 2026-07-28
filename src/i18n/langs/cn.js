@@ -86,7 +86,7 @@ const cn = {
     group_name: '分组名称',
     group_name_required: '分组名称不能为空',
     group_exists: '分组已存在',
-    delete_group_confirm: '确定删除该分组？组内连接将变为未分组。',
+    delete_group_confirm: '确定删除该分组？组内连接将变为未分组',
     begin_update: '更新',
     ignore_this_version: '忽略该版本',
     check_update: '检查更新',
