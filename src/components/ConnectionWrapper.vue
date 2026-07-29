@@ -210,24 +210,8 @@ export default {
       this.$nextTick(() => {
         // 300ms after menu expand animination
         setTimeout(() => {
-          let scrollTop = 0;
-          const menus = document.querySelectorAll('.connections-wrap .connections-list>ul');
-
-          // calc height sum of all above menus
-          for (const menu of menus) {
-            if (menu.id === this.connectionAnchor) {
-              break;
-            }
-            scrollTop += (menu.clientHeight + 8);
-          }
-
-          // if connections filter input exists, scroll more
-          // 32 = height('.filter-input')+margin
-          const offset = document.querySelector('.connections-wrap .filter-input') ? 32 : 0;
-          document.querySelector('.connections-wrap').scrollTo({
-            top: scrollTop + offset,
-            behavior: 'smooth',
-          });
+          const menu = this.$refs.connectionMenu.$el;
+          menu.scrollIntoView({ behavior: 'smooth' })
         }, 320);
       });
     },
