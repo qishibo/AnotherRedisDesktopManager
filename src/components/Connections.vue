@@ -14,7 +14,7 @@
     <!-- connections list -->
     <div ref="connectionsList" class="connections-list">
       <!-- grouped connection -->
-      <el-collapse class="group-outer-collapse">
+      <el-collapse v-model="activeGroups" class="group-outer-collapse">
         <!-- map groups -->
         <el-collapse-item
           v-for="group in groups"
@@ -22,7 +22,10 @@
           :key="group.id"
           :name="group.id">
           <template slot="title">
-            <i class="fa fa-folder-o group-icon"></i>
+            <i
+              class="fa group-icon"
+              :class="activeGroups.includes(group.id) ? 'fa-folder-open-o' : 'fa-folder-o'">
+            </i>
             <span class="group-title">{{ group.name }}</span>
             <span class="group-count">{{ connectionsByGroupId[group.id].length }}</span>
             <span class="group-actions" @click.stop>
@@ -117,6 +120,7 @@ export default {
       filterEnableNum: 4,
       filterMode: '',
       groups: [],
+      activeGroups: [],
       showGroupDialog: false,
       groupForm: { id: '', name: '' },
       sortables: [],
@@ -388,6 +392,7 @@ export default {
   .connections-wrap .group-icon {
     margin-right: 6px;
     color: #909399;
+    width: 14px;
   }
   .connections-wrap .group-title {
     flex: 1;
@@ -462,20 +467,15 @@ export default {
 
   /*sortable styles*/
   .connections-wrap .sortable-ghost {
-    opacity: 1 !important;
     background: #ecf5ff !important;
     border: 2px dashed #409eff !important;
     border-radius: 4px;
   }
   .connections-wrap .sortable-drag {
-    opacity: 1 !important;
     background: #fff !important;
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.18) !important;
     border: 1px solid #409eff !important;
     border-radius: 4px;
-  }
-  .connections-wrap .sortable-chosen {
-    opacity: 0.5;
   }
   .dark-mode .connections-wrap .sortable-ghost {
     background: #1e3a5f !important;
