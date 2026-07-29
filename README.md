@@ -45,11 +45,11 @@
 
 ## Enjoy!
 
-![redis status dark](https://cdn.jsdelivr.net/gh/qishibo/img/ardm/202411081318491.png)
+![redis status dark](https://cdn.jsdelivr.net/gh/qishibo/img/ardm/20260729160531924.png)
 
-![redis key dark](https://cdn.jsdelivr.net/gh/qishibo/img/ardm/202411081318490.png)
+![redis key dark](https://cdn.jsdelivr.net/gh/qishibo/img/ardm/20260729160542512.png)
 
-![redis exec log](https://cdn.jsdelivr.net/gh/qishibo/img/ardm/202411081318492.png)
+![redis exec log](https://cdn.jsdelivr.net/gh/qishibo/img/ardm/20260729160550004.png)
 
 
 ## Contributors
@@ -76,6 +76,7 @@ This project exists thanks to all the people who contribute.
 
 ## Feature Log
 
+- 2026-07-29: Connection Group Support!
 - 2025-10-01: Long time no see! New features will coming soon!
 - 2024-11-03: Import batch commands from files
 - 2024-10-07: Hash field TTL support(Redis>=7.4)
