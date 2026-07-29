@@ -331,6 +331,9 @@ export default {
       key: this.getFileContent(options.key, options.keybookmark),
       cert: this.getFileContent(options.cert, options.certbookmark),
 
+      // SNI server name
+      servername: options.servername || undefined,
+
       checkServerIdentity: (servername, cert) =>
         // skip certificate hostname validation
         undefined,

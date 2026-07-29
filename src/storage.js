@@ -3,6 +3,67 @@ import utils from './util';
 const { randomString } = utils;
 
 export default {
+  createUniqId() {
+    return `${Date.now()}_${randomString(5)}`;
+  },
+  getGroups() {
+    const raw = localStorage.getItem(this.getStorageKeyMap('connection_groups'));
+
+    return raw ? JSON.parse(raw) : [];
+  },
+  setGroups(groups) {
+    localStorage.setItem(this.getStorageKeyMap('connection_groups'), JSON.stringify(groups));
+  },
+  addGroup(name) {
+    const groups = this.getGroups();
+
+    // already exists
+    if (groups.some(group => group.name === name)) {
+      return false;
+    }
+
+    const group = { id: this.createUniqId(), name };
+    groups.push(group);
+    this.setGroups(groups);
+
+    return group;
+  },
+  renameGroup(id, name) {
+    const groups = this.getGroups();
+    const target = groups.find(group => group.id === id);
+
+    if (!id || !name || !target) {
+      return false;
+    }
+
+    if (groups.some(group => group.name === name)) {
+      return false;
+    }
+
+    target.name = name;
+    this.setGroups(groups);
+
+    return true;
+  },
+  deleteGroup(id) {
+    if (!id) {
+      return false;
+    }
+
+    this.setGroups(this.getGroups().filter(group => group.id !== id));
+
+    const connections = this.getConnections();
+
+    // delete group info in connections
+    Object.keys(connections).forEach((key) => {
+      if (connections[key].groupId === id) {
+        connections[key].groupId = null;
+      }
+    });
+
+    this.setConnections(connections);
+    return true;
+  },
   getSetting(key) {
     let settings = localStorage.getItem('settings');
     settings = settings ? JSON.parse(settings) : {};
@@ -162,12 +223,46 @@ export default {
 
     return newConnections;
   },
+  exportConnectionsBundle() {
+    return {
+      connections: this.getConnections(true),
+      groups: this.getGroups(),
+    };
+  },
+  importConnectionsBundle(config) {
+    let connections = [];
+    let groups = [];
+
+    // legacy: plain connection list
+    if (Array.isArray(config)) {
+      connections = config;
+    }
+    // new type, {connections: [], groups: []}
+    else if (config && typeof config === 'object') {
+      connections = Array.isArray(config.connections) ? config.connections : [];
+      groups = Array.isArray(config.groups) ? config.groups : [];
+    }
+
+    const groupIds = new Set(groups.map(group => group.id).filter(Boolean));
+
+    this.setGroups(groups.filter(group => group.id && group.name));
+    this.setConnections({});
+
+    connections.forEach((conn) => {
+      const item = { ...conn };
+      delete item.key;
+      delete item.db;
+      item.groupId = item.groupId && groupIds.has(item.groupId) ? item.groupId : null;
+      this.addConnection(item);
+    });
+  },
   getStorageKeyMap(type) {
     const typeMap = {
       cli_tip: 'cliTips',
       last_db: 'lastSelectedDb',
       custom_db: 'customDbName',
       search_tip: 'searchTips',
+      connection_groups: 'connectionGroups',
     };
 
     return type ? typeMap[type] : typeMap;
