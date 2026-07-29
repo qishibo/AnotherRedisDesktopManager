@@ -22,8 +22,9 @@
           :key="group.id"
           :name="group.id">
           <template slot="title">
+            <i class="fa fa-folder-o group-icon"></i>
             <span class="group-title">{{ group.name }}</span>
-            <span class="group-count">({{ connectionsByGroupId[group.id].length }})</span>
+            <span class="group-count">{{ connectionsByGroupId[group.id].length }}</span>
             <span class="group-actions" @click.stop>
               <!-- edit group -->
               <el-button
@@ -256,7 +257,8 @@ export default {
       this.$confirm(this.$t('message.delete_group_confirm'), { type: 'warning' }).then(() => {
         storage.deleteGroup(groupId);
         this.$message.success(this.$t('message.delete_success'));
-        this.$bus.$emit('groups-updated');
+        // reload connections so in-memory groupId is cleared(in connections)
+        this.initConnections();
       }).catch(() => {});
     },
     initGroups() {
@@ -332,27 +334,60 @@ export default {
     margin-top: 11px;
   }
   .connections-wrap .filter-input {
-    padding-right: 13px;
+    padding-right: 6px;
     margin-bottom: 4px;
   }
   /* set drag area min height, target to the end will be correct */
   .connections-wrap .connections-list {
     min-height: calc(100vh - 110px);
   }
-  /*  group style*/
+  /* group style */
   .connections-wrap .el-collapse {
     border: 0;
-    padding-right: 7px;
+  }
+  .connections-wrap .el-collapse-item {
+    margin-bottom: 8px;
   }
   .connections-wrap .el-collapse-item__header {
     font-size: 13px;
-    font-weight: bold;
-    padding-left: 8px;
-    padding-right: 4px;
-    height: 36px;
-    line-height: 36px;
+    font-weight: 600;
+    height: 34px;
+    line-height: 34px;
+    padding: 0 8px 0 10px;
+    margin-right: 6px;
+    margin-bottom: 5px;
     display: flex;
     align-items: center;
+    background: #f0f2f5;
+    border-radius: 4px;
+    border-bottom: 0 !important;
+    color: #606266;
+  }
+  .connections-wrap .el-collapse-item__header:hover {
+    background: #e6e8eb;
+  }
+  .dark-mode .connections-wrap .el-collapse-item__header {
+    background: #2c3a41;
+    color: #c0c4cc;
+  }
+  .dark-mode .connections-wrap .el-collapse-item__header:hover {
+    background: #35454e;
+  }
+  /*opened group*/
+  .connections-wrap .el-collapse-item.is-active .el-collapse-item__header {
+    border-radius: 4px 4px 0 0;
+  }
+  .connections-wrap .el-collapse-item__wrap {
+    border-bottom: 0 !important;
+    background: transparent;
+  }
+  .connections-wrap .el-collapse-item__arrow {
+    margin-right: 2px;
+    color: #909399;
+  }
+  .connections-wrap .group-icon {
+    margin-right: 6px;
+    color: #909399;
   }
   .connections-wrap .group-title {
     flex: 1;
@@ -360,6 +395,7 @@ export default {
     text-overflow: ellipsis;
     white-space: nowrap;
     cursor: grab;
+    letter-spacing: 0.2px;
   }
   .connections-wrap .group-title:active,
   .connections-wrap .sortable-chosen .group-title {
@@ -367,10 +403,20 @@ export default {
   }
   .connections-wrap .group-count {
     flex-shrink: 0;
+    min-width: 18px;
+    height: 18px;
     margin-left: 6px;
-    margin-right: 4px;
-    font-size: 12px;
+    padding: 0 6px;
+    font-size: 11px;
     font-weight: normal;
+    line-height: 18px;
+    text-align: center;
+    color: #909399;
+    background: #fff;
+    border-radius: 9px;
+  }
+  .dark-mode .connections-wrap .group-count {
+    background: #1e272c;
     color: #909399;
   }
   .connections-wrap .group-actions {
@@ -379,26 +425,42 @@ export default {
     align-items: center;
     gap: 4px;
     margin-left: 8px;
+    opacity: 0.55;
+  }
+  .connections-wrap .el-collapse-item__header:hover .group-actions {
+    opacity: 1;
   }
   .connections-wrap .group-actions .el-button {
     padding: 0;
     margin-left: 0;
     font-size: 14px;
+    color: #909399;
+  }
+  .connections-wrap .group-actions .el-button:hover {
+    color: #589ce2;
   }
   .connections-wrap .el-collapse-item__content {
-    padding-bottom: 10px;
+    padding-bottom: 0px;
   }
 
-  /*  grouped connection*/
+  /* grouped & ungrouped list area */
   .connections-wrap .group-connection-wrap {
     min-height: 26px;
   }
   .connections-wrap .ungrouped-label {
-    font-size: 13px;
-    font-weight: bold;
+    font-size: 12px;
+    font-weight: 600;
     color: #909399;
-    padding: 4px 8px 0;
+    margin: 10px 8px 6px;
+    padding-top: 8px;
+    border-top: 1px dashed #dcdfe6;
+    letter-spacing: 0.3px;
   }
+  .dark-mode .connections-wrap .ungrouped-label {
+    border-top-color: #3d4f57;
+  }
+
+  /*sortable styles*/
   .connections-wrap .sortable-ghost {
     opacity: 1 !important;
     background: #ecf5ff !important;
