@@ -1,0 +1,70 @@
+name: build_appx
+
+on:
+  workflow_dispatch:
+    inputs:
+      select_branch:
+        description: select build branch
+        default: appx
+        type: choice
+        options:
+          - appx
+          - master
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.inputs.select_branch }}
+          fetch-depth: 0
+
+      - name: Load MSVC Compiler Env
+        uses: ilammy/msvc-dev-cmd@v1
+
+      - name: Setup Node.js 16.x
+        uses: actions/setup-node@v4
+        with:
+          node-version: '16.x'
+          cache: 'npm'
+
+      - name: Get latest tag
+        shell: pwsh
+        run: |
+          $tag = git describe --tags --abbrev=0 2>$null
+          if (-not $tag) { $tag = "unknown" } 
+          echo "VERSION=$tag" | Out-File -FilePath $env:GITHUB_ENV -Append
+
+      - name: Print build info
+        shell: pwsh
+        run: |
+          git branch --show-current
+          echo "Node Version：$(node -v)"
+          echo "Tag：$env:VERSION"
+
+      - name: Install & Build Appx
+        # env:
+        #   GH_TOKEN: ${{ secrets.GH_TOKEN }}
+        run: |
+          npm ci
+          npm run pack:prepare
+          npm run pack:appx
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: appx-build-${{ env.VERSION }}
+          path: dist/build-apps/*.appx
+
+      # - name: Publish Release
+      #   uses: softprops/action-gh-release@v2
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      #   with:
+      #     tag_name: ${{ env.VERSION }}
+      #     name: Release ${{ env.VERSION }}
+      #     files: dist/build-apps/*.appx
+      #     overwrite: true
