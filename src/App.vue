@@ -99,7 +99,7 @@ html {
 }
 body {
   height: 100%;
-  padding: 8px;
+  padding: 8px 6px 8px 6px;
   margin: 0;
   box-sizing: border-box;
   -webkit-font-smoothing: antialiased;

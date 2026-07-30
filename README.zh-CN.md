@@ -40,11 +40,11 @@
 
 ## 起飞!
 
-![redis status dark](https://cdn.jsdelivr.net/gh/qishibo/img/ardm/202411081318491.png)
+![redis status dark](https://cdn.jsdelivr.net/gh/qishibo/img/ardm/20260729160531924.png)
 
-![redis key dark](https://cdn.jsdelivr.net/gh/qishibo/img/ardm/202411081318490.png)
+![redis key dark](https://cdn.jsdelivr.net/gh/qishibo/img/ardm/20260729160542512.png)
 
-![redis exec log](https://cdn.jsdelivr.net/gh/qishibo/img/ardm/202411081318492.png)
+![redis exec log](https://cdn.jsdelivr.net/gh/qishibo/img/ardm/20260729160550004.png)
 
 
 ## 贡献者
@@ -53,7 +53,7 @@
 [![contributors](https://opencollective.com/AnotherRedisDesktopManager/contributors.svg?width=890&button=false)](https://github.com/qishibo/AnotherRedisDesktopManager/graphs/contributors)
 [![backers](https://opencollective.com/AnotherRedisDesktopManager/backers.svg)](https://opencollective.com/AnotherRedisDesktopManager)
 
-<!-- sponsors --><a href="https://github.com/brunoksato"><img src="https://images.weserv.nl/?h=120&w=120&mask=circle&url=https:&#x2F;&#x2F;avatars.githubusercontent.com&#x2F;u&#x2F;2257501?u&#x3D;62e7db432487ab19a9e11db051198d91fb42fe95&amp;v&#x3D;4" width="60px" alt="Bruno Sato" /></a><a href="https://github.com/overtrue"><img src="https://images.weserv.nl/?h=120&w=120&mask=circle&url=https:&#x2F;&#x2F;avatars.githubusercontent.com&#x2F;u&#x2F;1472352?u&#x3D;72f261973db954faf4a64987ee3f7e7baf423ded&amp;v&#x3D;4" width="60px" alt="安正超" /></a><a href="https://github.com/wehnertb"><img src="https://images.weserv.nl/?h=120&w=120&mask=circle&url=https:&#x2F;&#x2F;avatars.githubusercontent.com&#x2F;u&#x2F;6706492?u&#x3D;23b3c316d88684d8cbce4947d9a9564c05fa48e6&amp;v&#x3D;4" width="60px" alt="Bill" /></a><a href="https://github.com/RobinTao"><img src="https://images.weserv.nl/?h=120&w=120&mask=circle&url=https:&#x2F;&#x2F;avatars.githubusercontent.com&#x2F;u&#x2F;3703152?v&#x3D;4" width="60px" alt="" /></a><a href="https://github.com/hfoxy"><img src="https://images.weserv.nl/?h=120&w=120&mask=circle&url=https:&#x2F;&#x2F;avatars.githubusercontent.com&#x2F;u&#x2F;1254033?u&#x3D;630787b85016572cb1f9d87a7fbd77314b084bb9&amp;v&#x3D;4" width="60px" alt="Harry Fox" /></a><a href="https://github.com/maniappstudios"><img src="https://images.weserv.nl/?h=120&w=120&mask=circle&url=https:&#x2F;&#x2F;avatars.githubusercontent.com&#x2F;u&#x2F;91392014?v&#x3D;4" width="60px" alt="Mani App Studios" /></a><a href="https://github.com/BWICompanies"><img src="https://images.weserv.nl/?h=120&w=120&mask=circle&url=https:&#x2F;&#x2F;avatars.githubusercontent.com&#x2F;u&#x2F;28601356?v&#x3D;4" width="60px" alt="BWI Companies, Inc." /></a><a href="https://github.com/dragonflydb"><img src="https://images.weserv.nl/?h=120&w=120&mask=circle&url=https:&#x2F;&#x2F;avatars.githubusercontent.com&#x2F;u&#x2F;104819355?v&#x3D;4" width="60px" alt="DragonflyDB" /></a><a href="https://github.com/gauravn00b"><img src="https://images.weserv.nl/?h=120&w=120&mask=circle&url=https:&#x2F;&#x2F;avatars.githubusercontent.com&#x2F;u&#x2F;70876227?v&#x3D;4" width="60px" alt="" /></a><a href="https://github.com/roostinghawk"><img src="https://images.weserv.nl/?h=120&w=120&mask=circle&url=https:&#x2F;&#x2F;avatars.githubusercontent.com&#x2F;u&#x2F;5466611?u&#x3D;6c5bcb3a5e4cd3bc128052dcce3a58ba00e742f9&amp;v&#x3D;4" width="60px" alt="liuwei" /></a><a href="https://github.com/status2xx"><img src="https://images.weserv.nl/?h=120&w=120&mask=circle&url=https:&#x2F;&#x2F;avatars.githubusercontent.com&#x2F;u&#x2F;40201780?u&#x3D;ba9c0f10211ecf2af64ec335a5df13637e313060&amp;v&#x3D;4" width="60px" alt="小新" /></a><a href="https://github.com/mikeallisonJS"><img src="https://images.weserv.nl/?h=120&w=120&mask=circle&url=https:&#x2F;&#x2F;avatars.githubusercontent.com&#x2F;u&#x2F;838371?u&#x3D;6c8a7a989e12d67117976a5ec155e022a5d83499&amp;v&#x3D;4" width="60px" alt="Mike Allison" /></a><!-- sponsors -->
+<!-- sponsors --><a href="https://github.com/brunoksato"><img src="https://images.weserv.nl/?h=120&w=120&mask=circle&url=https:&#x2F;&#x2F;github.com&#x2F;brunoksato.png" width="60px" alt="Bruno Sato" /></a><a href="https://github.com/overtrue"><img src="https://images.weserv.nl/?h=120&w=120&mask=circle&url=https:&#x2F;&#x2F;github.com&#x2F;overtrue.png" width="60px" alt="Zhengchao An" /></a><a href="https://github.com/wehnertb"><img src="https://images.weserv.nl/?h=120&w=120&mask=circle&url=https:&#x2F;&#x2F;github.com&#x2F;wehnertb.png" width="60px" alt="Bill" /></a><a href="https://github.com/RobinTao"><img src="https://images.weserv.nl/?h=120&w=120&mask=circle&url=https:&#x2F;&#x2F;github.com&#x2F;RobinTao.png" width="60px" alt="" /></a><a href="https://github.com/hfoxy"><img src="https://images.weserv.nl/?h=120&w=120&mask=circle&url=https:&#x2F;&#x2F;github.com&#x2F;hfoxy.png" width="60px" alt="Harry Fox" /></a><a href="https://github.com/tandavaworks"><img src="https://images.weserv.nl/?h=120&w=120&mask=circle&url=https:&#x2F;&#x2F;github.com&#x2F;tandavaworks.png" width="60px" alt="TandavaWorks" /></a><a href="https://github.com/BWICompanies"><img src="https://images.weserv.nl/?h=120&w=120&mask=circle&url=https:&#x2F;&#x2F;github.com&#x2F;BWICompanies.png" width="60px" alt="BWI Companies, Inc." /></a><a href="https://github.com/dragonflydb"><img src="https://images.weserv.nl/?h=120&w=120&mask=circle&url=https:&#x2F;&#x2F;github.com&#x2F;dragonflydb.png" width="60px" alt="DragonflyDB" /></a><a href="https://github.com/gauravn00b"><img src="https://images.weserv.nl/?h=120&w=120&mask=circle&url=https:&#x2F;&#x2F;github.com&#x2F;gauravn00b.png" width="60px" alt="" /></a><a href="https://github.com/roostinghawk"><img src="https://images.weserv.nl/?h=120&w=120&mask=circle&url=https:&#x2F;&#x2F;github.com&#x2F;roostinghawk.png" width="60px" alt="liuwei" /></a><a href="https://github.com/lb-xx"><img src="https://images.weserv.nl/?h=120&w=120&mask=circle&url=https:&#x2F;&#x2F;github.com&#x2F;lb-xx.png" width="60px" alt="小新" /></a><a href="https://github.com/mikeallisonJS"><img src="https://images.weserv.nl/?h=120&w=120&mask=circle&url=https:&#x2F;&#x2F;github.com&#x2F;mikeallisonJS.png" width="60px" alt="Mike Allison" /></a><a href="https://github.com/Yanni8"><img src="https://images.weserv.nl/?h=120&w=120&mask=circle&url=https:&#x2F;&#x2F;github.com&#x2F;Yanni8.png" width="60px" alt="Yannick Müller" /></a><!-- sponsors -->
 
 
 ## 赞助
@@ -71,6 +71,8 @@
 
 ## 里程碑
 
+- 2026-07-29: 链接分组支持
+- 2025-10-01: 好久不见，新功能马上归来
 - 2024-11-03: 支持从文件批量导入命令并执行
 - 2024-10-07: Hash键值支持TTL(Redis>=7.4)
 - 2024-06-06: 搜索链接支持

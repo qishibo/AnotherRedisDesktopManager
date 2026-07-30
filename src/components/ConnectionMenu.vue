@@ -406,6 +406,7 @@ export default {
   .connection-menu .connection-name {
     margin-right: 115px;
     padding-right: 6px;
+    padding-left: 4px;
     word-break: keep-all;
     white-space: nowrap;
     overflow: hidden;
