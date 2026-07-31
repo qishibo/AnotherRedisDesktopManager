@@ -64,7 +64,7 @@
       <!-- other operation -->
       <el-form-item label="">
         <el-checkbox v-model="sshOptionsShow">SSH</el-checkbox>
-        <el-checkbox v-model="sslOptionsShow">SSL</el-checkbox>
+        <el-checkbox v-model="sslOptionsShow">TLS/SSL</el-checkbox>
         <el-checkbox v-model="sentinelOptionsShow">
           Sentinel
           <el-popover trigger="hover">
@@ -139,7 +139,7 @@
     <!-- SSL connection form -->
     <el-form v-if="sslOptionsShow" v-show="sslOptionsShow" label-position='top' label-width="90px">
       <fieldset>
-        <legend>SSL</legend>
+        <legend>TLS/SSL</legend>
       </fieldset>
 
       <el-row :gutter=20>
