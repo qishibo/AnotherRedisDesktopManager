@@ -204,7 +204,7 @@
     </el-form>
 
     <div slot="footer" class="dialog-footer">
-      <el-button :loading="testing" :disabled="testing" @click="testConnection">{{ $t('message.test_connection') }}</el-button>
+      <el-button :loading="testing" @click="testConnection">{{ $t('message.test_connection') }}</el-button>
       <el-button @click="dialogVisible = false">{{ $t('el.messagebox.cancel') }}</el-button>
       <el-button type="primary" @click="editConnection">{{ $t('el.messagebox.confirm') }}</el-button>
     </div>
