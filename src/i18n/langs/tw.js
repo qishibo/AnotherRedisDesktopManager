@@ -1,6 +1,10 @@
 const tw = {
   message: {
     new_connection: '新增連線',
+    test_connection: '測試連線',
+    test_connection_success: '連線成功',
+    test_connection_failed: '連線失敗',
+    test_connection_timeout: '連線逾時',
     refresh_connection: '重新整理',
     edit_connection: '編輯連線',
     duplicate_connection: '複製連接',

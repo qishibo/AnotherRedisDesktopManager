@@ -1,6 +1,10 @@
 const es = {
   message: {
     new_connection: 'Nueva Conexión',
+    test_connection: 'Probar Conexión',
+    test_connection_success: 'Conexión Exitosa',
+    test_connection_failed: 'Conexión Fallida',
+    test_connection_timeout: 'Tiempo de conexión agotado',
     refresh_connection: 'Refrescar',
     edit_connection: 'Editar Conexión',
     duplicate_connection: 'Copiar Conexión',

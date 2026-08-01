@@ -1,6 +1,10 @@
 const vi = {
   message: {
     new_connection: 'Kết nối mới',
+    test_connection: 'Kiểm tra kết nối',
+    test_connection_success: 'Kết nối thành công',
+    test_connection_failed: 'Kết nối thất bại',
+    test_connection_timeout: 'Hết thời gian kết nối',
     refresh_connection: 'Làm mới',
     edit_connection: 'Sửa kết nối',
     duplicate_connection: 'Sao chép kết nối',
