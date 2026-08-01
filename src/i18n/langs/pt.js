@@ -1,10 +1,14 @@
 const pt = {
   message: {
     new_connection: 'Nova Conexão',
+    test_connection: 'Testar Conexão',
+    test_connection_success: 'Conexão bem-sucedida',
+    test_connection_failed: 'Falha na conexão',
+    test_connection_timeout: 'Tempo de conexão esgotado',
     refresh_connection: 'Atualizar',
     edit_connection: 'Editar Conexão',
-    del_connection: 'Deletar Conexão',
     duplicate_connection: 'Copiar Conexão',
+    del_connection: 'Deletar Conexão',
     close_connection: 'Encerrar Conexão',
     add_new_line: 'Adicionar nova linha',
     dump_to_clipboard: 'Copiar como comando',

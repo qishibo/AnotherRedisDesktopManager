@@ -1,6 +1,10 @@
 const de = {
   message: {
     new_connection: 'Neue Verbindung',
+    test_connection: 'Verbindung testen',
+    test_connection_success: 'Verbindung erfolgreich',
+    test_connection_failed: 'Verbindung fehlgeschlagen',
+    test_connection_timeout: 'Verbindungszeitüberschreitung',
     refresh_connection: 'Aktualisieren',
     edit_connection: 'Verbindung bearbeiten',
     duplicate_connection: 'Verbindung kopieren',

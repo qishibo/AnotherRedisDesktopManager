@@ -1,6 +1,10 @@
 const ua = {
   message: {
     new_connection: 'Нове з`єднання',
+    test_connection: 'Перевірити з`єднання',
+    test_connection_success: 'З`єднання успішне',
+    test_connection_failed: 'Помилка з`єднання',
+    test_connection_timeout: 'Час очікування з`єднання минув',
     refresh_connection: 'Оновити',
     edit_connection: 'Редагувати з`єднання',
     duplicate_connection: 'Копіювати підключення',

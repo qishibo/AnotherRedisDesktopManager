@@ -1,6 +1,10 @@
 const fr = {
   message: {
     new_connection: 'Nouvelle connexion',
+    test_connection: 'Tester la connexion',
+    test_connection_success: 'Connexion réussie',
+    test_connection_failed: 'Échec de la connexion',
+    test_connection_timeout: 'Délai de connexion dépassé',
     refresh_connection: 'Actualiser',
     edit_connection: 'Éditer connexion',
     duplicate_connection: 'Copier la connexion',
