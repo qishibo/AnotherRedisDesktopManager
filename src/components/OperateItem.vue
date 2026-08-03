@@ -127,6 +127,7 @@ export default {
         Set: 'set',
         Zset: 'zset',
         Stream: 'stream',
+        Array: 'array',
         ReJSON: 'rejson',
       },
       dbKeysCount: {},
@@ -316,6 +317,9 @@ export default {
         }
         case 'stream': {
           return this.client.xadd(key, '*', 'New key', 'New value');
+        }
+        case 'array': {
+          return this.client.call('ARSET', key, 0, 'New value');
         }
         case 'rejson': {
           return this.client.call('JSON.SET', [key, '$', '{"New key":"New value"}']);

@@ -291,7 +291,7 @@ export default {
       }
 
       // operate may add new key, refresh left key list
-      if (['hmset', 'hset', 'lpush', 'rpush', 'set', 'sadd', 'zadd', 'xadd', 'json.set'].includes(operate)) {
+      if (['hmset', 'hset', 'lpush', 'rpush', 'set', 'sadd', 'zadd', 'xadd', 'json.set', 'arset', 'armset', 'arinsert'].includes(operate)) {
         this.$bus.$emit('refreshKeyList', this.client, Buffer.from(params[1]), 'add');
       }
       if (['del'].includes(operate)) {
