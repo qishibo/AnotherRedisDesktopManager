@@ -24,6 +24,15 @@ const adminCMD = {
 
 const readCMD = {
   AUTH: 'AUTH password',
+  ARCOUNT: 'ARCOUNT key',
+  ARGREP: 'ARGREP key start end <EXACT string | MATCH string | GLOB pattern | RE pattern> [AND|OR|LIMIT limit|WITHVALUES|NOCASE]',
+  ARGET: 'ARGET key index',
+  ARGETRANGE: 'ARGETRANGE key start end',
+  ARINFO: 'ARINFO key [FULL]',
+  ARLASTITEMS: 'ARLASTITEMS key count',
+  ARLEN: 'ARLEN key',
+  ARNEXT: 'ARNEXT key',
+  ARSCAN: 'ARSCAN key start end [LIMIT limit]',
   BITCOUNT: 'BITCOUNT key [start] [end]',
   BITOP: 'BITOP operation destkey key [key ...]',
   BITPOS: 'BITPOS key bit [start] [end]',
@@ -108,6 +117,12 @@ const readCMD = {
 
 const writeCMD = {
   APPEND: 'APPEND key value',
+  ARDEL: 'ARDEL key index [index ...]',
+  ARINSERT: 'ARINSERT key value [value ...]',
+  ARMSET: 'ARMSET key index value [index value ...]',
+  ARRING: 'ARRING key size value [value ...]',
+  ARSEEK: 'ARSEEK key index',
+  ARSET: 'ARSET key index value [value ...]',
   BLMOVE: 'BLMOVE source destination LEFT|RIGHT LEFT|RIGHT timeout',
   BLPOP: 'BLPOP key [key ...] timeout',
   BRPOP: 'BRPOP key [key ...] timeout',
