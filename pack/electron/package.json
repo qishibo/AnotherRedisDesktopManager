@@ -53,7 +53,14 @@
       ]
     },
     "snap": {
-      "plugs": ["default", "ssh-keys"]
+      "plugs": ["default", "ssh-keys"],
+      "publish": {
+        "provider": "snapStore",
+        "repo": "another-redis-desktop-manager",
+        "channels": [
+          "edge"
+        ]
+      }
     },
     "mac": {
       "icon": "icons/icon.icns",
