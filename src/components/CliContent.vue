@@ -97,7 +97,7 @@ export default {
 <style type="text/css">
   .cli-content-container .monaco-editor-con {
     min-height: 150px;
-    height: calc(100vh - 160px);
+    height: calc(100vh - 123px);
     clear: both;
     overflow: hidden;
     background: #263238;

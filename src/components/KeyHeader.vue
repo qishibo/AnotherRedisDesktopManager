@@ -10,7 +10,7 @@
         :title="$t('message.click_enter_to_rename')"
         placeholder="KeyName">
         <span slot="prepend" class="key-detail-type">{{ keyType }}</span>
-        <i class="el-icon-check el-input__icon cursor-pointer"
+        <i class="fa fa-check el-input__icon cursor-pointer"
           slot="suffix"
           :title="$t('message.click_enter_to_rename')"
           @click="renameKey">
@@ -27,13 +27,13 @@
         :title="$util.leftTime(keyTTL)">
         <span slot="prepend">TTL</span>
         <!-- remove expire -->
-        <i class="el-icon-close el-input__icon cursor-pointer"
+        <i class="fa fa-history el-input__icon cursor-pointer"
           slot="suffix"
-          :title="$t('message.persist')"
+          :title="$t('message.persist')+', -1'"
           @click="persistKey">
         </i>
         <!-- save ttl -->
-        <i class="el-icon-check el-input__icon cursor-pointer"
+        <i class="fa fa-check el-input__icon cursor-pointer"
           slot="suffix"
           :title="$t('message.click_enter_to_ttl')"
           @click="ttlKey">
@@ -156,12 +156,18 @@ export default {
         return;
       }
 
-      this.$confirm(
+      const inputTxt = 'y';
+      const placeholder = this.$t('message.flushdb_prompt', { txt: inputTxt });
+
+      // force confirm rename operation
+      this.$prompt(
         this.$t('message.confirm_to_rename_key', {
           old: this.$util.bufToString(this.redisKey),
           new: this.$util.bufToString(this.keyName),
-        }),
-        { type: 'warning' },
+        }), {
+          inputValidator: value => ((value == inputTxt) ? true : placeholder),
+          inputPlaceholder: placeholder,
+        }
       ).then(() => {
         this.client.rename(this.redisKey, this.keyName).then((reply) => {
           if (reply === 'OK') {

@@ -1,6 +1,10 @@
 const it = {
   message: {
     new_connection: 'Nuova Connessione',
+    test_connection: 'Testa Connessione',
+    test_connection_success: 'Connessione riuscita',
+    test_connection_failed: 'Connessione fallita',
+    test_connection_timeout: 'Connessione scaduta',
     refresh_connection: 'Ricaricare',
     edit_connection: 'Modificare Connessione',
     duplicate_connection: 'Copia connessione',
@@ -78,6 +82,15 @@ const it = {
     retry_too_many_times: 'Troppi tentativi di riconnessione. Si prega di controllare lo stato del server',
     key_to_search: 'Ricerca per parole chiave',
     search_connection: 'Cerca connessione',
+    group: 'Gruppo',
+    select_group: 'Seleziona gruppo',
+    ungrouped: 'Senza gruppo',
+    new_group: 'Nuovo gruppo',
+    edit_group: 'Modifica gruppo',
+    group_name: 'Nome del gruppo',
+    group_name_required: 'Il nome del gruppo è obbligatorio',
+    group_exists: 'Il gruppo esiste già',
+    delete_group_confirm: 'Eliminare questo gruppo? Le connessioni diventeranno senza gruppo.',
     begin_update: 'Aggiornare',
     ignore_this_version: 'Ignora questa versione',
     check_update: 'Ricerca aggiornamenti',
@@ -169,6 +182,10 @@ const it = {
     slow_log: 'Interrogazione lenta',
     load_current_folder: 'Carica solo la cartella corrente',
     custom_name: 'Nome personalizzato',
+    theme_select: 'Tema colore',
+    theme_system: 'Sistema',
+    theme_light: 'Luce',
+    theme_dark: 'Scuro',
   },
 };
 

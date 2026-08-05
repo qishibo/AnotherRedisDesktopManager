@@ -1,6 +1,10 @@
 const ua = {
   message: {
     new_connection: 'Нове з`єднання',
+    test_connection: 'Перевірити з`єднання',
+    test_connection_success: 'З`єднання успішне',
+    test_connection_failed: 'Помилка з`єднання',
+    test_connection_timeout: 'Час очікування з`єднання минув',
     refresh_connection: 'Оновити',
     edit_connection: 'Редагувати з`єднання',
     duplicate_connection: 'Копіювати підключення',
@@ -78,6 +82,15 @@ const ua = {
     retry_too_many_times: 'Занадто багато спроб з`єднатись. Будь ласка, перевірте стан сервера',
     key_to_search: 'Пошук за ключовими словами',
     search_connection: 'Пошук підключення',
+    group: 'Група',
+    select_group: 'Вибрати групу',
+    ungrouped: 'Без групи',
+    new_group: 'Нова група',
+    edit_group: 'Редагувати групу',
+    group_name: 'Назва групи',
+    group_name_required: 'Назва групи обовʼязкова',
+    group_exists: 'Група вже існує',
+    delete_group_confirm: 'Видалити цю групу? Підключення стануть без групи.',
     begin_update: 'Оновити',
     ignore_this_version: 'Ігнорувати цю версію',
     check_update: 'Перевірити оновлення',
@@ -169,6 +182,10 @@ const ua = {
     slow_log: 'Повільний запит',
     load_current_folder: 'Завантажувати лише поточну папку',
     custom_name: 'Спеціальна назва',
+    theme_select: 'Тема кольорів',
+    theme_system: 'Система',
+    theme_light: 'Світло',
+    theme_dark: 'Темно',
   },
 };
 

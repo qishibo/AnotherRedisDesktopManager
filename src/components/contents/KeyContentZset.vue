@@ -5,6 +5,17 @@
       <!-- add button -->
       <el-button type="primary" @click="showEditDialog({})">{{ $t('message.add_new_line') }}</el-button>
 
+      <!-- toggle sort type -->
+      &nbsp;
+      <el-radio-group v-model="sortType" @change="initShow()" :disabled="!!filterValue">
+        <el-radio-button label="DESC">
+          DESC <i class="fa fa-chevron-down"></i>
+        </el-radio-button>
+        <el-radio-button label="ASC">
+          ASC <i class="fa fa-chevron-up"></i>
+        </el-radio-button>
+      </el-radio-group>
+
       <!-- edit & add dialog -->
       <el-dialog :title="dialogTitle" :visible.sync="editDialog" @open="openDialog" :close-on-click-modal="false">
         <el-form>
@@ -94,6 +105,7 @@ export default {
       oneTimeListLength: 0,
       scanStream: null,
       loadMoreDisable: false,
+      sortType: 'DESC',
     };
   },
   props: ['client', 'redisKey'],
@@ -151,8 +163,9 @@ export default {
     getListRange(resetTable) {
       const start = this.pageSize * this.pageIndex;
       const end = start + this.pageSize - 1;
+      const sortMethod = this.sortType === 'ASC' ? 'zrangeBuffer' : 'zrevrangeBuffer';
 
-      this.client.zrevrangeBuffer([this.redisKey, start, end, 'WITHSCORES']).then((reply) => {
+      this.client[sortMethod]([this.redisKey, start, end, 'WITHSCORES']).then((reply) => {
         const zsetData = this.solveList(reply);
 
         this.zsetData = resetTable ? zsetData : this.zsetData.concat(zsetData);

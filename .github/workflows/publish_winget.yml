@@ -1,0 +1,13 @@
+name: Publish to WinGet
+on:
+  release:
+    types: [released]
+jobs:
+  publish:
+    runs-on: windows-latest
+    steps:
+      - uses: vedantmgoyal9/winget-releaser@main
+        with:
+          identifier: qishibo.AnotherRedisDesktopManager
+          installers-regex: '\.exe$' # Only .exe files
+          token: ${{ secrets.WINGET_TOKEN }}

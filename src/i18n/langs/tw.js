@@ -1,6 +1,10 @@
 const tw = {
   message: {
     new_connection: '新增連線',
+    test_connection: '測試連線',
+    test_connection_success: '連線成功',
+    test_connection_failed: '連線失敗',
+    test_connection_timeout: '連線逾時',
     refresh_connection: '重新整理',
     edit_connection: '編輯連線',
     duplicate_connection: '複製連接',
@@ -78,6 +82,15 @@ const tw = {
     retry_too_many_times: '嘗試重連次數過多，請檢查伺服器狀態',
     key_to_search: '輸入關鍵字搜尋',
     search_connection: '搜尋連接',
+    group: '分組',
+    select_group: '選擇分組',
+    ungrouped: '未分組',
+    new_group: '新建分組',
+    edit_group: '編輯分組',
+    group_name: '分組名稱',
+    group_name_required: '分組名稱不能為空',
+    group_exists: '分組已存在',
+    delete_group_confirm: '確定刪除該分組？組內連線將變為未分組。',
     begin_update: '更新',
     ignore_this_version: '忽略此版本',
     check_update: '檢查更新',
@@ -169,6 +182,10 @@ const tw = {
     slow_log: '慢查詢',
     load_current_folder: '僅載入目前資料夾',
     custom_name: '自訂名稱',
+    theme_select: '主題模式',
+    theme_system: '跟隨系統',
+    theme_light: '亮色模式',
+    theme_dark: '暗色模式',
   },
 };
 

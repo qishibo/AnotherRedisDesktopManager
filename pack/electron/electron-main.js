@@ -7,7 +7,6 @@ const path = require('path');
 const fontManager = require('./font-manager');
 const winState = require('./win-state');
 
-
 // disable GPU for some white screen issues
 // app.disableHardwareAcceleration();
 // app.commandLine.appendSwitch('disable-gpu');
@@ -71,12 +70,15 @@ function createWindow() {
     // mainWindow.loadFile('index.html');
     mainWindow.loadURL(url.format({
       protocol: 'file',
-      slashes: true,
       pathname: path.join(__dirname, 'index.html'),
-      query: { version: app.getVersion() },
+      query: {version: app.getVersion(), dark: nativeTheme.shouldUseDarkColors},
     }));
   } else {
-    mainWindow.loadURL(`http://localhost:9988/?version=${app.getVersion()}`);
+    mainWindow.loadURL(url.format({
+      protocol: 'http',
+      host: 'localhost:9988',
+      query: {version: app.getVersion(), dark: nativeTheme.shouldUseDarkColors},
+    }));
   }
 
   // Open the DevTools.
@@ -144,8 +146,19 @@ ipcMain.handle('getMainArgs', (event, arg) => ({
 }));
 
 ipcMain.handle('changeTheme', (event, theme) => {
-  nativeTheme.themeSource = (theme === 'dark' ? 'dark' : 'light');
+  nativeTheme.themeSource = theme;
   return nativeTheme.shouldUseDarkColors;
+});
+
+// OS theme changed
+nativeTheme.on('updated', () => {
+  // delay send to prevent webcontent stuck
+  setTimeout(() => {
+    mainWindow.webContents.send('os-theme-updated', {
+      shouldUseDarkColors: nativeTheme.shouldUseDarkColors,
+      themeSource: nativeTheme.themeSource
+    });
+  }, 50);
 });
 
 ipcMain.handle('getTempPath', (event, arg) => app.getPath('temp'));

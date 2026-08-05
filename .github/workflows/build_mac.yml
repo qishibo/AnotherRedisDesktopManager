@@ -31,7 +31,7 @@ jobs:
         node-version: 16
     - run: npm ci
     - run: npm run pack:prepare
-    - run: npm run pack:macm1:publish
+    # - run: npm run pack:macm1:publish
     - run: npm run pack:mac:publish
 
     - name: Cleanup keychain

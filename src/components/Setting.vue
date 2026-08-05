@@ -7,8 +7,15 @@
         <el-row :gutter="10" justify="space-between" type="flex" class="setting-row">
           <el-col :sm="12" :lg="5">
             <!-- theme select-->
-            <el-form-item :label="$t('message.dark_mode')">
-              <el-switch v-model='darkMode' @change="changeTheme"></el-switch>
+            <el-form-item :label="$t('message.theme_select')">
+              <el-select v-model='themeMode' @change="changeTheme">
+                <el-option
+                  v-for="(label, theme) in themeList"
+                  :key="theme"
+                  :value="theme"
+                  :label="label">
+                </el-option>
+              </el-select>
             </el-form-item>
           </el-col>
           <el-col :sm="12" :lg="7">
@@ -168,10 +175,20 @@ export default {
       // electronVersion: process.versions.electron,
       allFonts: [],
       loadingFonts: false,
-      darkMode: localStorage.theme == 'dark',
+      themeMode: 'system',
     };
   },
   components: { LanguageSelector },
+  computed: {
+    // themeList in computed to activate i18n
+    themeList() {
+      return {
+        system: this.$t('message.theme_system'),
+        light: this.$t('message.theme_light'),
+        dark: this.$t('message.theme_dark')
+      };
+    },
+  },
   methods: {
     show() {
       this.visible = true;
@@ -179,6 +196,14 @@ export default {
     restoreSettings() {
       const settings = storage.getSetting();
       this.form = { ...this.form, ...settings };
+
+      // theme
+      let theme = localStorage.theme;
+      if (!Object.keys(this.themeList).includes(theme)) {
+        theme = 'system';
+      }
+
+      this.themeMode = theme;
     },
     saveSettings() {
       storage.saveSettings(this.form);
@@ -187,8 +212,8 @@ export default {
       this.$bus.$emit('reloadSettings', Object.assign({}, this.form));
     },
     changeTheme() {
-      const themeName = this.darkMode ? 'dark' : 'chalk';
-      globalChangeTheme(themeName);
+      localStorage.theme = this.themeMode;
+      globalChangeTheme(this.themeMode);
     },
     changeZoom() {
       const { webFrame } = require('electron');
@@ -216,16 +241,9 @@ export default {
       }
 
       config = JSON.parse(config);
-      // remove all connections first
-      storage.setConnections({});
-      // close all connections
+      storage.importConnectionsBundle(config);
+
       this.$bus.$emit('closeConnection');
-      this.$bus.$emit('refreshConnections');
-
-      for (const line of config) {
-        storage.addConnection(line);
-      }
-
       this.$nextTick(() => {
         this.$bus.$emit('refreshConnections');
       });
@@ -236,8 +254,8 @@ export default {
       });
     },
     exportConnection() {
-      let connections = storage.getConnections(true);
-      connections = this.$util.base64Encode(JSON.stringify(connections));
+      const payload = storage.exportConnectionsBundle();
+      const connections = this.$util.base64Encode(JSON.stringify(payload));
       this.$util.createAndDownloadFile('connections.ano', connections);
       this.visible = false;
     },

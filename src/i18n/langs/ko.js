@@ -1,6 +1,10 @@
 const ko = {
   message: {
     new_connection: '새 연결',
+    test_connection: '연결 테스트',
+    test_connection_success: '연결 성공',
+    test_connection_failed: '연결 실패',
+    test_connection_timeout: '연결 시간 초과',
     refresh_connection: '새로고침',
     edit_connection: '연결 편집',
     duplicate_connection: '연결 복제',
@@ -78,6 +82,15 @@ const ko = {
     retry_too_many_times: '너무 많이 재연결을 시도하였습니다. 서버 상태를 확인해주세요.',
     key_to_search: '키워드 검색',
     search_connection: '검색 연결',
+    group: '그룹',
+    select_group: '그룹 선택',
+    ungrouped: '미분류',
+    new_group: '새 그룹',
+    edit_group: '그룹 편집',
+    group_name: '그룹 이름',
+    group_name_required: '그룹 이름을 입력하세요',
+    group_exists: '이미 존재하는 그룹입니다',
+    delete_group_confirm: '이 그룹을 삭제하시겠습니까? 그룹 내 연결은 미분류로 이동합니다.',
     begin_update: '업데이트',
     ignore_this_version: '이 버전 무시',
     check_update: '업데이트 확인',
@@ -169,6 +182,10 @@ const ko = {
     slow_log: '저성능 쿼리',
     load_current_folder: '현재 폴더만 로드',
     custom_name: '맞춤 이름',
+    theme_select: '색상 테마',
+    theme_system: '시스템',
+    theme_light: '밝은 색',
+    theme_dark: '어두운 색',
   },
 };
 

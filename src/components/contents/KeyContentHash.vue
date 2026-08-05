@@ -246,7 +246,7 @@ export default {
       const params = lines.map(line => `${this.$util.bufToQuotation(line.key)} ${
         this.$util.bufToQuotation(line.value)}`);
 
-      const command = `HMSET ${this.$util.bufToQuotation(this.redisKey)} ${params.join(' ')}`;
+      const command = `HSET ${this.$util.bufToQuotation(this.redisKey)} ${params.join(' ')}`;
       this.$util.copyToClipboard(command);
       this.$message.success({ message: this.$t('message.copy_success'), duration: 800 });
     },

@@ -1,6 +1,10 @@
 const de = {
   message: {
     new_connection: 'Neue Verbindung',
+    test_connection: 'Verbindung testen',
+    test_connection_success: 'Verbindung erfolgreich',
+    test_connection_failed: 'Verbindung fehlgeschlagen',
+    test_connection_timeout: 'Verbindungszeitüberschreitung',
     refresh_connection: 'Aktualisieren',
     edit_connection: 'Verbindung bearbeiten',
     duplicate_connection: 'Verbindung kopieren',
@@ -78,6 +82,15 @@ const de = {
     retry_too_many_times: 'Zu viele Versuche, die Verbindung wieder herzustellen. Bitte überprüfen Sie den Server-Status',
     key_to_search: 'Schlüsselwort-Suche',
     search_connection: 'Verbindung suchen',
+    group: 'Gruppe',
+    select_group: 'Gruppe auswählen',
+    ungrouped: 'Ohne Gruppe',
+    new_group: 'Neue Gruppe',
+    edit_group: 'Gruppe bearbeiten',
+    group_name: 'Gruppenname',
+    group_name_required: 'Gruppenname darf nicht leer sein',
+    group_exists: 'Gruppe existiert bereits',
+    delete_group_confirm: 'Diese Gruppe löschen? Verbindungen darin werden ohne Gruppe.',
     begin_update: 'Aktualisierung',
     ignore_this_version: 'Ignoriere diese Version',
     check_update: 'Aktualisierung prüfen',
@@ -169,6 +182,10 @@ const de = {
     slow_log: 'Langsame Abfrage',
     load_current_folder: 'Nur aktuellen Ordner laden',
     custom_name: 'Benutzerdefinierter Name',
+    theme_select: 'Farbdesign',
+    theme_system: 'System',
+    theme_light: 'Licht',
+    theme_dark: 'Dunkel',
   },
 };
 

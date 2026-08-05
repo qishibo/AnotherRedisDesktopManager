@@ -1,14 +1,23 @@
 <template>
 <el-dialog @open='openDialog' :title="$t('message.command_log')" :visible.sync="visible" custom-class='command-log-dialog' width="90%" append-to-body>
-  <ul ref='commandLogUl' class="command-log-ul">
-    <li v-for="record of logsShow">
-      <span class="command-time">{{ record.time }} -</span>
-      <span class="command-con-name">[{{ record.connectionName }}]:&nbsp;</span>
-      <span class="command-name">{{ record.name }} </span>
-      <span class="command-args">{{ record.args }}&nbsp;</span>
-      <span class="command-cost">[{{ record.cost }}ms]</span>
-    </li>
-  </ul>
+  <!-- key list -->
+  <div class="command-log-list">
+    <vxe-table
+      ref="commandLogList"
+      size="mini" max-height="100%"
+      border="none" show-overflow="title"
+      :scroll-y="{enabled: true}"
+      :row-config="{isHover: true, height: 24}"
+      :column-config="{resizable: true}"
+      :empty-text="$t('el.table.emptyText')"
+      :data="logsShow">
+      <vxe-column field="time" title="Time" width="90"></vxe-column>
+      <vxe-column field="name" title="Connection" width="168"></vxe-column>
+      <vxe-column field="cmd" title="CMD" width="130" class-name="command-cmd"></vxe-column>
+      <vxe-column field="args" title="Args" min-width="90"></vxe-column>
+      <vxe-column field="cost" title="Cost(ms)" width="90" class-name="command-cost"></vxe-column>
+    </vxe-table>
+  </div>
 
   <!-- filter -->
   <el-input v-model='filter' size='mini' style='max-width: 200px;' :placeholder="$t('message.key_to_search')"></el-input>&nbsp;
@@ -24,17 +33,19 @@
 
 <script type="text/javascript">
 import { writeCMD } from '@/commands.js';
+import { VxeTable, VxeColumn } from 'vxe-table';
 
 export default {
   data() {
     return {
       visible: false,
       logs: [],
-      maxLength: 2000,
+      maxLength: 5000,
       filter: '',
       showOnlyWrite: false,
     };
   },
+  components: { VxeTable, VxeColumn, },
   created() {
     this.$bus.$on('commandLog', (record) => {
       // hide ping
@@ -43,11 +54,11 @@ export default {
       }
 
       this.logs.push({
-        name: record.command.name,
+        cmd: record.command.name,
         args: (record.command.name === 'auth') ? '***' : record.command.args.map(item => (item.length > 100 ? (`${item.slice(0, 100)}...`) : item.toString())).join(' '),
         cost: record.cost.toFixed(2),
         time: record.time.toTimeString().substr(0, 8),
-        connectionName: record.connectionName,
+        name: record.connectionName,
       });
 
       this.logs.length > this.maxLength && (this.logs = this.logs.slice(-this.maxLength));
@@ -59,11 +70,11 @@ export default {
       let { logs } = this;
 
       if (this.showOnlyWrite) {
-        logs = logs.filter(item => writeCMD[item.name.toUpperCase()]);
+        logs = logs.filter(item => writeCMD[item.cmd.toUpperCase()]);
       }
 
       if (this.filter) {
-        logs = logs.filter(item => item.name.includes(this.filter) || item.args.includes(this.filter));
+        logs = logs.filter(item => item.cmd.includes(this.filter) || item.args.includes(this.filter));
       }
 
       return logs;
@@ -77,10 +88,10 @@ export default {
       this.scrollToBottom();
     },
     scrollToBottom() {
-      this.$nextTick(() => {
-        const dom = this.$refs.commandLogUl;
-        dom && (dom.scrollTop = dom.scrollHeight);
-      });
+      setTimeout(() => {
+        this.$refs.commandLogList &&
+          this.$refs.commandLogList.scrollTo(0, 99999999);
+      }, 0);
     },
   },
 };
@@ -90,43 +101,20 @@ export default {
   .command-log-dialog.el-dialog {
     margin-top: 10vh !important;
   }
-  .command-log-ul {
-    padding: 10px;
-    overflow: auto;
+  .command-log-list {
+    padding: 6px;
     min-height: 150px;
     height: calc(90vh - 307px);
     border: 1px solid grey;
     border-radius: 5px;
-    list-style-type: none;
-  }
-  .command-log-ul li {
-    color: #333;
-  }
-  .dark-mode .command-log-ul li {
-    color: #f7f7f7;
+    margin-bottom: 12px;
   }
 
-  .command-log-ul .command-time {
-    /*color: #f7f7f7;*/
-  }
-  .command-log-ul .command-con-name {
-    color: #7a7a7a;
-  }
-  .dark-mode .command-log-ul .command-con-name {
-    color: #b4b3b3;
-  }
-  .command-log-ul .command-name {
+  .command-log-list .command-cmd {
     font-weight: bold;
+    font-size: 110%;
   }
-  .command-log-ul .command-args {
-    color: #7a7a7a;
-    font-size: 95%;
-  }
-  .dark-mode .command-log-ul .command-args {
-    color: #b4b3b3;
-  }
-  .command-log-ul .command-cost {
+  .command-log-list .command-cost {
     color: #e59090;
-    font-size: 90%;
   }
 </style>

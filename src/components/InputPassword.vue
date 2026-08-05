@@ -1,6 +1,6 @@
 <template>
   <el-input :value="value" @input="handleInput" :type="inputType" :placeholder="placeholder">
-    <i ref="toggler" slot="suffix" class="toggler el-icon-view" @click="togglePassword"></i>
+    <i v-if="!hidepass" ref="toggler" slot="suffix" class="toggler el-icon-view" @click="togglePassword"></i>
   </el-input>
 </template>
 
@@ -12,7 +12,7 @@ export default {
       hideTextTime: 6000,
     };
   },
-  props: ['value', 'placeholder'],
+  props: ['value', 'placeholder', 'hidepass'],
   methods: {
     handleInput(newValue) {
       this.$emit('input', newValue);

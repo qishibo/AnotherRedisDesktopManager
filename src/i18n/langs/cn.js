@@ -1,6 +1,10 @@
 const cn = {
   message: {
     new_connection: '新建连接',
+    test_connection: '测试连接',
+    test_connection_success: '连接成功',
+    test_connection_failed: '连接失败',
+    test_connection_timeout: '连接超时',
     refresh_connection: '刷新',
     edit_connection: '编辑连接',
     duplicate_connection: '复制连接',
@@ -78,6 +82,15 @@ const cn = {
     retry_too_many_times: '尝试重连次数过多，请检查Server状态',
     key_to_search: '输入关键字搜索',
     search_connection: '搜索链接',
+    group: '分组',
+    select_group: '选择分组',
+    ungrouped: '未分组',
+    new_group: '新建分组',
+    edit_group: '编辑分组',
+    group_name: '分组名称',
+    group_name_required: '分组名称不能为空',
+    group_exists: '分组已存在',
+    delete_group_confirm: '确定删除该分组？组内连接将变为未分组',
     begin_update: '更新',
     ignore_this_version: '忽略该版本',
     check_update: '检查更新',
@@ -169,6 +182,10 @@ const cn = {
     slow_log: '慢查询',
     load_current_folder: '只加载该文件夹',
     custom_name: '自定义名称',
+    theme_select: '主题模式',
+    theme_system: '跟随系统',
+    theme_light: '亮色模式',
+    theme_dark: '暗色模式',
   },
 };
 

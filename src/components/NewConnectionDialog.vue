@@ -10,11 +10,35 @@
           </el-form-item>
 
           <el-form-item :label="$t('message.password')">
-            <InputPassword v-model="connection.auth" placeholder="Auth"></InputPassword>
+            <InputPassword v-model="connection.auth" :hidepass="editMode" placeholder="Auth"></InputPassword>
           </el-form-item>
 
           <el-form-item :label="$t('message.connection_name')">
             <el-input v-model="connection.name" autocomplete="off"></el-input>
+          </el-form-item>
+
+          <!-- connection group -->
+          <el-form-item :label="$t('message.group')">
+            <div class="group-select-wrap">
+              <el-select
+                v-model="connection.groupId"
+                clearable
+                filterable
+                class="group-select"
+                :placeholder="$t('message.select_group')">
+                <el-option
+                  v-for="group in groups"
+                  :key="group.id"
+                  :label="group.name"
+                  :value="group.id">
+                </el-option>
+              </el-select>
+              <i
+                class="el-icon-plus group-add-icon"
+                :title="$t('message.new_group')"
+                @click.stop="openNewGroupDialog">
+              </i>
+            </div>
           </el-form-item>
         </el-col>
 
@@ -40,7 +64,7 @@
       <!-- other operation -->
       <el-form-item label="">
         <el-checkbox v-model="sshOptionsShow">SSH</el-checkbox>
-        <el-checkbox v-model="sslOptionsShow">SSL</el-checkbox>
+        <el-checkbox v-model="sslOptionsShow">TLS/SSL</el-checkbox>
         <el-checkbox v-model="sentinelOptionsShow">
           Sentinel
           <el-popover trigger="hover">
@@ -115,7 +139,7 @@
     <!-- SSL connection form -->
     <el-form v-if="sslOptionsShow" v-show="sslOptionsShow" label-position='top' label-width="90px">
       <fieldset>
-        <legend>SSL</legend>
+        <legend>TLS/SSL</legend>
       </fieldset>
 
       <el-row :gutter=20>
@@ -147,6 +171,11 @@
               placeholder='SSL Public Key Pem (cert)'>
               </FileInput>
           </el-form-item>
+
+          <!-- SNI -->
+          <el-form-item label="SNI">
+            <el-input v-model="connection.sslOptions.servername" autocomplete="off" placeholder='SNI Servername'></el-input>
+          </el-form-item>
         </el-col>
       </el-row>
     </el-form>
@@ -175,23 +204,47 @@
     </el-form>
 
     <div slot="footer" class="dialog-footer">
+      <el-button :loading="testing" @click="testConnection">{{ $t('message.test_connection') }}</el-button>
       <el-button @click="dialogVisible = false">{{ $t('el.messagebox.cancel') }}</el-button>
       <el-button type="primary" @click="editConnection">{{ $t('el.messagebox.confirm') }}</el-button>
     </div>
+
+    <!-- new group dialog -->
+    <el-dialog
+      :title="$t('message.new_group')"
+      :visible.sync="showGroupDialog"
+      width="400px"
+      append-to-body>
+      <el-form @submit.native.prevent="handleNewGroup">
+        <el-form-item :label="$t('message.group_name')">
+          <el-input
+            v-model="newGroupName"
+            :placeholder="$t('message.group_name')">
+          </el-input>
+        </el-form-item>
+      </el-form>
+      <span slot="footer">
+        <el-button @click="showGroupDialog = false">{{ $t('message.close') }}</el-button>
+        <el-button type="primary" @click="handleNewGroup">{{ $t('message.save') }}</el-button>
+      </span>
+    </el-dialog>
   </el-dialog>
 </template>
 
 <script type="text/javascript">
 import storage from '@/storage';
+import redisClient from '@/redisClient.js';
 import FileInput from '@/components/FileInput';
 import InputPassword from '@/components/InputPassword';
 
 export default {
   data() {
     return {
+      groups: [],
       dialogVisible: false,
       labelPosition: 'top',
       oldKey: '',
+      testing: false,
       connection: {
         host: '',
         port: '',
@@ -201,6 +254,7 @@ export default {
         separator: ':',
         cluster: false,
         connectionReadOnly: false,
+        groupId: null,
         sshOptions: {
           host: '',
           port: 22,
@@ -214,6 +268,7 @@ export default {
           key: '',
           cert: '',
           ca: '',
+          servername: '',
         },
         sentinelOptions: {
           masterName: 'mymaster',
@@ -224,6 +279,8 @@ export default {
       sshOptionsShow: false,
       sslOptionsShow: false,
       sentinelOptionsShow: false,
+      showGroupDialog: false,
+      newGroupName: '',
     };
   },
   components: { FileInput, InputPassword },
@@ -241,10 +298,45 @@ export default {
         : this.$t('message.new_connection');
     },
   },
+  watch: {
+    dialogVisible(visible) {
+      if (!visible) {
+        this.finishTest();
+      }
+    },
+  },
   methods: {
+    loadGroups() {
+      this.groups = storage.getGroups();
+    },
+    openNewGroupDialog() {
+      this.newGroupName = '';
+      this.showGroupDialog = true;
+    },
+    handleNewGroup() {
+      const name = this.newGroupName.trim();
+
+      if (!name) {
+        return this.$message.error(this.$t('message.group_name_required'));
+      }
+
+      const group = storage.addGroup(name);
+
+      if (!group) {
+        return this.$message.error(this.$t('message.group_exists'));
+      }
+
+      this.loadGroups();
+      this.connection.groupId = group.id;
+
+      this.showGroupDialog = false;
+      this.$message.success(this.$t('message.add_success'));
+      this.$bus.$emit('groups-updated');
+    },
     show() {
       this.dialogVisible = true;
       this.resetFields();
+      this.loadGroups();
     },
     resetFields() {
       // edit connection mode
@@ -264,11 +356,12 @@ export default {
         this.connection = JSON.parse(JSON.stringify(this.connectionEmpty));
       }
     },
-    editConnection() {
+    getConnectionConfig() {
       const config = JSON.parse(JSON.stringify(this.connection));
 
       if (this.sentinelOptionsShow && config.cluster) {
-        return this.$message.error('Sentinel & Cluster cannot be checked together!');
+        this.$message.error('Sentinel & Cluster cannot be checked together!');
+        return false;
       }
 
       !config.host && (config.host = '127.0.0.1');
@@ -286,12 +379,103 @@ export default {
         delete config.sentinelOptions;
       }
 
+      return config;
+    },
+    editConnection() {
+      const config = this.getConnectionConfig();
+      if (!config) {
+        return;
+      }
+
       const oldKey = storage.getConnectionKey(this.config);
       storage.editConnectionByKey(config, oldKey);
 
       this.dialogVisible = false;
       this.$emit('editConnectionFinished', config);
     },
+    cleanupTestClient() {
+      if (!this.testClient) {
+        return;
+      }
+      try {
+        this.testClient.removeAllListeners();
+        // Prevent unhandled error after disconnect (TLS etc.)
+        this.testClient.on('error', () => {});
+        this.testClient.disconnect(false);
+      } catch (e) {}
+      this.testClient = null;
+    },
+    // ok: true / false; omit ok for cancel (cleanup only, no toast)
+    finishTest(ok, message) {
+      if (!this.testing) {
+        return;
+      }
+      this.testing = false;
+
+      clearTimeout(this.testTimer);
+      this.cleanupTestClient();
+
+      // except ok == null
+      if (ok === true) {
+        this.$message.success(this.$t('message.test_connection_success'));
+      } else if (ok === false) {
+        this.$message.error(message || this.$t('message.test_connection_failed'));
+      }
+    },
+    testConnection() {
+      if (this.testing) {
+        return;
+      }
+
+      const config = this.getConnectionConfig();
+      if (!config) {
+        return;
+      }
+
+      this.testing = true;
+      this.testClient = null;
+
+      // show timeout message after N seconds
+      this.testTimer = setTimeout(() => {
+        this.finishTest(false, this.$t('message.test_connection_timeout'));
+      }, 5000);
+
+      const clientPromise = config.sshOptions
+        ? redisClient.createSSHConnection(
+          config.sshOptions, config.host, config.port, config.auth, config,
+        )
+        : redisClient.createConnection(
+          config.host, config.port, config.auth, config,
+        );
+
+      clientPromise.then((client) => {
+        this.testClient = client;
+        client.options.retryStrategy = () => false;
+
+        // Already finished (timeout/cancel) while creating connection.
+        if (!this.testing) {
+          this.cleanupTestClient();
+          return;
+        }
+
+        client.on('error', (e) => {
+          this.finishTest(false, e.message);
+        });
+
+        client.once('ready', () => {
+          client.ping().then(() => {
+            this.finishTest(true);
+          }).catch((e) => {
+            this.finishTest(false, e.message);
+          });
+        });
+      }).catch((e) => {
+        this.finishTest(false, e.message);
+      });
+    },
+  },
+  beforeDestroy() {
+    this.finishTest();
   },
   mounted() {
     // back up the empty connection
@@ -332,5 +516,27 @@ export default {
   .dark-mode .new-connection-dailog fieldset {
     color: #416586;
     border-color: #7b95ad;
+  }
+
+  /*  group select*/
+  .new-connection-dailog .group-select-wrap {
+    position: relative;
+  }
+  .new-connection-dailog .group-select {
+    width: 100%;
+  }
+  .new-connection-dailog .group-select .el-input__inner {
+    padding-right: 50px;
+  }
+  .new-connection-dailog .group-add-icon {
+    position: absolute;
+    right: 30px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 14px;
+    cursor: pointer;
+  }
+  .new-connection-dailog .group-add-icon:hover {
+    color: #409eff;
   }
 </style>

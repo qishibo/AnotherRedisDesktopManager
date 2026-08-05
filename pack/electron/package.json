@@ -1,6 +1,6 @@
 {
   "name": "another-redis-desktop-manager",
-  "version": "1.6.8",
+  "version": "1.7.2",
   "description": "A faster, better and more stable redis desktop manager.",
   "author": "Another",
   "private": true,
@@ -13,7 +13,7 @@
   "build": {
     "appId": "me.qii404.another-redis-desktop-manager",
     "productName": "Another Redis Desktop Manager",
-    "artifactName": "${productName}.${version}.${ext}",
+    "artifactName": "${productName}-${os}-${version}-${arch}.${ext}",
     "copyright": "Copyright © 2024 qii404",
     "asar": true,
     "directories": {
@@ -35,7 +35,8 @@
     "win": {
       "icon": "icons/icon.ico",
       "target": [
-        "nsis"
+        {"target": "nsis", "arch": ["x64", "arm64"]},
+        {"target": "zip", "arch": ["x64"]}
       ]
     },
     "nsis": {
@@ -59,7 +60,7 @@
       "type": "development",
       "category": "public.app-category.developer-tools",
       "target": [
-        "dmg"
+        {"target": "dmg", "arch": ["x64", "arm64"]}
       ],
       "extendInfo": {
         "ElectronTeamID": "68JN8DV835"

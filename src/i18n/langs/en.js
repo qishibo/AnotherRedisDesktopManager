@@ -1,6 +1,10 @@
 const en = {
   message: {
     new_connection: 'New Connection',
+    test_connection: 'Test Connection',
+    test_connection_success: 'Connection Successful',
+    test_connection_failed: 'Connection Failed',
+    test_connection_timeout: 'Connection timed out',
     refresh_connection: 'Refresh',
     edit_connection: 'Edit Connection',
     duplicate_connection: 'Duplicate Connection',
@@ -78,6 +82,15 @@ const en = {
     retry_too_many_times: 'Too Many Attempts To Reconnect. Please Check The Server Status',
     key_to_search: 'Keyword Search',
     search_connection: 'Search Connection',
+    group: 'Group',
+    select_group: 'Select Group',
+    ungrouped: 'Ungrouped',
+    new_group: 'New Group',
+    edit_group: 'Edit Group',
+    group_name: 'Group Name',
+    group_name_required: 'Group name is required',
+    group_exists: 'Group already exists',
+    delete_group_confirm: 'Delete this group? Connections in it will become ungrouped.',
     begin_update: 'Update',
     ignore_this_version: 'Ignore this version',
     check_update: 'Check Update',
@@ -169,6 +182,10 @@ const en = {
     slow_log: 'Slow Query',
     load_current_folder: 'Only Load Current Folder',
     custom_name: 'Custom Name',
+    theme_select: 'Color Theme',
+    theme_system: 'System',
+    theme_light: 'Light',
+    theme_dark: 'Dark',
   },
 };
 
