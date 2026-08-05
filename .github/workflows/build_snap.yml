@@ -30,7 +30,7 @@ jobs:
         node-version: 16
 
     - name: Install snapcraft
-      run: sudo snap install snapcraft --classic
+      run: sudo snap install snapcraft --classic --channel=8.x/stable
 
     - name: Install dependencies
       run: npm ci
