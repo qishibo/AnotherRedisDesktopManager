@@ -1,0 +1,49 @@
+name: build_snap
+
+on:
+  workflow_dispatch:
+    inputs:
+      select_branch:
+        description: select build branch
+        default: snap
+        type: choice
+        options:
+          - snap
+          - master
+
+jobs:
+  build_snap:
+
+    runs-on: ubuntu-latest
+
+    steps:
+
+    - name: Checkout selected branch
+      uses: actions/checkout@v4
+      with:
+        ref: ${{ github.event.inputs.select_branch }}
+
+
+    - name: Use Node.js 16
+      uses: actions/setup-node@v4
+      with:
+        node-version: 16
+        cache: npm
+
+
+    - name: Install dependencies
+      run: npm ci
+
+
+    - name: Prepare package
+      run: npm run pack:prepare
+
+
+    - name: Build and publish Snap
+      env:
+        SNAPCRAFT_STORE_CREDENTIALS: ${{ secrets.SNAPCRAFT_STORE_CREDENTIALS }}
+
+      run: |
+        npm run pack:linux:publish
+
+
