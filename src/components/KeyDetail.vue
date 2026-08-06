@@ -36,6 +36,7 @@ import KeyContentList from '@/components/contents/KeyContentList';
 import KeyContentStream from '@/components/contents/KeyContentStream';
 import KeyContentReJson from '@/components/contents/KeyContentReJson';
 import KeyContentArray from '@/components/contents/KeyContentArray';
+import KeyContentTimeSeries from '@/components/contents/KeyContentTimeSeries';
 
 export default {
   data() {
@@ -52,6 +53,7 @@ export default {
     KeyContentStream,
     KeyContentReJson,
     KeyContentArray,
+    KeyContentTimeSeries,
   },
   computed: {
     componentName() {
@@ -68,6 +70,7 @@ export default {
         list: 'KeyContentList',
         stream: 'KeyContentStream',
         array: 'KeyContentArray',
+        'TSDB-TYPE': 'KeyContentTimeSeries',
         'ReJSON-RL': 'KeyContentReJson',
         json: 'KeyContentReJson', // upstash
         'tair-json': 'KeyContentReJson', // tair

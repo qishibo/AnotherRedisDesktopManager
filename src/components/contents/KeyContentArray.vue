@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="key-content-array">
     <!-- table toolbar -->
     <div>
       <!-- add button -->
