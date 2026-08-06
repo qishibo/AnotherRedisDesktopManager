@@ -101,7 +101,7 @@ export default {
       beforeEditItem: {},
       editLineItem: {},
       loadingIcon: '',
-      pageSize: 5,
+      pageSize: 200,
       scanStart: 0,
       loadMoreDisable: false,
     };

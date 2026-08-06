@@ -133,7 +133,7 @@ export default {
       beforeEditItem: {},
       editLineItem: {},
       loadingIcon: '',
-      pageSize: 4,
+      pageSize: 200,
       minTs: '-',
       maxTs: '+',
       minValue: '',
@@ -182,12 +182,33 @@ export default {
         const info = {};
         if (reply && reply.length) {
           for (let i = 0; i < reply.length; i += 2) {
-            info[reply[i]] = reply[i + 1];
+            info[reply[i]] = this.flatArrayInfo(reply[i + 1]);
           }
         }
         this.infoDict = info;
         this.total = Number(info.totalSamples) || 0;
       });
+    },
+    flatArrayInfo(lines) {
+      if (!Array.isArray(lines)) {
+        return String(lines);
+      }
+
+      const items = lines.map(line => {
+        if (!Array.isArray(line)) {
+          return String(line);
+        }
+        // labels, [["device_id", "32"]]
+        if (line.length === 2) {
+          return `${line[0]}=${line[1]}`;
+        }
+        // rules, [["series_1h_max", "3600000", "MAX", "0"]]
+        else {
+          return line.join(',');
+        }
+      });
+
+      return items.join('; ');
     },
     showInfo() {
       this.initInfo().then(() => {
