@@ -128,7 +128,6 @@
       width="400px"
       :title="$t('message.select_import_file')"
       :visible.sync="importConnectionVisible"
-      @close="resetUpload"
       append-to-body>
 
       <el-upload
@@ -138,6 +137,7 @@
         action=""
         :limit="1"
         :on-change="loadConnectionFile"
+        :on-exceed="replaceConnectionFile"
         drag>
         <i class="el-icon-upload"></i>
         <div class="el-upload__text">{{ $t('message.put_file_here') }}</div>
@@ -227,17 +227,12 @@ export default {
     showImportDialog() {
       this.importConnectionVisible = true;
     },
-    resetUpload() {
-      // el-upload keeps the picked file in its own list. With :limit="1" a leftover entry
-      // makes any later pick fire on-exceed instead of on-change, so the file is never read
-      // again and importing stays broken until that entry is removed by hand.
-      this.connectionFileContent = '';
-
+    replaceConnectionFile(files) {
       const upload = this.$refs.configUpload;
 
-      if (upload) {
-        upload.clearFiles();
-      }
+      upload.clearFiles();
+      // handleStart adds the file to the list and triggers on-change to read it
+      upload.handleStart(files[0]);
     },
     loadConnectionFile(file) {
       const reader = new FileReader();
@@ -247,10 +242,8 @@ export default {
       reader.readAsText(file.raw);
     },
     importConnnection() {
-      // read the content before hiding, closing the dialog resets it
-      let config = this.$util.base64Decode(this.connectionFileContent);
-
       this.importConnectionVisible = false;
+      let config = this.$util.base64Decode(this.connectionFileContent);
 
       if (!config) {
         return;
