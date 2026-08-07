@@ -123,6 +123,11 @@ const readCMD = {
   VRANDMEMBER: 'VRANDMEMBER key [count]',
   VRANGE: 'VRANGE key start end [count]',
   VSIM: 'VSIM key (ELE element | FP32 vector | VALUES num values...) [WITHSCORES] [WITHATTRIBS] [COUNT num]',
+  'TS.GET': 'TS.GET key [LATEST]',
+  'TS.INFO': 'TS.INFO key [DEBUG]',
+  'TS.RANGE': 'TS.RANGE key fromTimestamp toTimestamp [LATEST] [FILTER_BY_TS timestamp ...] [FILTER_BY_VALUE min max] [COUNT count] [ALIGN align] [AGGREGATION aggregator bucketDuration]',
+  'TS.REVRANGE': 'TS.REVRANGE key fromTimestamp toTimestamp [LATEST] [FILTER_BY_TS timestamp ...] [FILTER_BY_VALUE min max] [COUNT count] [ALIGN align] [AGGREGATION aggregator bucketDuration]',
+  'TS.QUERYINDEX': 'TS.QUERYINDEX filter [filter ...]',
 };
 
 const writeCMD = {
@@ -205,6 +210,15 @@ const writeCMD = {
   XDEL: 'XDEL key ID [ID ...]',
   XGROUP: ['XGROUP CREATE key groupname id|$ [MKSTREAM]', 'XGROUP CREATECONSUMER key groupname consumername', 'XGROUP DELCONSUMER key groupname consumername', 'XGROUP DESTROY key groupname', 'XGROUP SETID key groupname id|$'],
   XTRIM: 'XTRIM key MAXLEN [~] count',
+  'TS.ADD': 'TS.ADD key timestamp value [RETENTION retentionPeriod] [ENCODING <UNCOMPRESSED|COMPRESSED>] [CHUNK_SIZE size] [ON_DUPLICATE policy] [LABELS label value ...]',
+  'TS.ALTER': 'TS.ALTER key [RETENTION retentionPeriod] [CHUNK_SIZE size] [DUPLICATE_POLICY policy] [LABELS label value ...]',
+  'TS.CREATE': 'TS.CREATE key [RETENTION retentionPeriod] [ENCODING <UNCOMPRESSED|COMPRESSED>] [CHUNK_SIZE size] [DUPLICATE_POLICY policy] [LABELS label value ...]',
+  'TS.CREATERULE': 'TS.CREATERULE sourceKey destKey AGGREGATION aggregator bucketDuration [alignTimestamp]',
+  'TS.DECRBY': 'TS.DECRBY key value [TIMESTAMP timestamp] [RETENTION retentionPeriod] [UNCOMPRESSED] [CHUNK_SIZE size] [LABELS label value ...]',
+  'TS.DEL': 'TS.DEL key fromTimestamp toTimestamp',
+  'TS.DELETERULE': 'TS.DELETERULE sourceKey destKey',
+  'TS.INCRBY': 'TS.INCRBY key value [TIMESTAMP timestamp] [RETENTION retentionPeriod] [UNCOMPRESSED] [CHUNK_SIZE size] [LABELS label value ...]',
+  'TS.MADD': 'TS.MADD key timestamp value [key timestamp value ...]',
   ZADD: 'ZADD key score member [score] [member]',
   ZDIFFSTORE: 'ZDIFFSTORE destination numkeys key [key ...]',
   ZINCRBY: 'ZINCRBY key increment member',
