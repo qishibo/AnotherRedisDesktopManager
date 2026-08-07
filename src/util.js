@@ -91,7 +91,12 @@ export default {
 
     try {
       // phpSerialize.unserialize(str);
-      return phpSerialize.isSerialized(str.toString());
+      // 支持 thinkphp 序列化前缀处理
+      const rawStr = str.toString();
+      if(rawStr.startsWith('think_serialize:')){
+        rawStr = rawStr.replace(/^think_serialize:/, '');
+      }
+      return phpSerialize.isSerialized(rawStr);
     } catch (e) {}
 
     return false;
