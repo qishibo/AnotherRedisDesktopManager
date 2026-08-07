@@ -40,7 +40,7 @@
     "node-version-compare": "^1.0.3",
     "php-serialize": "^4.0.2",
     "pickleparser": "^0.2.1",
-    "protobufjs": "^6.11.4",
+    "protobufjs": "^7.5.5",
     "rawproto": "^0.7.6",
     "sortablejs": "^1.14.0",
     "tunnel-ssh": "^5.1.2",
