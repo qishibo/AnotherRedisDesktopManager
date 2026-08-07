@@ -113,6 +113,16 @@ const readCMD = {
   XREAD: 'XREAD [COUNT count] [BLOCK milliseconds] STREAMS key [key ...] ID [ID ...]',
   XREADGROUP: 'XREADGROUP GROUP group consumer [COUNT count] [BLOCK milliseconds] [NOACK] STREAMS key [key ...] ID [ID ...]',
   XPENDING: 'XPENDING key group [start end count] [consumer]',
+  VCARD: 'VCARD key',
+  VDIM: 'VDIM key',
+  VEMB: 'VEMB key element [RAW]',
+  VGETATTR: 'VGETATTR key element',
+  VINFO: 'VINFO key',
+  VISMEMBER: 'VISMEMBER key element',
+  VLINKS: 'VLINKS key element [WITHSCORES]',
+  VRANDMEMBER: 'VRANDMEMBER key [count]',
+  VRANGE: 'VRANGE key start end [count]',
+  VSIM: 'VSIM key (ELE element | FP32 vector | VALUES num values...) [WITHSCORES] [WITHATTRIBS] [COUNT num]',
   'TS.GET': 'TS.GET key [LATEST]',
   'TS.INFO': 'TS.INFO key [DEBUG]',
   'TS.RANGE': 'TS.RANGE key fromTimestamp toTimestamp [LATEST] [FILTER_BY_TS timestamp ...] [FILTER_BY_VALUE min max] [COUNT count] [ALIGN align] [AGGREGATION aggregator bucketDuration]',
@@ -221,6 +231,9 @@ const writeCMD = {
   ZREMRANGEBYRANK: 'ZREMRANGEBYRANK key start stop',
   ZREMRANGEBYSCORE: 'ZREMRANGEBYSCORE key min max',
   ZUNIONSTORE: 'ZUNIONSTORE destination numkeys key [key ...] [WEIGHTS weight [weight ...]] [AGGREGATE SUM|MIN|MAX]',
+  VADD: 'VADD key [REDUCE dim] (FP32 vector | VALUES num values...) element [CAS] [NOQUANT|BIN|Q8] [EF build-exploration-factor] [SETATTR attributes] [M numlinks]',
+  VREM: 'VREM key element [element ...]',
+  VSETATTR: 'VSETATTR key element attributes',
 };
 
 module.exports = {

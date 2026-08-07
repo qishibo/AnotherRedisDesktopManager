@@ -36,6 +36,7 @@ import KeyContentList from '@/components/contents/KeyContentList';
 import KeyContentStream from '@/components/contents/KeyContentStream';
 import KeyContentReJson from '@/components/contents/KeyContentReJson';
 import KeyContentArray from '@/components/contents/KeyContentArray';
+import KeyContentVector from '@/components/contents/KeyContentVector';
 import KeyContentTimeSeries from '@/components/contents/KeyContentTimeSeries';
 
 export default {
@@ -53,6 +54,7 @@ export default {
     KeyContentStream,
     KeyContentReJson,
     KeyContentArray,
+    KeyContentVector,
     KeyContentTimeSeries,
   },
   computed: {
@@ -70,6 +72,7 @@ export default {
         list: 'KeyContentList',
         stream: 'KeyContentStream',
         array: 'KeyContentArray',
+        vectorset: 'KeyContentVector',
         'TSDB-TYPE': 'KeyContentTimeSeries',
         'ReJSON-RL': 'KeyContentReJson',
         json: 'KeyContentReJson', // upstash
