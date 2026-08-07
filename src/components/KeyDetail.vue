@@ -36,6 +36,7 @@ import KeyContentList from '@/components/contents/KeyContentList';
 import KeyContentStream from '@/components/contents/KeyContentStream';
 import KeyContentReJson from '@/components/contents/KeyContentReJson';
 import KeyContentArray from '@/components/contents/KeyContentArray';
+import KeyContentVector from '@/components/contents/KeyContentVector';
 
 export default {
   data() {
@@ -52,6 +53,7 @@ export default {
     KeyContentStream,
     KeyContentReJson,
     KeyContentArray,
+    KeyContentVector,
   },
   computed: {
     componentName() {
@@ -68,6 +70,7 @@ export default {
         list: 'KeyContentList',
         stream: 'KeyContentStream',
         array: 'KeyContentArray',
+        vectorset: 'KeyContentVector',
         'ReJSON-RL': 'KeyContentReJson',
         json: 'KeyContentReJson', // upstash
         'tair-json': 'KeyContentReJson', // tair
