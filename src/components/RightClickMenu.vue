@@ -23,15 +23,15 @@ export default {
     show($event) {
       this.triggerEvent = $event;
       this.showMenus($event.clientX, $event.clientY);
-      document.addEventListener("click",this.removeMenus);
+      document.addEventListener('click', this.removeMenus);
     },
     showMenus(x, y) {
       this.hideAllMenus();
 
-      const menu = this.$refs.menu;
+      const { menu } = this.$refs;
 
-      menu.style.left = x + 'px';
-      menu.style.top = (y - 5) + 'px';
+      menu.style.left = `${x}px`;
+      menu.style.top = `${y - 5}px`;
       menu.style.display = 'block';
     },
     clickItem($event, item) {
@@ -43,18 +43,18 @@ export default {
       this.triggerEvent = null;
     },
     removeMenus() {
-      document.removeEventListener("click",this.removeMenus);
+      document.removeEventListener('click', this.removeMenus);
       this.hideAllMenus();
     },
     hideAllMenus() {
-      let menus = document.querySelectorAll('.qii404-vue-right-menu');
+      const menus = document.querySelectorAll('.qii404-vue-right-menu');
 
       if (menus.length === 0) {
         return;
       }
 
       for (const menu of menus) {
-        menu.style.display='none';
+        menu.style.display = 'none';
       }
     },
   },

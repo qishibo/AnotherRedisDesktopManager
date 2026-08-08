@@ -28,13 +28,16 @@
 
 <script>
 import KeyHeader from '@/components/KeyHeader';
-import KeyContentString from '@/components/KeyContentString';
-import KeyContentHash from '@/components/KeyContentHash';
-import KeyContentSet from '@/components/KeyContentSet';
-import KeyContentZset from '@/components/KeyContentZset';
-import KeyContentList from '@/components/KeyContentList';
-import KeyContentStream from '@/components/KeyContentStream';
-import KeyContentReJson from '@/components/KeyContentReJson';
+import KeyContentString from '@/components/contents/KeyContentString';
+import KeyContentHash from '@/components/contents/KeyContentHash';
+import KeyContentSet from '@/components/contents/KeyContentSet';
+import KeyContentZset from '@/components/contents/KeyContentZset';
+import KeyContentList from '@/components/contents/KeyContentList';
+import KeyContentStream from '@/components/contents/KeyContentStream';
+import KeyContentReJson from '@/components/contents/KeyContentReJson';
+import KeyContentArray from '@/components/contents/KeyContentArray';
+import KeyContentVector from '@/components/contents/KeyContentVector';
+import KeyContentTimeSeries from '@/components/contents/KeyContentTimeSeries';
 
 export default {
   data() {
@@ -42,8 +45,17 @@ export default {
   },
   props: ['client', 'redisKey', 'keyType', 'hotKeyScope'],
   components: {
-    KeyHeader, KeyContentString, KeyContentHash, KeyContentSet, KeyContentZset,
-    KeyContentList, KeyContentStream, KeyContentReJson
+    KeyHeader,
+    KeyContentString,
+    KeyContentHash,
+    KeyContentSet,
+    KeyContentZset,
+    KeyContentList,
+    KeyContentStream,
+    KeyContentReJson,
+    KeyContentArray,
+    KeyContentVector,
+    KeyContentTimeSeries,
   },
   computed: {
     componentName() {
@@ -54,33 +66,41 @@ export default {
     getComponentNameByType(keyType) {
       const map = {
         string: 'KeyContentString',
-        hash  : 'KeyContentHash',
-        zset  : 'KeyContentZset',
-        set   : 'KeyContentSet',
-        list  : 'KeyContentList',
-        stream  : 'KeyContentStream',
-        stream  : 'KeyContentStream',
+        hash: 'KeyContentHash',
+        zset: 'KeyContentZset',
+        set: 'KeyContentSet',
+        list: 'KeyContentList',
+        stream: 'KeyContentStream',
+        array: 'KeyContentArray',
+        vectorset: 'KeyContentVector',
+        'TSDB-TYPE': 'KeyContentTimeSeries',
         'ReJSON-RL': 'KeyContentReJson',
+        json: 'KeyContentReJson', // upstash
+        'tair-json': 'KeyContentReJson', // tair
       };
 
       if (map[keyType]) {
         return map[keyType];
       }
       // type not support, such as bf
-      else {
-        this.$message.error(this.$t('message.key_type_not_support'));
-        return '';
-      }
+
+      this.$message.error(this.$t('message.key_type_not_support'));
+      return '';
     },
     refreshContent() {
-      this.client.exists(this.redisKey).then(reply => {
-        if (!reply) {
-          return this.$message.error(this.$t('message.key_not_exists'));
+      this.client.exists(this.redisKey).then((reply) => {
+        if (reply == 0) {
+          // clear interval if auto refresh opened
+          // this.$refs.keyHeader.removeInterval();
+          return this.$message.error({
+            message: this.$t('message.key_not_exists'),
+            duration: 1000,
+          });
         }
 
         this.$refs.keyContent && this.$refs.keyContent.initShow();
-      }).catch(e => {
-        this.$message.error('Exists Error: ' + e.message);
+      }).catch((e) => {
+        this.$message.error(`Exists Error: ${e.message}`);
       });
     },
     dumpCommand() {
@@ -95,20 +115,10 @@ export default {
     /*padding-left: 5px;*/
   }
   .key-header-info {
-    margin-top: 15px;
+    margin-top: 6px;
   }
   .key-content-container {
-    margin-top: 15px;
-  }
-  .key-detail-filter-value {
-    width: 60%;
-    height: 24px;
-    padding: 0 5px;
-  }
-
-  /*tooltip in table width limit*/
-  .el-tooltip__popper {
-    max-width: 50%;
+    margin-top: 12px;
   }
 
   .content-more-container {
@@ -117,5 +127,41 @@ export default {
   }
   .content-more-container .content-more-btn {
     width: 95%;
+    padding-top: 5px;
+    padding-bottom: 5px;
   }
+
+  /*key content table wrapper*/
+  .key-content-container .content-table-container {
+    height: calc(100vh - 223px);
+    margin-top: 10px;
+    /*fix vex-table height*/
+    overflow-y: hidden;
+  }
+
+  /* vxe table cell */
+  .key-content-container .content-table-container .vxe-cell {
+    overflow: hidden !important;
+    line-height: 34px;
+  }
+  /*  vxe table radius*/
+  .key-content-container .content-table-container .vxe-table--border-line {
+    border-radius: 3px;
+  }
+
+  /*key-content-string such as String,ReJSON*/
+  /*text viewer box*/
+  .key-content-string .el-textarea textarea {
+    font-size: 14px;
+    height: calc(100vh - 231px);
+  }
+  /*json in monaco editor*/
+  .key-content-string .text-formated-container .monaco-editor-con {
+    height: calc(100vh - 275px);
+  }
+  .key-content-string .content-string-save-btn {
+    width: 100px;
+    float: right;
+  }
+  /*end of key-content-string*/
 </style>

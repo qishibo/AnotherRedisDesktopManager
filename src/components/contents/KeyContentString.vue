@@ -12,17 +12,15 @@
   </el-form-item>
 
   <!-- save btn -->
-  <el-form-item>
-    <el-button ref='saveBtn' type="primary" @click="execSave" title='Ctrl+s'>{{ $t('message.save') }}</el-button>
-  </el-form-item>
-
-  <ScrollToTop parentNum='4'></ScrollToTop>
+  <el-button ref='saveBtn' type="primary"
+    @click="execSave" title='Ctrl+s' class="content-string-save-btn">
+    {{ $t('message.save') }}
+  </el-button>
 </el-form>
 </template>
 
 <script>
 import FormatViewer from '@/components/FormatViewer';
-import ScrollToTop from '@/components/ScrollToTop';
 
 export default {
   data() {
@@ -32,12 +30,13 @@ export default {
     };
   },
   props: ['client', 'redisKey', 'hotKeyScope'],
-  components: { FormatViewer, ScrollToTop },
+  components: { FormatViewer },
   methods: {
     initShow() {
-      this.client.callBuffer('JSON.GET', [this.redisKey, 'NOESCAPE']).then(reply => {
+      this.client.getBuffer(this.redisKey).then((reply) => {
         this.content = reply;
-      })
+        // this.$refs.formatViewer.autoFormat();
+      });
     },
     execSave() {
       const content = this.$refs.formatViewer.getContent();
@@ -47,38 +46,36 @@ export default {
         return;
       }
 
-      if (!this.$util.isJson(content)) {
-        return this.$message.error(this.$t('message.json_format_failed'));
-      }
-
-      this.client.call('JSON.SET', [this.redisKey, '.', content]).then(reply => {
+      this.client.set(
+        this.redisKey,
+        content,
+      ).then((reply) => {
         if (reply === 'OK') {
+          // for compatibility, use expire instead of setex
           this.setTTL();
-          this.initShow()
+          this.initShow();
 
           this.$message.success({
             message: this.$t('message.modify_success'),
             duration: 1000,
           });
-        }
-
-        else {
+        } else {
           this.$message.error({
             message: this.$t('message.modify_failed'),
             duration: 1000,
           });
         }
-      }).catch(e => {
+      }).catch((e) => {
         this.$message.error(e.message);
       });
     },
-    setTTL () {
+    setTTL() {
       const ttl = parseInt(this.$parent.$parent.$refs.keyHeader.keyTTL);
 
       if (ttl > 0) {
-        this.client.expire(this.redisKey, ttl).catch(e => {
-          this.$message.error('Expire Error: ' + e.message);
-        }).then(reply => {});
+        this.client.expire(this.redisKey, ttl).catch((e) => {
+          this.$message.error(`Expire Error: ${e.message}`);
+        }).then((reply) => {});
       }
     },
     initShortcut() {
@@ -91,10 +88,10 @@ export default {
       });
     },
     dumpCommand() {
-      const command = `JSON.SET ${this.$util.bufToQuotation(this.redisKey)} . ` +
-                      this.$util.bufToQuotation(this.content);
+      const command = `SET ${this.$util.bufToQuotation(this.redisKey)} ${
+        this.$util.bufToQuotation(this.content)}`;
       this.$util.copyToClipboard(command);
-      this.$message.success({message: this.$t('message.copy_success'), duration: 800});
+      this.$message.success({ message: this.$t('message.copy_success'), duration: 800 });
     },
   },
   mounted() {
@@ -104,18 +101,3 @@ export default {
 };
 </script>
 
-<style type="text/css">
-  .key-content-string .format-viewer-container {
-    min-height: calc(100vh - 253px);
-  }
-
-  /*text viewer box*/
-  .key-content-string .el-textarea textarea {
-    font-size: 14px;
-    height: calc(100vh - 286px);
-  }
-  /*json in monaco editor*/
-  .key-content-string .text-formated-container .monaco-editor-con {
-    height: calc(100vh - 330px);
-  }
-</style>

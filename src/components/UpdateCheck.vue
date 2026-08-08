@@ -50,7 +50,7 @@ export default {
           confirmButtonText: this.$t('message.begin_update'),
           cancelButtonText: this.$t('message.ignore_this_version'),
           dangerouslyUseHTMLString: true,
-          duration: 0
+          duration: 0,
         }).then(() => {
           // update btn clicked
           this.manual = true;
@@ -69,7 +69,7 @@ export default {
         // latest version
         this.manual && this.$notify.success({
           title: this.$t('message.update_not_available'),
-          duration: 2000
+          duration: 2000,
         });
       });
 
@@ -77,7 +77,7 @@ export default {
         this.resetDownloadProcess();
 
         let message = '';
-        let error = (arg.code ? arg.code : arg.message).toLowerCase();
+        const error = (arg.code ? arg.code : arg.message).toLowerCase();
 
         // auto update check at app init
         if (!this.manual || !error) {
@@ -91,11 +91,11 @@ export default {
 
         // err_internet_disconnected err_name_not_resolved err_connection_refused
         else {
-          message = this.$t('message.update_error') + `: ${error}`;
+          message = `${this.$t('message.update_error')}: ${error}`;
         }
 
         this.$notify.error({
-          message: message,
+          message,
           duration: 0,
           dangerouslyUseHTMLString: true,
         });
@@ -117,7 +117,7 @@ export default {
           });
 
           this.downloadProcessShow = true;
-        };
+        }
 
         this.setProgressBar(Math.floor(arg.percent));
       });
@@ -128,14 +128,14 @@ export default {
         this.resetDownloadProcess();
         this.$notify.success({
           title: this.$t('message.update_downloaded'),
-          duration: 0
+          duration: 0,
         });
       });
     },
     setProgressBar(percent) {
-      this.downloadProcessShow && 
-      this.$refs.downloadProgressBar && 
-      this.$set(this.$refs.downloadProgressBar, 'percentage', percent);
+      this.downloadProcessShow
+      && this.$refs.downloadProgressBar
+      && this.$set(this.$refs.downloadProgressBar, 'percentage', percent);
     },
     resetDownloadProcess() {
       this.updateChecking = false;

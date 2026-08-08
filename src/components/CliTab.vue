@@ -1,61 +1,54 @@
 <template>
-<div>
-  <el-form @submit.native.prevent>
-    <el-form-item>
-      <!-- content textarea -->
-      <el-input
-        ref="cliContent"
-        type="textarea"
-        v-model="content"
-        rows='22'
-        :disabled="true"
-        id='cli-content'>
-      </el-input>
+  <div class="tab-cli">
+    <!-- result container -->
+    <CliContent ref="editor" :content="contentStr"></CliContent>
 
-      <!-- input params -->
-      <el-autocomplete
-        class="input-suggestion"
-        autocomplete="off"
-        v-model="params"
-        :debounce='10'
-        :disabled='subscribeMode || monitorMode'
-        :fetch-suggestions="inputSuggestion"
-        :placeholder="$t('message.enter_to_exec')"
-        :select-when-unmatched="true"
-        :trigger-on-focus="false"
-        popper-class="cli-console-suggestion"
-        ref="cliParams"
-        @select='$refs.cliParams.focus()'
-        @keyup.enter.native="consoleExec"
-        @keyup.up.native="searchUp"
-        @keyup.down.native="searchDown">
-      </el-autocomplete>
-    </el-form-item>
-  </el-form>
+    <!-- input params -->
+    <el-autocomplete
+      class="input-suggestion"
+      autocomplete="off"
+      v-model="params"
+      :debounce='10'
+      :disabled='subscribeMode || monitorMode'
+      :fetch-suggestions="inputSuggestion"
+      :placeholder="$t('message.enter_to_exec')"
+      :select-when-unmatched="true"
+      :trigger-on-focus="false"
+      popper-class="cli-console-suggestion"
+      ref="cliParams"
+      @select='$refs.cliParams.focus()'
+      @keyup.enter.native="consoleExec"
+      @keyup.up.native="searchUp"
+      @keyup.down.native="searchDown">
+    </el-autocomplete>
 
-  <el-button v-if='subscribeMode' @click='stopSubscribe' type='danger' class='stop-subscribe'>Stop Subscribe</el-button>
-  <el-button v-else-if='monitorMode' @click='stopMonitor' type='danger' class='stop-subscribe'>Stop Monitor</el-button>
-</div>
+    <!-- stop sub\monitor btn -->
+    <el-button v-if='subscribeMode' @click='stopSubscribe' type='danger' class='stop-subscribe'>Stop Subscribe</el-button>
+    <el-button v-else-if='monitorMode' @click='stopMonitor' type='danger' class='stop-subscribe'>Stop Monitor</el-button>
+  </div>
 </template>
 
 <script type="text/javascript">
 import { allCMD } from '@/commands';
 import splitargs from '@qii404/redis-splitargs';
 import { ipcRenderer } from 'electron';
+import CliContent from '@/components/CliContent';
 
 export default {
   data() {
     return {
       params: '',
-      content: '',
+      content: [],
       historyIndex: 0,
       inputSuggestionItems: [],
       multiQueue: null,
       subscribeMode: false,
       monitorMode: false,
+      maxHistory: 2000,
     };
   },
   props: ['client', 'hotKeyScope'],
+  components: { CliContent },
   computed: {
     paramsTrim() {
       return this.params.replace(/^\s+|\s+$/g, '');
@@ -63,16 +56,23 @@ export default {
     paramsArr() {
       try {
         // buf array
-        let paramsArr = splitargs(this.paramsTrim, true);
+        const paramsArr = splitargs(this.paramsTrim, true);
         // command to string
-        paramsArr[0] = paramsArr[0].toString();
+        paramsArr[0] = paramsArr[0].toString().toLowerCase();
 
         return paramsArr;
-      }
-      catch(e) {
+      } catch (e) {
         return [this.paramsTrim];
       }
-    }
+    },
+    contentStr() {
+      if (this.content.length > this.maxHistory) {
+        // this.content = this.content.slice(-this.maxHistory);
+        this.content.splice(0, this.content.length - this.maxHistory);
+      }
+
+      return `${this.content.join('\n')}\n`;
+    },
   },
   created() {
     this.$bus.$on('changeDb', (client, dbIndex) => {
@@ -97,6 +97,7 @@ export default {
       this.anoClient = this.client.duplicate();
       // bind subscribe messages
       this.bindSubscribeMessage();
+      this.scrollToBottom('> connecting......');
 
       this.anoClient.on('ready', () => {
         !this.anoClient.cliInited && this.initCliContent();
@@ -108,8 +109,7 @@ export default {
       });
     },
     initCliContent() {
-      this.content += `> ${this.anoClient.options.connectionName} connected!\n`;
-      this.scrollToBottom();
+      this.scrollToBottom(`> ${this.anoClient.options.connectionName} connected!`);
     },
     tabClick() {
       this.$nextTick(() => {
@@ -125,21 +125,17 @@ export default {
         return;
       }
 
-      let items = this.inputSuggestionItems.filter(function (item) {
-        return item.toLowerCase().indexOf(input.toLowerCase()) !== -1;
-      });
+      let items = this.inputSuggestionItems.filter(item => item.toLowerCase().indexOf(input.toLowerCase()) !== -1);
 
       // add cmd tips
       items = this.addCMDTips(items);
 
-      const suggestions = [...new Set(items)].map(function (item) {
-        return {value: item};
-      });
+      const suggestions = [...new Set(items)].map(item => ({ value: item }));
 
       cb(suggestions);
     },
     addCMDTips(items = []) {
-      const paramsArr = this.paramsArr;
+      const { paramsArr } = this;
       const paramsLen = paramsArr.length;
       const cmd = paramsArr[0].toUpperCase();
 
@@ -192,30 +188,45 @@ export default {
     },
     consoleExec() {
       const params = this.paramsTrim;
-      const paramsArr = this.paramsArr;
+      const { paramsArr } = this;
 
       this.params = '';
-      this.content += `> ${params}\n`;
+      this.content.push(`> ${params}`);
 
       // append to history command
       this.appendToHistory(params);
 
-      if (params == 'exit' || params == 'quit') {
+      if (paramsArr[0] == 'exit' || paramsArr[0] == 'quit') {
         return this.$bus.$emit('removePreTab');
       }
 
-      if (params == 'clear') {
-        return this.content = '';
+      if (paramsArr[0] == 'clear') {
+        return this.content = [];
+      }
+
+      // mock help command
+      if (paramsArr[0] == 'help') {
+        return this.scrollToBottom('Input your command and select from tips');
       }
 
       // multi-exec mode
-      if (params == 'multi') {
+      if (paramsArr[0] == 'multi') {
         this.multiQueue = [];
         return this.scrollToBottom('OK');
       }
 
+      // multi-discard-mode
+      if (paramsArr[0] == 'discard') {
+      // discard when not multi condition
+        if (!Array.isArray(this.multiQueue)) {
+          return this.scrollToBottom('(error) ERR DISCARD without MULTI');
+        }
+        this.multiQueue = null;
+        return this.scrollToBottom('OK');
+      }
+
       // multi dequeue
-      if (params == 'exec') {
+      if (paramsArr[0] == 'exec') {
         // exec when not multi condition
         if (!Array.isArray(this.multiQueue)) {
           return this.scrollToBottom('(error) ERR EXEC without MULTI');
@@ -223,10 +234,9 @@ export default {
 
         this.anoClient.multi(this.multiQueue).execBuffer((err, reply) => {
           if (err) {
-            this.content += `${err}\n`;
-          }
-          else {
-            this.content += this.resolveResult(reply);
+            this.content.push(`${err}`);
+          } else {
+            this.content.push(this.resolveResult(reply).trim());
           }
 
           this.scrollToBottom();
@@ -242,17 +252,17 @@ export default {
       }
 
       // subscribe command
-      if (/subscribe/.test(paramsArr[0].toLowerCase())) {
+      if (/subscribe/.test(paramsArr[0])) {
         this.subscribeMode = true;
       }
 
       // monitor command
-      if (paramsArr[0].toLowerCase() == 'monitor') {
-        this.anoClient.monitor().then(monitor => {
+      if (paramsArr[0] == 'monitor') {
+        this.anoClient.monitor().then((monitor) => {
           this.monitorMode = true;
           this.scrollToBottom('OK');
           this.monitorInstance = monitor;
-          this.monitorInstance.on("monitor", (time, args, source, database) => {
+          this.monitorInstance.on('monitor', (time, args, source, database) => {
             this.scrollToBottom(`${time} [${database} ${source}] ${args.join(' ')}`);
           });
         });
@@ -261,11 +271,11 @@ export default {
       }
 
       // normal command
-      let promise = this.anoClient.callBuffer(paramsArr[0].toLowerCase(), paramsArr.slice(1));
+      const promise = this.anoClient.callBuffer(paramsArr[0], paramsArr.slice(1));
 
       // normal command promise
       promise.then((reply) => {
-        this.content += this.resolveResult(reply);
+        this.content.push(this.resolveResult(reply).trim());
         this.execFinished(paramsArr);
         this.scrollToBottom();
       }).catch((err) => {
@@ -281,7 +291,7 @@ export default {
       }
 
       // operate may add new key, refresh left key list
-      if (['hmset', 'hset', 'lpush', 'rpush', 'set', 'sadd', 'zadd', 'xadd', 'json.set'].includes(operate)) {
+      if (['hmset', 'hset', 'lpush', 'rpush', 'set', 'sadd', 'zadd', 'xadd', 'json.set', 'arset', 'armset', 'arinsert', 'ts.add', 'ts.create'].includes(operate)) {
         this.$bus.$emit('refreshKeyList', this.client, Buffer.from(params[1]), 'add');
       }
       if (['del'].includes(operate)) {
@@ -289,9 +299,17 @@ export default {
       }
     },
     scrollToBottom(append = '') {
-      append && (this.content += `${append}\n`);
+      append && (this.content.push(`${append}`));
 
       this.$nextTick(() => {
+        if (this.$refs.editor) {
+          return this.$refs.editor.scrollToBottom();
+        }
+
+        if (!this.$refs.cliContent) {
+          return;
+        }
+
         const textarea = this.$refs.cliContent.$el.firstChild;
         textarea.scrollTop = textarea.scrollHeight;
       });
@@ -323,21 +341,20 @@ export default {
             // null is the result, and v1 is the value
             if (result[i][0] === null) {
               append += this.resolveResult(result[i][1]);
-            }
-            else {
+            } else {
               append += this.resolveResult(result[i]);
             }
           }
           // string buffer null
           else {
-            append += (isArray ? '' : (this.$util.bufToString(i) + "\n")) +
-                      this.$util.bufToString(result[i]) + "\n";
+            append += `${(isArray ? '' : (`${this.$util.bufToString(i)}\n`))
+                      + this.$util.bufToString(result[i])}\n`;
           }
         }
       }
       // string buffer null
       else {
-        append = this.$util.bufToString(result) + "\n";
+        append = `${this.$util.bufToString(result)}\n`;
       }
 
       return append;
@@ -389,11 +406,11 @@ export default {
       //   (typeof this.cb == 'function') && this.cb([]);
       // });
       this.$shortcut.bind('ctrl+l, ⌘+l', this.hotKeyScope, () => {
-        this.content = '';
+        this.content = [];
       });
     },
     initHistoryTips() {
-      const key = `cliTips_${this.client.options.connectionName}`;
+      const key = this.$storage.getStorageKeyByName('cli_tip', this.client.options.connectionName);
       const tips = localStorage.getItem(key);
 
       this.inputSuggestionItems = tips ? JSON.parse(tips) : [];
@@ -403,7 +420,7 @@ export default {
       });
     },
     storeCommandTips() {
-      const key = `cliTips_${this.client.options.connectionName}`;
+      const key = this.$storage.getStorageKeyByName('cli_tip', this.client.options.connectionName);
       localStorage.setItem(key, JSON.stringify(this.inputSuggestionItems.slice(-200)));
     },
   },
@@ -421,45 +438,29 @@ export default {
 </script>
 
 <style type="text/css">
-  .cli-dailog .el-dialog__body {
-    padding: 0 20px;
-  }
-  .input-suggestion {
+  .tab-cli .input-suggestion {
     width: 100%;
-    line-height: 34px !important;
+    margin-top: 2px;
   }
 
-  .input-suggestion input {
+  .tab-cli .input-suggestion input {
     color: #babdc1;
     background: #263238;
     border-top: 0px;
     border-radius: 0 0 4px 4px;
   }
-  .dark-mode .input-suggestion input  {
+  .dark-mode .tab-cli .input-suggestion input  {
     color: #f7f7f7;
     background: #324148;
   }
 
-  .input-suggestion input::-webkit-input-placeholder {
+  .tab-cli .input-suggestion input::-webkit-input-placeholder {
     color: #8a8b8e;
   }
 
-  #cli-content {
-    color: #babdc1;
-    background: #263238;
-    border-bottom: 0px;
-    border-radius: 4px 4px 0 0;
-    cursor: text;
-    height: calc(100vh - 160px);
-  }
-  .dark-mode #cli-content {
-    color: #f7f7f7;
-    background: #324148;
-  }
-
-  .stop-subscribe {
+  .tab-cli .stop-subscribe {
     position: fixed;
-    right: 30px;
-    bottom: 104px;
+    right: 34px;
+    bottom: 68px;
   }
 </style>

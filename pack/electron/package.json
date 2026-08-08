@@ -1,20 +1,20 @@
 {
   "name": "another-redis-desktop-manager",
-  "version": "1.5.5",
+  "version": "1.7.2",
   "description": "A faster, better and more stable redis desktop manager.",
   "author": "Another",
   "private": true,
   "main": "electron-main.js",
   "dependencies": {
-    "electron-updater": "4.3.8",
+    "electron-updater": "4.6.5",
     "font-list": "^1.4.5"
   },
   "repository": "github:qishibo/AnotherRedisDesktopManager",
   "build": {
     "appId": "me.qii404.another-redis-desktop-manager",
     "productName": "Another Redis Desktop Manager",
-    "artifactName": "${productName}.${version}.${ext}",
-    "copyright": "Copyright © 2022 qii404.me",
+    "artifactName": "${productName}-${os}-${version}-${arch}.${ext}",
+    "copyright": "Copyright © 2024 qii404",
     "asar": true,
     "directories": {
       "output": "build-apps",
@@ -35,35 +35,37 @@
     "win": {
       "icon": "icons/icon.ico",
       "target": [
-        "nsis"
+        {"target": "nsis", "arch": ["x64", "arm64"]},
+        {"target": "zip", "arch": ["x64"]}
       ]
     },
     "nsis": {
       "allowToChangeInstallationDirectory": true,
       "oneClick": false,
       "menuCategory": true,
-      "allowElevation": false
+      "allowElevation": true
     },
     "linux": {
       "icon": "icons/icon.png",
       "category": "Utility",
       "target": [
-        "AppImage"
+        {"target": "AppImage", "arch": ["x64", "arm64"]}
       ]
     },
     "snap": {
       "plugs": ["default", "ssh-keys"]
     },
     "mac": {
-      "icon": "icons/icon.png",
+      "icon": "icons/icon.icns",
       "type": "development",
       "category": "public.app-category.developer-tools",
       "target": [
-        "dmg"
+        {"target": "dmg", "arch": ["x64", "arm64"]}
       ],
       "extendInfo": {
         "ElectronTeamID": "68JN8DV835"
       }
-    }
+    },
+    "afterSign": "pack/scripts/notarize.js"
   }
 }

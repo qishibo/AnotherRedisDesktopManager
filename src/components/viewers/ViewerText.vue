@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- </textarea> -->
-    <el-input ref='textInput' :disabled='disabled' type='textarea' :value='contentDisplay' @input='inputContent'>
+    <el-input ref='textInput' :disabled='disabled' type='textarea' v-model='contentDisplay' @input='inputContent'>
     </el-input>
   </div>
 </template>
@@ -11,20 +11,16 @@ export default {
   data() {
     return {
       confirmChange: false,
+      contentDisplay: '',
+      oldContentDisplay: '',
     };
   },
   props: ['content', 'contentVisible', 'disabled'],
-  computed: {
-    contentDisplay() {
-      return this.content.toString();
-    },
-  },
   watch: {
-    content() {
+    content(val) {
       // refresh
-      this.$nextTick(() => {
-        this.$refs.textInput.$refs.textarea.value = this.contentDisplay;
-      });
+      this.contentDisplay = val.toString();
+      this.oldContentDisplay = this.contentDisplay;
     },
   },
   methods: {
@@ -34,8 +30,7 @@ export default {
         return this.content;
       }
 
-      const content = this.$refs.textInput.$refs.textarea.value;
-      return Buffer.from(content);
+      return Buffer.from(this.contentDisplay);
     },
     inputContent(value) {
       // visible content do nothing
@@ -48,13 +43,15 @@ export default {
         return;
       }
 
-      this.$confirm(this.$t('message.confirm_modify_unvisible_content')).then(_ => {
-        return this.confirmChange = true;
-      }).catch(_ => {
+      this.$confirm(this.$t('message.confirm_modify_unvisible_content')).then(_ => this.confirmChange = true).catch((_) => {
         // recovery the input value
-        this.$refs.textInput.$refs.textarea.value = this.contentDisplay
+        this.contentDisplay = this.oldContentDisplay;
       });
     },
   },
-}
+  mounted() {
+    this.contentDisplay = this.content.toString();
+    this.oldContentDisplay = this.contentDisplay;
+  },
+};
 </script>

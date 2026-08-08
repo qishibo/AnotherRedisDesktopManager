@@ -9,22 +9,34 @@ jobs:
 
     runs-on: macos-latest
 
-    strategy:
-      matrix:
-        node-version: [14.x]
-
     env:
       GH_TOKEN: ${{secrets.GH_TOKEN}}
       CSC_LINK: ${{secrets.CSC_LINK}}
       CSC_KEY_PASSWORD: ${{secrets.CSC_KEY_PASSWORD}}
+      APPLEID: ${{secrets.APPLEID}}
+      APPLEID_PASSWORD: ${{secrets.APPLEID_PASSWORD}}
 
     steps:
-    - uses: actions/checkout@v2
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v1
+    - name: Import signing keychain
+      uses: apple-actions/import-codesign-certs@v2
       with:
-        node-version: ${{ matrix.node-version }}
+        keychain: signing_temp
+        p12-file-base64: ${{secrets.CSC_LINK}}
+        p12-password: ${{secrets.CSC_KEY_PASSWORD}}
+
+    - uses: actions/checkout@v4
+    - name: Use Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: 16
     - run: npm ci
     - run: npm run pack:prepare
+    # - run: npm run pack:macm1:publish
     - run: npm run pack:mac:publish
-    - run: npm run pack:macm1:publish
+
+    - name: Cleanup keychain
+      if: always()
+      shell: bash
+      run: |
+        # Don't fail if the keychain doesn't exist.
+        security delete-keychain signing_temp.keychain || true

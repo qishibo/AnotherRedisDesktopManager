@@ -61,21 +61,21 @@
         <p class="server-status-tag-p">
           <el-tag class='server-status-container' type="info" size="big">
             {{ $t('message.used_memory') }}:
-            <span class="server-status-text">{{this.connectionStatus.used_memory_human}}</span>
+            <span class="server-status-text">{{$util.humanFileSize(connectionStatus.used_memory)}}</span>
           </el-tag>
         </p>
 
         <p class="server-status-tag-p">
           <el-tag class='server-status-container' type="info" size="big">
             {{ $t('message.used_memory_peak') }}:
-            <span class="server-status-text">{{this.connectionStatus.used_memory_peak_human}}</span>
+            <span class="server-status-text">{{$util.humanFileSize(connectionStatus.used_memory_peak)}}</span>
           </el-tag>
         </p>
 
         <p class="server-status-tag-p">
           <el-tag class='server-status-container' type="info" size="big">
             {{ $t('message.used_memory_lua') }}:
-            <span class="server-status-text">{{Math.round(this.connectionStatus.used_memory_lua / 1024)}}K</span>
+            <span class="server-status-text">{{$util.humanFileSize(connectionStatus.used_memory_lua)}}</span>
           </el-tag>
         </p>
       </el-card>
@@ -113,7 +113,7 @@
     </el-col>
   </el-row>
 
-  <!-- key statistics -->
+  <!-- cluster key statistics -->
   <el-row class="status-card">
     <el-col>
       <el-card class="box-card">
@@ -126,26 +126,32 @@
           :data="DBKeys"
           stripe>
           <el-table-column
+            v-if="isCluster"
+            prop="name"
+            sortable
+            label="Node">
+          </el-table-column>
+          <el-table-column
             prop="db"
             sortable
             label="DB">
           </el-table-column>
           <el-table-column
             sortable
-            prop="keys"
+            prop="keys_show"
             label="Keys"
             :sort-method="sortByKeys">
           </el-table-column>
           <el-table-column
             sortable
-            prop="expires"
+            prop="expires_show"
             label="Expires"
             :sort-method="sortByExpires">
           </el-table-column>
           <!-- avg_ttl: tooltip can't be removed!, or the table's height will change -->
           <el-table-column
             sortable
-            prop="avg_ttl"
+            prop="avg_ttl_show"
             :show-overflow-tooltip='true'
             label="Avg TTL"
             :sort-method="sortByTTL">
@@ -199,32 +205,13 @@ export default {
       refreshTimer: null,
       refreshInterval: 2000,
       connectionStatus: {},
-      statusConnection: null,
       allInfoFilter: '',
+      DBKeys: [],
     };
   },
   props: ['client', 'hotKeyScope'],
   components: { ScrollToTop },
   computed: {
-    DBKeys() {
-      const dbs = [];
-
-      for (const i in this.connectionStatus) {
-        if (i.startsWith('db')) {
-          const item = this.connectionStatus[i];
-          const array = item.split(',');
-
-          dbs.push({
-            db: i,
-            keys: array[0].split('=')[1],
-            expires: array[1].split('=')[1],
-            avg_ttl: array[2].split('=')[1],
-          });
-        }
-      }
-
-      return dbs;
-    },
     AllRedisInfo() {
       const infos = [];
       const filter = this.allInfoFilter.toLowerCase();
@@ -246,23 +233,35 @@ export default {
 
       return infos;
     },
+    isCluster() {
+      return this.connectionStatus['cluster_enabled'] == '1';
+    },
   },
   methods: {
     initShow() {
       this.client.info().then((reply) => {
         this.connectionStatus = this.initStatus(reply);
+        // set global param
+        this.client.ardmRedisVersion = this.connectionStatus['redis_version'];
+
+        // init db keys info
+        if (this.isCluster) {
+          this.initClusterKeys();
+        }
+        else {
+          this.DBKeys = this.initDbKeys(this.connectionStatus);
+        }
       }).catch((e) => {
         // info command may be disabled
-        if (e.message.includes("unknown command")) {
+        if (e.message.includes('unknown command')) {
           this.$message.error({
             message: this.$t('message.info_disabled'),
             duration: 3000,
           });
         }
         // no auth not show
-        else if (e.message.includes('NOAUTH')) {}
-        else {
-          this.$message.error(e.message)
+        else if (e.message.includes('NOAUTH')) {} else {
+          this.$message.error(e.message);
         }
       });
     },
@@ -303,6 +302,76 @@ export default {
       }
 
       return lines;
+    },
+    initDbKeys(status, name = undefined) {
+      const dbs = [];
+
+      for (const i in status) {
+        // fix #1101 unexpected db prefix
+        // if (i.startsWith('db')) {
+        if (/^db\d+/.test(i)) {
+          const array = status[i].split(',');
+
+          const keys = parseInt(array[0] ? array[0].split('=')[1]: NaN);
+          const expires = parseInt(array[1] ? array[1].split('=')[1] : NaN);
+          const avg_ttl = parseInt(array[2] ? array[2].split('=')[1] : NaN);
+
+          // #1261 locale to the key count
+          dbs.push({
+            db: i,
+            keys,
+            expires,
+            avg_ttl,
+            keys_show: keys.toLocaleString(),
+            expires_show: expires.toLocaleString(),
+            avg_ttl_show: avg_ttl.toLocaleString(),
+            name,
+          });
+        }
+      }
+
+      return dbs;
+    },
+    initClusterKeys() {
+      // const nodes = this.client.nodes('master');
+      const nodes = this.client.nodes ? this.client.nodes('master') : [this.client];
+
+      if (!nodes || !nodes.length) {
+        return;
+      }
+
+      // get real node name in ssh+cluster, instead of local port
+      const natMap = this.client.options.natMap;
+      const clusterNodeNames = {};
+
+      if (natMap && Object.keys(natMap).length) {
+        for (const real in natMap) {
+          clusterNodeNames[`${natMap[real].host}:${natMap[real].port}`] = real;
+        }
+      }
+
+      nodes.map((node) => {
+        node.call('INFO', 'KEYSPACE').then((reply) => {
+          const { options } = node;
+
+          // fix #1221 node name in ssh+cluster
+          let name = `${options.host}:${options.port}`;
+          name = clusterNodeNames[name] || name;
+
+          const keys = this.initDbKeys(this.initStatus(reply), name);
+
+          // clear only when first reply, avoid jitter
+          if (this.DBKeys.length === nodes.length) {
+            this.DBKeys = [];
+          }
+
+          this.DBKeys = this.DBKeys.concat(keys);
+          // sort by node name
+          this.DBKeys.sort((a, b) => (a.name > b.name ? 1 : -1));
+        }).catch((e) => {
+          this.$message.error(e.message);
+        });
+      });
     },
     initShortcut() {
       this.$shortcut.bind('ctrl+r, ⌘+r, f5', this.hotKeyScope, () => {

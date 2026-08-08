@@ -14,7 +14,8 @@
 <script type="text/javascript">
 // import * as monaco from 'monaco-editor';
 import * as monaco from 'monaco-editor/esm/vs/editor/editor.api';
-const JSONbig = require('@qii404/json-bigint')({useNativeBigInt: false});
+
+const JSONbig = require('@qii404/json-bigint')({ useNativeBigInt: false });
 
 export default {
   data() {
@@ -23,8 +24,8 @@ export default {
     };
   },
   props: {
-    content: {type: Array|String, default: () => {}},
-    readOnly: {type: Boolean, default: true},
+    content: { type: Array | String, default: () => {} },
+    readOnly: { type: Boolean, default: true },
   },
   created() {
     // listen font family change and reset options
@@ -50,7 +51,7 @@ export default {
   },
   methods: {
     getContent() {
-      let content = this.monacoEditor.getValue();
+      const content = this.monacoEditor.getValue();
 
       if (!this.$util.isJson(content)) {
         this.$message.error(this.$t('message.json_format_failed'));
@@ -71,21 +72,23 @@ export default {
       return content;
     },
     toggleCollapse() {
-      this.collapseText == 'expand_all' ? this.monacoEditor.trigger('fold', 'editor.unfoldAll') :
-                                          this.monacoEditor.trigger('fold', 'editor.foldAll');
+      this.collapseText == 'expand_all' ? this.monacoEditor.trigger('fold', 'editor.unfoldAll')
+        : this.monacoEditor.trigger('fold', 'editor.foldAll');
       this.collapseText = this.collapseText == 'expand_all' ? 'collapse_all' : 'expand_all';
     },
     onResize() {
       // init resizeDebounce
-      if (!this.resizeDebounce) this.resizeDebounce = this.$util.debounce(() => {
-        this.monacoEditor && this.monacoEditor.layout();
-      }, 200);
+      if (!this.resizeDebounce) {
+        this.resizeDebounce = this.$util.debounce(() => {
+          this.monacoEditor && this.monacoEditor.layout();
+        }, 200);
+      }
 
       this.resizeDebounce();
     },
     changeFont(fontFamily) {
       this.monacoEditor && this.monacoEditor.updateOptions({
-        fontFamily: fontFamily,
+        fontFamily,
       });
     },
   },
@@ -119,6 +122,8 @@ export default {
         scrollBeyondLastLine: false,
         // hide scroll sign of current line
         hideCursorInOverviewRuler: true,
+        // fix #1097 additional vertical cursor
+        accessibilitySupport: 'off',
         minimap: {
           enabled: false,
         },
@@ -132,7 +137,7 @@ export default {
           verticalScrollbarSize: '9px',
           horizontalScrollbarSize: '9px',
         },
-      }
+      },
     );
 
     // window.addEventListener("resize", this.onResize);
@@ -144,7 +149,7 @@ export default {
     this.monacoEditor.dispose();
     this.$bus.$off('fontInited', this.changeFont);
   },
-}
+};
 </script>
 
 <style type="text/css">
@@ -166,13 +171,13 @@ export default {
     border-radius: 4px;
   }
   .dark-mode .text-formated-container .monaco-editor .scrollbar {
-    background: #475156;
+    background: #425057;
   }
   .text-formated-container .monaco-editor .scrollbar:hover {
     background: #e0e0dd;
   }
   .dark-mode .text-formated-container .monaco-editor .scrollbar:hover {
-    background: #565656;
+    background: #495961;
   }
 
   .text-formated-container .monaco-editor-con .monaco-editor .slider {
@@ -180,49 +185,54 @@ export default {
     background: #c1c1c1;
   }
   .dark-mode .text-formated-container .monaco-editor-con .monaco-editor .slider {
-    background: #5d676d;
+    background: #5a6f7a;
   }
   .text-formated-container .monaco-editor-con .monaco-editor .slider:hover {
-    background: #7d7d7d;
+    background: #7f7f7f;
+  }
+  .dark-mode .text-formated-container .monaco-editor-con .monaco-editor .slider:hover {
+    background: #6a838f;
   }
 
   /*remove background color*/
   .text-formated-container .monaco-editor .margin {
     background-color: inherit;
   }
-  .monaco-editor-con .monaco-editor, .monaco-editor-con .monaco-editor-background, .monaco-editor-con .monaco-editor .inputarea.ime-input {
+  .text-formated-container .monaco-editor-con .monaco-editor,
+  .text-formated-container .monaco-editor-con .monaco-editor-background,
+  .text-formated-container .monaco-editor-con .monaco-editor .inputarea.ime-input {
     background-color: inherit;
   }
 
   /*json key color*/
-  .monaco-editor-con .mtk4 {
+  .text-formated-container .monaco-editor-con .mtk4 {
     color: #111111;
   }
-  .dark-mode .monaco-editor-con .mtk4 {
+  .dark-mode .text-formated-container .monaco-editor-con .mtk4 {
     color: #ebebec;
   }
   /*json val string color*/
-  .monaco-editor-con .mtk5 {
+  .text-formated-container .monaco-editor-con .mtk5 {
     color: #42b983;
   }
   /*json val number color*/
-  .monaco-editor-con .mtk6 {
+  .text-formated-container .monaco-editor-con .mtk6 {
     color: #fc1e70;
   }
   /*json bracket color*/
-  .monaco-editor-con .mtk9 {
+  .text-formated-container .monaco-editor-con .mtk9 {
     color: #111111;
   }
   /*json bracket color*/
-  .dark-mode .monaco-editor-con .mtk9 {
+  .dark-mode .text-formated-container .monaco-editor-con .mtk9 {
     color: #b6b6b9;
   }
 
   /* common string in json editor*/
-  .monaco-editor-con .mtk1 {
+  .text-formated-container .monaco-editor-con .mtk1 {
     color: #606266;
   }
-  .dark-mode .monaco-editor-con .mtk1 {
+  .dark-mode .text-formated-container .monaco-editor-con .mtk1 {
     color: #f3f3f4;
   }
 </style>

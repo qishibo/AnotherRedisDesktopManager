@@ -29,7 +29,7 @@
     </div>
 
     <!-- connection list -->
-    <Connections ref="connections" class="connections-list"></Connections>
+    <Connections ref="connections"></Connections>
   </div>
 </template>
 
@@ -45,7 +45,9 @@ export default {
   data() {
     return {};
   },
-  components: { Connections, NewConnectionDialog, Setting, CommandLog, HotKeys, CustomFormatter },
+  components: {
+    Connections, NewConnectionDialog, Setting, CommandLog, HotKeys, CustomFormatter,
+  },
   methods: {
     editConnectionFinished() {
       this.$refs.connections.initConnections();
@@ -102,13 +104,5 @@ export default {
   .dark-mode .aside-top-container .el-button--info {
     color: #52a6fd;
     background: inherit;
-  }
-
-  .aside-outer-container .connections-list {
-    overflow-y: auto;
-    height: calc(100vh - 54px);
-    margin-top: 4px;
-    /*border-top: 1px solid #dbdada;*/
-    scroll-behavior: smooth;
   }
 </style>

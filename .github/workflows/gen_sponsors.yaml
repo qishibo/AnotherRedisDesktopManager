@@ -1,0 +1,33 @@
+name: Generate Sponsors To README
+on:
+  workflow_dispatch
+permissions:
+  contents: write
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Generate Sponsors
+        uses: JamesIves/github-sponsors-readme-action@v1
+        with:
+          token: ${{ secrets.PAT }}
+          file: 'README.md'
+          active-only: false,
+          template: '<a href="https://github.com/{{ login }}"><img src="https://images.weserv.nl/?h=120&w=120&mask=circle&url={{ avatarUrl }}" width="60px" alt="{{ name }}" /></a>'
+
+      - name: Generate Sponsors zh-CN
+        uses: JamesIves/github-sponsors-readme-action@v1
+        with:
+          token: ${{ secrets.PAT }}
+          file: 'README.zh-CN.md'
+          active-only: false,
+          template: '<a href="https://github.com/{{ login }}"><img src="https://images.weserv.nl/?h=120&w=120&mask=circle&url={{ avatarUrl }}" width="60px" alt="{{ name }}" /></a>'
+
+      - name: Commit To README
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          branch: master
+          folder: '.'

@@ -9,20 +9,55 @@
   <body>
     <!-- this script must be placed here after body -->
     <script type="text/javascript">
-      function globalChangeTheme(theme) {
-        theme  && (localStorage.theme = theme);
-        !theme && (theme = localStorage.theme);
+      const ipcRenderer = require('electron').ipcRenderer;
 
-        const themeName =  (theme  == 'dark' ? 'dark' : 'chalk');
-        const themeHref = 'static/theme/' + themeName + '/index.css';
-
+      function changeCSS(theme = 'light') {
+        const themeHref = `static/theme/${theme}/index.css`;
         document.getElementById('theme-link').href = themeHref;
-        themeName == 'dark' ? document.body.classList.add('dark-mode') :
-                              document.body.classList.remove('dark-mode');
+        theme == 'dark' ? document.body.classList.add('dark-mode') :
+                          document.body.classList.remove('dark-mode');
       }
 
-      // theme init
-      globalChangeTheme();
+      function globalChangeTheme(theme) {
+        ipcRenderer.invoke('changeTheme', theme).then(shouldUseDarkColors => {
+          // delay to avoid stuck
+          setTimeout(() => {
+            changeCSS(shouldUseDarkColors ? 'dark' : 'light');
+          }, 100);
+        });
+      }
+
+      // triggered by OS theme changed
+      ipcRenderer.on('os-theme-updated', (event, arg) => {
+        // auto change only when theme set to 'system'
+        if (arg.themeSource != 'system') {
+          return;
+        }
+
+        setTimeout(() => {
+          changeCSS(arg.shouldUseDarkColors ? 'dark' : 'light');
+        }, 100);
+      });
+
+      // theme init at startup
+      (() => {
+        let theme = localStorage.theme;
+
+        if (!['system', 'light', 'dark'].includes(theme)) {
+          theme = 'system';
+        }
+
+        // follow system OS
+        if (theme == 'system') {
+          const dark = (new URL(window.location.href)).searchParams.get('dark');
+          changeCSS(dark === 'true' ? 'dark' : 'light');
+        }
+        // setted light or dark
+        else {
+          changeCSS(theme);
+          ipcRenderer.invoke('changeTheme', theme);
+        }
+      })();
     </script>
 
     <div id="app"></div>

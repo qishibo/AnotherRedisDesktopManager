@@ -3,11 +3,26 @@
   <el-card class="box-card">
     <!-- card title -->
     <div slot="header" class="clearfix">
+      <!-- setting dialog -->
+      <el-popover
+        placement="bottom"
+        width="40"
+        trigger="hover">
+        <div>
+          <p>If result is "0", the <b>MEMORY</b> command may be disabled on Redis.</p>
+          <p style="margin: 0;">Filter Min Size:</p>
+          <el-input v-model="minSizeKB" @keyup.native.enter="initKeys()" size="mini">
+            <i slot="suffix">KB</i>
+          </el-input>
+        </div>
+        <i slot="reference" class="el-icon-setting"></i>
+      </el-popover>
+
       <span class="analysis-title">{{ $t('message.memory_analysis') }}</span>
       <i v-if="isScanning" class='el-icon-loading'></i>
       <el-tag size="mini">
-        <span v-if="isScanning">Scanning...</span>
-        Total: {{keysList.length}}
+        Total: {{keysList.length}} &nbsp;
+        Size: {{$util.humanFileSize(totalSize)}}
       </el-tag>
 
       <!-- operate btn -->
@@ -23,35 +38,45 @@
     </div>
 
     <!-- table header -->
-    <ol class="keys-header">
-      <li>
-        <span class="header-title">Key</span>
-        <span class="size-container">
-          <el-popover trigger="hover">
-            <i slot="reference" class="el-icon-question"></i>
-            If size is "unknown", your Redis may disabled <b><code>MEMORY</code></b> command.
-          </el-popover>
-          <span class="header-title">Size (bytes)</span>
-          <span @click="reOrder" class="el-icon-d-caret" style="cursor: pointer;"></span>
+    <div class="keys-header">
+      <span class="header-title">
+        Key
+        <el-tag v-if="pattern" size="mini"><i class="fa fa-search"></i> {{pattern}}</el-tag>
+      </span>
+      <span @click="toggleOrder" class="size-container">
+        <span class="header-title">Size</span>
+        <span class="el-icon-d-caret"></span>
+      </span>
+    </div>
+
+    <!-- keys list -->
+    <RecycleScroller
+      class="keys-body"
+      :items="keysList"
+      :item-size="24"
+      key-field="str"
+      v-slot="{ item, index }"
+    >
+      <li @click="clickJump(item)">
+        <span class="list-index">{{ index + 1 }}.</span>
+        <span class="key-name" :title="item.str">{{ item.str }}</span>
+        <!-- <span class="size">{{ item.human }}</span> -->
+        <span class="size">
+          <el-tag size="mini">{{ item.human }}</el-tag>
         </span>
       </li>
-    </ol>
-
-    <!-- table list -->
-    <ol ref='keysList' class='keys-body'></ol>
+    </RecycleScroller>
 
     <!-- table footer -->
     <div class="keys-footer">
-      <el-tag>{{ $t('message.max_display', {num: showMax}) }}</el-tag>
+      <el-tag>{{ $t('message.max_display', {num: scanMax}) }}</el-tag>
     </div>
   </el-card>
-
-  <ScrollToTop parentNum='1'></ScrollToTop>
 </div>
 </template>
 
 <script type="text/javascript">
-import ScrollToTop from '@/components/ScrollToTop';
+import { RecycleScroller } from 'vue-virtual-scroller';
 
 export default {
   data() {
@@ -62,65 +87,69 @@ export default {
       scanStreams: [],
       sortOrder: '',
       scanMax: 200000,
-      showMax: 10000,
       scanPageSize: 2000,
+      totalSize: 0,
+      minSizeKB: 0,
     };
   },
-  props: ['client', 'hotKeyScope'],
-  components: { ScrollToTop },
+  props: ['client', 'hotKeyScope', 'pattern'],
+  components: { RecycleScroller },
+  computed: {
+    minSizeB() {
+      return parseInt(this.minSizeKB) * 1024;
+    },
+  },
   methods: {
     initKeys() {
       this.keysList = [];
-      this.$refs.keysList.innerHTML = '';
+      this.totalSize = 0;
       this.isScanning = true;
       this.scanningEnd = false;
-      this.initScanStreamsAndScan();
+      this.initScanStreamsAndScan(this.pattern ? this.pattern : '');
     },
     initScanStreamsAndScan(pattern = '') {
       const nodes = this.client.nodes ? this.client.nodes('master') : [this.client];
-      const keysListDom = this.$refs.keysList;
       this.scanningCount = nodes.length;
 
-      nodes.map(node => {
+      nodes.map((node) => {
         const scanOption = {
-          match: pattern + '*',
+          match: `${pattern}*`,
           count: this.scanPageSize,
-        }
+        };
 
         const stream = node.scanBufferStream(scanOption);
         this.scanStreams.push(stream);
 
-        stream.on('data', keys => {
+        stream.on('data', (keys) => {
           // waiting for memory analysis
           stream.pause();
 
           // limit scanning max count
           if (this.keysList.length > this.scanMax) {
-            this.$message.warning(this.$t('message.max_scan', {num: this.scanMax}) + ', stopped.');
+            this.$message.warning(`${this.$t('message.max_scan', { num: this.scanMax })}, stopped.`);
             this.scanningEnd = true;
             return this.toggleScanning(true);
           }
 
-          let keysWithMemory = []
+          const keysWithMemory = [];
           const promise = this.initKeysMemory(keys, keysWithMemory);
 
           promise.then(() => {
             // add interval between rendering
             setTimeout(() => {
-              // limit show max
-              if (keysListDom.querySelectorAll('li').length < this.showMax) {
-                this.insertIntoDom(keysWithMemory, false);
-              }
-
               this.keysList = this.keysList.concat(keysWithMemory);
+              this.reOrder('desc');
               this.isScanning && stream.resume();
             }, 100);
+
+            // size count
+            this.totalSize += keysWithMemory.reduce((sum, item) => sum + parseInt(item.size), 0);
           });
         });
 
-        stream.on('error', e => {
+        stream.on('error', (e) => {
           this.toggleScanning(true);
-          this.$message.error('Memory Analysis Stream On Error: ' +  e.messag);
+          this.$message.error(`Memory Analysis Stream On Error: ${e.messag}`);
         });
 
         stream.on('end', () => {
@@ -138,15 +167,23 @@ export default {
         return;
       }
 
-      let allPromise = [];
+      const allPromise = [];
 
-      for (let key of keys) {
+      for (const key of keys) {
         // not logging
         this.client.withoutLogging = true;
-        const promise = this.client.call('MEMORY', 'USAGE', key).then(reply => {
-          keysWithMemory.push([key, reply]);
-        }).catch(e => {
-          keysWithMemory.push([key, 'unknown']);
+        const promise = this.client.call('MEMORY', 'USAGE', key).then((reply) => {
+          // filter min size
+          if (this.minSizeB && reply < this.minSizeB) {
+            return;
+          }
+          keysWithMemory.push({
+            key, str: this.$util.bufToString(key), size: reply, human: this.$util.humanFileSize(reply),
+          });
+        }).catch((e) => {
+          keysWithMemory.push({
+            key, str: this.$util.bufToString(key), size: 0, human: 0,
+          });
         });
 
         allPromise.push(promise);
@@ -154,37 +191,15 @@ export default {
 
       return Promise.all(allPromise);
     },
-    insertIntoDom(keysList, clearHTML = false) {
-      if (!keysList || keysList.length == 0) {
-        return;
-      }
-
-      const flag = document.createDocumentFragment();
-      const keysListDom = this.$refs.keysList;
-
-      if (!keysListDom) {
-        return;
-      }
-
-      for (const item of keysList) {
-        const li = document.createElement('li');
-        const byte = document.createElement('span');
-        li.textContent = item[0]; // key
-        byte.textContent = item[1]; // byte
-        li.appendChild(byte);
-
-        flag.appendChild(li);
-      }
-
-      clearHTML && (keysListDom.innerHTML = '');
-      keysListDom.appendChild(flag);
+    clickJump(item) {
+      this.$bus.$emit('clickedKey', this.client, item.key, true);
     },
     toggleScanning(pause = true) {
       // stop scanning
       if (pause) {
         this.isScanning = false;
         if (this.scanStreams.length) {
-          for (let stream of this.scanStreams) {
+          for (const stream of this.scanStreams) {
             stream.pause && stream.pause();
           }
         }
@@ -199,33 +214,28 @@ export default {
       // resume scanning
       this.isScanning = true;
       if (this.scanStreams.length) {
-        for (let stream of this.scanStreams) {
+        for (const stream of this.scanStreams) {
           stream.pause && stream.resume();
         }
       }
     },
-    reOrder() {
+    toggleOrder() {
       if (this.isScanning) {
         return;
       }
 
-      this.sortOrder = this.sortOrder == 'desc' ? 'asc' : 'desc';
+      this.sortOrder = (this.sortOrder == 'desc' ? 'asc' : 'desc');
+      this.reOrder();
+    },
+    reOrder(order = null) {
+      order !== null && (this.sortOrder = order);
 
       // sorting
       if (this.sortOrder == 'asc') {
-        this.keysList.sort((a, b) => {
-          return a[1] - b[1];
-        });
+        this.keysList.sort((a, b) => a.size - b.size);
+      } else {
+        this.keysList.sort((a, b) => b.size - a.size);
       }
-      else {
-        this.keysList.sort((a, b) => {
-          return b[1] - a[1];
-        });
-      }
-
-      // limit max display keys
-      const showKeys = this.keysList.slice(0, this.showMax);
-      this.insertIntoDom(showKeys, true);
     },
     initShortcut() {
       this.$shortcut.bind('ctrl+r, ⌘+r, f5', this.hotKeyScope, () => {
@@ -259,32 +269,62 @@ export default {
     float: right;
   }
 
-  /*keys header*/
+  /*keys header container*/
   .memory-analysis-container .keys-header {
-    list-style: none;
+    margin: 2px 0 14px 0;
+    user-select: none;
   }
   .memory-analysis-container .keys-header .header-title {
     font-weight: bold;
   }
   .memory-analysis-container .keys-header .size-container {
     float: right;
+    cursor: pointer;
   }
 
+  /*keys body list*/
+  .memory-analysis-container .keys-body {
+    height: calc(100vh - 268px);
+  }
   /*keys body li*/
   .memory-analysis-container .keys-body li {
-    border-bottom: 1px solid #d0d0d0;
+    border-bottom: 1px solid #e6e6e6;
+    cursor:  pointer;
+    padding: 0 0 0 4px;
+    margin-right: 2px;
+    font-size: 92%;
+    list-style: none;
+    display: flex;
+    /*same with item-size*/
+    line-height: 24px;
   }
   .dark-mode .memory-analysis-container .keys-body li {
-    border-bottom: 1px solid #444444;
+    border-bottom: 1px solid #3b4d57;
   }
+  .memory-analysis-container .keys-body li:hover {
+    background: #e6e6e6;
+  }
+  .dark-mode .memory-analysis-container .keys-body li:hover {
+    background: #3b4d57;
+  }
+  /*key name*/
+  .memory-analysis-container .keys-body li .key-name {
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
   /*key size*/
-  .memory-analysis-container .keys-body span {
-    float: right;
-    font-size: 90%;
+  .memory-analysis-container .keys-body .size {
+    /*font-size: 90%;*/
+    margin-left: 20px;
+    margin-right: 4px;
   }
 
   /*keys footer*/
   .memory-analysis-container .keys-footer {
     text-align: center;
+    line-height: 40px;
   }
 </style>

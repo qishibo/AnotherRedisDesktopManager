@@ -26,7 +26,9 @@ export default {
         { value: 'fr', label: 'Français' },
         { value: 'ua', label: 'Українською' },
         { value: 'it', label: 'Italiano' },
-		{ value: 'es', label: 'Español' }
+        { value: 'es', label: 'Español' },
+        { value: 'ko', label: '한국어' },
+        { value: 'vi', label: 'Tiếng Việt' },
       ],
     };
   },

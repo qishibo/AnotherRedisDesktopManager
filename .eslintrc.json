@@ -3,7 +3,7 @@
         "browser": true,
         "es6": true
     },
-    "extends": ["airbnb-base", "plugin:vue/essential"],
+    "extends": ["eslint:recommended", "airbnb-base", "plugin:vue/essential"],
     "globals": {
         "Atomics": "readonly",
         "SharedArrayBuffer": "readonly"
