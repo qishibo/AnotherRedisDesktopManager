@@ -105,6 +105,67 @@ export default {
   saveCustomFormatters(formatters = []) {
     return localStorage.setItem('customFormatters', JSON.stringify(formatters));
   },
+  getProtobufStore() {
+    const raw = localStorage.getItem('protobufStore');
+    return raw ? JSON.parse(raw) : { profiles: {}, bindings: {} };
+  },
+  saveProtobufStore(store) {
+    localStorage.setItem('protobufStore', JSON.stringify(store));
+  },
+  findProtobufProfileIdByPaths(store, paths = []) {
+    const pathsKey = JSON.stringify(paths);
+
+    return Object.keys(store.profiles).find(
+      id => JSON.stringify(store.profiles[id].paths) === pathsKey,
+    ) || null;
+  },
+  getProtobufProfileByRedisKey(redisKeyHex) {
+    if (!redisKeyHex) {
+      return null;
+    }
+
+    const store = this.getProtobufStore();
+    const binding = store.bindings[redisKeyHex];
+
+    return binding ? store.profiles[binding.pid] : null;
+  },
+  bindProtobufProfile(redisKeyHex, profile = {}) {
+    if (!redisKeyHex || !profile.paths || !profile.paths.length) {
+      return null;
+    }
+
+    const store = this.getProtobufStore();
+    let profileId = this.findProtobufProfileIdByPaths(store, profile.paths);
+
+    // new profile
+    if (!profileId) {
+      profileId = this.createUniqId();
+      store.profiles[profileId] = {
+        id: profileId,
+        name: profile.name || '',
+        paths: profile.paths,
+        bookmarks: profile.bookmarks || [],
+      };
+    }
+    // exists profile, path & name not changed, update bookmark
+    else {
+      store.profiles[profileId].bookmarks = profile.bookmarks || [];
+    }
+
+    store.bindings[redisKeyHex] = { pid: profileId };
+    this.saveProtobufStore(store);
+
+    return store.profiles[profileId];
+  },
+  unbindProtobufProfile(redisKeyHex) {
+    if (!redisKeyHex) {
+      return;
+    }
+
+    const store = this.getProtobufStore();
+    delete store.bindings[redisKeyHex];
+    this.saveProtobufStore(store);
+  },
   addConnection(connection) {
     this.editConnectionByKey(connection, '');
   },
