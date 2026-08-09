@@ -42,6 +42,8 @@ const fs = require('fs');
 const path = require('path');
 const { dialog, app } = require('electron').remote;
 
+const DECODE_FAILED = 'Protobuf Decode Failed!';
+
 export default {
   data() {
     return {
@@ -64,8 +66,7 @@ export default {
         const message = type.decode(this.content);
         return message.toJSON();
       } catch (e) {
-        this.clearBinding();
-        return 'Protobuf Decode Failed!';
+        return DECODE_FAILED;
       }
     },
     buttonTitle() {
@@ -173,6 +174,16 @@ export default {
         // default select the first real type
         this.selectedType = this.types.length > 1 ? this.types[1] : 'Rawproto';
 
+        // protobuf decode failed
+        if (this.selectedType === 'Rawproto' || this.newContent === DECODE_FAILED) {
+          // restore mode, clear binding
+          // if (!persist) {
+          //   this.clearBinding();
+          // }
+          return false;
+        }
+
+        // protobuf decode success
         if (persist) {
           this.persistBinding();
         }
