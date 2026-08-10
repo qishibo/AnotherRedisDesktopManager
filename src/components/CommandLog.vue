@@ -10,7 +10,8 @@
       :row-config="{isHover: true, height: 24}"
       :column-config="{resizable: true}"
       :empty-text="$t('el.table.emptyText')"
-      :data="logsShow">
+      :data="logsShow"
+      @cell-click="copyCommand">
       <vxe-column field="time" title="Time" width="90"></vxe-column>
       <vxe-column field="name" title="Connection" width="168"></vxe-column>
       <vxe-column field="cmd" title="CMD" width="130" class-name="command-cmd"></vxe-column>
@@ -93,6 +94,15 @@ export default {
           this.$refs.commandLogList.scrollTo(0, 99999999);
       }, 0);
     },
+    copyCommand({ row }) {
+      if (!row) {
+        return;
+      }
+
+      const command = row.args ? `${row.cmd} ${row.args}` : row.cmd;
+      this.$util.copyToClipboard(command);
+      this.$message.success({ message: this.$t('message.copy_success'), duration: 800 });
+    },
   },
 };
 </script>
@@ -108,6 +118,9 @@ export default {
     border: 1px solid grey;
     border-radius: 5px;
     margin-bottom: 12px;
+  }
+  .command-log-list .vxe-body--row {
+    cursor: pointer;
   }
 
   .command-log-list .command-cmd {
