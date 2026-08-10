@@ -54,6 +54,7 @@
             v-model="editLineItem.timestamp"
             :disabled="isEdit"
             placeholder="* or unix ms timestamp"
+            :title="formatTime(editLineItem.timestamp)"
             autocomplete="off">
           </el-input>
         </el-form-item>
@@ -292,9 +293,14 @@ export default {
     },
     formatTime(ts) {
       try {
-        return new Date(Number(ts)).toLocaleString();
+        const timestamp = Number(ts);
+        if (!timestamp) {
+          return ts;
+        }
+
+        return new Date(timestamp).toLocaleString();
       } catch (e) {
-        return '';
+        return ts;
       }
     },
     showEditDialog(row) {
