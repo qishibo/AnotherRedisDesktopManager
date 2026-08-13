@@ -64,6 +64,8 @@ export default {
         }
         const type = this.protoRoot.lookupType(this.selectedType);
         const message = type.decode(this.content);
+        // notice: toJSON will convert int64 to string
+        // can use toObject instead: type.toObject(message, {longs: BigInt})
         return message.toJSON();
       } catch (e) {
         return DECODE_FAILED;
@@ -103,19 +105,20 @@ export default {
 
       try {
         content = JSON.parse(content);
-        const err = type.verify(content);
-
-        if (err) {
-          this.$message.error(`Proto Verify Failed: ${err}`);
-          return false;
-        }
-
-        const message = type.create(content);
-        return type.encode(message).finish();
       } catch (e) {
         this.$message.error(this.$t('message.json_format_failed'));
         return false;
       }
+
+      // toJSON() shows int64/uint64 as strings; fromObject converts them back
+      const message = type.fromObject(content);
+      const err = type.verify(message);
+      if (err) {
+        this.$message.error(`Proto Verify Failed: ${err}`);
+        return false;
+      }
+
+      return type.encode(message).finish();
     },
     copyContent() {
       return JSON.stringify(this.newContent);
