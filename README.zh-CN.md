@@ -10,7 +10,6 @@
 [![Release](https://img.shields.io/github/release/qishibo/AnotherRedisDesktopManager.svg)](https://github.com/qishibo/AnotherRedisDesktopManager/releases)
 [![Download](https://img.shields.io/github/downloads/qishibo/AnotherRedisDesktopManager/total)](https://github.com/qishibo/AnotherRedisDesktopManager/releases)
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fqishibo%2FAnotherRedisDesktopManager.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fqishibo%2FAnotherRedisDesktopManager?ref=badge_shield)
-<a href="https://www.producthunt.com/posts/another-redis-desktop-manager?utm_source=badge-featured"><img src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=340552&theme=dark" height="20" width="93" /></a>
 [![STARS](https://img.shields.io/github/stars/qishibo/AnotherRedisDesktopManager)](https://github.com/qishibo/AnotherRedisDesktopManager/)
 
 ## Windows
@@ -58,7 +57,7 @@
 
 ## 赞助
 
-- 给我点个Star⭐⭐ 或者 [Producthunt](https://www.producthunt.com/posts/another-redis-desktop-manager)点个赞
+- 给我点个Star⭐⭐
 - 通过 [OpenCollective](https://opencollective.com/AnotherRedisDesktopManager)或者[Github Sponsor](https://github.com/sponsors/qishibo)
 - 如果你是Mac用户, 也可以通过从[App Store](https://apps.apple.com/app/id1516451072)购买来赞助, 然后应用商店会为你自动更新
 <br>[![app store](https://cdn.jsdelivr.net/gh/qishibo/img/avail_app_store180.svg)](https://apps.apple.com/app/id1516451072)
@@ -71,6 +70,7 @@
 
 ## 里程碑
 
+- 2026-08-15: TimeSeries\Vector\ARRAY类型支持 && 测试链接
 - 2026-07-29: 链接分组支持
 - 2025-10-01: 好久不见，新功能马上归来
 - 2024-11-03: 支持从文件批量导入命令并执行
@@ -325,6 +325,6 @@ npm run pack:linux
 
 ## Support
 
-[goanother.com](https://goanother.com/) &nbsp; [Producthunt](https://www.producthunt.com/posts/another-redis-desktop-manager) &nbsp; [Download Analysis](https://qii404.me/github-release-statistics/?repo=/qishibo/AnotherRedisDesktopManager/)
+[goanother.com](https://goanother.com/) &nbsp; [Download Analysis](https://qii404.me/github-release-statistics/?repo=/qishibo/AnotherRedisDesktopManager/)
 
 
