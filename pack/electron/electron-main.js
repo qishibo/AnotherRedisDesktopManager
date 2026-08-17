@@ -4,8 +4,11 @@ const {
 } = require('electron');
 
 // single instance mode, otherwise the second instance
-// would fail to read the localStorage
-const gotTheLock = app.requestSingleInstanceLock();
+// would fail to read the localStorage.
+// On mac calling requestSingleInstanceLock may cause SIGTRAP-crash
+const gotTheLock = process.platform === 'darwin'
+  ? true
+  : app.requestSingleInstanceLock();
 
 if (!gotTheLock) {
   app.exit(0);
