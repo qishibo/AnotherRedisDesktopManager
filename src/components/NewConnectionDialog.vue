@@ -64,7 +64,7 @@
       <!-- other operation -->
       <el-form-item label="">
         <el-checkbox v-model="sshOptionsShow">SSH</el-checkbox>
-        <el-checkbox v-model="sslOptionsShow">SSL</el-checkbox>
+        <el-checkbox v-model="sslOptionsShow">TLS/SSL</el-checkbox>
         <el-checkbox v-model="sentinelOptionsShow">
           Sentinel
           <el-popover trigger="hover">
@@ -139,7 +139,7 @@
     <!-- SSL connection form -->
     <el-form v-if="sslOptionsShow" v-show="sslOptionsShow" label-position='top' label-width="90px">
       <fieldset>
-        <legend>SSL</legend>
+        <legend>TLS/SSL</legend>
       </fieldset>
 
       <el-row :gutter=20>
@@ -204,6 +204,7 @@
     </el-form>
 
     <div slot="footer" class="dialog-footer">
+      <el-button :loading="testing" @click="testConnection">{{ $t('message.test_connection') }}</el-button>
       <el-button @click="dialogVisible = false">{{ $t('el.messagebox.cancel') }}</el-button>
       <el-button type="primary" @click="editConnection">{{ $t('el.messagebox.confirm') }}</el-button>
     </div>
@@ -232,6 +233,7 @@
 
 <script type="text/javascript">
 import storage from '@/storage';
+import redisClient from '@/redisClient.js';
 import FileInput from '@/components/FileInput';
 import InputPassword from '@/components/InputPassword';
 
@@ -242,6 +244,7 @@ export default {
       dialogVisible: false,
       labelPosition: 'top',
       oldKey: '',
+      testing: false,
       connection: {
         host: '',
         port: '',
@@ -295,6 +298,13 @@ export default {
         : this.$t('message.new_connection');
     },
   },
+  watch: {
+    dialogVisible(visible) {
+      if (!visible) {
+        this.finishTest();
+      }
+    },
+  },
   methods: {
     loadGroups() {
       this.groups = storage.getGroups();
@@ -346,11 +356,12 @@ export default {
         this.connection = JSON.parse(JSON.stringify(this.connectionEmpty));
       }
     },
-    editConnection() {
+    getConnectionConfig() {
       const config = JSON.parse(JSON.stringify(this.connection));
 
       if (this.sentinelOptionsShow && config.cluster) {
-        return this.$message.error('Sentinel & Cluster cannot be checked together!');
+        this.$message.error('Sentinel & Cluster cannot be checked together!');
+        return false;
       }
 
       !config.host && (config.host = '127.0.0.1');
@@ -368,12 +379,103 @@ export default {
         delete config.sentinelOptions;
       }
 
+      return config;
+    },
+    editConnection() {
+      const config = this.getConnectionConfig();
+      if (!config) {
+        return;
+      }
+
       const oldKey = storage.getConnectionKey(this.config);
       storage.editConnectionByKey(config, oldKey);
 
       this.dialogVisible = false;
       this.$emit('editConnectionFinished', config);
     },
+    cleanupTestClient() {
+      if (!this.testClient) {
+        return;
+      }
+      try {
+        this.testClient.removeAllListeners();
+        // Prevent unhandled error after disconnect (TLS etc.)
+        this.testClient.on('error', () => {});
+        this.testClient.disconnect(false);
+      } catch (e) {}
+      this.testClient = null;
+    },
+    // ok: true / false; omit ok for cancel (cleanup only, no toast)
+    finishTest(ok, message) {
+      if (!this.testing) {
+        return;
+      }
+      this.testing = false;
+
+      clearTimeout(this.testTimer);
+      this.cleanupTestClient();
+
+      // except ok == null
+      if (ok === true) {
+        this.$message.success(this.$t('message.test_connection_success'));
+      } else if (ok === false) {
+        this.$message.error(message || this.$t('message.test_connection_failed'));
+      }
+    },
+    testConnection() {
+      if (this.testing) {
+        return;
+      }
+
+      const config = this.getConnectionConfig();
+      if (!config) {
+        return;
+      }
+
+      this.testing = true;
+      this.testClient = null;
+
+      // show timeout message after N seconds
+      this.testTimer = setTimeout(() => {
+        this.finishTest(false, this.$t('message.test_connection_timeout'));
+      }, 5000);
+
+      const clientPromise = config.sshOptions
+        ? redisClient.createSSHConnection(
+          config.sshOptions, config.host, config.port, config.auth, config,
+        )
+        : redisClient.createConnection(
+          config.host, config.port, config.auth, config,
+        );
+
+      clientPromise.then((client) => {
+        this.testClient = client;
+        client.options.retryStrategy = () => false;
+
+        // Already finished (timeout/cancel) while creating connection.
+        if (!this.testing) {
+          this.cleanupTestClient();
+          return;
+        }
+
+        client.on('error', (e) => {
+          this.finishTest(false, e.message);
+        });
+
+        client.once('ready', () => {
+          client.ping().then(() => {
+            this.finishTest(true);
+          }).catch((e) => {
+            this.finishTest(false, e.message);
+          });
+        });
+      }).catch((e) => {
+        this.finishTest(false, e.message);
+      });
+    },
+  },
+  beforeDestroy() {
+    this.finishTest();
   },
   mounted() {
     // back up the empty connection

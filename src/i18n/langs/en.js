@@ -1,6 +1,10 @@
 const en = {
   message: {
     new_connection: 'New Connection',
+    test_connection: 'Test Connection',
+    test_connection_success: 'Connection Successful',
+    test_connection_failed: 'Connection Failed',
+    test_connection_timeout: 'Connection timed out',
     refresh_connection: 'Refresh',
     edit_connection: 'Edit Connection',
     duplicate_connection: 'Duplicate Connection',

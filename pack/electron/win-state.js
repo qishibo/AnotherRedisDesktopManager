@@ -74,7 +74,10 @@ const winState = {
 
   getWinState(win) {
     try {
-      const winBounds = win.getBounds();
+      // Prefer normal bounds so maximized size is not saved as restore size
+      // fix window disappears
+      // after closing with maximized, then reopen and dbclick title bar
+      const winBounds = win.getNormalBounds();
 
       const state = {
         x: winBounds.x,
