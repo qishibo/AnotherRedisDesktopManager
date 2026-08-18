@@ -2,6 +2,18 @@
 const {
   app, BrowserWindow, Menu, ipcMain, dialog, nativeTheme,
 } = require('electron');
+
+// single instance mode, otherwise the second instance
+// would fail to read the localStorage.
+// On mac calling requestSingleInstanceLock may cause SIGTRAP-crash
+const gotTheLock = process.platform === 'darwin'
+  ? true
+  : app.requestSingleInstanceLock();
+
+if (!gotTheLock) {
+  app.exit(0);
+}
+
 const url = require('url');
 const path = require('path');
 const fontManager = require('./font-manager');
@@ -122,6 +134,17 @@ app.on('activate', () => {
   if (mainWindow === null) {
     createWindow();
   }
+});
+
+// a second instance start, quit and show this
+app.on('second-instance', () => {
+  if (!mainWindow) {
+    return;
+  }
+  if (mainWindow.isMinimized()) {
+    mainWindow.restore();
+  }
+  mainWindow.focus();
 });
 
 // hide window

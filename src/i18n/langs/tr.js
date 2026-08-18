@@ -1,6 +1,10 @@
 const tr = {
   message: {
     new_connection: 'Yeni Bağlantı',
+    test_connection: 'Bağlantıyı Test Et',
+    test_connection_success: 'Bağlantı Başarılı',
+    test_connection_failed: 'Bağlantı Başarısız',
+    test_connection_timeout: 'Bağlantı zaman aşımı',
     refresh_connection: 'Yenile',
     edit_connection: 'Bağlantıyı Düzenle',
     duplicate_connection: 'Bağlantıyı Kopyala',

@@ -150,13 +150,13 @@ export default {
       const result = getData(buf);
 
       // fix #922 some str mismatch
-      if (result[0]) {
-        const firstEle = Object.values(result[0])[0];
-        if (firstEle < 1e-14 || firstEle.low) {
-          return false;
-        }
-      }
-      return true;
+      // if (result[0]) {
+      //   const firstEle = Object.values(result[0])[0];
+      //   if (firstEle < 1e-14 || firstEle.low) {
+      //     return false;
+      //   }
+      // }
+      return !!result;
     } catch (e) {}
 
     return false;

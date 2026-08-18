@@ -23,7 +23,7 @@
       <el-dialog :title="dialogTitle" :visible.sync="editDialog" @open="openDialog" :close-on-click-modal="false">
         <el-form>
           <el-form-item label="ID">
-            <InputBinary :disabled="!!beforeEditItem.contentString" :content.sync="editLineItem.id"></InputBinary>
+            <InputBinary :disabled="!!beforeEditItem.contentString" :title="formatIdTime(editLineItem.id)" :content.sync="editLineItem.id"></InputBinary>
           </el-form-item>
 
           <el-form-item label="Value (JSON string)">
@@ -98,7 +98,11 @@
         :empty-text="$t('el.table.emptyText')"
         :data="lineData">
         <vxe-column type="seq" :title="'ID (Total: ' + total + ')'" width="150"></vxe-column>
-        <vxe-column field="id" title="ID" sortable></vxe-column>
+        <vxe-column field="id" title="ID" sortable>
+          <template v-slot="scope">
+            <span :title="formatIdTime(scope.row.id)">{{ scope.row.id }}</span>
+          </template>
+        </vxe-column>
         <vxe-column field="contentString" title="Value" sortable></vxe-column>
         <vxe-column title="Operate" width="166">
           <template slot-scope="scope" slot="header">
@@ -251,7 +255,8 @@ export default {
         this.oneTimeListLength += lineData.length;
         this.lineData = this.lineData.concat(lineData);
 
-        if (this.oneTimeListLength >= this.pageSize) {
+        // enough rows, or Redis returned fewer than requested (no more data)
+        if (this.oneTimeListLength >= this.pageSize || reply.length < pageSize) {
           this.loadingIcon = '';
           this.oneTimeListLength = 0;
           return;
@@ -271,6 +276,17 @@ export default {
       this.client.xlen(this.redisKey).then((reply) => {
         this.total = reply;
       });
+    },
+    formatIdTime(id) {
+      try {
+        const ts = Number(String(id).split('-')[0]);
+        if (!ts) {
+          return id;
+        }
+        return new Date(ts).toLocaleString();
+      } catch (e) {
+        return id;
+      }
     },
     resetTable() {
       this.lineData = [];

@@ -1,6 +1,10 @@
 const ko = {
   message: {
     new_connection: '새 연결',
+    test_connection: '연결 테스트',
+    test_connection_success: '연결 성공',
+    test_connection_failed: '연결 실패',
+    test_connection_timeout: '연결 시간 초과',
     refresh_connection: '새로고침',
     edit_connection: '연결 편집',
     duplicate_connection: '연결 복제',

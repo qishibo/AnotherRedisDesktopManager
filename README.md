@@ -10,7 +10,6 @@
 [![Release](https://img.shields.io/github/release/qishibo/AnotherRedisDesktopManager.svg)](https://github.com/qishibo/AnotherRedisDesktopManager/releases)
 [![Download](https://img.shields.io/github/downloads/qishibo/AnotherRedisDesktopManager/total)](https://github.com/qishibo/AnotherRedisDesktopManager/releases)
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fqishibo%2FAnotherRedisDesktopManager.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fqishibo%2FAnotherRedisDesktopManager?ref=badge_shield)
-<a href="https://www.producthunt.com/posts/another-redis-desktop-manager?utm_source=badge-featured"><img src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=340552&theme=dark" height="20" width="93" /></a>
 [![STARS](https://img.shields.io/github/stars/qishibo/AnotherRedisDesktopManager)](https://github.com/qishibo/AnotherRedisDesktopManager/)
 
 
@@ -63,7 +62,7 @@ This project exists thanks to all the people who contribute.
 
 ## Sponsor
 
-- Give me a star ⭐ or upvote on [Producthunt](https://www.producthunt.com/posts/another-redis-desktop-manager)
+- Give me a star ⭐⭐
 - Through [OpenCollective](https://opencollective.com/AnotherRedisDesktopManager) or [Github Sponsor](https://github.com/sponsors/qishibo)
 - If you are a Mac user, you can purchase this software from the [app store](https://apps.apple.com/app/id1516451072) to sponsor, and then let the app store automatically update it for you.
 <br>[![app store](https://cdn.jsdelivr.net/gh/qishibo/img/avail_app_store180.svg)](https://apps.apple.com/app/id1516451072)
@@ -76,6 +75,7 @@ This project exists thanks to all the people who contribute.
 
 ## Feature Log
 
+- 2026-08-15: TimeSeries\Vector\ARRAY Support && Test Connection Support
 - 2026-07-29: Connection Group Support!
 - 2025-10-01: Long time no see! New features will coming soon!
 - 2024-11-03: Import batch commands from files
@@ -328,5 +328,5 @@ npm run pack:linux
 
 ## Support
 
-[goanother.com](https://goanother.com/) &nbsp; [Producthunt](https://www.producthunt.com/posts/another-redis-desktop-manager) &nbsp; [Twitter@shibo](https://twitter.com/qii404) &nbsp; [Download Analysis](https://qii404.me/github-release-statistics/?repo=/qishibo/AnotherRedisDesktopManager/)
+[goanother.com](https://goanother.com/) &nbsp; [Download Analysis](https://qii404.me/github-release-statistics/?repo=/qishibo/AnotherRedisDesktopManager/)
 

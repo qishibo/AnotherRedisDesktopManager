@@ -1,6 +1,10 @@
 const ru = {
   message: {
     new_connection: 'Новое подключение',
+    test_connection: 'Проверить подключение',
+    test_connection_success: 'Подключение успешно',
+    test_connection_failed: 'Ошибка подключения',
+    test_connection_timeout: 'Время ожидания соединения истекло',
     refresh_connection: 'Обновить',
     edit_connection: 'Редактировать подключение',
     duplicate_connection: 'Копировать соединение',
