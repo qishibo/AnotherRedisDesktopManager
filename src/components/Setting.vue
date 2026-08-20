@@ -136,6 +136,7 @@
         action=""
         :limit="1"
         :on-change="loadConnectionFile"
+        :on-exceed="replaceConnectionFile"
         drag>
         <i class="el-icon-upload"></i>
         <div class="el-upload__text">{{ $t('message.put_file_here') }}</div>
@@ -224,6 +225,13 @@ export default {
     },
     showImportDialog() {
       this.importConnectionVisible = true;
+    },
+    replaceConnectionFile(files) {
+      const upload = this.$refs.configUpload;
+
+      upload.clearFiles();
+      // handleStart adds the file to the list and triggers on-change to read it
+      upload.handleStart(files[0]);
     },
     loadConnectionFile(file) {
       const reader = new FileReader();

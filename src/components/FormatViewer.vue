@@ -210,8 +210,8 @@ export default {
       if (this.$util.isDeflate(this.content)) {
         return this.changeViewer('Deflate');
       }
-      // protobuf
-      if (this.$util.isProtobuf(this.content)) {
+      // protobuf, misjudgment to much ,add length limit
+      if (this.content.length > 10 && this.$util.isProtobuf(this.content)) {
         return this.changeViewer('Protobuf');
       }
       // deflateRaw

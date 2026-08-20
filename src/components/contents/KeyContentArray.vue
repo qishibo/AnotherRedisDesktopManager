@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="key-content-array">
     <!-- table toolbar -->
     <div>
       <!-- add button -->
@@ -101,7 +101,7 @@ export default {
       beforeEditItem: {},
       editLineItem: {},
       loadingIcon: '',
-      pageSize: 5,
+      pageSize: 200,
       scanStart: 0,
       loadMoreDisable: false,
     };

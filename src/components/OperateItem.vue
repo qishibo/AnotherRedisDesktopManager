@@ -128,7 +128,9 @@ export default {
         Zset: 'zset',
         Stream: 'stream',
         Array: 'array',
+        Vector: 'vectorset',
         ReJSON: 'rejson',
+        TimeSeries: 'timeseries',
       },
       dbKeysCount: {},
       dbNames: {},
@@ -320,6 +322,12 @@ export default {
         }
         case 'array': {
           return this.client.call('ARSET', key, 0, 'New value');
+        }
+        case 'vectorset': {
+          return this.client.call('VADD', key, 'VALUES', 3, '0.1', '0.2', '0.3', 'element1');
+        }
+        case 'timeseries': {
+          return this.client.call('TS.ADD', key, '*', 0);
         }
         case 'rejson': {
           return this.client.call('JSON.SET', [key, '$', '{"New key":"New value"}']);

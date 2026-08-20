@@ -296,6 +296,21 @@ export default {
       const tabs = this.$refs.tabs.$el.querySelector('.el-tabs__header');
       tabs && tabs.addEventListener('contextmenu', this.openContextMenu);
       tabs && tabs.addEventListener('mousewheel', this.wheelToggleTabs);
+      tabs && tabs.addEventListener('mousedown', this.middleCloseTab);
+    },
+    middleCloseTab(event) {
+      // middle click to close tab
+      if (event.button === 1) {
+        event.preventDefault();
+        const items = this.$refs.tabs.$el.querySelectorAll('.el-tabs__header .el-tabs__item');
+
+        for (const item of items) {
+          if (item.contains(event.target)) {
+            const tabName = item.id.substr(4); // remove prefix "tab-"
+            tabName && this.removeTab(tabName);
+          }
+        }
+      }
     },
     wheelToggleTabs(event) {
       let index = this.tabs.findIndex(item => item.name === this.selectedTabName);
@@ -320,7 +335,7 @@ export default {
       }
 
       for (const item of items) {
-        if (item.contains(event.srcElement)) {
+        if (item.contains(event.target)) {
           this.preTabId = item.id.substr(4); // remove prefix "tab-"
         }
       }
