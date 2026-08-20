@@ -239,10 +239,12 @@ export default {
   },
   methods: {
     initShow() {
+      // set global info dict
+      this.client.ardmInfo = {};
+
       this.client.info().then((reply) => {
         this.connectionStatus = this.initStatus(reply);
-        // set global param
-        this.client.ardmRedisVersion = this.connectionStatus['redis_version'];
+        this.client.ardmInfo = this.connectionStatus;
 
         // init db keys info
         if (this.isCluster) {

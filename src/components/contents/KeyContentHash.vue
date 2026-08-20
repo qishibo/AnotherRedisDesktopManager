@@ -127,8 +127,15 @@ export default {
         : this.$t('message.add_new_line');
     },
     ttlSupport() {
+      const info = this.client.ardmInfo;
+
+      // valkey >= 9.0
+      if (info.valkey_version) {
+        return versionCompare(info.valkey_version, '9.0') >= 0;
+      }
+
       // avaiable since redis >= 7.4
-      return versionCompare(this.client.ardmRedisVersion, '7.4') >= 0;
+      return versionCompare(info.redis_version, '7.4') >= 0;
     },
   },
   watch: {

@@ -179,7 +179,7 @@ export default {
     },
     vrangeSupport() {
       // available since redis >= 8.4
-      return versionCompare(this.client.ardmRedisVersion, '8.4') >= 0;
+      return versionCompare(this.client.ardmInfo.redis_version, '8.4') >= 0;
     },
     isEdit() {
       return !!this.beforeEditItem.element;
