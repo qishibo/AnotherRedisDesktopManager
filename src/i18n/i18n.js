@@ -89,6 +89,7 @@ const messages = {
 
 const i18n = new VueI18n({
   locale: localStorage.lang || 'en',
+  fallbackLocale: 'en',
   messages,
 });
 
