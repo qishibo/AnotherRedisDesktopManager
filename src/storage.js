@@ -317,6 +317,114 @@ export default {
       this.addConnection(item);
     });
   },
+
+  /**
+   * 导出所有连接配置为标准 JSON（servers 格式）
+   * @returns {string} JSON 字符串
+   */
+  exportConnections() {
+    const list = this.getConnections(true);
+    const servers = list.map((conn) => {
+      const item = { ...conn };
+      delete item.key;
+      delete item.db;
+      delete item.connectionName;
+      return item;
+    });
+
+    return JSON.stringify({
+      version: '1.0',
+      exportTime: new Date().toISOString(),
+      servers,
+    }, null, 2);
+  },
+
+  /**
+   * 校验连接配置数组，返回 { valid, errors, validServers }
+   * @param {Array} servers
+   */
+  validateServers(servers) {
+    const errors = [];
+    const validServers = [];
+
+    if (!Array.isArray(servers)) {
+      return { valid: false, errors: ['servers 必须是数组'], validServers };
+    }
+
+    servers.forEach((s, idx) => {
+      const prefix = `第 ${idx + 1} 条连接`;
+
+      if (!s || typeof s !== 'object') {
+        errors.push(`${prefix}: 不是有效的对象`);
+        return;
+      }
+
+      if (s.host === undefined || s.host === null || s.host === '') {
+        errors.push(`${prefix}: host 不能为空`);
+        return;
+      }
+      if (typeof s.host !== 'string') {
+        errors.push(`${prefix}: host 必须是字符串`);
+        return;
+      }
+
+      const port = Number(s.port);
+      if (isNaN(port) || port < 1 || port > 65535) {
+        errors.push(`${prefix}: port 必须是 1-65535 之间的数字`);
+        return;
+      }
+
+      validServers.push({ ...s, port });
+    });
+
+    return { valid: errors.length === 0, errors, validServers };
+  },
+
+  /**
+   * 导入连接配置（追加模式，不替换）
+   * @param {Array} servers 已校验的连接数组
+   * @param {'overwrite'|'skip'} conflictMode 冲突处理方式
+   * @returns {{added: number, skipped: number, overwritten: number}}
+   */
+  importConnections(servers, conflictMode = 'skip') {
+    const existing = this.getConnections(true);
+    const existingMap = new Map();
+    existing.forEach((conn) => {
+      const key = this.getConnectionKey(conn);
+      existingMap.set(key, conn);
+    });
+
+    let added = 0;
+    let skipped = 0;
+    let overwritten = 0;
+
+    servers.forEach((srv) => {
+      const newConn = { ...srv };
+      delete newConn.key;
+      delete newConn.db;
+
+      const newKey = this.getConnectionKey(newConn);
+
+      if (existingMap.has(newKey)) {
+        if (conflictMode === 'overwrite') {
+          // 覆盖：删除旧的再添加新的
+          const all = this.getConnections();
+          delete all[newKey];
+          this.setConnections(all);
+          this.addConnection(newConn);
+          overwritten++;
+        } else {
+          // 跳过
+          skipped++;
+        }
+      } else {
+        this.addConnection(newConn);
+        added++;
+      }
+    });
+
+    return { added, skipped, overwritten };
+  },
   getStorageKeyMap(type) {
     const typeMap = {
       cli_tip: 'cliTips',
