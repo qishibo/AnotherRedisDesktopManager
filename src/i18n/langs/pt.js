@@ -98,14 +98,14 @@ const pt = {
     update_available: 'Nova versão encontrada',
     update_not_available: 'A sua aplicação está na versão mais recente',
     update_error: 'Falha na atualização',
-    update_downloading: 'Downloading...',
+    update_downloading: 'Baixando...',
     update_download_progress: 'Download em progresso',
     update_downloaded: 'Download da atualização concluído, reinicie seu aplicativo por favor.\
     [Tips]: Se você estiver usando o Windows, depois de fechar o aplicativo, aguarde o ícone da área de trabalho para atualizar para um estado normal (cerca de 10 segundos), e então você pode reabri-lo',
     mac_not_support_auto_update: 'Mac não suporta atualização automática, faça o <a href="https://github.com/qishibo/AnotherRedisDesktopManager/releases">download</a> e reinstale manualmente, \
     Ou execute <br><code>brew reinstall --cask another-redis-desktop-manager </code>\
     <br><hr><br>❤️se for útil para você, você pode patrocinar através da <a href="https://apps.apple.com/app/id1516451072">AppStore</a>, e a AppStore irá atualizá-lo automaticamente para você.',
-    font_family: 'Font Family',
+    font_family: 'Família de fontes',
     font_faq_title: 'Instruções de configuração de fonte',
     font_faq: '1. Múltiplas fontes podem ser definidas <br>\
     2. A seleção da fonte é ordenada. É sugerido escolher a fonte em inglês primeiro e depois a fonte em seu idioma<br>\
@@ -132,7 +132,7 @@ const pt = {
     keys_to_be_deleted: 'Chaves a serem apagadas',
     delete_all: 'Apagar Tudo',
     clear_cache: 'Limpar cache',
-    mark_color: 'Cor da marca',
+    mark_color: 'Cor de marcação',
     key_no_permission: 'A permissão de leitura do arquivo expirou, selecione novamente o arquivo de chave manualmente',
     toggle_check_all: 'Selecionar tudo | Desmarcar tudo',
     select_lang: 'Selecione o idioma',
@@ -148,7 +148,7 @@ const pt = {
     password: 'Senha',
     connection_name: 'Nome personalizado',
     separator: 'Separador',
-    timeout: 'Tempo esgotado',
+    timeout: 'Tempo limite',
     private_key: 'Chave privada',
     ssh_agent: 'SSH Agent',
     ssh_auth: 'Autenticação',
@@ -167,7 +167,7 @@ const pt = {
     hotkey: 'Tecla de Atalho',
     persist: 'Remover o tempo de expiração',
     custom_formatter: 'Formatador Personalizado',
-    editar: 'Editar',
+    edit: 'Editar',
     new: 'Adicionar',
     custom: 'Customizar',
     hide_window: 'Ocultar janela',

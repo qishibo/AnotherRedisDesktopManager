@@ -144,7 +144,7 @@ const ko = {
     keys_per_loading_tip: '설정한 수 만큼 키를 불러옵니다. 너무 크게 설정하면 성능에 영향을 미칠 수 있습니다.',
     host: '호스트',
     port: '포트',
-    username: '사용자명',
+    username: '사용자 이름',
     password: '비밀번호',
     connection_name: '이름',
     separator: '구분자',

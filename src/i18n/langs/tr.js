@@ -132,7 +132,7 @@ const tr = {
     keys_to_be_deleted: 'Silinecek Anahtarlar',
     delete_all: 'Hepsini sil',
     clear_cache: 'Önbelleği Temizle',
-    mark_color: 'Mark rengi',
+    mark_color: 'İşaret rengi',
     key_no_permission: 'Dosya okuma izninin süresi doldu, lütfen anahtar dosyasını manuel olarak yeniden seçin',
     toggle_check_all: 'Tümünü seç | Seçimini kaldır',
     select_lang: 'Dil Seçin',

@@ -132,7 +132,7 @@ const vi = {
     keys_to_be_deleted: 'Các khóa sẽ bị xóa',
     delete_all: 'Xóa tất cả',
     clear_cache: 'Xóa bộ nhớ đệm',
-    mark_color: 'Đánh dấu màu',
+    mark_color: 'Màu đánh dấu',
     key_no_permission: 'Quyền đọc tệp đã hết hạn, vui lòng chọn lại tệp khóa theo cách thủ công',
     toggle_check_all: 'Chọn tất cả | Bỏ chọn tất cả',
     select_lang: 'Chọn ngôn ngữ',

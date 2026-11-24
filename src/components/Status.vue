@@ -311,7 +311,7 @@ export default {
       for (const i in status) {
         // fix #1101 unexpected db prefix
         // if (i.startsWith('db')) {
-        if (/^db\d+/.test(i)) {
+        if (/^db\d+$/.test(i)) {
           const array = status[i].split(',');
 
           const keys = parseInt(array[0] ? array[0].split('=')[1]: NaN);
