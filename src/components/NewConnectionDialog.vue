@@ -1,233 +1,312 @@
 <template>
   <el-dialog :title="dialogTitle" :visible.sync="dialogVisible" :append-to-body='true' :close-on-click-modal='false' class='new-connection-dailog' width='90%'>
-    <!-- redis connection form -->
-    <el-form :label-position="labelPosition" label-width="90px">
-      <el-row :gutter=20>
-        <!-- left col -->
-        <el-col :span=12>
-          <el-form-item :label="$t('message.host')" required>
-            <el-input v-model="connection.host" autocomplete="off" placeholder="127.0.0.1"></el-input>
-          </el-form-item>
+    <el-tabs v-model="activeTab" class="connection-tabs">
+      <!-- General tab -->
+      <el-tab-pane :label="$t('message.common_settings')" name="general">
+        <el-form label-position="top" label-width="90px">
+          <!-- connection name and host/port -->
+          <el-row :gutter=20>
+            <el-col :span=12>
+              <el-form-item :label="$t('message.connection_name')">
+                <el-input v-model="connection.name"></el-input>
+              </el-form-item>
+            </el-col>
 
-          <el-form-item :label="$t('message.password')">
-            <InputPassword v-model="connection.auth" :hidepass="editMode" placeholder="Auth"></InputPassword>
-          </el-form-item>
+            <el-col :span=12>
+              <el-form-item required>
+                <span slot="label">
+                  {{ $t('message.host') }} / {{ $t('message.port') }}
+                </span>
+                <div class="host-port-row">
+                  <el-input
+                    v-model="connection.host"
+                    class="host-input"
+                    placeholder="127.0.0.1">
+                  </el-input>
+                  <el-input
+                    type="number"
+                    v-model="connection.port"
+                    class="port-input"
+                    placeholder="6379">
+                  </el-input>
+                </div>
+              </el-form-item>
+            </el-col>
+          </el-row>
 
-          <el-form-item :label="$t('message.connection_name')">
-            <el-input v-model="connection.name" autocomplete="off"></el-input>
-          </el-form-item>
+          <!-- password and username -->
+          <el-row :gutter=20>
+            <el-col :span=12>
+              <el-form-item :label="$t('message.password')">
+                <InputPassword v-model="connection.auth" :hidepass="editMode" placeholder="Auth"></InputPassword>
+              </el-form-item>
+            </el-col>
 
-          <!-- connection group -->
-          <el-form-item :label="$t('message.group')">
-            <div class="group-select-wrap">
-              <el-select
-                v-model="connection.groupId"
-                clearable
-                filterable
-                class="group-select"
-                :placeholder="$t('message.select_group')">
-                <el-option
-                  v-for="group in groups"
-                  :key="group.id"
-                  :label="group.name"
-                  :value="group.id">
-                </el-option>
-              </el-select>
-              <i
-                class="el-icon-plus group-add-icon"
-                :title="$t('message.new_group')"
-                @click.stop="openNewGroupDialog">
-              </i>
-            </div>
-          </el-form-item>
-        </el-col>
+            <el-col :span=12>
+              <el-form-item :label="$t('message.username')">
+                <el-input v-model="connection.username" placeholder='ACL in Redis >= 6.0'></el-input>
+              </el-form-item>
+            </el-col>
+          </el-row>
 
-        <!-- right col -->
-        <el-col :span=12>
-          <el-form-item :label="$t('message.port')" required>
-            <el-input type='number' v-model="connection.port" autocomplete="off" placeholder="6379"></el-input>
-          </el-form-item>
+          <!-- separator and group -->
+          <el-row :gutter=20>
+            <el-col :span=12>
+              <el-form-item>
+                <span slot="label">
+                  {{ $t('message.separator') }}
+                  <el-popover trigger="hover" :tabindex="-1">
+                    <i slot="reference" class="el-icon-question"></i>
+                    {{ $t('message.separator_tip') }}
+                  </el-popover>
+                </span>
+                <el-input v-model="connection.separator" placeholder='Empty To Disable Tree View'></el-input>
+              </el-form-item>
+            </el-col>
 
-          <el-form-item :label="$t('message.username')">
-            <el-input v-model="connection.username" placeholder='ACL in Redis >= 6.0' autocomplete="off"></el-input>
-          </el-form-item>
+            <el-col :span=12>
+              <el-form-item :label="$t('message.group')">
+                <GroupSelect v-model="connection.groupId"></GroupSelect>
+              </el-form-item>
+            </el-col>
+          </el-row>
 
-          <el-form-item :label="$t('message.separator')">
-            <el-tooltip effect="dark">
-              <div slot="content">{{ $t('message.separator_tip') }}</div>
-              <el-input v-model="connection.separator" autocomplete="off" placeholder='Empty To Disable Tree View'></el-input>
-            </el-tooltip>
-          </el-form-item>
-        </el-col>
-      </el-row>
+          <!-- other connection options -->
+          <el-row type="flex" align="top" class="connection-options-row">
+            <!-- readonly switch -->
+            <el-form-item>
+              <span slot="label">
+                {{ $t('message.readonly') }}
+                <el-popover trigger="hover" :tabindex="-1">
+                  <i slot="reference" class="el-icon-question"></i>
+                  {{ $t('message.connection_readonly') }}
+                </el-popover>
+              </span>
+              <el-switch v-model="connection.connectionReadOnly"></el-switch>
+            </el-form-item>
+            <!-- option divider -->
+            <span class="connection-option-divider"></span>
+            <!-- mark color -->
+            <el-form-item :label="$t('message.mark_color')">
+              <MarkColorSelect v-model="connection.color"></MarkColorSelect>
+            </el-form-item>
+          </el-row>
+        </el-form>
+      </el-tab-pane>
 
-      <!-- other operation -->
-      <el-form-item label="">
-        <el-checkbox v-model="sshOptionsShow">SSH</el-checkbox>
-        <el-checkbox v-model="sslOptionsShow">TLS/SSL</el-checkbox>
-        <el-checkbox v-model="sentinelOptionsShow">
-          Sentinel
-          <el-popover trigger="hover">
-            <i slot="reference" class="el-icon-question"></i>
-            {{ $t('message.sentinel_faq') }}
-          </el-popover>
-        </el-checkbox>
-        <el-checkbox v-model="connection.cluster">
+      <!-- SSH tab -->
+      <el-tab-pane name="ssh">
+        <span slot="label" class="connection-tab-label">
+          SSH
+          <sup v-if="sshOptionsShow" class="tab-configured-mark">●</sup>
+        </span>
+
+        <div class="tab-enable-row">
+          <span class="tab-enable-label">{{ $t('message.connection_enable') }}</span>
+          <el-switch v-model="sshOptionsShow"></el-switch>
+        </div>
+
+        <el-form v-if="sshOptionsShow" label-position='top' label-width="90px">
+          <!-- host and port -->
+          <el-row :gutter=20>
+            <el-col :span=12>
+              <el-form-item :label="$t('message.host')" required>
+                <el-input v-model="connection.sshOptions.host"></el-input>
+              </el-form-item>
+            </el-col>
+
+            <el-col :span=12>
+              <el-form-item :label="$t('message.port')" required>
+                <el-input type='number' v-model="connection.sshOptions.port"></el-input>
+              </el-form-item>
+            </el-col>
+          </el-row>
+
+          <!-- username and timeout -->
+          <el-row :gutter=20>
+            <el-col :span=12>
+              <el-form-item :label="$t('message.username')" required>
+                <el-input v-model="connection.sshOptions.username"></el-input>
+              </el-form-item>
+            </el-col>
+
+            <el-col :span=12>
+              <el-form-item :label="$t('message.timeout')">
+                <el-input type='number' v-model="connection.sshOptions.timeout" placeholder='SSH Timeout (Seconds)'></el-input>
+              </el-form-item>
+            </el-col>
+          </el-row>
+
+          <!-- auth methods -->
+          <div class="ssh-auth-section">
+            <el-form-item :label="$t('message.ssh_auth')">
+              <el-radio-group v-model="connection.sshOptions.authType" class="ssh-auth-type">
+                <el-radio label="privatekey">{{ $t('message.private_key') }}</el-radio>
+                <el-radio label="password">{{ $t('message.password') }}</el-radio>
+                <el-radio label="agent">{{ $t('message.ssh_agent') }}</el-radio>
+              </el-radio-group>
+            </el-form-item>
+
+            <el-row :gutter=20>
+              <!-- ssh agent -->
+              <el-col v-if="connection.sshOptions.authType === 'agent'" :span=12>
+                <el-form-item :label="$t('message.ssh_agent_path')">
+                  <el-input
+                    v-model="connection.sshOptions.agentPath"
+                    :placeholder="$t('message.ssh_agent_path_placeholder')">
+                  </el-input>
+                </el-form-item>
+              </el-col>
+              <!-- private key -->
+              <template v-else-if="connection.sshOptions.authType === 'privatekey'">
+                <el-col :span=12>
+                  <el-form-item :label="$t('message.private_key')">
+                    <FileInput
+                      :file.sync='connection.sshOptions.privatekey'
+                      :bookmark.sync='connection.sshOptions.privatekeybookmark'
+                      placeholder='SSH Private Key'>
+                    </FileInput>
+                  </el-form-item>
+                </el-col>
+
+                <el-col :span=12>
+                  <el-form-item label="Passphrase">
+                    <InputPassword v-model="connection.sshOptions.passphrase" placeholder='Passphrase for Private Key'></InputPassword>
+                  </el-form-item>
+                </el-col>
+              </template>
+              <!-- password -->
+              <el-col v-else :span=12>
+                <el-form-item :label="$t('message.password')">
+                  <InputPassword v-model="connection.sshOptions.password" placeholder="SSH Password"></InputPassword>
+                </el-form-item>
+              </el-col>
+            </el-row>
+          </div>
+        </el-form>
+      </el-tab-pane>
+
+      <!-- SSL tab -->
+      <el-tab-pane name="ssl">
+        <span slot="label" class="connection-tab-label">
+          TLS/SSL
+          <sup v-if="sslOptionsShow" class="tab-configured-mark">●</sup>
+        </span>
+
+        <div class="tab-enable-row">
+          <span class="tab-enable-label">{{ $t('message.connection_enable') }}</span>
+          <el-switch v-model="sslOptionsShow"></el-switch>
+        </div>
+
+        <p class="tab-faq">{{ $t('message.ssl_faq') }}</p>
+
+        <el-form v-if="sslOptionsShow" label-position='top' label-width="90px">
+          <!-- private key and cert -->
+          <el-row :gutter=20>
+            <el-col :span=12>
+              <el-form-item :label="$t('message.private_key')">
+                <FileInput
+                  :file.sync='connection.sslOptions.key'
+                  :bookmark.sync='connection.sslOptions.keybookmark'
+                  placeholder='Private Key Pem (key)'>
+                </FileInput>
+              </el-form-item>
+            </el-col>
+
+            <el-col :span=12>
+              <el-form-item :label="$t('message.public_key')">
+                <FileInput
+                  :file.sync='connection.sslOptions.cert'
+                  :bookmark.sync='connection.sslOptions.certbookmark'
+                  placeholder='Public Key Pem (cert)'>
+                </FileInput>
+              </el-form-item>
+            </el-col>
+          </el-row>
+
+          <!-- ca and sni -->
+          <el-row :gutter=20>
+            <el-col :span=12>
+              <el-form-item :label="$t('message.authority')">
+                <FileInput
+                  :file.sync='connection.sslOptions.ca'
+                  :bookmark.sync='connection.sslOptions.cabookmark'
+                  placeholder='Certificate Authority (CA)'>
+                </FileInput>
+              </el-form-item>
+            </el-col>
+
+            <el-col :span=12>
+              <el-form-item label="SNI">
+                <el-input v-model="connection.sslOptions.servername" placeholder='SNI Servername'></el-input>
+              </el-form-item>
+            </el-col>
+          </el-row>
+        </el-form>
+      </el-tab-pane>
+
+      <!-- Cluster tab -->
+      <el-tab-pane name="cluster">
+        <span slot="label" class="connection-tab-label">
           Cluster
-          <el-popover trigger="hover">
-            <i slot="reference" class="el-icon-question"></i>
-            {{ $t('message.cluster_faq') }}
-          </el-popover>
-        </el-checkbox>
-        <el-checkbox v-model="connection.connectionReadOnly">
-          Readonly
-          <el-popover trigger="hover">
-            <i slot="reference" class="el-icon-question"></i>
-            {{ $t('message.connection_readonly') }}
-          </el-popover>
-        </el-checkbox>
-      </el-form-item>
-    </el-form>
+          <sup v-if="connection.cluster" class="tab-configured-mark">●</sup>
+        </span>
 
-    <!-- ssh connection form -->
-    <el-form v-if="sshOptionsShow" v-show="sshOptionsShow" label-position='top' label-width="90px">
-      <fieldset>
-        <legend>SSH Tunnel</legend>
-      </fieldset>
+        <div class="tab-enable-row">
+          <span class="tab-enable-label">{{ $t('message.connection_enable') }}</span>
+          <el-switch
+            v-model="connection.cluster"
+            :disabled="sentinelOptionsShow">
+          </el-switch>
+          <span v-if="sentinelOptionsShow" class="tab-conflict-hint">{{ $t('message.sentinel_cluster_conflict') }}</span>
+        </div>
 
-      <el-row :gutter=20>
-        <!-- left col -->
-        <el-col :span=12>
-          <el-form-item :label="$t('message.host')" required>
-            <el-input v-model="connection.sshOptions.host" autocomplete="off"></el-input>
-          </el-form-item>
+        <p class="tab-faq">{{ $t('message.cluster_faq') }}</p>
+      </el-tab-pane>
 
-          <el-form-item :label="$t('message.username')" required>
-            <el-input v-model="connection.sshOptions.username" autocomplete="off"></el-input>
-          </el-form-item>
+      <!-- Sentinel tab -->
+      <el-tab-pane name="sentinel">
+        <span slot="label" class="connection-tab-label">
+          Sentinel
+          <sup v-if="sentinelOptionsShow" class="tab-configured-mark">●</sup>
+        </span>
 
-          <el-form-item :label="$t('message.private_key')">
-            <FileInput
-              :file.sync='connection.sshOptions.privatekey'
-              :bookmark.sync='connection.sshOptions.privatekeybookmark'
-              placeholder='SSH Private Key'>
-            </FileInput>
-          </el-form-item>
+        <div class="tab-enable-row">
+          <span class="tab-enable-label">{{ $t('message.connection_enable') }}</span>
+          <el-switch
+            v-model="sentinelOptionsShow"
+            :disabled="connection.cluster">
+          </el-switch>
+          <span v-if="connection.cluster" class="tab-conflict-hint">{{ $t('message.sentinel_cluster_conflict') }}</span>
+        </div>
 
-          <el-form-item label="Passphrase">
-            <InputPassword v-model="connection.sshOptions.passphrase" placeholder='Passphrase for Private Key'></InputPassword>
-          </el-form-item>
-        </el-col>
+        <p class="tab-faq">{{ $t('message.sentinel_faq') }}</p>
 
-        <!-- right col -->
-        <el-col :span=12>
-          <el-form-item :label="$t('message.port')" required>
-            <el-input type='number' v-model="connection.sshOptions.port" autocomplete="off"></el-input>
-          </el-form-item>
+        <el-form v-if="sentinelOptionsShow" label-position='top' label-width="90px">
+          <el-row :gutter=20>
+            <el-col :span=12>
+              <el-form-item :label="$t('message.redis_node_password')">
+                <InputPassword v-model="connection.sentinelOptions.nodePassword" placeholder='Redis Node Password'></InputPassword>
+              </el-form-item>
+            </el-col>
 
-          <el-form-item :label="$t('message.password')">
-            <InputPassword v-model="connection.sshOptions.password" placeholder="SSH Password"></InputPassword>
-          </el-form-item>
+            <el-col :span=12>
+              <el-form-item :label="$t('message.master_group_name')" required>
+                <el-input v-model="connection.sentinelOptions.masterName" placeholder='Master Group Name'></el-input>
+              </el-form-item>
+            </el-col>
+          </el-row>
+        </el-form>
+      </el-tab-pane>
+    </el-tabs>
 
-          <el-form-item :label="$t('message.timeout')">
-            <el-input type='number' v-model="connection.sshOptions.timeout" autocomplete="off" placeholder='SSH Timeout (Seconds)'></el-input>
-          </el-form-item>
-        </el-col>
-      </el-row>
-    </el-form>
-
-    <!-- SSL connection form -->
-    <el-form v-if="sslOptionsShow" v-show="sslOptionsShow" label-position='top' label-width="90px">
-      <fieldset>
-        <legend>TLS/SSL</legend>
-      </fieldset>
-
-      <el-row :gutter=20>
-        <!-- left col -->
-        <el-col :span=12>
-          <el-form-item :label="$t('message.private_key')">
-            <FileInput
-              :file.sync='connection.sslOptions.key'
-              :bookmark.sync='connection.sslOptions.keybookmark'
-              placeholder='SSL Private Key Pem (key)'>
-              </FileInput>
-          </el-form-item>
-
-          <el-form-item :label="$t('message.authority')">
-            <FileInput
-              :file.sync='connection.sslOptions.ca'
-              :bookmark.sync='connection.sslOptions.cabookmark'
-              placeholder='SSL Certificate Authority (CA)'>
-              </FileInput>
-          </el-form-item>
-        </el-col>
-
-        <!-- right col -->
-        <el-col :span=12>
-          <el-form-item :label="$t('message.public_key')">
-            <FileInput
-              :file.sync='connection.sslOptions.cert'
-              :bookmark.sync='connection.sslOptions.certbookmark'
-              placeholder='SSL Public Key Pem (cert)'>
-              </FileInput>
-          </el-form-item>
-
-          <!-- SNI -->
-          <el-form-item label="SNI">
-            <el-input v-model="connection.sslOptions.servername" autocomplete="off" placeholder='SNI Servername'></el-input>
-          </el-form-item>
-        </el-col>
-      </el-row>
-    </el-form>
-
-    <!-- Sentinel connection form -->
-    <el-form v-if="sentinelOptionsShow" v-show="sentinelOptionsShow" label-position='top' label-width="90px">
-      <fieldset>
-        <legend>Sentinel</legend>
-      </fieldset>
-
-      <el-row :gutter=20>
-        <!-- left col -->
-        <el-col :span=12>
-          <el-form-item :label="$t('message.redis_node_password')">
-            <InputPassword v-model="connection.sentinelOptions.nodePassword" placeholder='Redis Node Password'></InputPassword>
-          </el-form-item>
-        </el-col>
-
-        <!-- right col -->
-        <el-col :span=12>
-          <el-form-item :label="$t('message.master_group_name')" required>
-            <el-input v-model="connection.sentinelOptions.masterName" autocomplete="off" placeholder='Master Group Name'></el-input>
-          </el-form-item>
-        </el-col>
-      </el-row>
-    </el-form>
-
+    <!-- footer operate btn -->
     <div slot="footer" class="dialog-footer">
       <el-button :loading="testing" @click="testConnection">{{ $t('message.test_connection') }}</el-button>
       <el-button @click="dialogVisible = false">{{ $t('el.messagebox.cancel') }}</el-button>
       <el-button type="primary" @click="editConnection">{{ $t('el.messagebox.confirm') }}</el-button>
     </div>
 
-    <!-- new group dialog -->
-    <el-dialog
-      :title="$t('message.new_group')"
-      :visible.sync="showGroupDialog"
-      width="400px"
-      append-to-body>
-      <el-form @submit.native.prevent="handleNewGroup">
-        <el-form-item :label="$t('message.group_name')">
-          <el-input
-            v-model="newGroupName"
-            :placeholder="$t('message.group_name')">
-          </el-input>
-        </el-form-item>
-      </el-form>
-      <span slot="footer">
-        <el-button @click="showGroupDialog = false">{{ $t('message.close') }}</el-button>
-        <el-button type="primary" @click="handleNewGroup">{{ $t('message.save') }}</el-button>
-      </span>
-    </el-dialog>
   </el-dialog>
 </template>
 
@@ -236,14 +315,13 @@ import storage from '@/storage';
 import redisClient from '@/redisClient.js';
 import FileInput from '@/components/FileInput';
 import InputPassword from '@/components/InputPassword';
+import MarkColorSelect from '@/components/MarkColorSelect';
+import GroupSelect from '@/components/GroupSelect';
 
 export default {
   data() {
     return {
-      groups: [],
       dialogVisible: false,
-      labelPosition: 'top',
-      oldKey: '',
       testing: false,
       connection: {
         host: '',
@@ -255,6 +333,7 @@ export default {
         cluster: false,
         connectionReadOnly: false,
         groupId: null,
+        color: '',
         sshOptions: {
           host: '',
           port: 22,
@@ -263,6 +342,8 @@ export default {
           privatekey: '',
           passphrase: '',
           timeout: 30,
+          authType: 'privatekey', // privatekey password agent
+          agentPath: '',
         },
         sslOptions: {
           key: '',
@@ -276,17 +357,16 @@ export default {
         },
       },
       connectionEmpty: {},
+      activeTab: 'general',
       sshOptionsShow: false,
       sslOptionsShow: false,
       sentinelOptionsShow: false,
-      showGroupDialog: false,
-      newGroupName: '',
     };
   },
-  components: { FileInput, InputPassword },
+  components: { FileInput, InputPassword, MarkColorSelect, GroupSelect },
   props: {
     config: {
-      default: _ => new Array(),
+      default: _ => ({}),
     },
     editMode: {
       default: false,
@@ -306,77 +386,66 @@ export default {
     },
   },
   methods: {
-    loadGroups() {
-      this.groups = storage.getGroups();
-    },
-    openNewGroupDialog() {
-      this.newGroupName = '';
-      this.showGroupDialog = true;
-    },
-    handleNewGroup() {
-      const name = this.newGroupName.trim();
-
-      if (!name) {
-        return this.$message.error(this.$t('message.group_name_required'));
-      }
-
-      const group = storage.addGroup(name);
-
-      if (!group) {
-        return this.$message.error(this.$t('message.group_exists'));
-      }
-
-      this.loadGroups();
-      this.connection.groupId = group.id;
-
-      this.showGroupDialog = false;
-      this.$message.success(this.$t('message.add_success'));
-      this.$bus.$emit('groups-updated');
-    },
     show() {
       this.dialogVisible = true;
+      this.activeTab = 'general';
       this.resetFields();
-      this.loadGroups();
     },
     resetFields() {
-      // edit connection mode
-      if (this.editMode) {
-        this.sshOptionsShow = !!this.config.sshOptions;
-        this.sslOptionsShow = !!this.config.sslOptions;
-        this.sentinelOptionsShow = !!this.config.sentinelOptions;
-        // recovery connection before edit
-        const connection = Object.assign({}, this.connectionEmpty, this.config);
-        this.connection = JSON.parse(JSON.stringify(connection));
+      this.sshOptionsShow = !!this.config.sshOptions;
+      this.sslOptionsShow = !!this.config.sslOptions;
+      this.sentinelOptionsShow = !!this.config.sentinelOptions;
+
+      // recovery connection before edit
+      this.connection = this.mergeConfig(this.editMode ? this.config : null);
+    },
+    mergeConfig(config) {
+      const result = JSON.parse(JSON.stringify(this.connectionEmpty));
+      const override = config || {};
+
+      // add authType to old config
+      if (override.sshOptions && !override.sshOptions.authType) {
+        override.sshOptions.authType = redisClient.getSSHAuthType(override.sshOptions);
       }
-      // new connection mode
-      else {
-        this.sshOptionsShow = false;
-        this.sslOptionsShow = false;
-        this.sentinelOptionsShow = false;
-        this.connection = JSON.parse(JSON.stringify(this.connectionEmpty));
+
+      for (const key in override) {
+        const val = override[key];
+        // dict, ['sshOptions', 'sslOptions', 'sentinelOptions']
+        if (val && typeof val === 'object' && !Array.isArray(val)) {
+          result[key] = Object.assign({}, result[key], val);
+        } else { // str/int/bool
+          result[key] = val;
+        }
       }
+
+      return result;
     },
     getConnectionConfig() {
       const config = JSON.parse(JSON.stringify(this.connection));
 
-      if (this.sentinelOptionsShow && config.cluster) {
-        this.$message.error('Sentinel & Cluster cannot be checked together!');
-        return false;
-      }
-
       !config.host && (config.host = '127.0.0.1');
       !config.port && (config.port = 6379);
 
-      if (!this.sshOptionsShow || !config.sshOptions.host) {
+      // ssh check
+      if (!this.sshOptionsShow) {
         delete config.sshOptions;
+      } else if (!config.sshOptions.host) {
+        this.$message.error(this.$t('message.field_required', {field: this.$t('message.host')}));
+        this.activeTab = 'ssh';
+        return false;
       }
-
+      // ssl check
       if (!this.sslOptionsShow) {
         delete config.sslOptions;
       }
-
-      if (!this.sentinelOptionsShow || !config.sentinelOptions.masterName) {
+      // sentinel check
+      if (!this.sentinelOptionsShow) {
         delete config.sentinelOptions;
+      } else if (!config.sentinelOptions.masterName) {
+        this.$message.error(this.$t('message.field_required',
+          {field: this.$t('message.master_group_name')}));
+        this.activeTab = 'sentinel';
+        return false;
       }
 
       return config;
@@ -454,8 +523,7 @@ export default {
 
         // Already finished (timeout/cancel) while creating connection.
         if (!this.testing) {
-          this.cleanupTestClient();
-          return;
+          return this.cleanupTestClient();
         }
 
         client.on('error', (e) => {
@@ -480,63 +548,100 @@ export default {
   mounted() {
     // back up the empty connection
     this.connectionEmpty = JSON.parse(JSON.stringify(this.connection));
-
-    // edit mode
-    if (this.editMode) {
-      this.sslOptionsShow = !!this.config.sslOptions;
-      this.sshOptionsShow = !!this.config.sshOptions;
-      this.sentinelOptionsShow = !!this.config.sentinelOptions;
-
-      this.connection = Object.assign({}, this.connection, this.config);
-    }
-
     delete this.connection.connectionName;
   },
 };
 </script>
 
 <style type="text/css">
-  .new-connection-dailog .el-checkbox {
-    margin-left: 0;
-    margin-right: 15px;
-  }
-
+  /* dialog */
   .new-connection-dailog .el-dialog {
     max-width: 900px;
   }
-
-  .new-connection-dailog fieldset {
-    border-width: 2px 0 0 0;
-    border-color: #fff;
-    font-weight: bold;
-    color: #bdc5ce;
-    font-size: 105%;
-    margin-bottom: 3px;
-  }
-  .dark-mode .new-connection-dailog fieldset {
-    color: #416586;
-    border-color: #7b95ad;
+  .new-connection-dailog .connection-tabs {
+    min-height: 300px;
   }
 
-  /*  group select*/
-  .new-connection-dailog .group-select-wrap {
-    position: relative;
+  /* tabs */
+  .new-connection-dailog .connection-tab-label {
+    display: inline-flex;
+    align-items: center;
   }
-  .new-connection-dailog .group-select {
-    width: 100%;
-  }
-  .new-connection-dailog .group-select .el-input__inner {
-    padding-right: 50px;
-  }
-  .new-connection-dailog .group-add-icon {
-    position: absolute;
-    right: 30px;
-    top: 50%;
-    transform: translateY(-50%);
-    font-size: 14px;
-    cursor: pointer;
-  }
-  .new-connection-dailog .group-add-icon:hover {
+  .new-connection-dailog .tab-configured-mark {
     color: #409eff;
+    font-size: 10px;
+    line-height: 1;
+    margin-left: 4px;
+  }
+  .new-connection-dailog .tab-enable-row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 16px;
+  }
+  .new-connection-dailog .tab-enable-label {
+    margin-right: 12px;
+    color: #606266;
+    font-size: 14px;
+  }
+  .dark-mode .new-connection-dailog .tab-enable-label {
+    color: #bdc5ce;
+  }
+  .new-connection-dailog .tab-conflict-hint {
+    margin-left: 12px;
+    color: #e6a23c;
+    font-size: 12px;
+  }
+  .new-connection-dailog .tab-faq {
+    color: #909399;
+    font-size: 13px;
+  }
+
+  /* ssh tab */
+  .new-connection-dailog .ssh-auth-section {
+    margin-top: 4px;
+    padding-top: 12px;
+    border-top: 1px dashed #dcdfe6;
+  }
+  .dark-mode .new-connection-dailog .ssh-auth-section {
+    border-top-color: #416586;
+  }
+  .new-connection-dailog .ssh-auth-section .el-form-item {
+    margin-bottom: 12px;
+  }
+  .new-connection-dailog .ssh-auth-type .el-radio {
+    margin-right: 24px;
+  }
+  .new-connection-dailog .ssh-auth-type .el-radio:last-child {
+    margin-right: 0;
+  }
+
+  /* general tab: host/port */
+  .new-connection-dailog .host-port-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .new-connection-dailog .host-port-row .host-input {
+    flex: 1;
+    min-width: 0;
+  }
+  .new-connection-dailog .host-port-row .port-input {
+    width: 100px;
+    flex-shrink: 0;
+  }
+
+  /* general tab: readonly + mark color */
+  .new-connection-dailog .connection-options-row > .el-form-item {
+    margin-bottom: 0;
+  }
+  .new-connection-dailog .connection-option-divider {
+    width: 1px;
+    height: 20px;
+    margin: 50px 16px 0;
+    flex-shrink: 0;
+    background: #dcdfe6;
+  }
+  .dark-mode .new-connection-dailog .connection-option-divider {
+    background: #4a5c66;
   }
 </style>

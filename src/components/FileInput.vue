@@ -1,13 +1,20 @@
 <template>
   <el-input
+    class="file-input"
+    readonly
     :value='file'
-    clearable
-    @clear='clearFile'
-    @focus='focus'
+    @click.native='onClick'
+    @keydown.native.enter.prevent='showFileSelector'
+    @keydown.native.space.prevent='showFileSelector'
     :placeholder='placeholder'>
-    <template slot="append">
-      <el-button @click='showFileSelector'>...</el-button>
-    </template>
+    <i
+      v-if="file"
+      slot="suffix"
+      class="el-input__icon el-icon-circle-close el-input__clear"
+      role="button"
+      @click.stop='clearFile'>
+    </i>
+    <i slot="append" class="el-icon-folder-opened" @click.stop='showFileSelector'></i>
   </el-input>
 </template>
 
@@ -25,9 +32,12 @@ export default {
       this.$emit('update:file', '');
       this.$emit('update:bookmark', '');
     },
-    focus(e) {
-      // edit is forbidden, input blur
-      e.target.blur();
+    onClick(e) {
+      if (e.target.closest('.el-input__clear')) {
+        return;
+      }
+
+      this.showFileSelector();
     },
     showFileSelector() {
       remote.dialog.showOpenDialog(remote.getCurrentWindow(), {
@@ -47,3 +57,18 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+  .file-input >>> .el-input__inner,
+  .file-input >>> .el-input-group__append {
+    cursor: pointer;
+  }
+
+  .file-input >>> .el-input-group__append {
+    padding: 0 12px;
+  }
+
+  .file-input >>> .el-input__clear {
+    cursor: pointer;
+  }
+</style>

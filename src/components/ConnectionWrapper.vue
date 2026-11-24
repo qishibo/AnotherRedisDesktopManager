@@ -12,7 +12,6 @@
         slot="title"
         :config="config"
         :client='client'
-        @changeColor='setColor'
         @refreshConnection='openConnection(false, true)'>
       </ConnectionMenu>
 
@@ -192,15 +191,13 @@ export default {
 
       return clientPromise;
     },
-    setColor(color, save = true) {
+    setColor(color) {
       const ulDom = this.$refs.connectionMenu.$el;
       const className = 'menu-with-custom-color';
 
-      // save to setting
-      save && this.$storage.editConnectionItem(this.config, { color });
-
       if (!color) {
         ulDom.classList.remove(className);
+        this.$el.style.removeProperty('--menu-color');
       } else {
         ulDom.classList.add(className);
         this.$el.style.setProperty('--menu-color', color);
@@ -216,8 +213,13 @@ export default {
       });
     },
   },
+  watch: {
+    'config.color'(color) {
+      this.setColor(color);
+    },
+  },
   mounted() {
-    this.setColor(this.config.color, false);
+    this.setColor(this.config.color);
   },
   beforeDestroy() {
     this.closeConnection(this.config.connectionName);

@@ -39,21 +39,7 @@
           <span><i class='more-operate-ico fa fa-clone'></i>&nbsp;{{ $t('message.duplicate_connection') }}</span>
         </el-dropdown-item>
 
-        <!-- menu color picker -->
-        <el-tooltip placement="right" effect="light">
-          <el-color-picker
-            slot='content'
-            v-model="menuColor"
-            @change='changeColor'
-            :predefine="['#f56c6c', '#F5C800', '#409EFF', '#85ce61', '#c6e2ff']">
-          </el-color-picker>
-
-          <el-dropdown-item divided>
-            <span><i class='more-operate-ico fa fa-bookmark-o'></i>&nbsp;{{ $t('message.mark_color') }}</span>
-          </el-dropdown-item>
-        </el-tooltip>
-
-        <el-dropdown-item @click.native='memoryAnalisys'>
+        <el-dropdown-item divided @click.native='memoryAnalisys'>
           <span><i class='more-operate-ico fa fa-table'></i>&nbsp;{{ $t('message.memory_analysis') }}</span>
         </el-dropdown-item>
         <el-dropdown-item @click.native='slowLog'>
@@ -78,7 +64,7 @@
 
   <!-- edit connection dialog -->
   <NewConnectionDialog
-    editMode='true'
+    :editMode='true'
     :config='config'
     @editConnectionFinished='editConnectionFinished'
     ref='editConnectionDialog'>
@@ -93,11 +79,6 @@ import NewConnectionDialog from '@/components/NewConnectionDialog';
 import splitargs from '@qii404/redis-splitargs';
 
 export default {
-  data() {
-    return {
-      menuColor: '#409EFF',
-    };
-  },
   props: ['config', 'client'],
   components: { NewConnectionDialog },
   created() {
@@ -132,6 +113,9 @@ export default {
         lines.push(`  ${this.$t('message.host')}: ${config.sshOptions.host}`);
         lines.push(`  ${this.$t('message.port')}: ${config.sshOptions.port}`);
         lines.push(`  ${this.$t('message.username')}: ${config.sshOptions.username}`);
+
+        const authType = config.sshOptions.authType || 'privatekey';
+        lines.push(`  ${this.$t('message.ssh_auth')}: ${authType}`);
       }
       if (config.cluster) {
         lines.push(`${sep}\nCLUSTER`);
@@ -390,9 +374,6 @@ export default {
           }).catch((e) => { this.$message.error(e.message); });
         })
         .catch((e) => {});
-    },
-    changeColor(color) {
-      this.$emit('changeColor', color);
     },
   },
 };
