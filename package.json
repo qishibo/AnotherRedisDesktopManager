@@ -23,7 +23,8 @@
     "pack:macm1:publish": "electron-builder --project=dist -m --arm64 -p always -c.artifactName='${productName} M1 ${arch} ${version}.${ext}'",
     "pack:linux:publish": "electron-builder --project=dist -l -p always",
     "et": "et -m",
-    "sign": "cd pack/mas; bash sign.sh"
+    "sign": "cd pack/mas; bash sign.sh",
+    "test:hex-roundtrip": "node test/util-hex-roundtrip.js"
   },
   "dependencies": {
     "@qii404/json-bigint": "^1.0.0",

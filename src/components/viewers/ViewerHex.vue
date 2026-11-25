@@ -15,8 +15,8 @@ export default {
   props: ['content', 'contentVisible', 'disabled'],
   watch: {
     content(val) {
-      // refresh
-      this.contentDisplay = this.$util.bufToString(val);
+      // refresh. forceHex escapes a raw '\' so xToBuffer can round-trip.
+      this.contentDisplay = this.$util.bufToString(val, true);
     },
   },
   methods: {
@@ -25,7 +25,7 @@ export default {
     },
   },
   mounted() {
-    this.contentDisplay = this.$util.bufToString(this.content);
+    this.contentDisplay = this.$util.bufToString(this.content, true);
   },
 };
 </script>

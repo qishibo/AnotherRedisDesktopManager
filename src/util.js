@@ -22,8 +22,16 @@ export default {
       return buf;
     }
 
-    if (!forceHex && this.bufVisible(buf)) {
-      return buf.toString();
+    if (this.bufVisible(buf)) {
+      const text = buf.toString();
+
+      // Hex view saves through xToBuffer. '\' is the only prefix of \xNN,
+      // so a printable value must escape it or save will decode "\x" as hex.
+      if (forceHex) {
+        return text.replaceAll('\\', '\\x5c');
+      }
+
+      return text;
     }
 
     return this.bufToHex(buf);
@@ -34,9 +42,18 @@ export default {
   },
   bufToHex(buf) {
     const result = buf.toJSON().data.map((item) => {
+      // 0x5C is the '\' that begins the \xNN escape xToBuffer parses.
+      // A stored 5C 78 would otherwise show as a literal "\x" and save
+      // would treat the next two characters as hex, truncating the value.
+      // Every other visible ASCII byte stays a raw character.
+      if (item === 0x5c) {
+        return '\\x5c';
+      }
+
       if (item >= 32 && item <= 126) {
         return String.fromCharCode(item);
       }
+
       return `\\x${item.toString(16).padStart(2, 0)}`;
     });
 
