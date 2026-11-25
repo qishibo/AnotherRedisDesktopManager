@@ -49,8 +49,8 @@ export default {
     Connections, NewConnectionDialog, Setting, CommandLog, HotKeys, CustomFormatter,
   },
   methods: {
-    editConnectionFinished() {
-      this.$refs.connections.initConnections();
+    editConnectionFinished(config) {
+      this.$refs.connections.initConnections(config);
     },
     addNewConnection() {
       this.$refs.newConnectionDialog.show();

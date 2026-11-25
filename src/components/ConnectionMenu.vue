@@ -153,7 +153,7 @@ export default {
       }).catch(() => {});
     },
     editConnectionFinished(newConfig) {
-      this.$bus.$emit('refreshConnections');
+      this.$bus.$emit('refreshConnections', newConfig);
     },
     duplicateConnection() {
       // empty key\order , just as a new connection

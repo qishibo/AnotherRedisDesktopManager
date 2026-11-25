@@ -269,7 +269,12 @@ export default {
       this.groups = storage.getGroups();
       this.initSortable();
     },
-    initConnections() {
+    expandGroup(groupId) {
+      if (groupId && !this.activeGroups.includes(groupId)) {
+        this.activeGroups = this.activeGroups.concat(groupId);
+      }
+    },
+    initConnections(triggerConnection = null) {
       this.connections = storage.getConnections(true).map((item) => {
         item.connectionName = storage.getConnectionName(item);
         // fix history bug, prevent db into config
@@ -277,6 +282,11 @@ export default {
         return item;
       });
       this.initGroups();
+
+      // after adding/editing, open the target group
+      if (triggerConnection && triggerConnection.groupId) {
+        this.expandGroup(triggerConnection.groupId);
+      }
     },
     destroySortables() {
       this.sortables.forEach(sortable => sortable.destroy());

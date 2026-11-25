@@ -120,7 +120,7 @@ export default {
 
       // add to storage
       storage.addConnection(connection);
-      bus.$emit('refreshConnections');
+      bus.$emit('refreshConnections', connection);
 
       // open connection after added
       setTimeout(() => {
