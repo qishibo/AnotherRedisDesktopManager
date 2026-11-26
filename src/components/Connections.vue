@@ -20,7 +20,8 @@
           v-for="group in groups"
           v-if="!filterKeyword || connectionsByGroupId[group.id].length"
           :key="group.id"
-          :name="group.id">
+          :name="group.id"
+          :data-group-id="group.id">
           <template slot="title">
             <i
               class="fa group-icon"
@@ -124,6 +125,7 @@ export default {
       showGroupDialog: false,
       groupForm: { id: '', name: '' },
       sortables: [],
+      draggingConnection: false,
     };
   },
   components: { ConnectionWrapper, ScrollToTop },
@@ -209,7 +211,25 @@ export default {
       this.connections = ordered;
       this.$storage.reOrderAndStore(this.connections);
     },
+    onConnectionDragStart() {
+      this.draggingConnection = true;
+    },
+    onListDragOver(e) {
+      // only expand group while dragging a connection, exclude dragging groups
+      if (!this.draggingConnection) {
+        return;
+      }
+
+      const itemEl = e.target.closest && e.target.closest('.el-collapse-item');
+
+      // open the hovered group
+      if (itemEl) {
+        this.expandGroup(itemEl.dataset.groupId);
+      }
+    },
     onConnectionDragEnd(evt) {
+      this.draggingConnection = false;
+
       if (evt.from === evt.to && evt.oldIndex === evt.newIndex) {
         return;
       }
@@ -291,6 +311,12 @@ export default {
     destroySortables() {
       this.sortables.forEach(sortable => sortable.destroy());
       this.sortables = [];
+
+      // remove dragover group listener
+      const listEl = this.$refs.connectionsList;
+      if (listEl) {
+        listEl.removeEventListener('dragover', this.onListDragOver, true);
+      }
     },
     initSortable() {
       this.destroySortables();
@@ -298,6 +324,12 @@ export default {
       // disable sortable while filtering
       if (this.filterKeyword) {
         return;
+      }
+
+      // capture group hovering (on each .el-collapse-item)
+      const dragListEl = this.$refs.connectionsList;
+      if (dragListEl) {
+        dragListEl.addEventListener('dragover', this.onListDragOver, true);
       }
 
       this.$nextTick(() => {
@@ -317,6 +349,7 @@ export default {
             animation: 400,
             direction: 'vertical',
             draggable: '.connection-item',
+            onStart: this.onConnectionDragStart,
             onEnd: this.onConnectionDragEnd,
           }));
         });
@@ -337,6 +370,9 @@ export default {
   },
   mounted() {
     this.initConnections();
+  },
+  beforeDestroy() {
+    this.destroySortables();
   },
 };
 </script>
