@@ -256,6 +256,9 @@ npm run pack:linux
 --ssh-host 192.168.0.110
 --ssh-username root --ssh-password 123
 
+# SSH agent
+--ssh-agent
+
 # SENTINEL
 --sentinel-master-name mymaster
 --sentinel-node-password 123
@@ -284,7 +287,8 @@ npm run pack:linux
 | --ssh-host | SSH host* | --ssh-port | SSH port（default:22）|
 | --ssh-username | Username* | --ssh-password | Password|
 | --ssh-private-key | Path of private key | --ssh-passphrase | Password of private key|
-| --ssh-timeout | SSH timeout(s) | | &nbsp;|
+| --ssh-timeout | SSH timeout(s) | --ssh-agent | Enable SSH agent|
+| --ssh-agent-path | Path of SSH agent socket<br>Default SSH_AUTH_SOCK/Pageant| | &nbsp;|
 
 #### CLUSTER
 

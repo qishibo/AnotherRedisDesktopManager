@@ -88,7 +88,13 @@ export default {
   },
 
   createSSHConnection(sshOptions, host, port, auth, config) {
-    const sshOptionsDict = this.getSSHOptions(sshOptions, host, port);
+    let sshOptionsDict;
+
+    try {
+      sshOptionsDict = this.getSSHOptions(sshOptions, host, port);
+    } catch (e) {
+      return Promise.reject(e);
+    }
 
     const configRaw = JSON.parse(JSON.stringify(config));
     const sshConfigRaw = JSON.parse(JSON.stringify(sshOptionsDict));
@@ -163,6 +169,41 @@ export default {
     return sshPromise;
   },
 
+  getSSHAuthType(options = {}) {
+    if (options.authType) {
+      return options.authType;
+    }
+    // Compatible with old config: privatekey > password > agent
+    if (options.privatekey) {
+      return 'privatekey';
+    }
+    else if (options.password) {
+      return 'password';
+    }
+    else if (options.agentPath) {
+      return 'agent';
+    }
+    else {
+      return 'privatekey';
+    }
+  },
+
+  getSSHAgentPath(options) {
+    if (options.agentPath) {
+      return options.agentPath;
+    }
+
+    if (process.env.SSH_AUTH_SOCK) {
+      return process.env.SSH_AUTH_SOCK;
+    }
+
+    if (process.platform === 'win32') {
+      return 'pageant';
+    }
+
+    return undefined;
+  },
+
   getSSHOptions(options, host, port) {
     const tunnelOptions = {
       autoClose: false,
@@ -179,12 +220,32 @@ export default {
       host: options.host,
       port: options.port,
       username: options.username,
-      password: options.password,
-      privateKey: this.getFileContent(options.privatekey, options.privatekeybookmark),
-      passphrase: options.passphrase ? options.passphrase : undefined,
       readyTimeout: (options.timeout) > 0 ? (options.timeout * 1000) : 30000,
       keepaliveInterval: 10000,
     };
+
+    const authType = this.getSSHAuthType(options);
+
+    // auth by private key
+    if (authType === 'privatekey') {
+      sshOptions.privateKey = this.getFileContent(options.privatekey, options.privatekeybookmark);
+      sshOptions.passphrase = options.passphrase ? options.passphrase : undefined;
+    }
+    // auth by SSH agent
+    else if (authType === 'agent') {
+      const agent = this.getSSHAgentPath(options);
+
+      if (!agent) {
+        throw new Error('Please configure agent path or set env SSH_AUTH_SOCK');
+      }
+
+      sshOptions.agent = agent;
+    }
+    // auth by password
+    else {
+      sshOptions.password = options.password;
+    }
+
     // forward link in ssh server
     const forwardOptions = {
       // set srcAddr/srcPort undefined to use server.address() automatically

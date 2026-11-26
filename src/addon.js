@@ -70,6 +70,18 @@ export default {
 
       // ssh args
       if (mainArgs['ssh-host'] && mainArgs['ssh-username']) {
+        let authType = 'privatekey';
+
+        if (mainArgs['ssh-private-key']) {
+          authType = 'privatekey';
+        }
+        else if (mainArgs['ssh-password']) {
+          authType = 'password';
+        }
+        else if (mainArgs['ssh-agent'] || mainArgs['ssh-agent-path']) {
+          authType = 'agent';
+        }
+
         const sshOptions = {
           host: mainArgs['ssh-host'],
           port: mainArgs['ssh-port'] ? mainArgs['ssh-port'] : 22,
@@ -78,6 +90,8 @@ export default {
           privatekey: mainArgs['ssh-private-key'],
           passphrase: mainArgs['ssh-passphrase'],
           timeout: mainArgs['ssh-timeout'],
+          authType,
+          agentPath: mainArgs['ssh-agent-path'],
         };
 
         connection.sshOptions = sshOptions;
@@ -106,7 +120,7 @@ export default {
 
       // add to storage
       storage.addConnection(connection);
-      bus.$emit('refreshConnections');
+      bus.$emit('refreshConnections', connection);
 
       // open connection after added
       setTimeout(() => {
