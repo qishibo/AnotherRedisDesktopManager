@@ -156,19 +156,7 @@ export default {
         return;
       }
 
-      const inputTxt = 'y';
-      const placeholder = this.$t('message.flushdb_prompt', { txt: inputTxt });
-
-      // force confirm rename operation
-      this.$prompt(
-        this.$t('message.confirm_to_rename_key', {
-          old: this.$util.bufToString(this.redisKey),
-          new: this.$util.bufToString(this.keyName),
-        }), {
-          inputValidator: value => ((value == inputTxt) ? true : placeholder),
-          inputPlaceholder: placeholder,
-        }
-      ).then(() => {
+      const applyRename = () => {
         this.client.rename(this.redisKey, this.keyName).then((reply) => {
           if (reply === 'OK') {
             this.$message.success({
@@ -180,9 +168,35 @@ export default {
             this.refreshKeyList(this.keyName, 'add');
             this.$bus.$emit('clickedKey', this.client, this.keyName);
           }
-        }).catch((e) => {
-          this.$message.error(`Rename Error: ${e.message}`);
+        }).catch((err) => {
+          this.$message.error(`Rename Error: ${err.message}`);
         });
+      };
+
+      const confirmMessage = this.$t('message.confirm_to_rename_key', {
+        old: this.$util.bufToString(this.redisKey),
+        new: this.$util.bufToString(this.keyName),
+      });
+
+      // unset or true keeps the typed "y" check. Explicit false uses a normal confirm.
+      if (this.$storage.getSetting('renameKeyTypedConfirm') === false) {
+        this.$confirm(confirmMessage, { type: 'warning' })
+          .then(() => {
+            applyRename();
+          })
+          .catch(() => {});
+        return;
+      }
+
+      const inputTxt = 'y';
+      const placeholder = this.$t('message.flushdb_prompt', { txt: inputTxt });
+
+      // force confirm rename operation
+      this.$prompt(confirmMessage, {
+        inputValidator: value => ((value == inputTxt) ? true : placeholder),
+        inputPlaceholder: placeholder,
+      }).then(() => {
+        applyRename();
       }).catch(() => {});
     },
     ttlKey() {

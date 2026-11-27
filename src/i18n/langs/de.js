@@ -195,6 +195,8 @@ const de = {
     theme_system: 'System',
     theme_light: 'Licht',
     theme_dark: 'Dunkel',
+    rename_key_typed_confirm: 'Zum Umbenennen „y“ eingeben',
+    rename_key_typed_confirm_tip: 'Wenn aktiviert, muss beim Umbenennen eines Schlüssels y eingegeben werden. Ausgeschaltet wird ein normaler Bestätigungsdialog verwendet. So wird verhindert, dass das Namensfeld versehentlich als Suchfeld benutzt und der Schlüssel umbenannt wird.',
   },
 };
 

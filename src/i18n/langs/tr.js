@@ -195,6 +195,8 @@ const tr = {
     theme_system: 'Sistem',
     theme_light: 'Işık',
     theme_dark: 'Karanlık',
+    rename_key_typed_confirm: 'Yeniden adlandırmayı "y" ile onayla',
+    rename_key_typed_confirm_tip: 'Açıkken bir anahtarı yeniden adlandırmak y yazmayı gerektirir. Kapalıyken normal onay penceresi kullanılır. Anahtar adı kutusunun arama kutusu sanılıp yanlışlıkla yeniden adlandırılmasını önler.',
   },
 };
 

@@ -195,6 +195,8 @@ const cn = {
     theme_system: '跟随系统',
     theme_light: '亮色模式',
     theme_dark: '暗色模式',
+    rename_key_typed_confirm: '重命名时输入 y 确认',
+    rename_key_typed_confirm_tip: '开启后，重命名键需要输入 y。关闭后改为普通确认框。用于避免把键名输入框当成搜索框时误重命名。',
   },
 };
 

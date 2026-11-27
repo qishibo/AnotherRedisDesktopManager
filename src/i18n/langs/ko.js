@@ -195,6 +195,8 @@ const ko = {
     theme_system: '시스템',
     theme_light: '밝은 색',
     theme_dark: '어두운 색',
+    rename_key_typed_confirm: '이름 변경 시 y 입력 확인',
+    rename_key_typed_confirm_tip: '켜면 키 이름을 바꿀 때 y를 입력해야 합니다. 끄면 일반 확인 창을 사용합니다. 키 이름 칸을 검색창으로 착각해 실수로 이름을 바꾸는 일을 막습니다.',
   },
 };
 

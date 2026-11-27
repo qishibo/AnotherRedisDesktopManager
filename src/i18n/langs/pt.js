@@ -195,6 +195,8 @@ const pt = {
     theme_system: 'Sistema',
     theme_light: 'Luz',
     theme_dark: 'Escuro',
+    rename_key_typed_confirm: 'Digitar "y" para confirmar renomear',
+    rename_key_typed_confirm_tip: 'Quando ativado, renomear uma chave exige digitar y. Desativado, usa uma confirmação normal. Evita renomear por acidente ao usar a caixa do nome como busca.',
   },
 };
 

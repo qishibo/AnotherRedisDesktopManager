@@ -195,6 +195,8 @@ const en = {
     theme_system: 'System',
     theme_light: 'Light',
     theme_dark: 'Dark',
+    rename_key_typed_confirm: 'Type "y" To Confirm Rename',
+    rename_key_typed_confirm_tip: 'When enabled, renaming a key requires typing y. Turn it off to use a normal confirmation dialog. This avoids accidental renames when the key name box is used like a search box.',
   },
 };
 

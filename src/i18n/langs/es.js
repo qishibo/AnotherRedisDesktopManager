@@ -195,6 +195,8 @@ const es = {
     theme_system: 'Sistema',
     theme_light: 'Luz',
     theme_dark: 'Oscuro',
+    rename_key_typed_confirm: 'Escribir "y" para confirmar el renombrado',
+    rename_key_typed_confirm_tip: 'Si está activado, renombrar una clave requiere escribir y. Al desactivarlo se usa un diálogo de confirmación normal. Evita renombrar por accidente al usar el cuadro del nombre como búsqueda.',
   },
 };
 
