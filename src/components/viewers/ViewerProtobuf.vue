@@ -35,9 +35,9 @@
 <script type="text/javascript">
 import JsonEditor from '@/components/JsonEditor';
 import storage from '@/storage';
-import { getData } from 'rawproto';
+import { getData } from '@/protobufRaw';
 
-const protobuf = require('protobufjs/minimal');
+const protobuf = require('protobufjs');
 const fs = require('fs');
 const path = require('path');
 const { dialog, app } = require('electron').remote;
@@ -111,14 +111,18 @@ export default {
       }
 
       // toJSON() shows int64/uint64 as strings; fromObject converts them back
-      const message = type.fromObject(content);
-      const err = type.verify(message);
-      if (err) {
-        this.$message.error(`Proto Verify Failed: ${err}`);
+      try {
+        const message = type.fromObject(content);
+        const err = type.verify(message);
+        if (err) {
+          this.$message.error(`Proto Verify Failed: ${err}`);
+          return false;
+        }
+        return type.encode(message).finish();
+      } catch (e) {
+        this.$message.error(`Proto Encode Failed: ${e.message}`);
         return false;
       }
-
-      return type.encode(message).finish();
     },
     copyContent() {
       return JSON.stringify(this.newContent);
@@ -174,8 +178,9 @@ export default {
         this.protoRoot = root;
         this.types = ['Rawproto'];
         this.traverseTypes(root);
-        // default select the first real type
-        this.selectedType = this.types.length > 1 ? this.types[1] : 'Rawproto';
+        // try to match the best type
+        const bestType = this.pickBestType();
+        this.selectedType = bestType || (this.types.length > 1 ? this.types[1] : 'Rawproto');
 
         // protobuf decode failed
         if (this.selectedType === 'Rawproto' || this.newContent === DECODE_FAILED) {
@@ -243,6 +248,28 @@ export default {
       return () => {
         closers.forEach(close => close());
       };
+    },
+    pickBestType() {
+      // prefer an exact encode/decode
+      // otherwise fall back to the first type that decodes.
+      const candidates = this.types.filter(t => t !== 'Rawproto');
+      let fallback = null;
+
+      for (let i = 0; i < candidates.length; i++) {
+        const name = candidates[i];
+        try {
+          const type = this.protoRoot.lookupType(name);
+          const decoded = type.decode(this.content);
+          const reencoded = type.encode(decoded).finish();
+          if (reencoded.length === this.content.length && reencoded.equals(this.content)) {
+            return name;
+          }
+          if (!fallback) {
+            fallback = name;
+          }
+        } catch (e) {}
+      }
+      return fallback;
     },
     traverseTypes(current) {
       if (current instanceof protobuf.Type) {
