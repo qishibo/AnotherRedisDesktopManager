@@ -106,6 +106,20 @@
             </el-form-item>
           </el-col>
         </el-row>
+        <el-row :gutter="20" class="setting-row">
+          <el-col :sm="24" :lg="24">
+            <el-form-item>
+              <el-switch v-model="form.renameKeyTypedConfirm"></el-switch>
+              &nbsp;{{ $t('message.rename_key_typed_confirm') }}
+              <el-popover
+                :content="$t('message.rename_key_typed_confirm_tip')"
+                placement="top-start"
+                trigger="hover">
+                <i slot="reference" class="el-icon-question"></i>
+              </el-popover>
+            </el-form-item>
+          </el-col>
+        </el-row>
       </el-card>
 
       <el-card class="setting-card">
@@ -170,6 +184,8 @@ export default {
         zoomFactor: 1.0,
         keysPageSize: 500,
         showLoadAllKeys: false,
+        // true keeps the typed "y" rename confirm; false uses a normal confirm
+        renameKeyTypedConfirm: true,
       },
       importConnectionVisible: false,
       connectionFileContent: '',

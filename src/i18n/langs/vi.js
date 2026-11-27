@@ -195,6 +195,8 @@ const vi = {
     theme_system: 'Hệ thống',
     theme_light: 'Sáng',
     theme_dark: 'Tối',
+    rename_key_typed_confirm: 'Nhập "y" để xác nhận đổi tên',
+    rename_key_typed_confirm_tip: 'Khi bật, đổi tên khóa cần nhập y. Khi tắt, dùng hộp thoại xác nhận thông thường. Tránh đổi tên nhầm khi dùng ô tên khóa như ô tìm kiếm.',
   },
 };
 

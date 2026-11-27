@@ -195,6 +195,8 @@ const fr = {
     theme_system: 'Système',
     theme_light: 'Lumière',
     theme_dark: 'Sombre',
+    rename_key_typed_confirm: 'Saisir « y » pour confirmer le renommage',
+    rename_key_typed_confirm_tip: 'Si activé, renommer une clé exige de saisir y. Désactivé, une confirmation normale est utilisée. Cela évite un renommage accidentel si le champ du nom sert de recherche.',
   },
 };
 

@@ -195,6 +195,8 @@ const it = {
     theme_system: 'Sistema',
     theme_light: 'Luce',
     theme_dark: 'Scuro',
+    rename_key_typed_confirm: 'Digitare "y" per confermare la rinomina',
+    rename_key_typed_confirm_tip: 'Se attivo, rinominare una chiave richiede di digitare y. Se disattivo, viene usata una conferma normale. Evita rinomine accidentali se la casella del nome viene usata come ricerca.',
   },
 };
 
