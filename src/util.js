@@ -138,28 +138,34 @@ export default {
   isDeflateRaw(buf) {
     return typeof this.zippedToString(buf, 'deflateRaw') === 'string';
   },
+  // simple check to avoid round-trip
+  isPrintableText(buf) {
+    // true when the buffer has no control bytes except tab/newline/carriage-return.
+    for (let i = 0; i < buf.length; i++) {
+      const b = buf[i];
+      if (b === 0x09 || b === 0x0a || b === 0x0d) {
+        continue;
+      }
+      if (b < 0x20 || b === 0x7f) {
+        return false;
+      }
+    }
+
+    return true;
+  },
   isProtobuf(buf) {
-    // fix #859, #880, exclude number type
-    if (!isNaN(buf)) {
+    if (!buf || !buf.length) {
       return false;
     }
 
-    const { getData } = require('rawproto');
+    // Buffers that without control bytes(as str)
+    if (this.isPrintableText(buf)) {
+      return false;
+    }
 
-    try {
-      const result = getData(buf);
+    const { isProtobufWire } = require('./protobufRaw');
 
-      // fix #922 some str mismatch
-      // if (result[0]) {
-      //   const firstEle = Object.values(result[0])[0];
-      //   if (firstEle < 1e-14 || firstEle.low) {
-      //     return false;
-      //   }
-      // }
-      return !!result;
-    } catch (e) {}
-
-    return false;
+    return isProtobufWire(buf);
   },
   zippedToString(buf, type = 'unzip') {
     const zlib = require('zlib');

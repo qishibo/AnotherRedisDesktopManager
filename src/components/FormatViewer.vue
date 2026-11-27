@@ -210,13 +210,13 @@ export default {
       if (this.$util.isDeflate(this.content)) {
         return this.changeViewer('Deflate');
       }
-      // protobuf, misjudgment to much ,add length limit
-      if (this.content.length > 10 && this.$util.isProtobuf(this.content)) {
-        return this.changeViewer('Protobuf');
-      }
       // deflateRaw
       if (this.$util.isDeflateRaw(this.content)) {
         return this.changeViewer('DeflateRaw');
+      }
+      // protobuf, misjudgment to much ,add length limit
+      if (this.content.length > 10 && this.$util.isProtobuf(this.content)) {
+        return this.changeViewer('Protobuf');
       }
 
       // hex

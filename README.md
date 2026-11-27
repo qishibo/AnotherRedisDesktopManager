@@ -75,6 +75,7 @@ This project exists thanks to all the people who contribute.
 
 ## Feature Log
 
+- 2026-11-11: SSH agent support && Connection editing UI optimize
 - 2026-08-15: TimeSeries\Vector\ARRAY Support && Test Connection Support
 - 2026-07-29: Connection Group Support!
 - 2025-10-01: Long time no see! New features will coming soon!
